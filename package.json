@@ -15,6 +15,7 @@
     "pug": "2.0.0-beta11"
   },
   "devDependencies": {
+    "mongoose": "^6.0.12",
     "mocha": "^5.1.1",
     "supertest": "^3.0.0"
   }
