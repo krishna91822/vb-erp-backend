@@ -6,16 +6,22 @@ var logger = require("morgan");
 require("dotenv").config();
 
 var indexRouter = require("./routes/index");
-//var usersRouter = require("./routes/users");
 
 const mongoose = require("mongoose");
-const port = 3000;
 const empRoute = require("./routes/employeeRoute");
 const requestRoute = require("./routes/requestRoute");
-var app = express();
+const app = express();
 
 mongoose.connect(process.env.DATABASE_URL).then(() => {
   console.log(`mongodb connected!`);
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.log(`mongoose disconnected`);
+});
+
+mongoose.connection.on("error", (err) => {
+  console.log(`mongoose err is ${err}`);
 });
 
 // view engine setup
@@ -29,7 +35,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-//app.use("/users", usersRouter);
 app.use("/employee", empRoute);
 app.use("/request", requestRoute);
 
