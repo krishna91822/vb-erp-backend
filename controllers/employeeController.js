@@ -1,4 +1,6 @@
 const employeeModel = require("../models/employeeModel");
+const ReviewModel = require("../models/ReviewModel");
+var randomString = require("randomstring");
 
 exports.index_route = function (req, res) {
   res.send("Inside Employee route");
@@ -40,15 +42,19 @@ exports.get_employee = async function (req, res) {
 };
 
 exports.update_employee = async function (req, res) {
+  let ReqId = randomString.generate(8);
   try {
-    let result = await employeeModel.findOneAndUpdate(
-      { empId: req.params.empId },
-      req.body,
-      { new: true, runValidators: true }
-    );
-    res.send(result);
-  } catch (err) {
-    console.log(err);
+    const { empId } = req.params;
+    const data = await ReviewModel.insertOne({
+      ...req.body,
+      empId: empId,
+      ReqId: ReqId,
+    });
+    await data.save();
+    console.log(data);
+    res.status(201).send(data);
+  } catch (error) {
+    console.log(error);
     res.status(400).send("Validation Error");
   }
 };
