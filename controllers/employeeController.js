@@ -1,19 +1,15 @@
 const employeeModel = require("../models/employeeModel");
 
-exports.index_route = function (req, res) {
-  res.send("Inside Employee route");
-};
-
-exports.get_all_employees = async function (req, res) {
+async function getAllEmployees(req, res) {
   try {
     let result = await employeeModel.find({});
     res.send(result);
   } catch (err) {
     console.log(err);
   }
-};
+}
 
-exports.create_employee = async function (req, res) {
+async function createEmployee(req, res) {
   const data = req.body;
   const emp = new employeeModel(data);
 
@@ -24,12 +20,12 @@ exports.create_employee = async function (req, res) {
     console.log(`err is ${err}`);
     res.status(400).send(`Submit all the required fields in correct format`);
   }
-};
+}
 
-exports.get_employee = async function (req, res) {
+async function getEmployee(req, res) {
   try {
     let result = await employeeModel.findOne({ empId: req.params.empId });
-    console.log(`result is ${result}`);
+    // console.log(`result is ${result}`);
     if (result === null) {
       throw err;
     }
@@ -37,9 +33,9 @@ exports.get_employee = async function (req, res) {
   } catch (err) {
     res.status(404).send(`Employee details not found`);
   }
-};
+}
 
-exports.update_employee = async function (req, res) {
+async function updateEmployee(req, res) {
   try {
     let result = await employeeModel.findOneAndUpdate(
       { empId: req.params.empId },
@@ -51,4 +47,11 @@ exports.update_employee = async function (req, res) {
     console.log(err);
     res.status(400).send("Validation Error");
   }
+}
+
+module.exports = {
+  getAllEmployees,
+  getEmployee,
+  createEmployee,
+  updateEmployee,
 };

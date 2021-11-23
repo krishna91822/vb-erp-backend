@@ -4,16 +4,16 @@ const employeeModel = require("../models/employeeModel");
 const employeeController = require("../controllers/employeeController");
 
 //Get all employee documents
-router.get("/", employeeController.get_all_employees);
+router.get("/", employeeController.getAllEmployees);
 
 //Create Employee (FOR ADMIN)
-router.post("/", employeeController.create_employee);
+router.post("/", employeeController.createEmployee);
 
 //Get Employee details (FOR READ ONLY)
-router.get("/:empId", employeeController.get_employee);
+router.get("/:empId", employeeController.getEmployee);
 
 //Update Employee details
 //This api will be called when the update request status is accepted
-router.patch("/:empId", employeeController.update_employee);
+router.patch("/:empId", employeeController.updateEmployee);
 
 module.exports = router;
