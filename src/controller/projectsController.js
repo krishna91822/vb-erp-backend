@@ -1,24 +1,24 @@
 // importing required Files and Routes
 const { json } = require("body-parser");
-const uuid = require('uuid');
 const ProjectsInfoModel = require("../models/projectsModel");
 
 // Creating and Storing Created Projects data into database by POST request
 const createProjects = async(req, res) => {
     let newProject = new ProjectsInfoModel({
-        vbProjectId: uuid.v4(), // creating projectID on creation of project
+        vbProjectId: req.body.vbProjectId,
         clientName: req.body.clientName,
         projectName: req.body.projectName,
         clientProjectManager: req.body.clientProjectManager,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
-        contractUniqueID: req.body.contractUniqueID,
-        clientProjectSponser: req.body.clientProjectSponser,
+        id: req.body.id,
+        clientProjectSponsor: req.body.clientProjectSponsor,
         clientFinanceController: req.body.clientFinanceController,
         clientPrimaryContact: req.body.clientPrimaryContact,
         vbProjectManager: req.body.vbProjectManager,
         domainSector: req.body.domainSector,
-        vbProjectStatus: req.body.vbProjectStatus
+        vbProjectStatus: req.body.vbProjectStatus,
+        resources: req.body.resources,
     });
 
     try {
@@ -43,7 +43,7 @@ const getProjects = async(req, res) => {
 const getProjectById = async(req, res) => {
     try {
         const _id = req.params.id
-        const getProjectById = await ProjectsInfoModel.findById(_id);
+        const getProjectById = await ProjectsInfoModel.find({ vbProjectId: _id });
         res.status(200).send(getProjectById);
     } catch (error) {
         res.status(400).send(error);
@@ -54,7 +54,7 @@ const getProjectById = async(req, res) => {
 const updateProject = async(req, res) => {
     try {
         const _id = req.params.id
-        const updateProject = await ProjectsInfoModel.findByIdAndUpdate(_id, req.body, {
+        const updateProject = await ProjectsInfoModel.findOneAndUpdate({ vbProjectId: _id }, req.body, {
             new: true
         });
         res.status(200).send(updateProject);
@@ -64,4 +64,9 @@ const updateProject = async(req, res) => {
 };
 
 //exporting to use in other files
-module.exports = { getProjects, getProjectById, createProjects, updateProject };
+module.exports = {
+    getProjects,
+    getProjectById,
+    createProjects,
+    updateProject
+};

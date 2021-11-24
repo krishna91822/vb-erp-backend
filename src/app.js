@@ -37,3 +37,5 @@ app.listen(PORT, () => {
         console.log(`Something went wrong! ${PORT} port!`);
     }
 });
+
+module.exports = app;

@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 
 // Schema for Projects - Project Information
 const ProjectsInfo_Schema = mongoose.Schema({
-    vbProjectId: String,
+    vbProjectId: {
+        type: String,
+    },
     clientName: {
         type: String,
         required: true
@@ -17,18 +19,18 @@ const ProjectsInfo_Schema = mongoose.Schema({
         required: true
     },
     startDate: {
-        type: Date,
+        type: String,
         required: true
     },
     endDate: {
-        type: Date,
+        type: String,
         required: true
     },
-    contractUniqueID: {
+    id: {
         type: String,
         required: false
     },
-    clientProjectSponser: {
+    clientProjectSponsor: {
         type: String,
         required: true
     },
@@ -36,20 +38,27 @@ const ProjectsInfo_Schema = mongoose.Schema({
         type: String,
         required: true
     },
-    clientPrimaryContact: Number,
+    clientPrimaryContact: {
+        type: Number,
+        required: false
+    },
     vbProjectManager: {
         type: String,
         required: true
+    },
+    vbProjectStatus: {
+        type: String,
+        required: false
     },
     domainSector: {
         type: String,
         required: false
     },
-    vbProjectStatus: {
-        type: String,
-        required: false
+    resources: {
+        type: Array,
     }
 });
+
 
 const ProjectsInfoModel = mongoose.model('projects-info', ProjectsInfo_Schema);
 
