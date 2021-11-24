@@ -7,9 +7,7 @@ const assert = require("assert");
 const requestModel = require("../models/requestModel");
 
 describe("Testing Request API", () => {
-  beforeAll(async () => {
-    // await mongoose.connect(process.env.TEST_DATABASE_URI);
-  });
+  beforeAll(async () => {});
   test("GET API Get All Requests test", async () => {
     const response = await request(app)
       .get("/request")
@@ -31,7 +29,6 @@ describe("Testing Request API", () => {
     };
     const response = await request(app).post("/request").send(data);
     expect(response.statusCode).toBe(201);
-    // expect(response.body).toEqual(expect.objectContaining(data2));
     expect(response.body).toMatchObject(data);
   });
 
@@ -42,6 +39,5 @@ describe("Testing Request API", () => {
   });
   afterAll(async () => {
     await requestModel.deleteMany({});
-    // await mongoose.connection.close();
   });
 });

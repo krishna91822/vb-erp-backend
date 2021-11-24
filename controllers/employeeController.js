@@ -25,13 +25,13 @@ async function createEmployee(req, res) {
 async function getEmployee(req, res) {
   try {
     let result = await employeeModel.findOne({ empId: req.params.empId });
-    // console.log(`result is ${result}`);
     if (result === null) {
-      throw err;
+      return res.status(500).send({ message: "Employee details not found" });
     }
     res.send(result);
   } catch (err) {
-    res.status(404).send(`Employee details not found`);
+    console.log(err);
+    res.status(500).send(`Employee details not found`);
   }
 }
 
@@ -42,6 +42,11 @@ async function updateEmployee(req, res) {
       req.body,
       { new: true, runValidators: true }
     );
+    if (result === null) {
+      return res.status(500).send({
+        message: "Employee details cannot be updated as it does not exist",
+      });
+    }
     res.send(result);
   } catch (err) {
     console.log(err);
