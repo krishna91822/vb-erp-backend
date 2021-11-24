@@ -8,32 +8,6 @@ chai.use(chaiHttp);
 
 //testing for POST request
 describe("POST /projects", () => {
-    // it('it will not POST in projects as one of the field name (projectName) is not given', (done) => {
-    //     let project = {
-    //         clientName: "Atif Kamal",
-    //         clientProjectManager: "M1",
-    //         startDate: "2021-11-20",
-    //         endDate: "2021-11-28",
-    //         contractUniqueID: "cnID",
-    //         clientProjectSponser: "cS-1",
-    //         clientFinanceController: "cF-1",
-    //         clientPrimaryContact: 1234567890,
-    //         domainSector: "Backend APIs",
-    //         vbProjectStatus: "active",
-    //         vbProjectManager: "VB-Mn"
-    //     }
-    //     chai.request(app)
-    //         .post('/projects')
-    //         .send(project)
-    //         .end((err, res) => {
-    //             res.should.have.status(400);
-    //             res.body.should.have.property('errors');
-    //             res.body.errors.should.have.property('projectName');
-    //             res.body.errors.projectName.should.have.property('kind').eql('required');
-    //             done();
-    //         });
-    // });
-
     it("Returns status(201)", (done) => {
         let project = {
             clientName: "Atif Kamal",
