@@ -2,11 +2,7 @@ const employeeModel = require("../models/employeeModel");
 const ReviewModel = require("../models/ReviewModel");
 const { v4: uuidv4 } = require("uuid");
 
-exports.index_route = function (req, res) {
-  res.send("Inside Employee route");
-};
-
-const get_all_employees = async (req, res) => {
+const getAllEmployees = async (req, res) => {
   try {
     let result = await employeeModel.find({});
     res.send(result);
@@ -15,7 +11,7 @@ const get_all_employees = async (req, res) => {
   }
 };
 
-const create_employee = async (req, res) => {
+const createEmployee = async (req, res) => {
   let ReqId = uuidv4();
   let Reqtype = "Profile Create";
   try {
@@ -32,20 +28,20 @@ const create_employee = async (req, res) => {
   }
 };
 
-const get_employee = async (req, res) => {
+const getEmployee = async (req, res) => {
   try {
     let result = await employeeModel.findOne({ empId: req.params.empId });
-    console.log(`result is ${result}`);
     if (result === null) {
-      throw err;
+      return res.status(500).send({ message: "Employee details not found" });
     }
     res.send(result);
   } catch (err) {
-    res.status(404).send(`Employee details not found`);
+    console.log(err);
+    res.status(500).send(`Employee details not found`);
   }
 };
 
-const update_employee = async (req, res) => {
+const updateEmployee = async (req, res) => {
   let ReqId = uuidv4();
   try {
     const { empId } = req.params;
@@ -64,8 +60,8 @@ const update_employee = async (req, res) => {
 };
 
 module.exports = {
-  create_employee,
-  get_all_employees,
-  get_employee,
-  update_employee,
+  getAllEmployees,
+  getEmployee,
+  createEmployee,
+  updateEmployee,
 };

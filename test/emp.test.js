@@ -4,10 +4,10 @@ const EmployeeModel = require("../models/employeeModel");
 const request = require("supertest");
 const app = require("../app");
 const mongoose = require("mongoose");
+const employeeModel = require("../models/employeeModel");
 
 describe("GET / ", () => {
   beforeAll(async () => {
-    await mongoose.connect(process.env.DATABASE_URL);
     await new EmployeeModel({
       empId: "001",
       empRole: "USER",
@@ -32,15 +32,8 @@ describe("GET / ", () => {
     }).save();
   });
 
-  afterAll(async () => {
-    //    await mongoose.connection.dropDatabase;
-    await mongoose.connection.close();
-  });
-
   test("It should respond with employees details", async () => {
     const response = await request(app).get("/employee/001");
-    console.log(`response is`);
-    console.log(response.body);
     expect(response.body).toHaveProperty("empId");
     expect(response.body.empId).toBe("001");
     expect(response.body).toHaveProperty("empDoj");
@@ -68,48 +61,14 @@ describe("GET / ", () => {
     expect(response.body).toHaveProperty("empAboutMe");
     expect(response.body.empAboutMe).toBe("Sup?");
     expect(response.body).toHaveProperty("empHobbies");
-    // expect(response.body.empHobbies).toBe(["Medidation"]);
     expect(response.body).toHaveProperty("empPrimaryCapability");
-    //expect(response.body.empPrimaryCpapability).toBe([]);
     expect(response.body).toHaveProperty("empSkillSet");
-    // expect(response.body.empSkillSet).toBe(["java"]);
-    // expect(response.body).toHaveProperty("empCertification");
+    expect(response.body).toHaveProperty("empCertifications");
     expect(response.statusCode).toBe(200);
   });
 });
 
 describe("POST /", () => {
-  beforeAll(async () => {
-    await mongoose.connect(process.env.DATABASE_URL);
-    await new EmployeeModel({
-      empId: "002",
-      empRole: "USER",
-      empDoj: "18-12-2050",
-      empDepartment: "ahjs",
-      empDesignation: "dkj",
-      empEmail: "dasjk.com",
-      empName: "Cj",
-      empBand: "hio",
-      empCtc: "13.00",
-      empReportingManager: "dfs",
-      empGraduation: true,
-      empPostGraduation: false,
-      empPersonalEmail: "ads@djas",
-      empPhoneNumber: "1654",
-      empDob: "1-3-9561",
-      empAboutMe: "Sup?",
-      empHobbies: "Medidation",
-      empPrimaryCpapability: [],
-      empSkillSet: [],
-      empCertification: [],
-    }).save();
-  });
-
-  afterAll(async () => {
-    // await mongoose.connection.dropDatabase;
-    await mongoose.connection.close();
-  });
-
   test("It responds with the new data", async () => {
     const newEmp = await request(app).post("/employee").send({
       empId: "002",
@@ -131,7 +90,6 @@ describe("POST /", () => {
       empSkillSet: [],
       empCertification: [],
     });
-    console.log(newEmp.body);
 
     expect(newEmp.body).toHaveProperty("empId");
     expect(newEmp.body.empId).toBe("002");
@@ -167,42 +125,14 @@ describe("POST /", () => {
 });
 
 describe("PATCH /", () => {
-  beforeAll(async () => {
-    await mongoose.connect(process.env.DATABASE_URL);
-  });
-
   afterAll(async () => {
-    //   await mongoose.connection.dropDatabase;
-    await mongoose.connection.close();
+    await employeeModel.deleteMany({});
   });
 
   test("It responds with an updated employee", async () => {
-    const newEmp = await request(app).post("/employee").send({
-      empId: "002",
-      empRole: "USER",
-      empDoj: "18-12-2050",
-      empDepartment: "ahjs",
-      empDesignation: "dkj",
-      empEmail: "dasjk.com",
-      empName: "Cj",
-      empBand: "hio",
-      empCtc: "13.00",
-      empReportingManager: "dfs",
-      empGraduation: true,
-      empPostGraduation: false,
-      empPersonalEmail: "ads@djas",
-      empPhoneNumber: "1654",
-      empDob: "1-3-9562",
-      empAboutMe: "Sup?",
-      empHobbies: "Medidation",
-      empPrimaryCpapability: [],
-      empSkillSet: [],
-      empCertification: [],
-    });
     const updatedEmp = await request(app)
       .patch(`/employee/002`)
       .send({ empName: "UpdatedName" });
-    console.log(updatedEmp.body);
     expect(updatedEmp.body.empName).toBe("UpdatedName");
     expect(updatedEmp.body).toHaveProperty("empId");
     expect(updatedEmp.statusCode).toBe(200);

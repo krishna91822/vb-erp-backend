@@ -1,22 +1,31 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
 require("dotenv").config();
-
-var indexRouter = require("./routes/index");
-
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 const mongoose = require("mongoose");
+
+const indexRouter = require("./routes/index");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 const empRoute = require("./routes/employeeRoute");
 const requestRoute = require("./routes/requestRoute");
 const ReviewRoute = require("./routes/ReviewRoutes");
+
 const app = express();
 
-mongoose.connect("mongodb://127.0.0.1:27017/employees").then(() => {
-  console.log(`mongodb connected!`);
-});
+let connectionString =
+  process.env.NODE_ENV === "test"
+    ? process.env.TEST_DATABASE_URI
+    : process.env.DATABASE_URL;
+mongoose
+  .connect(connectionString)
+  .then(() => {
+    console.log(`mongodb connected!`);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 mongoose.connection.on("disconnected", () => {
   console.log(`mongoose disconnected`);

@@ -7,6 +7,6 @@ const EmployeeController = require("../controllers/employeeController");
 router.get("/", ReviewController.GetReviews);
 
 // Create Request
-router.post("/", EmployeeController.create_employee);
+router.post("/", EmployeeController.createEmployee);
 
 module.exports = router;
