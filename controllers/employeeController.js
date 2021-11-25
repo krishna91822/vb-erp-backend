@@ -1,12 +1,12 @@
 const employeeModel = require("../models/employeeModel");
 const ReviewModel = require("../models/ReviewModel");
-var randomString = require("randomstring");
+const { v4: uuidv4 } = require("uuid");
 
 exports.index_route = function (req, res) {
   res.send("Inside Employee route");
 };
 
-exports.get_all_employees = async function (req, res) {
+const get_all_employees = async (req, res) => {
   try {
     let result = await employeeModel.find({});
     res.send(result);
@@ -15,20 +15,24 @@ exports.get_all_employees = async function (req, res) {
   }
 };
 
-exports.create_employee = async function (req, res) {
-  const data = req.body;
-  const emp = new employeeModel(data);
-
+const create_employee = async (req, res) => {
+  let ReqId = uuidv4();
+  let Reqtype = "Profile Create";
   try {
-    let result = await emp.save();
-    res.send(result);
+    const data = await ReviewModel.create({
+      ...req.body,
+      Reqtype,
+      ReqId,
+    });
+
+    res.status(201).send(data);
   } catch (err) {
     console.log(`err is ${err}`);
     res.status(400).send(`Submit all the required fields in correct format`);
   }
 };
 
-exports.get_employee = async function (req, res) {
+const get_employee = async (req, res) => {
   try {
     let result = await employeeModel.findOne({ empId: req.params.empId });
     console.log(`result is ${result}`);
@@ -41,11 +45,11 @@ exports.get_employee = async function (req, res) {
   }
 };
 
-exports.update_employee = async function (req, res) {
-  let ReqId = randomString.generate(8);
+const update_employee = async (req, res) => {
+  let ReqId = uuidv4();
   try {
     const { empId } = req.params;
-    const data = await ReviewModel.insertOne({
+    const data = await ReviewModel.insertMany({
       ...req.body,
       empId: empId,
       ReqId: ReqId,
@@ -57,4 +61,11 @@ exports.update_employee = async function (req, res) {
     console.log(error);
     res.status(400).send("Validation Error");
   }
+};
+
+module.exports = {
+  create_employee,
+  get_all_employees,
+  get_employee,
+  update_employee,
 };

@@ -8,11 +8,13 @@ require("dotenv").config();
 var indexRouter = require("./routes/index");
 
 const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 const empRoute = require("./routes/employeeRoute");
 const requestRoute = require("./routes/requestRoute");
+const ReviewRoute = require("./routes/ReviewRoutes");
 const app = express();
 
-mongoose.connect(process.env.DATABASE_URL).then(() => {
+mongoose.connect("mongodb://127.0.0.1:27017/employees").then(() => {
   console.log(`mongodb connected!`);
 });
 
@@ -37,6 +39,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/employee", empRoute);
 app.use("/request", requestRoute);
+app.use("/reviews", ReviewRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

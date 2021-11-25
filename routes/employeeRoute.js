@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const employeeModel = require("../models/employeeModel");
 const employeeController = require("../controllers/employeeController");
 
 //Get all employee documents

@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const requestController = require("../controllers/requestController");
+const ReviewController = require("../controllers/ReviewController");
+const EmployeeController = require("../controllers/employeeController");
 
 // Get all Request documents
-router.get("/", requestController.get_all_requests);
+router.get("/", ReviewController.GetReviews);
 
 // Create Request
-router.post("/", requestController.create_request);
+router.post("/", EmployeeController.create_employee);
 
 module.exports = router;

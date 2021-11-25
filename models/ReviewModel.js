@@ -16,17 +16,17 @@ const ReviewSchema = mongoose.Schema({
   },
   ReqOn: {
     required: true,
-    type: TimeRanges,
+    type: String,
   },
   ReqType: {
     required: true,
+    enum: ["Profile Create", "Profile Update"],
     type: String,
   },
   Status: {
     type: String,
-    required: true,
-    enum: [Accepted, Pending, Rejected],
-    default: Pending,
+    enum: ["Accepted", "Pending", "Rejected"],
+    default: "Pending",
   },
   empName: {
     type: String,
@@ -38,7 +38,6 @@ const ReviewSchema = mongoose.Schema({
   },
   empEmail: {
     type: String,
-
     unique: true,
   },
   empDoj: {
@@ -55,7 +54,6 @@ const ReviewSchema = mongoose.Schema({
   },
   empCtc: {
     type: Number,
-
     min: 0,
   },
   empReportingManager: {
@@ -63,22 +61,18 @@ const ReviewSchema = mongoose.Schema({
   },
   empGraduation: {
     type: String,
-
     default: "",
   },
   empPostGraduation: {
     type: String,
-
     default: "",
   },
   empPersonalEmail: {
     type: String,
-
     unique: true,
   },
   empPhoneNumber: {
     type: String,
-
     unique: true,
   },
   empDob: {
@@ -89,22 +83,18 @@ const ReviewSchema = mongoose.Schema({
   },
   empHobbies: {
     type: Array,
-
     default: [],
   },
   empPrimaryCapability: {
     type: Array,
-
     default: [],
   },
   empSkillSet: {
     type: Array,
-
     default: [],
   },
   empCertifications: {
     type: Array,
-
     default: [],
   },
   empRole: {
@@ -120,6 +110,7 @@ const ReviewSchema = mongoose.Schema({
     ],
   },
 });
-ReviewSchema.plugin(AutoIncrement);
+ReviewSchema.plugin(AutoIncrement, { inc_field: "ID" });
+//ReviewSchema.set("validateBeforeSave", true);
 
 module.exports = mongoose.model("myreviews", ReviewSchema);
