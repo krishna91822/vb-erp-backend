@@ -1,4 +1,4 @@
-//importing 
+//importing packages
 const express = require("express");
 const ProjectRouter = express.Router();
 
@@ -6,6 +6,7 @@ const ProjectRouter = express.Router();
 const {
     getProjects,
     getProjectById,
+    getProjectBySlug,
     createProjects,
     updateProject
 } = require("../controller/projectsController");
@@ -18,6 +19,9 @@ ProjectRouter.get("/", getProjects);
 
 //GET Method by id
 ProjectRouter.get("/:id", getProjectById);
+
+//GET Method by slug
+ProjectRouter.get("/:slug", getProjectBySlug);
 
 //PUT method for update
 ProjectRouter.put("/:id", updateProject);

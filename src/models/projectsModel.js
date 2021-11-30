@@ -1,8 +1,10 @@
 // importing packages
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 // Schema for Projects - Project Information
 const ProjectsInfo_Schema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
     vbProjectId: {
         type: String,
     },
@@ -19,11 +21,11 @@ const ProjectsInfo_Schema = mongoose.Schema({
         required: true
     },
     startDate: {
-        type: String,
+        type: Date,
         required: true
     },
     endDate: {
-        type: String,
+        type: Date,
         required: true
     },
     id: {
@@ -54,11 +56,28 @@ const ProjectsInfo_Schema = mongoose.Schema({
         type: String,
         required: false
     },
-    resources: {
-        type: Array,
-    }
-});
+    slug: {
+        type: String,
+        required: false,
+        unique: true
+    },
+    resources: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "resource-info"
+    }]
+}, { timestamps: true });
 
+ProjectsInfo_Schema.pre("save", function(next) {
+    const project = this;
+
+    if (project.projectName && project.clientName) {
+        project.slug = slugify(
+            project.projectName.split(" ").join("-") + "-" +
+            project.clientName.split(" ").join("-"), { lower: true, strict: true }
+        );
+    }
+    next();
+});
 
 const ProjectsInfoModel = mongoose.model('projects-info', ProjectsInfo_Schema);
 

@@ -4,18 +4,26 @@ const ResourceInfoModel = require("../models/resourcesModel");
 
 // Creating and Storing Resources data into database by POST request
 const createResource = async(req, res) => {
+    // let newResource = new ResourceInfoModel({
+    //     associateName: req.body.associateName,
+    //     allocationStartDate: req.body.allocationStartDate,
+    //     allocationEndDate: req.body.allocationEndDate,
+    //     allocationPercentage: req.body.allocationPercentage,
+    //     rackRate: req.body.rackRate,
+    //     empId: req.body.empId,
+    //     projectAllocated: req.body.projectAllocated,
+    // });
+
     let newResource = new ResourceInfoModel({
         associateName: req.body.associateName,
-        allocationStartDate: req.body.allocationStartDate,
-        allocationEndDate: req.body.allocationEndDate,
-        allocationPercentage: req.body.allocationPercentage,
-        rackRate: req.body.rackRate,
-        empId: req.body.empId,
-        projectAllocated: req.body.projectAllocated,
+        projects: req.body.projects
     });
 
     try {
-        const resource = await newResource.save();
+
+        const resource = await newResource.find({}).populate('projects-info');
+        projects.push(resource);
+
         res.status(201).json(resource);
     } catch (error) {
         res.status(400).json(error);

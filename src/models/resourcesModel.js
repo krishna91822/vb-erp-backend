@@ -7,27 +7,11 @@ const ResourcesInfo_Schema = mongoose.Schema({
         type: String,
         required: true
     },
-    allocationStartDate: {
-        type: Date,
-        required: true
-    },
-    allocationEndDate: {
-        type: Date,
-        required: true
-    },
-    allocationPercentage: {
-        type: Number,
-        required: true
-    },
-    rackRate: {
-        type: Number,
-        required: true
-    },
     empId: {
         type: String,
         required: false
     },
-    projectAllocated: String
+    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: "project-info" }]
 });
 
 const ResourcesInfoModel = mongoose.model('resources-info', ResourcesInfo_Schema);

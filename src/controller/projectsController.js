@@ -18,16 +18,19 @@ const createProjects = async(req, res) => {
         vbProjectManager: req.body.vbProjectManager,
         domainSector: req.body.domainSector,
         vbProjectStatus: req.body.vbProjectStatus,
-        resources: req.body.resources,
+        resources: req.body.resources
+            // resources: ,
     });
 
     try {
         const project = await newProject.save();
         res.status(201).json(project);
     } catch (error) {
-        res.status(400).json();
+        res.status(400).json(error);
     }
 }
+
+//const saveResources = async({ vbProjectId, resources }, "")
 
 //getting all the projects
 const getProjects = async(req, res) => {
@@ -43,8 +46,21 @@ const getProjects = async(req, res) => {
 const getProjectById = async(req, res) => {
     try {
         const _id = req.params.id
-        const getProjectById = await ProjectsInfoModel.find({ vbProjectId: _id });
-        res.status(200).send(getProjectById);
+        const getProject = await ProjectsInfoModel.find({ vbProjectId: _id });
+        res.status(200).send(getProject);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+
+// getting single project by using slug feature
+const getProjectBySlug = async(req, res) => {
+    try {
+        console.log("Hi!");
+        const slugURL = req.params.slug
+        const project = await ProjectsInfoModel.findOne({ slug: slugURL });
+
+        res.status(200).send(project);
     } catch (error) {
         res.status(400).send(error);
     }
@@ -67,6 +83,7 @@ const updateProject = async(req, res) => {
 module.exports = {
     getProjects,
     getProjectById,
+    getProjectBySlug,
     createProjects,
     updateProject
 };
