@@ -1,67 +1,80 @@
-const employeeModel = require("../models/employeeModel");
-const ReviewModel = require("../models/ReviewModel");
-const { v4: uuidv4 } = require("uuid");
+const Employee = require('./../models/employeeModel');
+const ReviewModel = require('../models/ReviewModel');
 
-const getAllEmployees = async (req, res) => {
-  try {
-    let result = await employeeModel.find({});
-    res.send(result);
-  } catch (err) {
-    console.log(err);
+const catchAsync = require('./../utils/catchAsync');
+const AppError = require('./../utils/appError');
+const APIFeatures = require('./../utils/APIFeatures');
+
+exports.getAllEmployees = catchAsync(async (req, res, next) => {
+  //Build the query
+  const features = new APIFeatures(Employee.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  //Execute the query
+  const employees = await features.query;
+
+  //Send response
+  res.status(200).json({
+    status: 'success',
+    results: employees.length,
+    data: {
+      employees,
+    },
+  });
+});
+
+exports.getEmployee = catchAsync(async (req, res, next) => {
+  const employee = await Employee.findById(req.params.id);
+
+  if (!employee) {
+    return next(new AppError('No employee found with that ID', 404));
   }
-};
 
-const createEmployee = async (req, res) => {
-  let ReqId = uuidv4();
-  let Reqtype = "Profile Create";
-  try {
-    const data = await ReviewModel.create({
-      ...req.body,
-      Reqtype,
-      ReqId,
-    });
+  res.status(200).json({
+    status: 'success',
+    data: {
+      employee,
+    },
+  });
+});
 
-    res.status(201).send(data);
-  } catch (err) {
-    console.log(`err is ${err}`);
-    res.status(400).send(`Submit all the required fields in correct format`);
+exports.createEmployee = catchAsync(async (req, res, next) => {
+  const newEmployee = await Employee.create(req.body);
+
+  res.status(201).json({
+    status: 'success',
+    data: newEmployee,
+  });
+});
+
+exports.updateEmployee = catchAsync(async (req, res, next) => {
+  const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!employee) {
+    return next(new AppError('No employee found with that ID', 404));
   }
-};
 
-const getEmployee = async (req, res) => {
-  try {
-    let result = await employeeModel.findOne({ empId: req.params.empId });
-    if (result === null) {
-      return res.status(500).send({ message: "Employee details not found" });
-    }
-    res.send(result);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send(`Employee details not found`);
+  res.status(200).json({
+    status: 'success',
+    data: employee,
+  });
+});
+
+exports.deleteEmployee = catchAsync(async (req, res, next) => {
+  const employee = await Employee.findByIdAndDelete(req.params.id);
+
+  if (!employee) {
+    return next(new AppError('No employee found with that ID', 404));
   }
-};
 
-const updateEmployee = async (req, res) => {
-  let ReqId = uuidv4();
-  try {
-    const { empId } = req.params;
-    const data = await ReviewModel.insertMany({
-      ...req.body,
-      empId: empId,
-      ReqId: ReqId,
-    });
-    await data.save();
-    console.log(data);
-    res.status(201).send(data);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send("Validation Error");
-  }
-};
-
-module.exports = {
-  getAllEmployees,
-  getEmployee,
-  createEmployee,
-  updateEmployee,
-};
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});

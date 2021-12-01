@@ -1,80 +1,160 @@
-const ReviewSchema = require("../models/ReviewModel");
-const EmployeeModel = require("../models/employeeModel");
+const Review = require('../models/ReviewModel');
+const Employee = require('../models/employeeModel');
 
-const GetReviews = async (req, res) => {
-  try {
-    let result = await ReviewSchema.find({});
-    console.log(result);
-    res.status(200).send(result);
-  } catch (err) {
-    console.log(err);
+const catchAsync = require('./../utils/catchAsync');
+const AppError = require('./../utils/appError');
+const APIFeatures = require('./../utils/APIFeatures');
+
+exports.getAllReviews = catchAsync(async (req, res, next) => {
+  //Build the query
+  const features = new APIFeatures(Review.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  //Execute the query
+  const reviews = await features.query;
+
+  //Send response
+  res.status(200).json({
+    status: 'success',
+    results: reviews.length,
+    data: {
+      reviews,
+    },
+  });
+});
+
+exports.getReview = catchAsync(async (req, res, next) => {
+  const review = await Review.findById(req.params.id);
+
+  if (!review) {
+    return next(new AppError('No review found with that ID', 404));
   }
-};
 
-const GetIdReview = async (req, res) => {
-  try {
-    let result = await ReviewSchema.find({ ReqId: req.params.ReqId });
-    res.status(201).send(result);
-  } catch (err) {
-    console.log(err);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      review,
+    },
+  });
+});
+
+exports.createReview = catchAsync(async (req, res, next) => {
+  const newReview = await Review.create(req.body);
+
+  res.status(201).json({
+    status: 'success',
+    data: newReview,
+  });
+});
+
+exports.updateReview = catchAsync(async (req, res, next) => {
+  const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!review) {
+    return next(new AppError('No review found with that ID', 404));
   }
-};
 
-const ChangeStatus = async (req, res) => {
-  if (req.body.Status === "Accepted") {
-    try {
-      const data = await ReviewSchema.updateOne(
-        { ReqId: req.params.ReqId },
-        { Status: req.body.Status }
+  res.status(200).json({
+    status: 'success',
+    data: review,
+  });
+});
+
+exports.updateReviewStatus = catchAsync(async (req, res, next) => {
+  const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!review) {
+    return next(new AppError('No review found with that ID', 404));
+  }
+
+  const employeeData = {
+    ...review.employeeDetails._doc,
+    password: '12345',
+    passwordConfirm: '12345',
+  };
+
+  // check and create employee
+  if (review.reqType === 'profile-creation' && req.body.status === 'accepted') {
+    const newEmployee = await Employee.create(employeeData);
+    if (!newEmployee) {
+      await Review.findByIdAndUpdate(
+        req.params.id,
+        { status: 'pending' },
+        {
+          new: true,
+          runValidators: true,
+        }
       );
-      const EmpData = {};
-      EmpData.empName = req.body.empName;
-      EmpData.empId = req.body.empId;
-      EmpData.empEmail = req.body.empEmail;
-      EmpData.empDoj = req.body.empDoj;
-      EmpData.empDepartment = req.body.empDepartment;
-      EmpData.empDesignation = req.body.empDesignation;
-      EmpData.empBand = req.body.empBand;
-      EmpData.empCtc = req.body.empCtc;
-      EmpData.empReportingManager = req.body.empReportingManager;
-      EmpData.empGraduation = req.body.empGraduation;
-      EmpData.empPostGraduation = req.body.empPostGraduation;
-      EmpData.empPersonalEmail = req.body.empPersonalEmail;
-      EmpData.empPhoneNumber = req.body.empPhoneNumber;
-      EmpData.empDob = req.body.empDob;
-      EmpData.empAboutMe = req.body.empAboutMe;
-      EmpData.empHobbies = req.body.empHobbies;
-      EmpData.empPrimaryCapability = req.body.empPrimaryCapability;
-      EmpData.empSkillSet = req.body.empSkillSet;
-      EmpData.empCertifications = req.body.empCertifications;
-      EmpData.empRole = req.body.empRole;
-      if (req.body.ReqType === "Profile Update") {
-        const employee = await EmployeeModel.updateOne(
-          { empId: req.body.empId },
-          { ...EmpData }
-        );
-      } else if (req.body.ReqType === "Profile Create") {
-        const employee = await EmployeeModel.create({ ...EmpData });
+      return next(new AppError('Fail to create employee try again', 404));
+    }
+    console.log(newEmployee);
+
+    return res.status(200).json({
+      status: 'success',
+      result: 'Employee created',
+      data: review,
+    });
+  }
+
+  //check and update employee
+  const employeeDataToUpdate = {
+    ...review.employeeDetails._doc,
+  };
+
+  if (review.reqType === 'profile-update' && req.body.status === 'accepted') {
+    const employee = await Employee.findOneAndUpdate(
+      { empEmail: review.employeeDetails.empEmail },
+      employeeDataToUpdate,
+      {
+        new: true,
+        runValidators: true,
       }
-      return res.status(200).send(EmpData);
-    } catch (error) {
-      console.log(error);
-      return res.status(204).send("No Content");
-    }
-  } else if (req.body.Status === "Rejected") {
-    try {
-      const { Status } = req.body.Status;
-      const data = await ReviewSchema.updateOne(
-        { empId: req.body.empId },
-        { ...req.body, Status: Status }
-      );
-      console.log("rejected");
-      res.status(200).send(data);
-    } catch (error) {
-      console.log(error);
-      res.status(204).send("No Content");
-    }
-  }
-};
+    );
 
-module.exports = { GetReviews, GetIdReview, ChangeStatus };
+    if (!employee) {
+      await Review.findByIdAndUpdate(
+        req.params.id,
+        { status: 'pending' },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      return next(new AppError('Fail to update employee try again', 404));
+    }
+    console.log(employee);
+
+    return res.status(200).json({
+      status: 'success',
+      result: 'Employee updated',
+      data: review,
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: review,
+  });
+});
+
+exports.deleteReview = catchAsync(async (req, res, next) => {
+  const review = await Review.findByIdAndDelete(req.params.id);
+
+  if (!review) {
+    return next(new AppError('No review found with that ID', 404));
+  }
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});

@@ -1,16 +1,29 @@
-const express = require("express");
-const Router = express.Router();
+const express = require('express');
 
-const {
-  GetReviews,
-  GetIdReview,
-  ChangeStatus,
-} = require("../controllers/ReviewController");
+const reviewController = require('../controllers/ReviewController');
+const authController = require('./../controllers/authController');
 
-Router.get("/", GetReviews);
+const router = express.Router();
 
-Router.get("/:ReqId", GetIdReview);
+router
+  .route('/')
+  .get(authController.protect, reviewController.getAllReviews)
+  .post(authController.protect, reviewController.createReview); //Create Review (FOR ADMIN);
 
-Router.post("/:ReqId", ChangeStatus);
+router
+  .route('/:id')
+  .get(authController.protect, reviewController.getReview) //Get Review details (FOR READ ONLY)
+  .patch(
+    authController.protect,
+    // reviewController.updateReview,
+    reviewController.updateReviewStatus
+  ) //Update Review details
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin'),
+    reviewController.deleteReview
+  ); //delete Review documents
 
-module.exports = Router;
+// Router.post('/:ReqId', ChangeStatus);
+
+module.exports = router;
