@@ -11,6 +11,6 @@ router.post("/login", auth);
 router.get("/account", isAuthorized, getAccount);
 router.use("/users", isAuthorized, userRoutes);
 router.use("/rewards", rewardRoutes);
-router.use("/poSow", isAuthorized, poSowRoutes);
+router.use("/poSow", poSowRoutes);
 
 module.exports = router;

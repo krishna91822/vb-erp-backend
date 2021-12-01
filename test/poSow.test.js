@@ -163,4 +163,68 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
       });
     });
   });
+
+  describe("/update PO/SOW status", () => {
+    it("it should update PO status", (done) => {
+      const details = {
+        Client_Name: "Valuebound Solutions",
+        Project_Name: "ERP System",
+        Client_Sponser: ["ABD", "DEF"],
+        Client_Finance_Controller: ["VMN", "QWE"],
+        Targetted_Resources: ["WSJ", "GHJ"],
+        Status: "Drafted",
+        Type: "PO",
+        PO_Number: "ERP34",
+        PO_Amount: 3434,
+        Currency: "USD",
+        Document_Name: "VB_ERP",
+        Document_Type: "pdf",
+        Remarks: "Created New PO",
+      };
+      const poDetails = new poSow(details);
+      poDetails.save((err, data) => {
+        chai
+          .request(server)
+          .patch("/poSow/status/" + poDetails.id)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.have
+              .property("message")
+              .eql("status updated successfully");
+            done();
+          });
+      });
+    });
+
+    it("already updated PO status", (done) => {
+      const details = {
+        Client_Name: "Valuebound Solutions",
+        Project_Name: "ERP System",
+        Client_Sponser: ["ABD", "DEF"],
+        Client_Finance_Controller: ["VMN", "QWE"],
+        Targetted_Resources: ["WSJ", "GHJ"],
+        Status: "Pending",
+        Type: "PO",
+        PO_Number: "ERP34",
+        PO_Amount: 3434,
+        Currency: "USD",
+        Document_Name: "VB_ERP",
+        Document_Type: "pdf",
+        Remarks: "Created New PO",
+      };
+      const poDetails = new poSow(details);
+      poDetails.save((err, data) => {
+        chai
+          .request(server)
+          .patch("/poSow/status/" + poDetails.id)
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.have
+              .property("message")
+              .eql("status already updated");
+            done();
+          });
+      });
+    });
+  });
 });
