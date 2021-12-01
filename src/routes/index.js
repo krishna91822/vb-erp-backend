@@ -13,6 +13,6 @@ router.get("/account", isAuthorized, getAccount);
 router.use("/users", isAuthorized, userRoutes);
 router.use("/rewards", rewardRoutes);
 router.use("/poSow", isAuthorized, poSowRoutes)
-router.use("/assign", assigneeRoutes)
+router.use("/assign", isAuthorized,assigneeRoutes)
 
 module.exports = router;
