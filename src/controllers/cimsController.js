@@ -1,5 +1,5 @@
 const compModal = require("../models/compSchema");
-const { cimsSchema } = require("../schema/cimsSchema");
+const { cimsSchema,updateSchema } = require("../schema/cimsSchema");
 const { customResponse } = require("../utility/helper");
 
 const cimsGet = async (req, res) => {
