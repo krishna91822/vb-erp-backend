@@ -9,24 +9,24 @@ const rewardsSchema = mongoose.Schema(
     },
     reward_type: {
       type: String,
-      enum:["Daily", "Weekly", "Monthly", "Yearly", "General"],
+      enum:["daily", "weekly", "monthly", "yearly", "on-demand"],
       required: true
     },
     reward_subType: {
       type: String,
-      enum:["work Anniversary", "Birthday Celebration", "onDemand"],
+      enum:["work-anniversary", "birthday-celebration"],
       required: function () {
-        return this.reward_type === "Daily"
+        return this.reward_type === "daily"
     }
     },
     reward_sender: {
       type: String,
-      enum: ["CEO", "Manager", "Selected"],
+      enum: ["ceo", "manager", "selected"],
       required: true,
     },
     reward_receiver: {
-      type: [String],
-      enum: ["Manager", "Employee", "Everyone", "Selected"],
+      type: String,
+      enum: ["manager", "employees", "everyone", "selected"],
       required: true,
     },
     receiver_message: {
@@ -48,12 +48,15 @@ const rewardsSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Created", "In progress", "Stopped"],
-      default: "Created",
+      enum: ["created", "in progress", "stopped"],
+      default: "created",
     },
-    employee_id: {
+    sender_id: {
       type: Number,
     },
+    receipients_id:{
+      type: [Number]
+    }
   },
   {
     timestamps: true,
