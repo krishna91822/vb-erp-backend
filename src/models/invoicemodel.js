@@ -1,14 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const invoiceSchema = new mongoose.Schema({
-  
-  userid:{
+  PO_Id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:"purchase_orders",
+    ref: "purchase_orders",
     required: [true, "User-ID is required"],
   },
-  client_sponsor:{
-    type:String,
+  client_sponsor: {
+    type: String,
     required: [true, "client sponsor is required"],
   },
   client_finance_controller: {
@@ -25,12 +24,12 @@ const invoiceSchema = new mongoose.Schema({
     required: [true, "invoice amount received is required"],
   },
   vb_bank_account: {
-    type: String
+    type: String,
   },
   amount_received_on: {
-    type: Date
-  }
-})
+    type: Date,
+  },
+});
 
-const Invoice = mongoose.model("Invoice",invoiceSchema);
+const Invoice = mongoose.model("Invoice", invoiceSchema);
 module.exports = Invoice;

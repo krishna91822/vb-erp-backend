@@ -1,13 +1,11 @@
-const { invoiceschema } = require('../schema/invoiceschema')
-const Invoice = require('../models/invoicemodel')
+const { invoiceschema } = require("../schema/invoiceschema");
+const Invoice = require("../models/invoicemodel");
 
 const newInvoice = async (req, res) => {
   try {
-
     // console.log("checking valiation")
     // const { error } = invoiceschema.validate(req.body);
 
-    
     // if (error) {
     //   res.status(422).send(error);
     // }
@@ -16,7 +14,7 @@ const newInvoice = async (req, res) => {
     res.status(201).json({
       status: true,
       invoice,
-    })
+    });
   } catch (error) {
     res.status(422).send(error);
   }
@@ -25,7 +23,7 @@ const newInvoice = async (req, res) => {
 // const all_invoice = async (req, res) => {
 //   let invoices;
 //   try {
-//     invoices = await Invoice.find({}).populate('userid','Client_Name Project_Name Targetted_Resources PO_Number PO_Amount');
+//     invoices = await Invoice.find({}).populate('PO_Id','Client_Name Project_Name Targetted_Resources PO_Number PO_Amount');
 //     res.status(200).json({
 //       status: true,
 //       invoices
@@ -38,7 +36,7 @@ const newInvoice = async (req, res) => {
 const getInvoices = async (req, res) => {
   try {
     const getDetails = await Invoice.find({}).populate(
-      "userid",
+      "PO_Id",
       "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
     );
     res.status(200).json(getDetails);
@@ -50,7 +48,7 @@ const getInvoices = async (req, res) => {
 const getInvoiceDetailsById = async (req, res) => {
   try {
     const getDetails = await Invoice.findById(req.params.id).populate(
-      "userid",
+      "PO_Id",
       "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
     );
     res.status(200).json(getDetails);
@@ -66,7 +64,7 @@ const getInvoiceDetails = async (req, res) => {
     if (data === val) {
       const details = await Invoice.find({})
         .populate(
-          "userid",
+          "PO_Id",
           "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
         )
         .collation({ locale: "en" })
@@ -77,28 +75,29 @@ const getInvoiceDetails = async (req, res) => {
         {
           $lookup: {
             from: "purchase_orders",
-            localField: "userid",
+            localField: "PO_Id",
             foreignField: "_id",
             as: "purchase_orders",
           },
         },
         { $unwind: "$purchase_orders" },
         { $sort: { "purchase_orders.Client_Name": 1 } },
-      ]);
+      ]).collation({ locale: "en" });
+
       res.status(200).json(details);
     } else {
       const details = await Invoice.aggregate([
         {
           $lookup: {
             from: "purchase_orders",
-            localField: "userid",
+            localField: "PO_Id",
             foreignField: "_id",
             as: "purchase_orders",
           },
         },
         { $unwind: "$purchase_orders" },
         { $sort: { "purchase_orders.Project_Name": 1 } },
-      ]);
+      ]).collation({ locale: "en" });
       res.status(200).json(details);
     }
   } catch (error) {
@@ -106,7 +105,12 @@ const getInvoiceDetails = async (req, res) => {
   }
 };
 
-module.exports = {  newInvoice ,getInvoices,getInvoiceDetailsById,getInvoiceDetails};
+module.exports = {
+  newInvoice,
+  getInvoices,
+  getInvoiceDetailsById,
+  getInvoiceDetails,
+};
 
 // const update_invoice = async (req, res) => {
 //   let invoice = await Invoice.findById(req.params.id);
@@ -148,4 +152,3 @@ module.exports = {  newInvoice ,getInvoices,getInvoiceDetailsById,getInvoiceDeta
 //   })
 
 // }
-
