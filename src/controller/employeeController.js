@@ -61,32 +61,3 @@ module.exports = {
     getEmployees,
     getFilterEmployees
 };
-
-// EmployeeRouter.get('/', (req, res, next) => {
-//     const filters = req.query;
-//     const filteredEmployee = employeeData.filter(emp => {
-//         let isValid = true;
-//         for (key in filters) {
-//             // console.log(key, emp[key], filters[key]);
-//             isValid = isValid && emp[key] == filters[key];
-//         }
-//         return isValid;
-//     });
-//     res.send(filteredEmployee);
-// });
-
-
-// let code,message;
-// const limit = 15;
-//   const page = req.query.page ? parseInt(req.query.page) : 1;
-
-// try{
-//   if(Object.keys(req.query).length===0){
-//     const employee =await rewardsModal.find({});
-//   code=200;
-//   const data=customPagination({data:rewards,page:page,limit:limit});
-//   const resData=customResponse({code,data})
-//   res.status(code).send(resData);  
-//   }
-//    else{  
-//   const rewards = await rewardsModal.find({$or:[{reward_display_name: {$regex:searchName.search.trim(
