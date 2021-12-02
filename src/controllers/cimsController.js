@@ -51,7 +51,7 @@ const cimsPost = async (req, res) => {
 };
 
 const cimsDel = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.query;
     try {
         const del = await compModal.findById(id);
         await del.remove();
