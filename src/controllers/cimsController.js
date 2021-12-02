@@ -63,8 +63,21 @@ const cimsDel = async (req, res) => {
 //
 const cimsPatch = async (req, res) => {
     const { id } = req.query;
-    const { designation, brandname, clientname, domain, baselocation, pincode, country, state, district, city, addressLine1, addressLine2, landmark, contacts } = req.body.formData;
-    try {
+    const { designation, brandname, clientname, domain, baselocation, pincode, country, state, district, city, addressLine1, addressLine2, landmark, contacts } = req.body;
+   try {
+       const { error } = updateSchema.validate(req.body);
+               if (error) {
+            code = 422;
+            message = "Invalid request data";
+            const resData = customResponse({
+                code,
+                message,
+                err: error && error.details,
+            });
+            return res.status(code).send(resData);
+
+            //return res.status(code).send(error);
+        }
         const update = await compModal.findOneAndUpdate({ _id: id }, {
             designation: designation, brandname: brandname, clientname: clientname, domain: domain, baselocation: baselocation,
             pincode: pincode, country: country, state: state, district: district, city: city, addressLine1: addressLine1, addressLine2: addressLine2, landmark: landmark, contacts: contacts
@@ -75,5 +88,4 @@ const cimsPatch = async (req, res) => {
         console.log(error.message)
     }
 };
-
 module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost };
