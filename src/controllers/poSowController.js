@@ -1,5 +1,5 @@
 const purchaseOrderModel = require("../models/poSow");
-const { poSowSchema } = require("../schema/poSowSchema");
+const { poSowSchema, querySchema } = require("../schema/poSowSchema");
 const { customResponse, customPagination } = require("../utility/helper");
 
 
@@ -115,10 +115,21 @@ const getPoSowList = async (req, res) => {
   */
   let code, message;
 
-  const page = req.query.page ? req.query.page : 1;
-  const limit = req.query.limit ? req.query.limit : 15;
-
   try {
+    const { error } = querySchema.validate(req.query);
+    if (error) {
+      code = 422;
+      message = "Invalid request Query";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 15;
     code = 200;
     const users = await purchaseOrderModel.find({});
     const data = customPagination({ data: users, page, limit });
@@ -183,11 +194,23 @@ const getSortedPoList = async (req, res) => {
   */
   let code, message;
 
-  const page = req.query.page ? req.query.page : 1;
-  const limit = req.query.limit ? req.query.limit : 15;
+
   const fieldName = req.params.fieldName;
 
   try {
+    const { error } = querySchema.validate(req.query);
+    if (error) {
+      code = 422;
+      message = "Invalid request Query";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 15;
     code = 200;
     const users = await purchaseOrderModel.find({}).sort(fieldName);
     const data = customPagination({ data: users, page, limit });

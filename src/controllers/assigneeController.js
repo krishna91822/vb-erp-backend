@@ -1,5 +1,5 @@
 const assigneeModel = require("../models/assignee");
-const { assigneeSchema } = require("../schema/assigneeSchema");
+const { assigneeSchema, querySchema } = require("../schema/assigneeSchema");
 const { customResponse, customPagination } = require("../utility/helper");
 
 
@@ -105,10 +105,20 @@ const getAssigneeList = async (req, res) => {
   */
   let code, message;
 
-  const page = req.query.page ? req.query.page : 1;
-  const limit = req.query.limit ? req.query.limit : 15;
-
   try {
+    const { error } = querySchema.validate(req.query);
+    if (error) {
+      code = 422;
+      message = "Invalid request Query";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 15;
     code = 200;
     const assignee = await assigneeModel.find({ PO_Id: req.params.id });
     const data = customPagination({ data: assignee, page, limit });

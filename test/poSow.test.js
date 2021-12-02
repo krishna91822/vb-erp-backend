@@ -80,6 +80,22 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
     });
 
     describe("/GET PO/SOW", () => {
+        it("it should throw Query validation error", (done) => {
+            chai
+                .request(server)
+                .get("/poSow")
+                .query({
+                    page: -1,
+                    limit: 0
+                })
+                .end((err, res) => {
+                    res.should.have.status(422);
+                    res.body.should.be.a("object");
+                    res.body.should.have.property("error");
+                    done();
+                });
+        });
+
         it("it should GET all the PO/SOW", (done) => {
             chai
                 .request(server)
@@ -94,6 +110,21 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
     });
 
     describe("/GET/sort/fieldName PO/SOW",() => {
+        it("it should throw Query validation error", (done) => {
+            chai
+                .request(server)
+                .get("/poSow/sort/Client_Name")
+                .query({
+                    page: -1,
+                    limit: 0
+                })
+                .end((err, res) => {
+                    res.should.have.status(422);
+                    res.body.should.be.a("object");
+                    res.body.should.have.property("error");
+                    done();
+                });
+        });
         it("it should SORT the list based on given field", (done) => {
             chai
                 .request(server)

@@ -12,4 +12,10 @@ const assigneeSchema = Joi.object()
     })
     .options({ abortEarly: false });
 
-module.exports = { assigneeSchema };
+const querySchema = Joi.object()
+    .keys({
+        page: Joi.number().integer().positive(),
+        limit: Joi.number().integer().positive()
+    })
+
+module.exports = { assigneeSchema, querySchema };

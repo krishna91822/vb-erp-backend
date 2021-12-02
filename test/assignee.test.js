@@ -60,6 +60,22 @@ describe("Assign Employee Unit Testing with Mocha..!!", () => {
     });
 
     describe("/GET Assigned Employee of that Project", () => {
+        it("it should throw Query validation error", (done) => {
+            chai
+                .request(server)
+                .get("/assign/VBERP-34")
+                .query({
+                    page: -1,
+                    limit: 0
+                })
+                .end((err, res) => {
+                    res.should.have.status(422);
+                    res.body.should.be.a("object");
+                    res.body.should.have.property("error");
+                    done();
+                });
+        });
+
         it("it should return all assigned employee based on given Project ID", (done) => {
             chai
                 .request(server)
