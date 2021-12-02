@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -9,6 +10,12 @@ const employeeRouter = require('./routes/employeeRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 
 const app = express();
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+  })
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

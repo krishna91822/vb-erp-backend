@@ -6,10 +6,20 @@ class APIFeatures {
 
   filter() {
     const queryObj = { ...this.queryString };
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    const excludedFields = ['page', 'sort', 'limit', 'fields', 'search'];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     this.query = this.query.find(queryObj);
+
+    return this;
+  }
+
+  search() {
+    if (this.queryString.search) {
+      this.query = this.query.find({
+        empName: { $regex: this.queryString.search, $options: 'i' },
+      });
+    }
 
     return this;
   }

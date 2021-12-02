@@ -9,6 +9,7 @@ exports.getAllEmployees = catchAsync(async (req, res, next) => {
   //Build the query
   const features = new APIFeatures(Employee.find(), req.query)
     .filter()
+    .search()
     .sort()
     .limitFields()
     .paginate();
