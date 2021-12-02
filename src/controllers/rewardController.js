@@ -80,7 +80,7 @@ const getRewards = async (req, res) => {
   let query = [
     {
       $match: {
-        reward_name: { $regex: "" },
+        reward_display_name:{ $regex: "" },
       },
     },
   ];

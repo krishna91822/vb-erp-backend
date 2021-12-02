@@ -287,7 +287,7 @@ const updateddata={
         it('It search and give rewards if any matches found ', (done)=>{
             chai.request(server)
             .get('/rewards/search')
-            .query({search: 'an'})
+            .query({search: 'ily'})
             .end((err,res)=>{
                 res.should.have.status(200);
                 res.body.should.be.a("object");
