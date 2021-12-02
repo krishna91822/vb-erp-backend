@@ -7,7 +7,7 @@ const constants = require("./utility/constant");
 
 const router = require("./routes");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 const swaggerFile = require("../public/api-docs/swagger-output.json");
 
 app.use(express.json());
@@ -17,6 +17,7 @@ app.use(
   })
 );
 app.use(cors(constants.CORS_OPTIONS));
+//app.use(cors())
 app.use(router);
 app.use(
   "/",
