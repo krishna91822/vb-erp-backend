@@ -1,36 +1,18 @@
 // importing required Files and Routes
 const { json } = require("body-parser");
 const ProjectsInfoModel = require("../models/projectsModel");
+// const ResourceInfoModel = require("../models/resourcesModel");
 
 // Creating and Storing Created Projects data into database by POST request
 const createProjects = async(req, res) => {
-    let newProject = new ProjectsInfoModel({
-        vbProjectId: req.body.vbProjectId,
-        clientName: req.body.clientName,
-        projectName: req.body.projectName,
-        clientProjectManager: req.body.clientProjectManager,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
-        id: req.body.id,
-        clientProjectSponsor: req.body.clientProjectSponsor,
-        clientFinanceController: req.body.clientFinanceController,
-        clientPrimaryContact: req.body.clientPrimaryContact,
-        vbProjectManager: req.body.vbProjectManager,
-        domainSector: req.body.domainSector,
-        vbProjectStatus: req.body.vbProjectStatus,
-        resources: req.body.resources
-            // resources: ,
-    });
-
     try {
-        const project = await newProject.save();
+        const project = await ProjectsInfoModel(req.body);
+        project.save();
         res.status(201).json(project);
     } catch (error) {
         res.status(400).json(error);
     }
-}
-
-//const saveResources = async({ vbProjectId, resources }, "")
+};
 
 //getting all the projects
 const getProjects = async(req, res) => {
@@ -56,10 +38,8 @@ const getProjectById = async(req, res) => {
 // getting single project by using slug feature
 const getProjectBySlug = async(req, res) => {
     try {
-        console.log("Hi!");
         const slugURL = req.params.slug
         const project = await ProjectsInfoModel.findOne({ slug: slugURL });
-
         res.status(200).send(project);
     } catch (error) {
         res.status(400).send(error);
@@ -87,3 +67,12 @@ module.exports = {
     createProjects,
     updateProject
 };
+
+// const allProjects = req.body.resources.map(async(eachResource) => {
+//     let newResource = new ResourceInfoModel({
+//         associateName: eachResource.associateName,
+//         allocation: eachResource.allocation,
+//         rackRate: eachResource.rackRate,
+//     });
+//     await newResource.save();
+// });

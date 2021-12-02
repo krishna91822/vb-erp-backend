@@ -1,19 +1,21 @@
-// importing packages
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-// Schema for Resources - Resource Information under (Create Project Sprint)
-const ResourcesInfo_Schema = mongoose.Schema({
+const resourcesSchema = new mongoose.Schema({
+    // resources: [{
+    //     type: mongoose.Schema.Types.Array,
+    //     ref: "projectSchema"
+    // }],
     associateName: {
         type: String,
-        required: true
     },
+    allocation: String,
+    rackRate: String,
     empId: {
         type: String,
-        required: false
     },
-    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: "project-info" }]
-});
+    totalAllocation: {
+        type: Number,
+    },
+}, { timestamps: true });
 
-const ResourcesInfoModel = mongoose.model('resources-info', ResourcesInfo_Schema);
-
-module.exports = ResourcesInfoModel;
+module.exports = mongoose.model("resourceSchema", resourcesSchema);
