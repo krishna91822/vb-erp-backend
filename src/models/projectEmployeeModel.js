@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 
-const projectAndResource = mongoose.Schema({
+const projectAndEmployee = mongoose.Schema({
     projectId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "projectSchema",
     },
-
     empId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "resourceSchema",
+        ref: "employeeSchema",
     },
     allocationStartDate: {
         type: Date,
@@ -21,13 +20,10 @@ const projectAndResource = mongoose.Schema({
     },
     rackRate: {
         type: Number,
-    },
-    projectAllocated: {
-        type: String,
-    },
+    }
 });
 
-module.exports = mongoose.model("projectAndResource", projectAndResource);
+module.exports = mongoose.model("projectAndEmployee", projectAndEmployee);
 
 // {
 //     "project_id". : "",

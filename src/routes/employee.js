@@ -16,6 +16,6 @@ EmployeeRouter.post("/", storeEmployees);
 EmployeeRouter.get('/', getEmployees);
 
 // GET request for filtering the drop-down options
-EmployeeRouter.get('/:employeeName', getFilterEmployees);
+EmployeeRouter.get('/', getFilterEmployees);
 
 module.exports = EmployeeRouter;
