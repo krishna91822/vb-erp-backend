@@ -113,7 +113,7 @@ const getRewards = async (req, res) => {
     });
   } else {
     query.push({
-      $sort: { employee_id: 1 },
+      $sort: { createdAt: -1 },
     });
   }
   const limit = 15;
