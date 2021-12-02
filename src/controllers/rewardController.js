@@ -46,17 +46,16 @@ const getRewards = async (req, res) => {
             "results": [
               {
                 "_id": "610d090636ba149966bd3b55",
-               "reward_name":"reward def",
                "reward_display_name": "reward def",
                "reward_type": "reward def",
+               "reward_subType": "reward def",
                "reward_sender": "Manager",
-               "recepients": ["Employee"],
+               "reward_receiver": "Employees",
                "receiver_message": "def",
                "announcement_type": "def",
                "slack_channel": "#birthday",
                "channel_message": "def messsage",
-               "status": "Draft",
-               "employee_id":20,
+               "status": "created",
                "createdAt":"2021-11-26T09:25:14.681Z",
                "updatedAt":"2021-11-26T09:25:14.681Z"
               }
@@ -140,16 +139,15 @@ const storeReward = async (req, res) => {
     #swagger.parameters['obj'] = {
         in: 'body',
         schema: {
-            $reward_name:"reward def",
             $reward_display_name: "reward def",
             $reward_type: "reward def",
-            $reward_sender: "Manager",
-            $recepients: ["Employee"],
+            $reward_subType: "reward def",
+            $reward_sender: "manager",
+            $reward_receiver: "employees",
             $receiver_message: "def",
             $announcement_type: "def",
             $slack_channel: "#birthday",
-            $channel_message: "def messsage",
-            $employee_id:30
+            $channel_message: "def messsage"
         }
       }
       #swagger.responses[201] = {
@@ -160,17 +158,16 @@ const storeReward = async (req, res) => {
           "message": "",
           "data": {
              "_id": "610d090636ba149966bd3b55",
-            "reward_name":"reward def",
             "reward_display_name": "reward def",
             "reward_type": "reward def",
-            "reward_sender": "Manager",
-            "recepients": ["Employee"],
+            "reward_subType": "reward def",
+            "reward_sender": "manager",
+            "reward_receiver": "employees",
             "receiver_message": "def",
             "announcement_type": "def",
             "slack_channel": "#birthday",
             "channel_message": "def messsage",
-            "status": "Draft",
-            "employee_id":20,
+            "status": "created",
             "createdAt":"2021-11-26T09:25:14.681Z",
             "updatedAt":"2021-11-26T09:25:14.681Z"
           },
@@ -247,14 +244,13 @@ const getRewardDetail = async (req, res) => {
             "reward_name":"reward def",
                "reward_display_name": "reward def",
                "reward_type": "reward def",
-               "reward_sender": "Manager",
-               "recepients": ["Employee"],
+               "reward_sender": "manager",
+               "recepients": "employees",
                "receiver_message": "def",
                "announcement_type": "def",
                "slack_channel": "#birthday",
                "channel_message": "def messsage",
-               "status": "Draft",
-               "employee_id":20,
+               "status": "created",
                "createdAt":"2021-11-26T09:25:14.681Z",
                "updatedAt":"2021-11-26T09:25:14.681Z"
           },
@@ -315,16 +311,15 @@ const editReward = async (req, res) => {
       #swagger.parameters['obj'] = {
         in: 'body',
         schema: {
-            $reward_name:"reward def",
             $reward_display_name: "Best Employee",
             $reward_type: "reward def",
-            $reward_sender: "Manager",
-            $recepients: ["Selected"],
+            $reward_subType: "def",
+            $reward_sender: "manager",
+            $reward_receiver: "selected",
             $receiver_message: "def",
             $announcement_type: "def",
             $slack_channel: "#birthday",
-            $channel_message: "def messsage",
-            $employee_id:20
+            $channel_message: "def messsage"
         }
       }
       #swagger.responses[200] = {
@@ -335,17 +330,16 @@ const editReward = async (req, res) => {
           "message": "rewards successfully updated!",
           "data":  {
               "_id": "610bc1b31b82a66f6bcd64ea",
-              "reward_name":"reward def",
                "reward_display_name": "reward def",
                "reward_type": "reward def",
-               "reward_sender": "Manager",
-               "recepients": ["Employee"],
+               "reward_subType": "def",
+               "reward_sender": "manager",
+               "reward_receiver": "employees",
                "receiver_message": "def",
                "announcement_type": "def",
                "slack_channel": "#birthday",
                "channel_message": "def messsage",
-               "status": "Draft",
-               "employee_id":20,
+               "status": "created",
                "createdAt":"2021-11-26T09:25:14.681Z",
                "updatedAt":"2021-11-26T09:25:14.681Z"
           },
@@ -421,17 +415,15 @@ const deleteReward = async (req, res) => {
         "message": "Reward deleted successfully",
         "data":  {
               "_id": "610bc1b31b82a66f6bcd64ea",
-              "reward_name":"reward def",
                "reward_display_name": "reward def",
                "reward_type": "reward def",
-               "reward_sender": "Manager",
-               "recepients": ["Employee"],
+               "reward_sender": "manager",
+               "reward_receiver": "employees",
                "receiver_message": "def",
                "announcement_type": "def",
                "slack_channel": "#birthday",
                "channel_message": "def messsage",
-               "status": "Draft",
-               "employee_id":20,
+               "status": "created",
                "createdAt":"2021-11-26T09:25:14.681Z",
                "updatedAt":"2021-11-26T09:25:14.681Z"
           },
@@ -586,17 +578,15 @@ const searchRewards = async(req, res) => {
         "message": "",
         "data":  {
           "_id": "610bc1b31b82a66f6bcd64ea",
-          "reward_name":"reward def",
              "reward_display_name": "reward def",
              "reward_type": "reward def",
-             "reward_sender": "Manager",
-             "recepients": ["Employee"],
+             "reward_sender": "manager",
+             "reward_receiver": "employee",
              "receiver_message": "def",
              "announcement_type": "def",
              "slack_channel": "#birthday",
              "channel_message": "def messsage",
-             "status": "Draft",
-             "employee_id":20,
+             "status": "created",
              "createdAt":"2021-11-26T09:25:14.681Z",
              "updatedAt":"2021-11-26T09:25:14.681Z"
         },
@@ -637,7 +627,7 @@ try{
   res.status(code).send(resData);  
   }
    else{  
-  const rewards = await rewardsModal.find({$or:[{reward_name: {$regex:searchName.search.trim(), $options: 'i'}},
+  const rewards = await rewardsModal.find({$or:[{reward_display_name: {$regex:searchName.search.trim(), $options: 'i'}},
                                                {reward_type: {$regex:searchName.search.trim(), $options: 'i'}}]});
     if(rewards.length<1) {
       code=400;
