@@ -17,7 +17,6 @@ app.use(
   })
 );
 app.use(cors(constants.CORS_OPTIONS));
-//app.use(cors())
 app.use(router);
 app.use(
   "/",
