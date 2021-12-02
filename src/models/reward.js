@@ -3,26 +3,30 @@ const mongoose = require("mongoose");
 // creating rewards schema
 const rewardsSchema = mongoose.Schema(
   {
-    reward_name: {
-      type: String,
-      required: true,
-    },
     reward_display_name: {
       type: String,
       required: true,
     },
     reward_type: {
       type: String,
-      required: true,
+      enum:["Daily", "Weekly", "Monthly", "Yearly", "General"],
+      required: true
+    },
+    reward_subType: {
+      type: String,
+      enum:["work Anniversary", "Birthday Celebration", "onDemand"],
+      required: function () {
+        return this.reward_type === "Daily"
+    }
     },
     reward_sender: {
       type: String,
-      enum: ["Leadership", "Manager"],
+      enum: ["CEO", "Manager", "Selected"],
       required: true,
     },
-    recepients: {
+    reward_receiver: {
       type: [String],
-      enum: ["Manager", "Employee", "Selected"],
+      enum: ["Manager", "Employee", "Everyone", "Selected"],
       required: true,
     },
     receiver_message: {
@@ -31,6 +35,7 @@ const rewardsSchema = mongoose.Schema(
     },
     announcement_type: {
       type: String,
+      enum:["public", "private"],
       required: true,
     },
     slack_channel: {
@@ -43,8 +48,8 @@ const rewardsSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Draft", "Stop", "Launch"],
-      default: "Draft",
+      enum: ["Created", "In progress", "Stopped"],
+      default: "Created",
     },
     employee_id: {
       type: Number,
