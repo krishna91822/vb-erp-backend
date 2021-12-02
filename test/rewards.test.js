@@ -7,16 +7,15 @@ chai.should();
 chai.use(chaiHttp);
 
 const data={
-    "reward_name":"reward def",
-    "reward_display_name": "reward def",
-    "reward_type": "reward def",
-    "reward_sender": "Manager",
-    "recepients": ["Employee"],
-    "receiver_message": "def",
-    "announcement_type": "def",
-    "slack_channel": "#birthday",
-    "channel_message": "def messsage",
-    "employee_id":104
+    "reward_display_name": "Reward new",
+    "reward_type": "weekly",
+    "reward_subType": "work-anniversary",
+    "reward_sender": "manager",
+    "reward_receiver": "manager",
+    "receiver_message": "Congratulations",
+    "announcement_type": "public",
+    "slack_channel": "@slack.com",
+    "channel_message": "channel message here"
 }
 let id;
 let dummyreward;
@@ -38,15 +37,13 @@ describe('rewards apis', () => {
         });
         it('it should throw validation error', (done) => {
             const reward = {
-                reward_display_name: "gvghvh",
-                reward_type: "gvjg",
-                reward_sender: "Manager",
-                recepients: ["Manager"],
+                reward_type: "weekly",
+                reward_sender: "manager",
+                reward_receiver: "manager",
                 receiver_message: "ghgf",
                 announcement_type: "public",
                 slack_channel: "fdgfd",
-                channel_message: "fgdfdh",
-                employee_id:104
+                channel_message: "fgdfdh"
             }
             chai.request(server)
                 .post('/rewards')
@@ -93,16 +90,14 @@ describe('rewards apis', () => {
                     res.body.should.be.a('object');
                     res.should.have.status(200);
                     res.body.data.should.have.property('_id');
-                    res.body.data.should.have.property('reward_name');
                     res.body.data.should.have.property('reward_display_name');
                     res.body.data.should.have.property('reward_type');
                     res.body.data.should.have.property('reward_sender');
-                    res.body.data.should.have.property('recepients');
+                    res.body.data.should.have.property('reward_receiver');
                     res.body.data.should.have.property('receiver_message');
                     res.body.data.should.have.property('announcement_type');
                     res.body.data.should.have.property('slack_channel');
                     res.body.data.should.have.property('channel_message');
-                    res.body.data.should.have.property("employee_id")
                     res.body.data.should.have.property('status');
                     res.body.data.should.have.property('createdAt');
                     res.body.data.should.have.property('updatedAt');
@@ -139,16 +134,14 @@ describe('rewards apis', () => {
     });
 
 const updateddata={
-    "reward_name":"reward update",
     "reward_display_name": "reward update",
-    "reward_type": "reward def",
-    "reward_sender": "Manager",
-    "recepients": ["Employee"],
+    "reward_type": "yearly",
+    "reward_sender": "manager",
+    "reward_receiver": "manager",
     "receiver_message": "def",
     "announcement_type": "def",
     "slack_channel": "#birthday",
-    "channel_message": "updated messsage",
-    "employee_id":144
+    "channel_message": "updated messsage"
 };
     describe("/PUT/:id rewards",()=>{
         it("It should update/edit a rewards by the  id",(done)=>{
