@@ -6,13 +6,14 @@ const rewardSchema = Joi.object()
     reward_type: Joi.string().required(),
     reward_subType: Joi.string(),
     reward_sender: Joi.string().required(),
-    reward_receiver: Joi.array().required(),
+    reward_receiver: Joi.string().required(),
     receiver_message: Joi.string().required(),
     announcement_type: Joi.string().required(),
     slack_channel: Joi.string().required(),
     channel_message: Joi.string().required(),
     status: Joi.string(),
-    employee_id: Joi.number().min(3),
+    sender_id: Joi.number().min(3),
+    receipients_id: Joi.array()
   })
   .options({ abortEarly: false });
 
