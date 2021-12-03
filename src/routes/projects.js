@@ -6,7 +6,7 @@ const ProjectRouter = express.Router();
 const {
     getProjects,
     getProjectById,
-    getProjectBySlug,
+    // getProjectBySlug,
     createProjects,
     updateProject
 } = require("../controller/projectsController");
@@ -21,7 +21,7 @@ ProjectRouter.get("/", getProjects);
 ProjectRouter.get("/:id", getProjectById);
 
 //GET Method by slug
-ProjectRouter.get("/:slug", getProjectBySlug);
+// ProjectRouter.get("/:slug", getProjectBySlug);
 
 //PUT method for update
 ProjectRouter.put("/:id", updateProject);

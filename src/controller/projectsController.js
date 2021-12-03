@@ -16,8 +16,44 @@ const createProjects = async(req, res) => {
 
 //getting all the projects
 const getProjects = async(req, res) => {
+    let query = [{
+        vbProjectManager: { $regex: "", $options: 'i' },
+    }, ];
+    if (req.query.vbProjectStatus) {
+        query.push({
+            vbProjectStatus: {
+                $regex: req.query.vbProjectStatus,
+                $options: 'i'
+            }
+        });
+    }
+    if (req.query.clientName) {
+        query.push({
+            clientName: {
+                $regex: req.query.clientName,
+                $options: 'i'
+            }
+        });
+    }
+    if (req.query.vbProjectId) {
+        query.push({
+            vbProjectId: {
+                $regex: req.query.vbProjectId,
+                $options: 'i'
+            }
+        });
+    }
+    if (req.query.projectName) {
+        query.push({
+            projectName: {
+                $regex: req.query.projectName,
+                $options: 'i'
+            }
+        });
+    }
     try {
-        const Projects = await ProjectsInfoModel.find({});
+        console.log(query);
+        const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
         res.status(200).send(Projects);
     } catch (error) {
         res.status(400).send(error);
@@ -36,15 +72,15 @@ const getProjectById = async(req, res) => {
 };
 
 // getting single project by using slug feature
-const getProjectBySlug = async(req, res) => {
-    try {
-        const slugURL = req.params.slug
-        const project = await ProjectsInfoModel.findOne({ slug: slugURL });
-        res.status(200).send(project);
-    } catch (error) {
-        res.status(400).send(error);
-    }
-};
+// const getProjectBySlug = async(req, res) => {
+//     try {
+//         const slugURL = req.params.slug
+//         const project = await ProjectsInfoModel.findOne({ slug: slugURL });
+//         res.status(200).send(project);
+//     } catch (error) {
+//         res.status(400).send(error);
+//     }
+// };
 
 // Updating project by its _id
 const updateProject = async(req, res) => {
@@ -63,7 +99,7 @@ const updateProject = async(req, res) => {
 module.exports = {
     getProjects,
     getProjectById,
-    getProjectBySlug,
+    // getProjectBySlug,
     createProjects,
     updateProject
 };
@@ -76,3 +112,17 @@ module.exports = {
 //     });
 //     await newResource.save();
 // });
+
+
+// filter by status, clientName, projectId and projectName
+
+
+
+// if (req.query.startdate && req.query.enddate) {
+//     query.push({
+//         createdAt: {
+//             $gte: new Date(req.query.startdate),
+//             $lt: new Date(req.query.enddate),
+//         },
+//     });
+// }

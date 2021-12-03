@@ -12,25 +12,65 @@ const createAllocations = async(req, res) => {
 };
 
 const getAllocations = async(req, res) => {
-    const searchString = [];
+    let query = [
+        // allocationStartDate: { $regex: "", $options: 'i' }
+    ];
     if (req.query.empId) {
-        searchString.push({
+        query.push({
             empId: req.query.empId,
         });
     }
     if (req.query.projectId) {
-        searchString.push({
-            projectId: req.query.projectId,
+        query.push({
+            projectId: req.query.projectId
         });
     }
+    if (req.query.employeeName) {
+        query.push({
+            employeeName: req.query.employeeName
+        });
+    }
+    if (req.query.projectAllocated) {
+        query.push({
+            projectAllocated: req.query.projectAllocated
+        });
+    }
+    if (req.query.percentageAllocated) {
+        query.push({
+            percentageAllocated: req.query.percentageAllocated
+        });
+    }
+    // if (req.query.allocationStartDate) {
+    //     query.push({
+    //         allocationStartDate: {
+    //             $regex: req.query.allocationStartDate,
+    //             $options: 'i'
+    //         }
+    //     });
+    // }
+    if (req.query.allocationEndDate) {
+        query.push({
+            allocationEndDate: req.query.allocationEndDate
+        });
+    }
+    // if (req.query.empId) {
+    //     query.push({
+    //         empId: req.query.empId,
+    //     });
+    // }
+    // if (req.query.projectId) {
+    //     query.push({
+    //         projectId: req.query.projectId,
+    //     });
+    // }
     try {
+        console.log(query)
         const projectDetails = await projectEmployeeModel.find({
-                $and: [{ $and: searchString }]
+                $and: [{ $and: query }]
             })
             .populate("empId", "_id empId employeeName")
             .populate("projectId");
         res.status(200).json(projectDetails);
-        console.log(projectDetails);
     } catch (error) {
         res.status(400).send(error);
     }
@@ -40,3 +80,10 @@ module.exports = {
     createAllocations,
     getAllocations
 };
+
+
+
+// update
+// delete
+// filter by empId, employeeName, ProjectAllocated, percentageAllocated, startDate & endDate --- Allocations View/Allocated View
+// filter by employee Id, employeeName, lastProjectAllocated, lastAllocationDate, SkillsSet ----- Allocations View/OnBench View

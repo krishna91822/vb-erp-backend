@@ -35,9 +35,6 @@ const projectSchema = new mongoose.Schema({
         type: String,
     },
     vbProjectStatus: String,
-    resources: {
-        type: Array
-    }
 }, { timestamps: true });
 
 module.exports = mongoose.model("projectSchema", projectSchema);
