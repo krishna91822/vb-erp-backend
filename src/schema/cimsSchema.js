@@ -7,11 +7,11 @@ const cimsSchema = Joi.object()
     brandname: Joi.string().required(),
     domain: Joi.string().required(),
     baselocation: Joi.string().required(),
-    addressLine1: Joi.string().required(),
-    country: Joi.string().min(4).required(),
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    city: Joi.string().required(),
+    //addressLine1: Joi.string().required(),
+    //country: Joi.string().min(4).required(),
+    //state: Joi.string().required(),
+    ///district: Joi.string().required(),
+    //city: Joi.string().required(),
 
   })
 
@@ -30,11 +30,11 @@ const cimsSchema = Joi.object()
     brandname: Joi.string().required(),
     domain: Joi.string().required(),
     baselocation: Joi.string().required(),
-    addressLine1: Joi.string().required(),
-    country: Joi.string().min(4).required(),
-    state: Joi.string().required(),
-    district: Joi.string().required(),
-    city: Joi.string().required()
+    //addressLine1: Joi.string().required(),
+    //country: Joi.string().min(4).required(),
+    //state: Joi.string().required(),
+    //district: Joi.string().required(),
+    //city: Joi.string().required()
   }).options({  abortEarly: false, allowUnknown: true });
 
 
