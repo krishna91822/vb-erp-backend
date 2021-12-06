@@ -8,7 +8,9 @@ const compModal = require("../models/compSchema");
 
 const TOKEN_SECRET = '6850cc6ab29180f03f647c9b7ff331298038b2cd9bf71980f87bfd547e0da37ac60c4c5d7f7136f81b81496a741f496ea3e528b70755bcf020874e0ef01446db'
 
+//Token creation
 const postLogin = (req, res) => {
+
     const username = req.body.username
     var user = { name: username }
 
@@ -18,11 +20,15 @@ const postLogin = (req, res) => {
     res.json({ Token: token })
 }
 
+//Get location from pincode and country
 const getLocation = async (req, res) => {
+
     const pincode = req.headers.pincode
     const country = req.headers.country
     const { error } = locationSchema.validate(req.headers)
+
     if (error) {
+
         code = 422;
         message = "Invalid request data";
         const resData = customResponse({
@@ -62,6 +68,7 @@ const getLocation = async (req, res) => {
         })
         res.send(resData)
     } catch (err) {
+
         code = 422;
         message = "The pincode doesnt exist"
         const resData = customResponse({
@@ -76,8 +83,11 @@ const getLocation = async (req, res) => {
 
 }
 
+//Get all countries for dropdown
 const getCountriesList = async (req, res) => {
+
     const countriesList = countries.getCountries()
+
     code = 200
     data = countriesList
     message = "Data fetched successfully"
@@ -89,10 +99,13 @@ const getCountriesList = async (req, res) => {
     res.send(resData)
 }
 
+//Get client info with some id
 const getclientinfo = async (req, res) => {
+    
     try {
         const clientId = req.headers['id']
         const Comps = await compModal.find({ _id: clientId });
+
         code = 200
         data = Comps
         message = "Data fetched successfully"
@@ -104,6 +117,7 @@ const getclientinfo = async (req, res) => {
         res.send(resData)
 
     } catch (error) {
+
         code = 422
         message = "No record with this id found"
         const resData = customResponse({
@@ -117,11 +131,22 @@ const getclientinfo = async (req, res) => {
     }
 }
 
+//Check if record with same brandname already exists
 const duplicates = (req, res) => {
     var query = req.body.brandname.replace(/\s+/g, ' ').trim();
     compModal.findOne({ brandname: query }, function (err, example) {
-        if (err) console.log(err);
+        if (err) {
+
+            code = 422;
+            const resData = customResponse({
+                code,
+                message,
+                err: err && err.details,
+            });
+            return res.send(resData);
+        }
         if (example) {
+
             code = 422;
             message = "Data with this brand name aready exists";
             const resData = customResponse({
@@ -133,6 +158,7 @@ const duplicates = (req, res) => {
             });
             return res.send(resData);
         } else {
+
             code = 200;
             message = "Data is unique";
             const resData = customResponse({
@@ -146,4 +172,33 @@ const duplicates = (req, res) => {
     });
 }
 
-module.exports = { duplicates, postLogin, getLocation, getCountriesList, getclientinfo }
+//Get sorted records
+const getRecords = async(req, res)=>{
+
+    try {
+        const {filter} = req.headers
+        const data = await compModal.find().sort({[filter]: 1})
+
+        code = 200,
+        message = "Data fetched successfully"
+
+        const resData = customResponse({
+            code,
+            data,
+            message
+        })
+
+        res.send(resData)
+    } catch(err){
+
+        code = 422
+        const resData = customResponse({
+            code,
+            error: err && err.details 
+        })
+
+        res.send(resData)
+    }
+}
+
+module.exports = { getRecords, duplicates, postLogin, getLocation, getCountriesList, getclientinfo }
