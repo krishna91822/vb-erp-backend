@@ -101,7 +101,7 @@ const getCountriesList = async (req, res) => {
 
 //Get client info with some id
 const getclientinfo = async (req, res) => {
-    
+
     try {
         const clientId = req.headers['id']
         const Comps = await compModal.find({ _id: clientId });
@@ -173,14 +173,14 @@ const duplicates = (req, res) => {
 }
 
 //Get sorted records
-const getRecords = async(req, res)=>{
+const getRecords = async (req, res) => {
 
     try {
-        const {filter} = req.headers
-        const data = await compModal.find().sort({[filter]: 1})
+        const { filter } = req.headers
+        const data = await compModal.find().sort({ [filter]: 1 })
 
         code = 200,
-        message = "Data fetched successfully"
+            message = "Data fetched successfully"
 
         const resData = customResponse({
             code,
@@ -188,17 +188,47 @@ const getRecords = async(req, res)=>{
             message
         })
 
+        console.log(data)
         res.send(resData)
-    } catch(err){
+    } catch (err) {
 
         code = 422
         const resData = customResponse({
             code,
-            error: err && err.details 
+            error: err && err.details
         })
 
         res.send(resData)
     }
 }
 
-module.exports = { getRecords, duplicates, postLogin, getLocation, getCountriesList, getclientinfo }
+//Search records
+const searchRecords = async (req, res) => {
+
+    try {
+        const { brandname } = req.headers
+        compModal.find({ brandname: [brandname] }).then(data => {
+            code = 200,
+                message = "Data fetched successfully"
+
+            const resData = customResponse({
+                code,
+                data,
+                message
+            })
+            res.send(resData)
+        })
+
+    } catch (err) {
+        
+        code = 422
+        const resData = customResponse({
+            code,
+            error: err && err.details
+        })
+
+        res.send(resData)
+    }
+}
+
+module.exports = { searchRecords, getRecords, duplicates, postLogin, getLocation, getCountriesList, getclientinfo }
