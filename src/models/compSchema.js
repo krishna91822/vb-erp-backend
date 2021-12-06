@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const compSchema = mongoose.Schema({
     designation: String,
-    brandname: String,
+    brandname: {type: String, unique:true},
     clientname: String,
     domain: String,
     baselocation: String,

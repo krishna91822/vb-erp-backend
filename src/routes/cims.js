@@ -4,7 +4,7 @@ const router = express.Router()
 const {cimsDel,cimsGet,cimsPatch,cimsPost}=require("../controllers/cimsController");
 
 router.get('/',authenticateToken,cimsGet)
-router.post('/',authenticateToken, cimsPost)
+router.post('/', cimsPost)
 router.delete('/', cimsDel)
 router.patch('/', cimsPatch)
 

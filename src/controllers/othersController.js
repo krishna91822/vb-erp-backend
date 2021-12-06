@@ -109,4 +109,27 @@ const getclientinfo = async (req, res) => {
     }
 }
 
-module.exports = { postLogin, getLocation, getCountriesList, getclientinfo }
+const duplicates = (req, res) => {
+    var query = req.body.brandname.replace(/\s+/g,' ').trim();
+    compModal.findOne({ brandname: query}, function (err, example) {
+        if (err) console.log(err);
+        if (example) {
+            code = 422;
+            message = "Data with this brand name aready exists";
+            const resData = customResponse({
+                code,
+                message,
+                err: [{
+                    message
+                }],
+            });
+            return res.send(resData);
+        } else{
+            const message = "Data is unique";
+            res.send(message)
+        }
+            
+    });
+}
+
+module.exports = { duplicates, postLogin, getLocation, getCountriesList, getclientinfo }
