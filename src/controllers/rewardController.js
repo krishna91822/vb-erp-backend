@@ -116,7 +116,7 @@ const getRewards = async (req, res) => {
       $sort: { createdAt: -1 },
     });
   }
-  const limit = 15;
+  const limit = 10;
   const page = req.query.page ? parseInt(req.query.page) : 1;
   try {
    code=200;
@@ -615,7 +615,7 @@ const searchRewards = async(req, res) => {
     }
 */
 let code,message;
-const limit = 15;
+const limit = 10;
   const page = req.query.page ? parseInt(req.query.page) : 1;
   const searchName= req.query;
 try{
