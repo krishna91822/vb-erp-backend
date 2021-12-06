@@ -104,14 +104,22 @@ const getclientinfo = async (req, res) => {
         res.send(resData)
 
     } catch (error) {
-        console.log(error)
-        res.status(500).send(error)
+        code = 422
+        message = "No record with this id found"
+        const resData = customResponse({
+            code,
+            message,
+            err: [{
+                message
+            }],
+        })
+        res.send(resData)
     }
 }
 
 const duplicates = (req, res) => {
-    var query = req.body.brandname.replace(/\s+/g,' ').trim();
-    compModal.findOne({ brandname: query}, function (err, example) {
+    var query = req.body.brandname.replace(/\s+/g, ' ').trim();
+    compModal.findOne({ brandname: query }, function (err, example) {
         if (err) console.log(err);
         if (example) {
             code = 422;
@@ -124,11 +132,17 @@ const duplicates = (req, res) => {
                 }],
             });
             return res.send(resData);
-        } else{
-            const message = "Data is unique";
-            res.send(message)
+        } else {
+            code = 200;
+            message = "Data is unique";
+            const resData = customResponse({
+                code,
+                message,
+                err,
+            });
+            res.send(resData)
         }
-            
+
     });
 }
 

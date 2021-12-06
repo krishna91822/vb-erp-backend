@@ -1,5 +1,6 @@
 const compModal = require("../models/compSchema");
 const { cimsSchema, updateSchema } = require("../schema/cimsSchema");
+const { rewardSchema } = require("../schema/rewardSchema");
 const { customResponse } = require("../utility/helper");
 
 const cimsGet = async (req, res) => {
@@ -7,6 +8,7 @@ const cimsGet = async (req, res) => {
 
     try {
         const Comps = await compModal.find({});
+
         data = Comps
         code = 200
         message = "Data fetched successfully"
@@ -19,7 +21,14 @@ const cimsGet = async (req, res) => {
         res.send(resData);
 
     } catch (error) {
-        res.status(402).send(error);
+
+        code = 422;
+
+        const resData = customResponse({
+            code,
+            error: error && error.details
+        });
+        return res.send(resData);
     }
 };
 //
@@ -30,23 +39,40 @@ const cimsPost = async (req, res) => {
         const { error } = cimsSchema.validate(req.body);
         //console.log(error)
         if (error) {
+
             code = 422;
             message = "Invalid request data";
+
             const resData = customResponse({
                 code,
                 message,
                 err: error && error.details,
             });
-            return res.status(code).send(resData);
+            return res.send(resData);
 
             //return res.status(code).send(error);
         }
         const newComp = await compModal.create({ designation, brandname, clientname, domain, baselocation, pincode, country, state, district, city, addressLine1, addressLine2, landmark, contacts })
-        res.json(newComp)
-        console.log("created successfully..", newComp)
+        
+        data = newComp
+        code = 200
+        message = "Data created successfully"
+
+        const resData = customResponse({
+            data,
+            code,
+            message
+        })
+        res.send(resData);
     }
     catch (err) {
-        console.log(err)
+
+        code = 422;
+        const resData = customResponse({
+            code,
+            error: error && error.details
+        });
+        return res.send(resData);
     }
 };
 
@@ -55,9 +81,27 @@ const cimsDel = async (req, res) => {
     try {
         const del = await compModal.findById(id);
         await del.remove();
-        res.json("deleted successfully")
+
+        code = 200;
+        message = "Data deleted successfully"
+
+        const resData = customResponse({
+            code,
+            message,
+            error
+        });
+        res.send(resData)
     } catch (error) {
-        res.status(500).send(error)
+
+        code = 422;
+        data = req.body
+
+        const resData = customResponse({
+            code,
+            message,
+            error: error && error.details
+        });
+        return res.send(resData);
     }
 };
 //
@@ -67,14 +111,15 @@ const cimsPatch = async (req, res) => {
     try {
         const { error } = updateSchema.validate(req.body);
         if (error) {
+
             code = 422;
             message = "Invalid request data";
+
             const resData = customResponse({
                 code,
                 message,
                 err: error && error.details,
             });
-            console.log(resData)
             return res.send(resData);
 
             //return res.status(code).send(error);
@@ -83,11 +128,29 @@ const cimsPatch = async (req, res) => {
             designation: designation, brandname: brandname, clientname: clientname, domain: domain, baselocation: baselocation,
             pincode: pincode, country: country, state: state, district: district, city: city, addressLine1: addressLine1, addressLine2: addressLine2, landmark: landmark, contacts: contacts
         });
-        res.json(req.body)
+
+        code = 200;
+        data = req.body
+        message = "Data updated successfully";
+
+        const resData = customResponse({
+            code,
+            message,
+            data
+        });
+        return res.send(resData);
     }
     catch (error) {
-        console.log(error.message)
+
+        code = 422;
+
+        const resData = customResponse({
+            code,
+            message,
+            error: error && error.details
+        });
+        res.send(resData)
     }
 };
 
-module.exports = {cimsDel, cimsGet, cimsPatch, cimsPost }
+module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost }
