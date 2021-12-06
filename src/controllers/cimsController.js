@@ -3,6 +3,16 @@ const { cimsSchema, updateSchema } = require("../schema/cimsSchema");
 const { rewardSchema } = require("../schema/rewardSchema");
 const { customResponse } = require("../utility/helper");
 
+
+
+const getbystatus = async(req,res)=>{
+    const {status} = req.headers
+   
+ compModal.find({status:[status]}).then(clientData=>res.send(clientData))
+//compModal.find({status:{$eq:status}}).then(clientData=>res.send(clientData))
+
+}
+
 //Get all records in database
 const cimsGet = async (req, res) => {
 
@@ -158,4 +168,4 @@ const cimsPatch = async (req, res) => {
     }
 };
 
-module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost }
+module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost ,getbystatus}
