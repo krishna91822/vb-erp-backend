@@ -4,10 +4,10 @@ const ProjectEmployeeRouter = express.Router();
 
 //importing from controller
 const {
-    createAllocations,
-    getAllocations,
-    deleteAllocation,
-    updateAllocation
+  createAllocations,
+  getAllocations,
+  deleteAllocation,
+  updateAllocation,
 } = require("../controller/projectEmployeeController");
 
 // POST request
