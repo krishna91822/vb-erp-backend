@@ -5,21 +5,29 @@ const ProjectEmployeeRouter = express.Router();
 //importing from controller
 const {
   createAllocations,
-  getAllocations,
-  deleteAllocation,
   updateAllocation,
+  deleteAllocation,
+  getAllocations,
+  getAllocationsOnBench,
+  getTotalAllocationByEmpId,
 } = require("../controller/projectEmployeeController");
 
 // POST request
 ProjectEmployeeRouter.post("/", createAllocations);
 
-// GET request
-ProjectEmployeeRouter.get("/", getAllocations);
+// PUT request
+ProjectEmployeeRouter.put("/:id", updateAllocation);
 
 // DELETE request
 ProjectEmployeeRouter.delete("/:id", deleteAllocation);
 
-// PUT request
-ProjectEmployeeRouter.put("/:id", updateAllocation);
+// GET request
+ProjectEmployeeRouter.get("/", getAllocations);
+
+// GET request
+ProjectEmployeeRouter.get("/onBench", getAllocationsOnBench);
+
+// GET request
+ProjectEmployeeRouter.get("/totalAllocation", getTotalAllocationByEmpId);
 
 module.exports = ProjectEmployeeRouter;
