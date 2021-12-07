@@ -8,8 +8,13 @@ const cimsGet = async (req, res) => {
 
     try {
         const Comps = await compModal.find({});
+        const page = req.query.page
+        const limit = req.query.limit
 
-        data = Comps
+        const startIndex = (page - 1) * limit
+        const endIndex = page* limit
+
+        data = Comps.slice(startIndex, endIndex)
         code = 200
         message = "Data fetched successfully"
 
