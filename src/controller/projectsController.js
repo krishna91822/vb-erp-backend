@@ -55,7 +55,7 @@ const getProjects = async(req, res) => {
     console.log(query);
     const status = req.params.status
     if(status!="Closed"){
-    const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }],$or:![{vbProjectStatus :"On Hold"},{vbProjectStatus :"Active"}] });
+    const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }],$or:[{vbProjectStatus :"On Hold"},{vbProjectStatus :"Active"}] });
     res.status(200).send(Projects);
     }
     else{
