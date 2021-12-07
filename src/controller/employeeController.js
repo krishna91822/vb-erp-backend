@@ -10,29 +10,7 @@ const storeEmployees = async(req, res) => {
     }
 };
 
-// const getEmployees = async(req, res) => {
-//     try {
-//         const employee = await EmployeeInfoModel.find({});
-//         res.status(200).send(employee);
-//     } catch (error) {
-//         res.status(400).send(error);
-//     }
-// };
-
 // Filtering
-// const getFilterEmployees = async(req, res) => {
-//     const employeeName = req.query;
-//     try {
-//         const filteredEmployee = await EmployeeInfoModel.find({
-//             'employeeName': { '$regex': `.*${employeeName}*.`, '$options': 'i' }
-//         });
-//         res.status(200).send(filteredEmployee);
-//     } catch (error) {
-//         res.status(400).send(error);
-//     }
-// };
-
-
 const getFilterEmployees = async(req, res) => {
     const searchName = req.query;
     try {
@@ -60,3 +38,24 @@ module.exports = {
     // getEmployees,
     getFilterEmployees
 };
+
+// const getFilterEmployees = async(req, res) => {
+//     const employeeName = req.query;
+//     try {
+//         const filteredEmployee = await EmployeeInfoModel.find({
+//             'employeeName': { '$regex': `.*${employeeName}*.`, '$options': 'i' }
+//         });
+//         res.status(200).send(filteredEmployee);
+//     } catch (error) {
+//         res.status(400).send(error);
+//     }
+// };
+
+// const getEmployees = async(req, res) => {
+//     try {
+//         const employee = await EmployeeInfoModel.find({});
+//         res.status(200).send(employee);
+//     } catch (error) {
+//         res.status(400).send(error);
+//     }
+// };

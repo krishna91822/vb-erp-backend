@@ -26,22 +26,21 @@ const projectAndEmployee = mongoose.Schema({
 module.exports = mongoose.model("projectAndEmployee", projectAndEmployee);
 
 // {
-//     "project_id". : "",
-//     "resources" : [
-//     {
-//     empId : ,
-//     allocation: 50%,
-//     start_date : ,
-//     end_date : ,
-//     },
-//     empId : ,
-//     allocation: 50%,
-//     start_date : ,
-//     end_date : ,
-//     },empId : ,
-//     allocation: 50%,
-//     start_date : ,
-//     end_date : ,
-//     }
-//     ]
-//     }
+//     project_id: ,
+//     resources: [{
+//         empId: ,
+//         allocation: 50 % ,
+//         start_date: ,
+//         end_date: ,
+//     }, {
+//         empId: ,
+//         allocation: 50 % ,
+//         start_date: ,
+//         end_date: ,
+//     }, {
+//         empId: ,
+//         allocation: 50 % ,
+//         start_date: ,
+//         end_date: ,
+//     }]
+// }

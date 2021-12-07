@@ -12,34 +12,40 @@ const createAllocations = async(req, res) => {
 };
 
 const getAllocations = async(req, res) => {
-    let query = [
-        // allocationStartDate: { $regex: "", $options: 'i' }
-    ];
-    if (req.query.empId) {
-        query.push({
-            empId: req.query.empId,
-        });
-    }
+    let query = [{
+        empId: { $regex: "", $options: 'i' }
+    }];
+    // if (req.query.empId) {
+    //     query.push({
+    //         empId: req.query.empId
+    //     });
+    // }
     if (req.query.projectId) {
         query.push({
-            projectId: req.query.projectId
+            projectId: req.query.allocationStartDate
         });
     }
     if (req.query.employeeName) {
+        console.log("Hi");
         query.push({
-            employeeName: req.query.employeeName
+            employeeName: { $regex: req.query.employeeName, $options: "i" }
         });
     }
-    if (req.query.projectAllocated) {
-        query.push({
-            projectAllocated: req.query.projectAllocated
-        });
-    }
-    if (req.query.percentageAllocated) {
-        query.push({
-            percentageAllocated: req.query.percentageAllocated
-        });
-    }
+    // if (req.query.employeeName) {
+    //     query.push({
+    //         employeeName: req.query.employeeName
+    //     });
+    // }
+    // if (req.query.projectAllocated) {
+    //     query.push({
+    //         projectAllocated: req.query.projectAllocated
+    //     });
+    // }
+    // if (req.query.percentageAllocated) {
+    //     query.push({
+    //         percentageAllocated: req.query.percentageAllocated
+    //     });
+    // }
     // if (req.query.allocationStartDate) {
     //     query.push({
     //         allocationStartDate: {
@@ -48,11 +54,11 @@ const getAllocations = async(req, res) => {
     //         }
     //     });
     // }
-    if (req.query.allocationEndDate) {
-        query.push({
-            allocationEndDate: req.query.allocationEndDate
-        });
-    }
+    // if (req.query.allocationEndDate) {
+    //     query.push({
+    //         allocationEndDate: req.query.allocationEndDate
+    //     });
+    // }
     // if (req.query.empId) {
     //     query.push({
     //         empId: req.query.empId,
@@ -63,8 +69,9 @@ const getAllocations = async(req, res) => {
     //         projectId: req.query.projectId,
     //     });
     // }
+
     try {
-        console.log(query)
+        console.log(query);
         const projectDetails = await projectEmployeeModel.find({
                 $and: [{ $and: query }]
             })
@@ -76,11 +83,37 @@ const getAllocations = async(req, res) => {
     }
 };
 
-module.exports = {
-    createAllocations,
-    getAllocations
+// Delete Request
+const deleteAllocation = async(req, res) => {
+    try {
+        const deleteResource = await projectEmployeeModel.findByIdAndDelete(req.params.id);
+        res.status(200).send(deleteResource);
+
+    } catch (error) {
+        res.status(400).send(error);
+    }
 };
 
+// Update request
+const updateAllocation = async(req, res) => {
+    try {
+        const _id = req.params.id
+        const updateResource = await projectEmployeeModel.findOneAndUpdate({ empId: _id }, req.body, {
+            new: true
+        });
+        res.status(200).send(updateResource);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+
+
+module.exports = {
+    createAllocations,
+    getAllocations,
+    deleteAllocation,
+    updateAllocation
+};
 
 
 // update
