@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
+// const cors = require("cors");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -36,6 +37,11 @@ mongoose.connection.on("disconnected", () => {
 mongoose.connection.on("error", (err) => {
   console.log(`mongoose err is ${err}`);
 });
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//   })
+// );
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

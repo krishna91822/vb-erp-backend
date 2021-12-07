@@ -8,7 +8,8 @@ const APIFeatures = require("./../utils/apiFeatures");
 exports.getAllEmployees = catchAsync(async (req, res, next) => {
   //Build the query
   const features = new APIFeatures(Employee.find(), req.query)
-    // .filter()
+    .filter()
+    .search()
     .sort()
     // .limitFields()
     .paginate();

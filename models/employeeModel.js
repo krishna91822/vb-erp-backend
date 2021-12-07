@@ -30,10 +30,7 @@ const employeeSchema = new mongoose.Schema(
       required: [true, "A employee must have a name"],
       trim: true,
       maxlength: [30, "A employee name must be less or equal to 30 characters"],
-      validate: [
-        validator.isAlpha,
-        "A employee name must only contain characters",
-      ],
+      lowercase: true,
     },
     empEmail: {
       type: String,
