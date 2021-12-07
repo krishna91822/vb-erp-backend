@@ -9,8 +9,8 @@ const compSchema = mongoose.Schema({
     gstNumber:String,
     panNumber:String,
     companyType:String,
-    address:{
-        registeredAddress:{
+    
+    registeredAddress:{
     addressLine1: String,
     addressLine2: String,
     pincode: String,
@@ -30,7 +30,6 @@ const compSchema = mongoose.Schema({
     city: String,
     landmark: String,
         },
-    },
     contacts: Object,
     status : {
 type:String,
