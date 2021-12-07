@@ -140,7 +140,7 @@ const cimsPatch = async (req, res) => {
         }
 
         const update = await compModal.findOneAndUpdate({ _id: _id }, {
-            designation: designation, brandname: brandname, clientname: clientname, domain: domain, baselocation: baselocation,status:status
+            designation: designation, brandname: brandname, clientname: clientname, domain: domain, baselocation: baselocation,status:status,
            address:address, contacts: contacts
         });
 
