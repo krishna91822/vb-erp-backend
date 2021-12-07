@@ -15,7 +15,7 @@ const {
 ProjectRouter.post("/", createProjects);
 
 //GET Method
-ProjectRouter.get("/", getProjects);
+ProjectRouter.get("/:status", getProjects);
 
 //GET Method by id
 ProjectRouter.get("/:id", getProjectById);
