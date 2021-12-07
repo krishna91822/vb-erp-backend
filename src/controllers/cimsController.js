@@ -18,13 +18,17 @@ const cimsGet = async (req, res) => {
 
     try {
         const Comps = await compModal.find({});
-        const page = req.query.page
-        const limit = req.query.limit
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
 
         const startIndex = (page - 1) * limit
         const endIndex = page* limit
+        const count = await compModal.find().countDocuments()
 
-        data = Comps.slice(startIndex, endIndex)
+        const data = {}
+        data.data = Comps.slice(startIndex, endIndex)
+        data.totalPages = Math.ceil(count/limit)
+        
         code = 200
         message = "Data fetched successfully"
 
