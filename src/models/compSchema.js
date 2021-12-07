@@ -6,16 +6,20 @@ const compSchema = mongoose.Schema({
     clientname: String,
     domain: String,
     baselocation: String,
-    addressLine1: String,
-    addressLine2: String,
-    pincode: Number,
-    country: String,
-    state: String,
-    district: String,
-    city: String,
-    landmark: String,
+    gstnumber:String,
+    pannumber:String,
+     address:Object,
     contacts: Object,
+    status : {
+type:String,
+enum:{
+    values:['0','1'],
+    message:"0 for inactive and 1 for active",
 },
+default:"0",
+},
+},
+
     {
         timestamps: true,
     }

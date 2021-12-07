@@ -3,6 +3,16 @@ const { cimsSchema, updateSchema } = require("../schema/cimsSchema");
 const { rewardSchema } = require("../schema/rewardSchema");
 const { customResponse } = require("../utility/helper");
 
+
+
+const getbystatus = async(req,res)=>{
+    const {status} = req.headers
+   
+ compModal.find({status:[status]}).then(clientData=>res.send(clientData))
+//compModal.find({status:{$eq:status}}).then(clientData=>res.send(clientData))
+
+}
+
 //Get all records in database
 const cimsGet = async (req, res) => {
 
@@ -56,7 +66,7 @@ const cimsPost = async (req, res) => {
             return res.send(resData);
 
         }
-        const newComp = await compModal.create({ designation, brandname, clientname, domain, baselocation, pincode, country, state, district, city, addressLine1, addressLine2, landmark, contacts })
+        const newComp = await compModal.create({ designation, brandname, clientname, domain, status,gstnumber,pannumber,baselocation, address, contacts })
         
         data = newComp
         code = 200
@@ -116,7 +126,7 @@ const cimsDel = async (req, res) => {
 const cimsPatch = async (req, res) => {
 
     const _id = req.body._id;
-    const { designation, brandname, clientname, domain, baselocation, pincode, country, state, district, city, addressLine1, addressLine2, landmark, contacts } = req.body;
+    const { designation, brandname, clientname, domain, baselocation,address, status,contacts } = req.body;
     
     try {
         const { error } = updateSchema.validate(req.body);
@@ -135,8 +145,8 @@ const cimsPatch = async (req, res) => {
         }
 
         const update = await compModal.findOneAndUpdate({ _id: _id }, {
-            designation: designation, brandname: brandname, clientname: clientname, domain: domain, baselocation: baselocation,
-            pincode: pincode, country: country, state: state, district: district, city: city, addressLine1: addressLine1, addressLine2: addressLine2, landmark: landmark, contacts: contacts
+            designation: designation, brandname: brandname, clientname: clientname, domain: domain, baselocation: baselocation,status:status,
+           address:address, contacts: contacts
         });
 
         code = 200;
@@ -163,4 +173,4 @@ const cimsPatch = async (req, res) => {
     }
 };
 
-module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost }
+module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost ,getbystatus}
