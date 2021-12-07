@@ -51,13 +51,20 @@ const getProjects = async(req, res) => {
             }
         });
     }
-    try {
-        console.log(query);
-        const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
-        res.status(200).send(Projects);
-    } catch (error) {
-        res.status(400).send(error);
+  try {
+    console.log(query);
+    const status = req.params.status
+    if(status!="Closed"){
+    const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }],$or:![{vbProjectStatus :"On Hold"},{vbProjectStatus :"Active"}] });
+    res.status(200).send(Projects);
     }
+    else{
+      const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }],$or:[{vbProjectStatus :"Closed"}] });
+    res.status(200).send(Projects);
+    }
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 
 //getting single project by its _id
