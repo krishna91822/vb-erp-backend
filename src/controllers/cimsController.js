@@ -69,7 +69,7 @@ const cimsPost = async (req, res) => {
             return res.send(resData);
 
         }
-        const newComp = await compModal.create({ designation, brandname, clientname, domain, status,gstnumber,pannumber,baselocation, address, contacts })
+        const newComp = await compModal.create(req.body);
         
         data = newComp
         code = 200
@@ -128,8 +128,8 @@ const cimsDel = async (req, res) => {
 //Update record in database
 const cimsPatch = async (req, res) => {
 
-    const _id = req.body._id;
-    const { designation, brandname, clientname, domain, baselocation,address, status,contacts } = req.body;
+    //const _id = req.body._id;
+    //const { designation, brandname, clientname, domain, baselocation,address, status,contacts } = req.body;
     
     try {
         const { error } = updateSchema.validate(req.body);
@@ -147,10 +147,11 @@ const cimsPatch = async (req, res) => {
 
         }
 
-        const update = await compModal.findOneAndUpdate({ _id: _id }, {
+       /* const update = await compModal.findOneAndUpdate({ _id: _id }, {
             designation: designation, brandname: brandname, clientname: clientname, domain: domain, baselocation: baselocation,status:status,
            address:address, contacts: contacts
-        });
+        });*/
+         const update=await compModal.findOneAndUpdate(req.params.id,req.body)
 
         code = 200;
         data = req.body
