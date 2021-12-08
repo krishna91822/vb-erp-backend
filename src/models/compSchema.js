@@ -1,6 +1,8 @@
+const { number } = require("joi");
 const mongoose = require("mongoose");
 
 const compSchema = mongoose.Schema({
+    rowNumber: Number,
     designation: String,
     brandName: { type: String, unique: true },
     clientName: String,

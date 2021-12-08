@@ -4,11 +4,11 @@ const { customResponse } = require("../utility/helper");
 
 
 
-const getbystatus = async(req,res)=>{
-    const {status} = req.headers
-   
- compModal.find({status:[status]}).then(clientData=>res.send(clientData))
-//compModal.find({status:{$eq:status}}).then(clientData=>res.send(clientData))
+const getbystatus = async (req, res) => {
+    const { status } = req.headers
+
+    compModal.find({ status: [status] }).then(clientData => res.send(clientData))
+    //compModal.find({status:{$eq:status}}).then(clientData=>res.send(clientData))
 
 }
 
@@ -21,12 +21,19 @@ const cimsGet = async (req, res) => {
         const limit = parseInt(req.query.limit)
 
         const startIndex = (page - 1) * limit
-        const endIndex = page* limit
+        const endIndex = page * limit
         const count = await compModal.find().countDocuments()
 
         const data = {}
         data.data = Comps.slice(startIndex, endIndex)
-        data.totalPages = Math.ceil(count/limit)
+
+        data.data.forEach((record, i)=>{
+            record.rowNumber = startIndex+i+1;
+        });
+
+
+        data.totalPages = Math.ceil(count / limit)
+
         code = 200
         message = "Data fetched successfully"
 
@@ -38,7 +45,6 @@ const cimsGet = async (req, res) => {
         res.send(resData);
 
     } catch (error) {
-
         code = 422;
 
         const resData = customResponse({
@@ -51,7 +57,7 @@ const cimsGet = async (req, res) => {
 
 //Post record in database
 const cimsPost = async (req, res) => {
-    
+
     try {
         const { error } = cimsSchema.validate(req.body);
 
@@ -69,7 +75,7 @@ const cimsPost = async (req, res) => {
 
         }
         const newComp = await compModal.create(req.body);
-        
+
         data = newComp
         code = 200
         message = "Data created successfully"
@@ -96,7 +102,7 @@ const cimsPost = async (req, res) => {
 const cimsDel = async (req, res) => {
 
     const { id } = req.query;
-    
+
     try {
         const del = await compModal.findById(id);
         await del.remove();
@@ -129,7 +135,7 @@ const cimsPatch = async (req, res) => {
 
     const _id = req.body._id;
     //const { designation, brandname, clientname, domain, baselocation,address, status,contacts } = req.body;
-    
+
     try {
         const { error } = updateSchema.validate(req.body);
         if (error) {
@@ -146,7 +152,7 @@ const cimsPatch = async (req, res) => {
 
         }
 
-       const update = await compModal.findOneAndUpdate({ _id: _id }, req.body);
+        const update = await compModal.findOneAndUpdate({ _id: _id }, req.body);
         //const update=await compModal.findOneAndUpdate(_id, req.body)
 
         code = 200;
@@ -172,4 +178,4 @@ const cimsPatch = async (req, res) => {
     }
 };
 
-module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost ,getbystatus}
+module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost, getbystatus }

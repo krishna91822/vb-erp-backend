@@ -190,6 +190,9 @@ const getRecords = async (req, res) => {
         // const data ={}
         // data.data = records.slice(startIndex, endIndex)
         // data.totalPages = Math.ceil(count/limit)
+        // data.data.forEach((record, i)=>{
+        //     record.rowNumber = startIndex+i+1;
+        // });
 
         code = 200,
             message = "Data fetched successfully"
