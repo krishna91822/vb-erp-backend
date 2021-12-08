@@ -217,8 +217,8 @@ const getRecords = async (req, res) => {
 const searchRecords = async (req, res) => {
 
     try {
-        const { brandname } = req.headers
-        compModal.find({ brandname: [brandname] }).then(data => {
+        const { key, value } = req.headers
+        compModal.find({ [key]: [value] }).then(data => {
             code = 200,
                 message = "Data fetched successfully"
 
