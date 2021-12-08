@@ -37,7 +37,7 @@ enum:{
     values:[0,1],
     message:"0 for inactive and 1 for active",
 },
-default:"1",
+default:1,
 },
 },
 
