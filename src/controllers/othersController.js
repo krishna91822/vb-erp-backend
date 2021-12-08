@@ -177,7 +177,19 @@ const getRecords = async (req, res) => {
 
     try {
         const { filter } = req.headers
-        const data = await compModal.find().sort({ [filter]: 1 })
+        const data = await compModal.find().collation({'locale' : 'en'}).sort({ [filter]: 1 })
+
+        //const page = parseInt(req.headers.page)
+        //const limit = parseInt(req.headers.limit)
+
+        //const startIndex = (page - 1) * limit
+        //const endIndex = page* limit
+
+        //const count = await compModal.find().countDocuments()
+
+        // const data ={}
+        // data.data = records.slice(startIndex, endIndex)
+        // data.totalPages = Math.ceil(count/limit)
 
         code = 200,
             message = "Data fetched successfully"
@@ -188,7 +200,6 @@ const getRecords = async (req, res) => {
             message
         })
 
-        console.log(data)
         res.send(resData)
     } catch (err) {
 
