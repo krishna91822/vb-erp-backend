@@ -30,7 +30,7 @@ describe("Invoice Unit Testing with Mocha..!!", () => {
             res.body.should.be.a("object");
             res.body.data.should.have.property("PO_Id").be.a("object");
             res.body.data.should.have.property("client_sponsor");
-            res.body.data.should.have.property("Client_Finance_Controller");
+            res.body.data.should.have.property("client_finance_controller");
             res.body.data.should.have.property("invoice_raised");
             res.body.data.should.have.property("invoice_amount_received");
             res.body.data.should.have.property("vb_bank_account");
@@ -76,7 +76,7 @@ describe("Invoice Unit Testing with Mocha..!!", () => {
         .get("/invoice/sort/Id")
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a("array");
+          res.body.should.be.a("object");
           done();
         });
     });
