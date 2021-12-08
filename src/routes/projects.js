@@ -4,13 +4,13 @@ const ProjectRouter = express.Router();
 
 //importing from controller
 const {
-    getProjects,
-    getActiveProjects,
-    getDoneProjects,
-    getProjectById,
-    // getProjectBySlug,
-    createProjects,
-    updateProject,
+  getProjects,
+  getActiveProjects,
+  getDoneProjects,
+  getProjectById,
+  // getProjectBySlug,
+  createProjects,
+  updateProject,
 } = require("../controller/projectsController");
 
 // POST request
