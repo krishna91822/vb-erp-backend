@@ -34,7 +34,7 @@ const compSchema = mongoose.Schema({
     status : {
 type:String,
 enum:{
-    values:['0','1'],
+    values:[0,1],
     message:"0 for inactive and 1 for active",
 },
 default:"1",
