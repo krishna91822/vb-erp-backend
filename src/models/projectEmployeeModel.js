@@ -10,10 +10,10 @@ const projectAndEmployee = mongoose.Schema({
     ref: "employeeSchema",
   },
   allocationStartDate: {
-    type: Date,
+    type: String,
   },
   allocationEndDate: {
-    type: Date,
+    type: String,
   },
   allocationPercentage: {
     type: Number,
@@ -24,23 +24,3 @@ const projectAndEmployee = mongoose.Schema({
 });
 
 module.exports = mongoose.model("projectAndEmployee", projectAndEmployee);
-
-// {
-//     project_id: ,
-//     resources: [{
-//         empId: ,
-//         allocation: 50 % ,
-//         start_date: ,
-//         end_date: ,
-//     }, {
-//         empId: ,
-//         allocation: 50 % ,
-//         start_date: ,
-//         end_date: ,
-//     }, {
-//         empId: ,
-//         allocation: 50 % ,
-//         start_date: ,
-//         end_date: ,
-//     }]
-// }

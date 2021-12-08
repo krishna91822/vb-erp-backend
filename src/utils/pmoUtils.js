@@ -43,6 +43,24 @@ const getQueryString = (queryString) => {
     });
   }
 
+  if (queryString.startDate) {
+    query.push({
+      startDate: {
+        $regex: queryString.startDate,
+        $options: "i",
+      },
+    });
+  }
+
+  if (queryString.endDate) {
+    query.push({
+      endDate: {
+        $regex: queryString.endDate,
+        $options: "i",
+      },
+    });
+  }
+
   return query;
 };
 
@@ -116,13 +134,22 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
           empId: value.empId.empId,
           employeeName: value.empId.employeeName,
           remainingAllocation: 100,
+          projects: [],
         };
       }
 
       result[value.empId.empId].remainingAllocation =
         result[value.empId.empId].remainingAllocation -
         value.allocationPercentage;
-
+      result[value.empId.empId].projects.push({
+        allocationStartDate: value.allocationStartDate,
+        allocationEndDate: value.allocationEndDate,
+        allocationPercentage: value.allocationPercentage,
+        rackRate: value.rackRate,
+        vbProjectId: value.projectId.vbProjectId,
+        vbProjectStatus: value.projectId.vbProjectStatus,
+        projectName: value.projectId.projectName,
+      });
       return result;
     },
     {}
