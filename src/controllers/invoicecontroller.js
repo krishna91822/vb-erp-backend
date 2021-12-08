@@ -1,6 +1,7 @@
 const { invoiceschema } = require("../schema/invoiceschema");
 const Invoice = require("../models/invoicemodel");
-
+const {emailContent} = require("../controllers/poEmailController")
+const {emailSender} = require("../middleware/POMailNotification")
 const newInvoice = async (req, res) => {
   try {
     // console.log("checking valiation")
@@ -11,11 +12,24 @@ const newInvoice = async (req, res) => {
     // }
 
     const invoice = await Invoice.create(req.body);
+    const getDetails = await Invoice.findOne({_id:invoice._id}).populate(
+      "PO_Id",
+      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
+    );
+    const data = {
+      Client_Name: getDetails.PO_Id.Client_Name,
+      Project_Name: getDetails.PO_Id.Project_Name,
+      PO_Amount: getDetails.PO_Id.PO_Amount,
+      Received_Amount: getDetails.invoice_amount_received
+    }
+    const content = await emailContent("N001",data)
+     emailSender(content)
     res.status(201).json({
       status: true,
-      invoice,
+      invoice
     });
   } catch (error) {
+    console.log(error)
     res.status(422).send(error);
   }
 };
@@ -83,7 +97,6 @@ const getInvoiceDetails = async (req, res) => {
         { $unwind: "$purchase_orders" },
         { $sort: { "purchase_orders.Client_Name": 1 } },
       ]).collation({ locale: "en" });
-
       res.status(200).json(details);
     } else {
       const details = await Invoice.aggregate([
