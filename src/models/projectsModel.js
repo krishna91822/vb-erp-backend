@@ -1,43 +1,40 @@
 const mongoose = require("mongoose");
 
-const projectSchema = new mongoose.Schema(
-  {
+const projectSchema = new mongoose.Schema({
     vbProjectId: {
-      type: String,
+        type: String,
     },
     clientName: {
-      type: String,
+        type: String,
     },
     projectName: {
-      type: String,
+        type: String,
     },
     clientProjectManager: {
-      type: String,
+        type: String,
     },
     startDate: {
-      type: Date,
+        type: String,
     },
     endDate: {
-      type: Date,
+        type: String,
     },
     clientProjectSponsor: {
-      type: String,
+        type: String,
     },
     clientFinanceController: {
-      type: String,
+        type: String,
     },
     clientPrimaryContact: {
-      type: Number,
+        type: Number,
     },
     vbProjectManager: {
-      type: String,
+        type: String,
     },
     domainSector: {
-      type: String,
+        type: String,
     },
     vbProjectStatus: String,
-  },
-  { timestamps: true }
-);
+}, { timestamps: true });
 
 module.exports = mongoose.model("projectSchema", projectSchema);
