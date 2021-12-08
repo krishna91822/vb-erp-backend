@@ -3,12 +3,12 @@ const { cimsSchema, updateSchema } = require("../schema/cimsSchema");
 const { customResponse } = require("../utility/helper");
 
 
-
+//get by status
 const getbystatus = async(req,res)=>{
     const {status} = req.headers
    
  compModal.find({status:[status]}).then(clientData=>res.send(clientData))
-//compModal.find({status:{$eq:status}}).then(clientData=>res.send(clientData))
+
 
 }
 
@@ -147,7 +147,6 @@ const cimsPatch = async (req, res) => {
         }
 
        const update = await compModal.findOneAndUpdate({ _id: _id }, req.body);
-        //const update=await compModal.findOneAndUpdate(_id, req.body)
 
         code = 200;
         data = req.body
