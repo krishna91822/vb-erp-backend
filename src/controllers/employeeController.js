@@ -22,14 +22,42 @@ const storeEmployee= async (req, res) => {
 };
 
 const getEmployees = async (req, res) => {
-  const limit = 10;
-  const page = req.query.page ? parseInt(req.query.page) : 1;
+  /*
+      #swagger.tags = ['Employees']
+      #swagger.description = 'Get all employees' 
+      #swagger.responses[200] = {
+        schema:{
+          "status": "success",
+          "code": 200,
+          "message": "",
+          "data": {
+            "results": [
+              {
+                "_id": "610d090636ba149966bd3b55",
+                "empName": "Hello"
+              }
+            ]
+          },
+          "error": {}
+        }
+      }
+      #swagger.responses[500] = {
+      description: 'Internal Server Error',
+      schema: { 
+        "status": "failure",
+        "code": 400,
+        "message": "Internal Server Error",
+        "data":{},
+        "error": {}
+        }
+      }
+  */
     let code,message;
     try {
         code=200;
     employees = await employeesModal.find({});
-    const data=customPagination({data:employees,page:page,limit:limit});
-    const resData=customResponse({code,data})
+   // const data=customPagination({data:employees});
+    const resData=customResponse({code,data:employees})
     res.status(code).send(resData);
     
   } catch (error) {
@@ -40,9 +68,48 @@ const getEmployees = async (req, res) => {
 };
 
 const searchEmployees = async(req, res) => {
+   /* 	
+    #swagger.tags = ['Employees']
+    #swagger.description = 'Search Employees' 
+    #swagger.parameters['search'] = {
+      in: 'query',
+      type: 'string',
+      description: 'Employee name which you want to search' 
+    }
+    #swagger.responses[200] = {
+      schema:{
+        "status": "success",
+        "code": 200,
+        "message": "",
+        "data":  {
+          "_id": "610bc1b31b82a66f6bcd64ea",
+          "empName": "name of employee"  
+        },
+        "error": {}
+      }
+    }
+    #swagger.responses[400] = {
+    description: 'Bad request',
+    schema: { 
+      "status": "failure",
+      "code": 400,
+      "message": "Bad request",
+      "data":{},
+      "error": {}
+      }
+    }
+    #swagger.responses[500] = {
+    description: 'Internal Server Error',
+    schema: { 
+      "status": "failure",
+      "code": 400,
+      "message": "Internal Server Error",
+      "data":{},
+      "error": {}
+      }
+    }
+*/
 let code,message;
-const limit = 10;
-  const page = req.query.page ? parseInt(req.query.page) : 1;
   const searchName= req.query;
 try{
   if(Object.keys(req.query).length===0){
@@ -62,8 +129,8 @@ try{
         return res.status(code).send(resdata);
     }
         code=200;
-        const data=customPagination({data:employees,page:page,limit:limit});
-    const resData=customResponse({code,data})
+       // const data=customPagination({data:employees,page:page,limit:limit});
+    const resData=customResponse({code,data:employees})
      return res.status(code).send(resData);  
   }  
   }
