@@ -27,7 +27,6 @@ const cimsGet = async (req, res) => {
         const data = {}
         data.data = Comps.slice(startIndex, endIndex)
         data.totalPages = Math.ceil(count/limit)
-        
         code = 200
         message = "Data fetched successfully"
 
@@ -128,7 +127,7 @@ const cimsDel = async (req, res) => {
 //Update record in database
 const cimsPatch = async (req, res) => {
 
-    //const _id = req.body._id;
+    const _id = req.body._id;
     //const { designation, brandname, clientname, domain, baselocation,address, status,contacts } = req.body;
     
     try {
@@ -147,11 +146,8 @@ const cimsPatch = async (req, res) => {
 
         }
 
-       /* const update = await compModal.findOneAndUpdate({ _id: _id }, {
-            designation: designation, brandname: brandname, clientname: clientname, domain: domain, baselocation: baselocation,status:status,
-           address:address, contacts: contacts
-        });*/
-         const update=await compModal.findOneAndUpdate(req.params.id,req.body)
+       const update = await compModal.findOneAndUpdate({ _id: _id }, req.body);
+        //const update=await compModal.findOneAndUpdate(_id, req.body)
 
         code = 200;
         data = req.body
@@ -170,7 +166,6 @@ const cimsPatch = async (req, res) => {
 
         const resData = customResponse({
             code,
-            message,
             error: error && error.details
         });
         res.send(resData)
