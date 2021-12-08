@@ -12,7 +12,7 @@ const emailSender = (content)=>{
   
   const mailOptions = {
     from: process.env.SENDER_Mail_Id, //sender mail id
-    to: process.env.CMS_ADMIN_Mail_Id, //CMS Admin mail id
+    to: content.to,
     subject: content.subject,
     html: content.body,
   };
