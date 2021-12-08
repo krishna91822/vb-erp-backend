@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 const projectsSchema = Joi.object()
-  .keys({  
+  .keys({
     clientName: Joi.string().required(),
     projectName: Joi.string().required(),
     clientProjectManager: Joi.string().required(),
@@ -12,8 +12,12 @@ const projectsSchema = Joi.object()
     clientPrimaryContact: Joi.number(),
     vbProjectManager: Joi.string().required(),
     domainSector: Joi.string(),
-    vbProjectStatus: Joi.string().valid("Un Assigned", "On Hold", "Done", "Active"),
-
+    vbProjectStatus: Joi.string().valid(
+      "Un Assigned",
+      "On Hold",
+      "Done",
+      "Active"
+    ),
   })
   .options({ abortEarly: false });
 

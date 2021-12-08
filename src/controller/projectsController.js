@@ -2,41 +2,34 @@
 const { json } = require("body-parser");
 const ProjectsInfoModel = require("../models/projectsModel");
 const { getQueryString } = require("../utils/pmoUtils");
-//JOI
-const { projectsSchema } = require("../schema/projectsSchema")
-
-const { customResponse } = require("../utils/helper");
 
 // Creating and Storing Created Projects data into database by POST request
-const createProjects = async(req, res) => {
+const createProjects = async (req, res) => {
   try {
-      const { error } = projectsSchema.validate(req.body);
-      console.log(error);
-      if (error) {
-        code = 422;
-        message = "Invalid request data";
-        const resData = customResponse({
-          code,
-          message,
-          err: error && error.details,
-        });
-        return res.status(code).send(resData);
-      }
-      
-      const allProjects = await ProjectsInfoModel.find({});
+    const { error } = projectsSchema.validate(req.body);
+    if (error) {
+      code = 422;
+      message = "Invalid request data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+
+    const allProjects = await ProjectsInfoModel.find({});
     const project = await ProjectsInfoModel({
       ...req.body,
       vbProjectId: `VB-PROJ-${allProjects.length}`,
     });
     project.save();
     res.status(201).json(project);
-    } catch (error) {
-      console.log("hi");
-      res.status(400).send(error);
-    }
-  
+  } catch (error) {
+    console.log("hi");
+    res.status(400).send(error);
+  }
 };
-
 
 // Updating project by its _id
 const updateProject = async (req, res) => {
@@ -58,7 +51,6 @@ const updateProject = async (req, res) => {
 //getting all the projects
 const getProjects = async (req, res) => {
   const query = getQueryString(req.query);
-
   try {
     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
     res.status(200).send(Projects);

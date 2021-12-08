@@ -11,28 +11,26 @@ const { projectEmployeeSchema } = require("../schema/projectEmployeeSchema");
 const { customResponse } = require("../utils/helper");
 
 // Create request
-const createAllocations = async(req, res) => {
+const createAllocations = async (req, res) => {
   try {
-      const { error } = projectEmployeeSchema.validate(req.body);
-      if (error) {
-        code = 422;
-        message = "Invalid request data";
-        const resData = customResponse({
-          code,
-          message,
-          err: error && error.details,
-        });
-        return res.status(code).send(resData);
-      }
-      const allocation = await new projectEmployeeModel(req.body);
-      allocation.save();
-      res.status(201).json(allocation);
-    } catch (error) {
-      res.status(400).send(error);
+    const { error } = projectEmployeeSchema.validate(req.body);
+    if (error) {
+      code = 422;
+      message = "Invalid request data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
     }
-  
+    const allocation = await projectEmployeeModel(req.body);
+    allocation.save();
+    res.status(201).json(allocation);
+  } catch (error) {
+    res.status(400).json(error);
+  }
 };
-
 
 // Update request
 const updateAllocation = async (req, res) => {

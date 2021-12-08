@@ -25,9 +25,9 @@ ProjectEmployeeRouter.delete("/:id", deleteAllocation);
 ProjectEmployeeRouter.get("/", getAllocations);
 
 // GET request
-ProjectEmployeeRouter.get("/onBench", getAllocationsOnBench);
+ProjectEmployeeRouter.get("/onbench", getAllocationsOnBench);
 
 // GET request
-ProjectEmployeeRouter.get("/totalAllocation", getTotalAllocationByEmpId);
+ProjectEmployeeRouter.get("/totalallocation/", getTotalAllocationByEmpId);
 
 module.exports = ProjectEmployeeRouter;
