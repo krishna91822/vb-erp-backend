@@ -1,5 +1,6 @@
 const compModal = require("../models/compSchema");
 const { cimsSchema, updateSchema } = require("../schema/cimsSchema");
+const { rewardSchema } = require("../schema/rewardSchema");
 const { customResponse } = require("../utility/helper");
 
 const getbystatus = async (req, res) => {
