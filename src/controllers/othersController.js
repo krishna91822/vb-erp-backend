@@ -137,7 +137,7 @@ const duplicates = async (req, res) => {
     var id = req.headers.id
     try {
         if (!id) {
-            compModal.findOne({ brandName: { $regex: new RegExp(brandname, "i") } }, function (err, example) {
+            compModal.findOne({ brandName: { $regex: new RegExp(`^${brandname}$`, "i") } }, function (err, example) {
 
                 if (err) {
 
@@ -178,7 +178,7 @@ const duplicates = async (req, res) => {
         else {
 
             const record1 = await compModal.find({ _id: id })
-            const record2 = await compModal.find({ brandName: new RegExp(brandname, "i") })
+            const record2 = await compModal.find({ brandName: new RegExp(`^${brandname}$`, "i") })
 
             if (typeof record2[0] === 'undefined' || record1[0]._id.equals(record2[0]._id)) {
                 code = 200;
@@ -214,77 +214,7 @@ const duplicates = async (req, res) => {
     }
 }
 
-//Get sorted records
-const getRecords = async (req, res) => {
 
-    try {
-        const { filter } = req.headers
-        const data = await compModal.find().collation({ 'locale': 'en' }).sort({ [filter]: 1 })
 
-        //const page = parseInt(req.headers.page)
-        //const limit = parseInt(req.headers.limit)
 
-        //const startIndex = (page - 1) * limit
-        //const endIndex = page* limit
-
-        //const count = await compModal.find().countDocuments()
-
-        // const data ={}
-        // data.data = records.slice(startIndex, endIndex)
-        // data.totalPages = Math.ceil(count/limit)
-        // data.data.forEach((record, i)=>{
-        //     record.rowNumber = startIndex+i+1;
-        // });
-
-        code = 200,
-            message = "Data fetched successfully"
-
-        const resData = customResponse({
-            code,
-            data,
-            message
-        })
-
-        res.send(resData)
-    } catch (err) {
-
-        code = 422
-        const resData = customResponse({
-            code,
-            error: err && err.details
-        })
-
-        res.send(resData)
-    }
-}
-
-//Search records
-const searchRecords = async (req, res) => {
-
-    try {
-        const { key, value } = req.headers
-        compModal.find({ [key]: [value] }).then(data => {
-            code = 200,
-                message = "Data fetched successfully"
-
-            const resData = customResponse({
-                code,
-                data,
-                message
-            })
-            res.send(resData)
-        })
-
-    } catch (err) {
-
-        code = 422
-        const resData = customResponse({
-            code,
-            error: err && err.details
-        })
-
-        res.send(resData)
-    }
-}
-
-module.exports = { searchRecords, getRecords, duplicates, postLogin, getLocation, getCountriesList, getclientinfo }
+module.exports = { duplicates, postLogin, getLocation, getCountriesList, getclientinfo }

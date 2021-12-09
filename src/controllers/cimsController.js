@@ -16,16 +16,16 @@ const getbystatus = async(req,res)=>{
 const cimsGet = async (req, res) => {
 
     try {
-        const { filter } = req.query
-        const { key, value } = req.query
+        const sort = req.query.sort
+        const filter = (req.query.filter)
         const page = parseInt(req.query.page)
         const limit = parseInt(req.query.limit)
 
-        const Comps = await compModal.find(key == '' || !key ? {} : {[key] : [value]}).collation({ 'locale': 'en' }).sort( filter == '' || !filter ? {} : {[filter] : 1});
+        const Comps = await compModal.find(filter == '' || !filter ? {} : JSON.parse(filter)).collation({ 'locale': 'en' }).sort( sort == '' || !sort ? {} : {[sort.replace(/['"]+/g, '')] : 1});
 
         const startIndex = (page - 1) * limit
         const endIndex = page * limit
-        const count = await compModal.find(key == '' || !key ? {} : {[key] : [value]}).collation({ 'locale': 'en' }).sort( filter == '' || !filter ? {} : {[filter] : 1}).countDocuments()
+        const count = await compModal.find(filter == '' || !filter ? {} : JSON.parse(filter)).collation({ 'locale': 'en' }).sort( sort == '' || !sort ? {} : {[sort.replace(/['"]+/g, '')] : 1}).countDocuments()
 
         const data = {}
         data.data = Comps.slice(startIndex, endIndex)
