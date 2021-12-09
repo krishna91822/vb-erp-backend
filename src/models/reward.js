@@ -24,10 +24,22 @@ const rewardsSchema = mongoose.Schema(
       enum: ["ceo", "manager", "selected"],
       required: true,
     },
+    selected_sender: {
+      type: [mongoose.Schema.Types.Mixed],
+      required: function () {
+        return this.reward_sender === "selected"
+    }
+    },
     reward_receiver: {
       type: String,
       enum: ["manager", "employees", "everyone", "selected"],
       required: true,
+    },
+    selected_receiver: {
+      type: [mongoose.Schema.Types.Mixed],
+      required: function () {
+        return this.reward_receiver === "selected"
+    }
     },
     receiver_message: {
       type: String,

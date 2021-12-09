@@ -53,9 +53,58 @@ const getEmployees = async (req, res) => {
       }
   */
     let code,message;
+    let query = [
+      {
+        $match: {
+          empName:{ $regex: "" },
+        },
+      },
+    ];
+    if (req.query.dob) {
+      query.push({
+        $match: {
+          $expr: {
+            $and: [
+              { $eq: [{ $dayOfMonth: '$empDob' }, { $dayOfMonth: new Date() }] },
+              { $eq: [{ $month: '$empDob' }, { $month: new Date() }] },
+            ],
+          },
+      },
+    });
+  }
+  if (req.query.workAnniversary) {
+    query.push({
+      $match: {
+        $expr: {
+          $and: [
+            { $eq: [{ $dayOfMonth: '$empDoj' }, { $dayOfMonth: new Date() }] },
+            { $eq: [{ $month: '$empDoj' }, { $month: new Date() }] },
+          ],
+        },
+    },
+  });
+}
+const empidSearch=[{
+  $project:{
+    empId: 1, slack_member_id: 1,_id: 0
+  }
+}]
+if(req.query.empId){
+  empidSearch.push({
+    $match: {
+      empId: parseInt(req.query.empId)
+    },
+   
+  })
+}
     try {
         code=200;
-    employees = await employeesModal.find({});
+        if(!req.query.empId){
+    employees = await employeesModal.aggregate(query);
+        }
+    else{
+      employees= await employeesModal.aggregate(empidSearch);
+    }
    // const data=customPagination({data:employees});
     const resData=customResponse({code,data:employees})
     res.status(code).send(resData);
