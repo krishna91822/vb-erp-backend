@@ -342,7 +342,7 @@ const updatePODetais = async (req, res) => {
     const updateDetails = await purchaseOrderModel.updateOne(
       { _id: req.params.id },
       {
-        $set: { ...req.body },
+        $set: { ...req.body,Updated_At: new Date() },
       }
     );
     code = 200;
@@ -410,6 +410,7 @@ const updatePOStatus = async (req, res) => {
         {
           $set: {
             Status: newStatus,
+            Updated_At: new Date()
           },
         }
       );
