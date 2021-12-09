@@ -7,7 +7,7 @@ const projectsSchema = Joi.object()
     clientProjectManager: Joi.string().required(),
     startDate: Joi.string().required(),
     endDate: Joi.string().required(),
-    clientProjectSponser: Joi.string().required(),
+    clientProjectSponsor: Joi.string().required(),
     clientFinanceController: Joi.string().required(),
     clientPrimaryContact: Joi.number(),
     vbProjectManager: Joi.string().required(),
