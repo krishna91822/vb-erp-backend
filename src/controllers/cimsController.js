@@ -21,11 +21,11 @@ const cimsGet = async (req, res) => {
         const page = parseInt(req.query.page)
         const limit = parseInt(req.query.limit)
 
-        const Comps = await compModal.find(filter == '' || !filter ? {} : JSON.parse(filter)).collation({ 'locale': 'en' }).sort( sort == '' || !sort ? {} : {[sort.replace(/['"]+/g, '')] : 1});
+        const Comps = await compModal.find(filter == '' || !filter ? {} : {status: [filter]}).collation({ 'locale': 'en' }).sort( sort == '' || !sort ? {} : {[sort.replace(/['"]+/g, '')] : 1});
 
         const startIndex = (page - 1) * limit
         const endIndex = page * limit
-        const count = await compModal.find(filter == '' || !filter ? {} : JSON.parse(filter)).collation({ 'locale': 'en' }).sort( sort == '' || !sort ? {} : {[sort.replace(/['"]+/g, '')] : 1}).countDocuments()
+        const count = await compModal.find(filter == '' || !filter ? {} : {status: [filter]}).collation({ 'locale': 'en' }).sort( sort == '' || !sort ? {} : {[sort.replace(/['"]+/g, '')] : 1}).countDocuments()
 
         const data = {}
         data.data = Comps.slice(startIndex, endIndex)
@@ -36,7 +36,6 @@ const cimsGet = async (req, res) => {
 
 
         data.totalPages = Math.ceil(count / limit)
-        console.log(count)
         code = 200
         message = "Data fetched successfully"
 
