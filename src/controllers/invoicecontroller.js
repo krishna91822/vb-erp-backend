@@ -1,6 +1,10 @@
-// const { invoiceschema } = require("../schema/invoiceschema");
+const { invoiceschema } = require("../schema/invoiceschema");
 const Invoice = require("../models/invoicemodel");
-const { customResponse } = require("../utility/helper");
+const {
+  emailContent,
+  emailTemplate,
+} = require("../controllers/poEmailController");
+const { emailSender } = require("../middleware/POMailNotification");
 
 const newInvoice = async (req, res) => {
   try {
@@ -12,6 +16,31 @@ const newInvoice = async (req, res) => {
     // }
 
     const invoice = await Invoice.create(req.body);
+    const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
+      "PO_Id",
+      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
+    );
+    const data = {
+      Client_Name: getDetails.PO_Id.Client_Name,
+      Project_Name: getDetails.PO_Id.Project_Name,
+      PO_Amount: getDetails.PO_Id.PO_Amount,
+      Received_Amount: getDetails.invoice_amount_received,
+    };
+    const content = await emailContent("N001", data);
+    emailSender(content);
+
+    if (req.body.amount_received_on) {
+      const data2 = {
+        Client_Name: getDetails.PO_Id.Client_Name,
+        Project_Name: getDetails.PO_Id.Project_Name,
+        vb_bank_account: getDetails.vb_bank_account,
+        amount_received_on: getDetails.amount_received_on,
+        invoice_amount_received: getDetails.invoice_amount_received,
+      };
+
+      const emailTemplate2 = await emailTemplate("N003", data2);
+      emailSender(emailTemplate2);
+    }
     res.status(201).json({
       status: true,
       invoice,
