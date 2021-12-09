@@ -133,11 +133,11 @@ const getclientinfo = async (req, res) => {
 
 //Check if record with same brandname already exists
 const duplicates = async (req, res) => {
-    var brandname = req.headers.brandname.replace(/\s+/g, ' ').trim().charAt(0).toUpperCase() + req.headers.brandname.replace(/\s+/g, ' ').trim().slice(1);
+    var brandname = req.headers.brandname.replace(/\s+/g, ' ').trim()
     var id = req.headers.id
     try {
         if (!id ) {
-            compModal.findOne({ brandName: brandname }, function (err, example) {
+            compModal.findOne({ brandName: { $regex: new RegExp(brandname, "i") }  }, function (err, example) {
 
                 if (err) {
 
@@ -178,7 +178,7 @@ const duplicates = async (req, res) => {
         else {
 
             const record1 = await compModal.find({ _id: id })
-            const record2 = await compModal.find({ brandName: brandname })
+            const record2 = await compModal.find({ brandName: new RegExp(brandname, "i") })
 
             if (typeof record2[0] === 'undefined' || record1[0]._id.equals(record2[0]._id)) {
                 code = 200;
