@@ -60,6 +60,14 @@ const purchaseOrderSchema = mongoose.Schema({
   Remarks: {
     type: String,
   },
+  Created_At: { 
+    type: Date,
+     required: true, 
+     default: Date.now
+    },
+  Updated_At: {
+    type: Date
+  }
 });
 
 //Creating purchase order collection with purchase order schema
