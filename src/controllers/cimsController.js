@@ -16,13 +16,16 @@ const getbystatus = async(req,res)=>{
 const cimsGet = async (req, res) => {
 
     try {
-        const Comps = await compModal.find({});
+        const { filter } = req.query
+        const { key, value } = req.query
         const page = parseInt(req.query.page)
         const limit = parseInt(req.query.limit)
 
+        const Comps = await compModal.find(key == '' || !key ? {} : {[key] : [value]}).collation({ 'locale': 'en' }).sort( filter == '' || !filter ? {} : {[filter] : 1});
+
         const startIndex = (page - 1) * limit
         const endIndex = page * limit
-        const count = await compModal.find().countDocuments()
+        const count = await compModal.find(key == '' || !key ? {} : {[key] : [value]}).collation({ 'locale': 'en' }).sort( filter == '' || !filter ? {} : {[filter] : 1}).countDocuments()
 
         const data = {}
         data.data = Comps.slice(startIndex, endIndex)
@@ -33,7 +36,7 @@ const cimsGet = async (req, res) => {
 
 
         data.totalPages = Math.ceil(count / limit)
-
+        console.log(count)
         code = 200
         message = "Data fetched successfully"
 

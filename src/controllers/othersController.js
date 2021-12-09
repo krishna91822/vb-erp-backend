@@ -136,8 +136,8 @@ const duplicates = async (req, res) => {
     var brandname = req.headers.brandname.replace(/\s+/g, ' ').trim()
     var id = req.headers.id
     try {
-        if (!id ) {
-            compModal.findOne({ brandName: { $regex: new RegExp(brandname, "i") }  }, function (err, example) {
+        if (!id) {
+            compModal.findOne({ brandName: { $regex: new RegExp(brandname, "i") } }, function (err, example) {
 
                 if (err) {
 
@@ -204,6 +204,7 @@ const duplicates = async (req, res) => {
             }
         }
     } catch (err) {
+
         code = 422;
         const resData = customResponse({
             code,
@@ -212,7 +213,6 @@ const duplicates = async (req, res) => {
         return res.send(resData);
     }
 }
-
 
 //Get sorted records
 const getRecords = async (req, res) => {
