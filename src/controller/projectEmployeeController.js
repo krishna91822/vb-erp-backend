@@ -13,19 +13,13 @@ const { customResponse } = require("../utils/helper");
 // Create request
 const createAllocations = async (req, res) => {
   try {
-    const { error } = projectEmployeeSchema.validate(req.body);
-    if (error) {
-      code = 422;
-      message = "Invalid request data";
-      const resData = customResponse({
-        code,
-        message,
-        err: error && error.details,
-      });
-      return res.status(code).send(resData);
-    }
-    const allocation = await projectEmployeeModel(req.body);
-    allocation.save();
+    let allocation;
+    const { projectId, resources } = req.body;
+    resources.map(async (eachResource) => {
+      const newResource = { ...eachResource, projectId };
+      allocation = await projectEmployeeModel(newResource);
+      allocation.save();
+    });
     res.status(201).json(allocation);
   } catch (error) {
     res.status(400).json(error);
@@ -67,13 +61,12 @@ const getAllocations = async (req, res) => {
 
   try {
     const projectDetails = await projectEmployeeModel
-      .find({})
+      .find({ query })
       .populate("empId", "_id empId employeeName")
       .populate(
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-
     const filteredData = getAllocationsFilteredData(query, projectDetails);
 
     res.status(200).json(filteredData);
@@ -95,6 +88,7 @@ const getAllocationsOnBench = async (req, res) => {
       );
 
     const filteredData = getOnBenchFilteredData(query, projectDetails);
+    console.log(filteredData);
 
     res.status(200).json(filteredData);
   } catch (error) {

@@ -3,12 +3,12 @@ Joi.objectId = require("joi-objectid")(Joi);
 
 const projectEmployeeSchema = Joi.object()
   .keys({
-    projectId: Joi.objectId().required(),
-    empId: Joi.objectId().required(),
-    allocationStartDate: Joi.string().required(),
-    allocationEndDate: Joi.string().required(),
-    allocationPercentage: Joi.number().required(),
-    rackRate: Joi.number().required(),
+    projectId: Joi.objectId(),
+    empId: Joi.objectId(),
+    allocationStartDate: Joi.string(),
+    allocationEndDate: Joi.string(),
+    allocationPercentage: Joi.number(),
+    rackRate: Joi.number(),
   })
   .options({ abortEarly: false });
 

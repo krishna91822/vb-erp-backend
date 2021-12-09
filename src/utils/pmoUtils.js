@@ -67,6 +67,10 @@ const getQueryString = (queryString) => {
 const getAllocationQuery = (queryString) => {
   const query = {};
 
+  if (queryString.projectId) {
+    query.projectId = queryString.projectId;
+  }
+
   if (queryString.empId) {
     query.empId = queryString.empId;
   }
@@ -92,6 +96,11 @@ const getAllocationQuery = (queryString) => {
 
 const getAllocationsFilteredData = (findObj, projectDetails) => {
   let details = projectDetails;
+  if (findObj.projectId) {
+    details = details.filter((detail) =>
+      detail.projectId._id.valueOf().includes(findObj.projectId)
+    );
+  }
 
   if (findObj.empId) {
     details = details.filter((detail) =>
@@ -150,6 +159,7 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
         vbProjectStatus: value.projectId.vbProjectStatus,
         projectName: value.projectId.projectName,
       });
+      console.log("rupesh");
       return result;
     },
     {}
