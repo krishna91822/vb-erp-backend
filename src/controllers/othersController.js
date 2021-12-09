@@ -133,10 +133,10 @@ const getclientinfo = async (req, res) => {
 
 //Check if record with same brandname already exists
 const duplicates = async (req, res) => {
-    var brandname = req.headers.brandname.replace(/\s+/g, ' ').trim();
+    var brandname = req.headers.brandname.replace(/\s+/g, ' ').trim().charAt(0).toUpperCase() + req.headers.brandname.replace(/\s+/g, ' ').trim().slice(1);
     var id = req.headers.id
     try {
-        if (!id) {
+        if (!id ) {
             compModal.findOne({ brandName: brandname }, function (err, example) {
 
                 if (err) {
