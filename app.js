@@ -4,8 +4,9 @@ const path = require("path");
 const mongoose = require("mongoose");
 // const cors = require("cors");
 
-const AppError = require("./utils/appError");
-const globalErrorHandler = require("./controllers/errorController");
+const AppError = require("./utility/appError");
+const globalErrorHandler = require("./middleware/errorMiddleware");
+const { checkAndAssignRole } = require("./middleware/rolesMiddleware");
 
 const employeeRouter = require("./routes/employeeRoutes");
 const reviewRouter = require("./routes/ReviewRoutes");
@@ -17,10 +18,7 @@ const DB =
   process.env.NODE_ENV === "test"
     ? process.env.TEST_DATABASE_URI
     : process.env.DATABASE_URL;
-console.log(`DB is ${DB}`);
-console.log(
-  `process.env.TEST_DATABASE_URI is ${process.env.TEST_DATABASE_URI}`
-);
+
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
@@ -54,6 +52,9 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
+//For Assigning role
+app.use(checkAndAssignRole);
 
 //Routes
 app.use("/employees", employeeRouter);

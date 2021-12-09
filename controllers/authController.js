@@ -2,8 +2,8 @@ const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
 const Employee = require("./../models/employeeModel");
-const catchAsync = require("./../utils/catchAsync");
-const AppError = require("./../utils/appError");
+const catchAsync = require("../utility/catchAsync");
+const AppError = require("../utility/appError");
 
 // const signToken = (id) => {
 //   return jwt.sign({ id }, process.env.JWT_SECRET.trim(), {

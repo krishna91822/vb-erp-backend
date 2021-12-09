@@ -7,7 +7,8 @@ const {
   updateEmployee,
   deleteEmployee,
 } = require("./../controllers/employeeController");
-const { protect, restrictTo } = require("./../controllers/authController");
+const { isAuthorized } = require("../middleware/auth");
+const { restrictTo } = require("../middleware/rolesMiddleware");
 
 const router = express.Router();
 
@@ -16,13 +17,21 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(protect, getAllEmployees) //Get all employee documents
-  .post(protect, restrictTo(["HR_ADMIN", "SUPER_ADMIN"]), createEmployee); //Create Employee (FOR ADMIN)
+  .get(isAuthorized, getAllEmployees) //Get all employee documents
+  .post(isAuthorized, restrictTo(["HR_ADMIN", "SUPER_ADMIN"]), createEmployee); //Create Employee (FOR ADMIN)
 
 router
   .route("/:id")
-  .get(protect, getEmployee) //Get Employee details (FOR READ ONLY)
-  .patch(protect, updateEmployee) //Update Employee details
-  .delete(protect, restrictTo(["HR_ADMIN", "SUPER_ADMIN"]), deleteEmployee); //delete Employee documents
+  .get(isAuthorized, getEmployee) //Get Employee details (FOR READ ONLY)
+  .patch(
+    isAuthorized,
+    restrictTo(["USER", "APPROVER", "LEADERSHIP", "HR_ADMIN", "SUPER_ADMIN"]),
+    updateEmployee
+  ) //Update Employee details
+  .delete(
+    isAuthorized,
+    restrictTo(["HR_ADMIN", "SUPER_ADMIN"]),
+    deleteEmployee
+  ); //delete Employee documents
 
 module.exports = router;

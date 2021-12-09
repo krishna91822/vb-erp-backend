@@ -1,9 +1,9 @@
 const Review = require("../models/ReviewModel");
 const Employee = require("../models/employeeModel");
 
-const catchAsync = require("./../utils/catchAsync");
-const AppError = require("./../utils/appError");
-const APIFeatures = require("./../utils/apiFeatures");
+const catchAsync = require("../middleware/catchAsync");
+const AppError = require("../utility/appError");
+const APIFeatures = require("../utility/apiFeatures");
 
 exports.getAllReviews = catchAsync(async (req, res, next) => {
   //Build the query

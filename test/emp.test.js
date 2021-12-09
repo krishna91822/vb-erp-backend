@@ -123,7 +123,6 @@ describe("Employee API tests", () => {
         .send(data)
         .set({ Authorization: `Bearer ${token}` })
         .end((err, res) => {
-          console.log({ res });
           res.should.have.status(200);
           res.should.be.a("object");
           res.body.status.should.equal("success");
@@ -140,7 +139,6 @@ describe("Employee API tests", () => {
         .delete(`/employees/${empId}`)
         .set({ Authorization: `Bearer ${token}` })
         .end((err, res) => {
-          console.log({ res });
           res.should.have.status(204);
           res.should.be.a("object");
           done();
