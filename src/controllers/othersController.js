@@ -132,52 +132,94 @@ const getclientinfo = async (req, res) => {
 }
 
 //Check if record with same brandname already exists
-const duplicates = (req, res) => {
-    var query = req.body.brandname.replace(/\s+/g, ' ').trim();
-    compModal.findOne({ brandname: query }, function (err, example) {
-        if (err) {
+const duplicates = async (req, res) => {
+    var brandname = req.headers.brandname.replace(/\s+/g, ' ').trim();
+    var id = req.headers.id
+    try {
+        if (!id) {
+            compModal.findOne({ brandName: brandname }, function (err, example) {
 
-            code = 422;
-            const resData = customResponse({
-                code,
-                message,
-                err: err && err.details,
+                if (err) {
+
+                    code = 422;
+                    const resData = customResponse({
+                        code,
+                        message,
+                        err: err && err.details,
+                    });
+                    return res.send(resData);
+                }
+                if (example) {
+
+                    code = 422;
+                    message = "Data with this brand name aready exists";
+                    const resData = customResponse({
+                        code,
+                        message,
+                        err: [{
+                            message
+                        }],
+                    });
+                    return res.send(resData);
+                } else {
+
+                    code = 200;
+                    message = "Data is unique";
+                    const resData = customResponse({
+                        code,
+                        message,
+                        err,
+                    });
+                    res.send(resData)
+                }
+
             });
-            return res.send(resData);
         }
-        if (example) {
+        else {
 
-            code = 422;
-            message = "Data with this brand name aready exists";
-            const resData = customResponse({
-                code,
-                message,
-                err: [{
+            const record1 = await compModal.find({ _id: id })
+            const record2 = await compModal.find({ brandName: brandname })
+
+            if (typeof record2[0] === 'undefined' || record1[0]._id.equals(record2[0]._id)) {
+                code = 200;
+                message = "Data is unique";
+                const resData = customResponse({
+                    code,
                     message
-                }],
-            });
-            return res.send(resData);
-        } else {
+                });
+                res.send(resData)
+            }
+            else {
+                code = 422;
+                message = "Data with this brand name aready exists";
+                const resData = customResponse({
+                    code,
+                    message,
+                    err: [{
+                        message
+                    }],
+                });
+                return res.send(resData);
 
-            code = 200;
-            message = "Data is unique";
-            const resData = customResponse({
-                code,
-                message,
-                err,
-            });
-            res.send(resData)
+            }
         }
-
-    });
+    } catch (err) {
+        code = 422;
+        const resData = customResponse({
+            code,
+            err: err && err.details
+        });
+        return res.send(resData);
+    }
 }
+
 
 //Get sorted records
 const getRecords = async (req, res) => {
 
     try {
         const { filter } = req.headers
-        const data = await compModal.find().collation({'locale' : 'en'}).sort({ [filter]: 1 })
+        const data = await compModal.find().collation({ 'locale': 'en' }).sort({ [filter]: 1 })
 
         //const page = parseInt(req.headers.page)
         //const limit = parseInt(req.headers.limit)
@@ -190,6 +232,9 @@ const getRecords = async (req, res) => {
         // const data ={}
         // data.data = records.slice(startIndex, endIndex)
         // data.totalPages = Math.ceil(count/limit)
+        // data.data.forEach((record, i)=>{
+        //     record.rowNumber = startIndex+i+1;
+        // });
 
         code = 200,
             message = "Data fetched successfully"
@@ -231,7 +276,7 @@ const searchRecords = async (req, res) => {
         })
 
     } catch (err) {
-        
+
         code = 422
         const resData = customResponse({
             code,
