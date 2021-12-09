@@ -3,8 +3,7 @@ const { json } = require("body-parser");
 const ProjectsInfoModel = require("../models/projectsModel");
 const { getQueryString } = require("../utils/pmoUtils");
 //JOI
-const { projectsSchema } = require("../schema/projectsSchema")
-
+const { projectsSchema } = require("../schema/projectsSchema");
 const { customResponse } = require("../utils/helper");
 
 // Creating and Storing Created Projects data into database by POST request
@@ -25,7 +24,7 @@ const createProjects = async (req, res) => {
     const allProjects = await ProjectsInfoModel.find({});
     const project = await ProjectsInfoModel({
       ...req.body,
-      vbProjectId: `VB-PROJ-${allProjects.length}`,
+      vbProjectId: `VB-PROJ-${allProjects.length + 1}`,
     });
     project.save();
     res.status(201).json(project);

@@ -15,11 +15,11 @@ const createAllocations = async (req, res) => {
   try {
     let allocation;
     const { projectId, resources } = req.body;
-    resources.map(async (eachResource) => {
-      const newResource = { ...eachResource, projectId };
-      allocation = await projectEmployeeModel(newResource);
-      allocation.save();
-    });
+    const resourcesToInsert = resources.map((eachResource) => ({
+      ...eachResource,
+      projectId,
+    }));
+    allocation = await projectEmployeeModel.insertMany(resourcesToInsert);
     res.status(201).json(allocation);
   } catch (error) {
     res.status(400).json(error);
