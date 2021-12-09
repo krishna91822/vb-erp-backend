@@ -8,11 +8,4 @@ const emailContent = async (tempId, data) => {
   return (content = { subject, body, to: getTemplate.to });
 };
 
-const emailTemplate = async (tempID, data) => {
-  const template = await templateModel.findOne({ temp_Id: tempID });
-  const subject = Mustache.render(template.subject, data);
-  const body = Mustache.render(template.body, data);
-  return (content = { subject, body, to: template.to });
-};
-
-module.exports = { emailContent, emailTemplate };
+module.exports = { emailContent };

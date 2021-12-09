@@ -24,8 +24,6 @@
     "joi-objectid": "^4.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5",
-    "mustache": "^4.2.0",
-    "nodemailer": "^6.7.2",
     "swagger-autogen": "^2.11.2",
     "swagger-ui-express": "^4.1.6"
   },
@@ -33,6 +31,8 @@
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
     "mocha": "^9.0.3",
+    "mustache": "^4.2.0",
+    "nodemailer": "^6.7.2",
     "nodemon": "^2.0.12",
     "should": "^13.2.3"
   }

@@ -1,9 +1,6 @@
-const { invoiceschema } = require("../schema/invoiceschema");
+// const { invoiceschema } = require("../schema/invoiceschema");
 const Invoice = require("../models/invoicemodel");
-const {
-  emailContent,
-  emailTemplate,
-} = require("../controllers/poEmailController");
+const { emailContent } = require("../controllers/poEmailController");
 const { emailSender } = require("../middleware/POMailNotification");
 
 const newInvoice = async (req, res) => {
@@ -18,7 +15,7 @@ const newInvoice = async (req, res) => {
     const invoice = await Invoice.create(req.body);
     const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
       "PO_Id",
-      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
+      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
     );
     const data = {
       Client_Name: getDetails.PO_Id.Client_Name,
@@ -30,15 +27,26 @@ const newInvoice = async (req, res) => {
     emailSender(content);
 
     if (req.body.amount_received_on) {
+      const isoDate = getDetails.amount_received_on;
+      const date = new Date(isoDate);
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const dt = date.getDate();
+      const curr = getDetails.PO_Id.Currency;
+      curr = curr === "INR" ? "Rs." : "$";
+
+      const newDate = dt + "-" + month + "-" + year;
       const data2 = {
         Client_Name: getDetails.PO_Id.Client_Name,
         Project_Name: getDetails.PO_Id.Project_Name,
-        vb_bank_account: getDetails.vb_bank_account,
-        amount_received_on: getDetails.amount_received_on,
+        PO_Number: getDetails.PO_Id.PO_Number,
+        amount_received_on: newDate,
+        invoice_raised: getDetails.invoice_raised,
         invoice_amount_received: getDetails.invoice_amount_received,
+        Currency: curr,
       };
 
-      const emailTemplate2 = await emailTemplate("N003", data2);
+      const emailTemplate2 = await emailContent("N003", data2);
       emailSender(emailTemplate2);
     }
     res.status(201).json({
