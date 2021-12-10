@@ -68,7 +68,37 @@ const rewardsSchema = mongoose.Schema(
     },
     receipients_id:{
       type: [Number]
-    }
+    },
+    //     selected_senders: [{
+//       id: {
+//         type: Number,
+//         required: function () {
+//           return this.reward_sender === "selected"
+//       }
+//       },
+//       email: {
+//         type: String,
+//         required: function () {
+//           return this.reward_sender === "selected"
+//       }
+//       }
+//     }
+//   ],
+//   selected_receivers: [{
+//     id: {
+//       type: [Number],
+//       required: function () {
+//         return this.reward_receiver === "selected"
+//     }
+//     },
+//     email: {
+//       type: [String],
+//       required: function () {
+//         return this.reward_receiver === "selected"
+//     }
+//     }
+//   }
+// ],
   },
   {
     timestamps: true,
