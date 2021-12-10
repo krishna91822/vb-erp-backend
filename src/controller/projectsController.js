@@ -1,10 +1,10 @@
 // importing required Files and Routes
 const { json } = require("body-parser");
 const ProjectsInfoModel = require("../models/projectsModel");
-const { getQueryString } = require("../utils/pmoUtils");
+const { getQueryString } = require("../utility/pmoUtils");
 //JOI
 const { projectsSchema } = require("../schema/projectsSchema");
-const { customResponse } = require("../utils/helper");
+const { customResponse } = require("../utility/helper");
 
 // Creating and Storing Created Projects data into database by POST request
 const createProjects = async (req, res) => {

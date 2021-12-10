@@ -5,10 +5,10 @@ const {
   getAllocationsFilteredData,
   getOnBenchFilteredData,
   getTotalAllocationCalculated,
-} = require("../utils/pmoUtils");
+} = require("../utility/pmoUtils");
 //JOI
 const { projectEmployeeSchema } = require("../schema/projectEmployeeSchema");
-const { customResponse } = require("../utils/helper");
+const { customResponse } = require("../utility/helper");
 
 // Create request
 const createAllocations = async (req, res) => {

@@ -1,4 +1,5 @@
 const EmployeeInfoModel = require("../models/employeeModel");
+// const {customPagination} = require("../utility/helper") 
 
 const storeEmployees = async (req, res) => {
   try {
@@ -15,9 +16,17 @@ const getFilterEmployees = async (req, res) => {
   const searchName = req.query;
   try {
     if (Object.keys(req.query).length === 0) {
+      // const page = req.query.page ? req.query.page : 1;
+      // const limit = req.query.limit ? req.query.limit : 10;
+      // code = 200;
       const employee = await EmployeeInfoModel.find({});
+      // const data = customPagination({ data: employee, page, limit });
+      // const resData = customResponse({ code, data });
       return res.status(200).send(employee);
     } else {
+      // const page = req.query.page ? req.query.page : 1;
+      // const limit = req.query.limit ? req.query.limit : 10;
+      // code = 200;
       const employee = await EmployeeInfoModel.find({
         $or: [
           {
@@ -33,6 +42,8 @@ const getFilterEmployees = async (req, res) => {
           .status(400)
           .send({ message: "Bad Request, No employee found" });
       }
+      // const data = customPagination({ data: employee, page, limit });
+      // const resData = customResponse({ code, data });
       return res.status(200).send(employee);
     }
   } catch (error) {
