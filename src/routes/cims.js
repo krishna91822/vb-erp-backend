@@ -15,6 +15,8 @@ cimsRouter.post("/", cimsPost);
 cimsRouter.delete("/", cimsDel);
 cimsRouter.patch("/", cimsPatch);
 cimsRouter.get("/status", getbystatus);
+
+// new filter for PMO integration
 cimsRouter.get("/filter", getFilteredClients);
 
 // const token_secret =
