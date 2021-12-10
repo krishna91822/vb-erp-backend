@@ -94,4 +94,42 @@ describe("Invoice Unit Testing with Mocha..!!", () => {
         });
     });
   });
+
+  describe("/POST Invoice", () => {
+    it("it should throw validation error", (done) => {
+      let invoice = {
+        client_sponsor: "qqqqqqqqqqq",
+        client_finance_controller: "qq",
+        invoice_raised: "qq",
+        invoice_amount_received: "343434343",
+      };
+      chai
+        .request(server)
+        .post("/invoice")
+        .send(invoice)
+        .end((err, res) => {
+          res.should.have.status(422);
+          res.body.should.be.a("object");
+          done();
+        });
+    });
+    it("it should POST a Invoice", (done) => {
+      let invoice = {
+        PO_Id: "61aee1e37af12a205c1a16c7",
+        client_sponsor: "qqqqqqqqqqq",
+        client_finance_controller: "qq",
+        invoice_raised: "qq",
+        invoice_amount_received: "343434343",
+      };
+      chai
+        .request(server)
+        .post("/invoice")
+        .send(invoice)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.be.a("object");
+          done();
+        });
+    });
+  });
 });

@@ -29,10 +29,11 @@ const invoiceSchema = new mongoose.Schema({
   amount_received_on: {
     type: Date,
   },
-  created_at: { 
+  created_at: {
     type: Date,
-     required: true, 
-     default: Date.now }
+    required: true,
+    default: Date.now,
+  },
 });
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);

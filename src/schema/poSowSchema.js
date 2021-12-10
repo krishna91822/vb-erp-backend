@@ -21,7 +21,7 @@ const poSowSchema = Joi.object()
     Document_Name: Joi.string().required(),
     Document_Type: Joi.string().required(),
     POSOW_endDate: Joi.date().iso().required(),
-    Remarks: Joi.string(),
+    Remarks: Joi.string().empty(""),
   })
   .options({ abortEarly: false });
 

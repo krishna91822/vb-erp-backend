@@ -1,16 +1,51 @@
-// const { invoiceschema } = require("../schema/invoiceschema");
+const { invoiceSchema } = require("../schema/invoiceschema");
 const Invoice = require("../models/invoicemodel");
 const { emailContent } = require("../controllers/poEmailController");
 const { emailSender } = require("../middleware/POMailNotification");
+const { customResponse } = require("../utility/helper");
 
 const newInvoice = async (req, res) => {
+  /*
+  #swagger.tags = ['invoices']
+      #swagger.description = 'Add new invoice'
+      #swagger.parameters['obj'] = {
+        in: 'body',
+        schema: {
+            $PO_Id: '61a8bb6ab7dcd452dc0f5e05',
+            $client_sponsor: 'AB',
+            $client_finance_controller: 'CD',
+            $invoice_raised: 'ARS436PY',
+            $invoice_amount_received: '999999',
+            $vb_bank_account: 'SBIN00004567',
+            $amount_received_on: 'Fri Aug 01 2014 21:11:54 GMT+0530 (India Standard Time)'
+        }
+      }
+      #swagger.responses[201] = {
+        description: 'User successfully added.',
+        schema: {
+          "status": "success",
+          "code": 201,
+          "message": "",
+          "data": {
+            "PO_Id": '61a8bb6ab7dcd452dc0f5e05',
+            "client_sponsor": 'AB',
+            "client_finance_controller": 'CD',
+            "invoice_raised": 'ARS436PY',
+            $invoice_amount_received: '999999',
+            $vb_bank_account: 'SBIN00004567',
+            $amount_received_on: 'Fri Aug 01 2014 21:11:54 GMT+0530 (India Standard Time)',
+            $created_at: 'Fri Aug 01 2014 21:11:54 GMT+0530 (India Standard Time)',
+          },
+          "error": {}
+        }
+      }
+  */
   try {
-    // console.log("checking valiation")
-    // const { error } = invoiceschema.validate(req.body);
+    const { error } = invoiceSchema.validate(req.body);
 
-    // if (error) {
-    //   res.status(422).send(error);
-    // }
+    if (error) {
+      res.status(422).send(error);
+    }
 
     const invoice = await Invoice.create(req.body);
     const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
@@ -30,9 +65,9 @@ const newInvoice = async (req, res) => {
       const isoDate = getDetails.amount_received_on;
       const date = new Date(isoDate);
       const year = date.getFullYear();
-      const month = date.getMonth();
+      const month = date.getMonth() + 1;
       const dt = date.getDate();
-      const curr = getDetails.PO_Id.Currency;
+      let curr = getDetails.PO_Id.Currency;
       curr = curr === "INR" ? "Rs." : "$";
 
       const newDate = dt + "-" + month + "-" + year;
@@ -54,6 +89,7 @@ const newInvoice = async (req, res) => {
       invoice,
     });
   } catch (error) {
+    console.log(error);
     res.status(422).send(error);
   }
 };
@@ -149,7 +185,7 @@ const getInvoiceDetails = async (req, res) => {
   let code, message;
   try {
     const data = req.params.data;
-    const val = "client_sponsor";
+    const val = "invoice_raised";
     const val2 = "Client_Name";
     const val3 = "Id";
     const val4 = "Project_Name";

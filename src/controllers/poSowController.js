@@ -44,7 +44,9 @@ const createPoSow = async (req, res) => {
             "Document_Name": 'VB_ERP',
             "Document_Type": 'pdf',
             "POSOW_endDate": "2014-01-22T14:56:59.301Z",
-            "Remarks": 'Created New PO'
+            "Remarks": 'Created New PO',
+            "Created_At": "2021-12-10T06:01:50.178Z",
+            "__v": 0
           },
           "error": {}
         }
@@ -107,7 +109,9 @@ const getPoSowList = async (req, res) => {
                 "Document_Name": "VB_ERP",
                 "Document_Type": "pdf",
                 "POSOW_endDate": "2014-01-22T14:56:59.301Z",
-                "Remarks": "Created New PO"
+                "Remarks": "Created New PO",
+                "__v": 0,
+                "Created_At": "2021-12-10T05:55:17.961Z"
               }
             ]
           },
@@ -187,7 +191,9 @@ const getSortedPoList = async (req, res) => {
                 "Document_Name": "VB_ERP",
                 "Document_Type": "pdf",
                 "POSOW_endDate": "2014-01-22T14:56:59.301Z",
-                "Remarks": "Created New PO"
+                "Remarks": "Created New PO",
+                "__v": 0,
+                "Created_At": "2021-12-10T05:55:17.961Z"
               }
             ]
           },
@@ -253,7 +259,9 @@ const getPoDeatil = async (req, res) => {
             "Document_Name": "VB_ERP",
             "Document_Type": "pdf",
             "POSOW_endDate": "2014-01-22T14:56:59.301Z",
-            "Remarks": "Created New PO"
+            "Remarks": "Created New PO",
+            "__v": 0,
+            "Created_At": "2021-12-10T05:55:17.961Z"
           },
           "error": {}
         }
@@ -342,7 +350,7 @@ const updatePODetais = async (req, res) => {
     const updateDetails = await purchaseOrderModel.updateOne(
       { _id: req.params.id },
       {
-        $set: { ...req.body,Updated_At: new Date() },
+        $set: { ...req.body, Updated_At: new Date() },
       }
     );
     code = 200;
@@ -410,7 +418,7 @@ const updatePOStatus = async (req, res) => {
         {
           $set: {
             Status: newStatus,
-            Updated_At: new Date()
+            Updated_At: new Date(),
           },
         }
       );
