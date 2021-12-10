@@ -8,7 +8,7 @@ const {
 } = require("../utility/pmoUtils");
 //JOI
 const { projectEmployeeSchema } = require("../schema/projectEmployeeSchema");
-const { customResponse } = require("../utility/helper");
+const { customResponse, customPagination } = require("../utility/helper");
 
 // Create request
 const createAllocations = async (req, res) => {
@@ -19,6 +19,17 @@ const createAllocations = async (req, res) => {
       ...eachResource,
       projectId,
     }));
+    const { error } = projectEmployeeSchema.validate(resourcesToInsert);
+    if (error) {
+      code = 422;
+      message = "Invalid request data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
     allocation = await projectEmployeeModel.insertMany(resourcesToInsert);
     res.status(201).json(allocation);
   } catch (error) {
