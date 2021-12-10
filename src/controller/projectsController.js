@@ -6,6 +6,12 @@ const { getQueryString } = require("../utility/pmoUtils");
 const { projectsSchema } = require("../schema/projectsSchema");
 const { customResponse } = require("../utility/helper");
 
+
+//current_date
+let currentDate = new Date();
+let current_date = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1
+  }-${currentDate.getDate()}`;
+
 // Creating and Storing Created Projects data into database by POST request
 const createProjects = async (req, res) => {
   try {
@@ -66,20 +72,15 @@ const getActiveProjects = async (req, res) => {
   const query = getQueryString(req.query);
 
   try {
-    const Projects = await ProjectsInfoModel.find({
-      $and: [
-        {
-          $and: query,
-          $or: [
-            { vbProjectStatus: "On Hold" },
-            { vbProjectStatus: "Active" },
-            { vbProjectStatus: "Un Assigned" },
-          ],
-        },
-      ],
+    const Projects = await ProjectsInfoModel.find({});
+    Projects.forEach((element)=>{
+      if (element.startDate <= current_date && element.endDate >= current_date) {
+        Projects.updateOne({ "$set": { "vbProjectStatus": "Active" } });
+        res.status(200).send(Projects);
+    }
     });
-    res.status(200).send(Projects);
-  } catch (error) {
+  }
+   catch (error) {
     res.status(400).send(error);
   }
 };
