@@ -84,9 +84,16 @@ const getEmployees = async (req, res) => {
     },
   });
 }
+if(req.query.staroftheMonthId){
+  query.push({
+    $match: {
+      empId: parseInt(req.query.staroftheMonthId)
+    },
+  })
+}
 const empidSearch=[{
   $project:{
-    empId: 1, slack_member_id: 1,_id: 0
+    empId: 1, slack_member_id: 1,_id: 0,empName:1
   }
 }]
 if(req.query.empId){
@@ -97,13 +104,20 @@ if(req.query.empId){
    
   })
 }
+if(req.query.empName){
+  empidSearch.push({
+    $match:{
+      empName:req.query.empName
+    }
+  })
+}
     try {
         code=200;
-        if(!req.query.empId){
-    employees = await employeesModal.aggregate(query);
+        if(req.query.empId || req.query.empName){
+          employees= await employeesModal.aggregate(empidSearch);
         }
     else{
-      employees= await employeesModal.aggregate(empidSearch);
+      employees = await employeesModal.aggregate(query);
     }
    // const data=customPagination({data:employees});
     const resData=customResponse({code,data:employees})

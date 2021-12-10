@@ -102,7 +102,13 @@ const getRewards = async (req, res) => {
       },
     });
   }
-
+  if(req.query.rewardType){
+    query.push({
+      $match: {
+        reward_type: req.query.rewardType,
+      },
+    })
+  }
   if (req.query.sortBy) {
     let sortOrder = 1;
     if (req.query.sortOrder === "desc") sortOrder = -1;

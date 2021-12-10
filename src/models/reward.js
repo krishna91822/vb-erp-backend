@@ -14,7 +14,7 @@ const rewardsSchema = mongoose.Schema(
     },
     reward_subType: {
       type: String,
-      enum:["work-anniversary", "birthday-celebration"],
+      enum:["work-anniversary", "birthday-celebration","starOfTheMonth"],
       required: function () {
         return this.reward_type === "daily"
     }
