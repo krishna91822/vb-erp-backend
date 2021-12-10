@@ -5,7 +5,7 @@ const compSchema = mongoose.Schema({
     rowNumber: Number,
     designation: String,
     brandName: { type: String, unique: true },
-    clientName: String,
+    
     domain: String,
     baseLocation: String,
     gstNumber: String,
