@@ -187,7 +187,6 @@ const cimsPatch = async(req, res) => {
 
 const getFilteredClients = async(req, res) => {
     const query = req.query;
-    console.log(query);
     try {
         if (Object.keys(req.query).length === 0) {
             const client = await compModal.find({});
@@ -201,7 +200,6 @@ const getFilteredClients = async(req, res) => {
                     },
                 }, ],
             }, { brandName: 1, "contacts.primaryContact.contactNumber": 1 });
-            console.log(client);
             return res.status(200).send(client);
         }
     } catch (error) {
