@@ -184,6 +184,7 @@ const cimsPatch = async(req, res) => {
 };
 
 /* ****************************************** */
+// PMO integration functionality
 
 const getFilteredClients = async(req, res) => {
     const query = req.query;

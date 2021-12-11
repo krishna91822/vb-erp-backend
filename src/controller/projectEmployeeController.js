@@ -26,16 +26,21 @@ const createAllocations = async(req, res) => {
     }
 };
 
-// Update request
+// Update request for updating the allocation and creating new resources
 const updateAllocation = async(req, res) => {
     try {
-        const _id = req.params.id;
-        const updateResource = await projectEmployeeModel.findOneAndUpdate({ empId: _id },
-            req.body, {
-                new: true,
-            }
-        );
-        res.status(200).send(updateResource);
+        const { projectId } = req.params;
+        const updateResource = await projectEmployeeModel.find({
+            empId: req.body.empId,
+            projectId,
+        });
+        console.log(updateResource);
+        if (updateResource.length === 0) {
+            console.log(updateResource);
+            let allocation = await projectEmployeeModel.insertMany(req.body);
+            return res.status(200).send(allocation);
+        }
+        res.status(400).json({ message: "Employee already allocated!" });
     } catch (error) {
         res.status(400).send(error);
     }
@@ -126,81 +131,3 @@ module.exports = {
     getAllocationsOnBench,
     getTotalAllocationByEmpId,
 };
-
-// let query = [
-// {
-//   empId: { $regex: "", $options: "i" },
-// },
-// ];
-// if (req.query.empId) {
-//     query.push({
-//         empId: req.query.empId
-//     });
-// }
-
-//   if (req.query.projectId) {
-//     query.push({
-//       projectId: req.query.allocationStartDate,
-//     });
-//   }
-//   if (req.query.employeeName) {
-//     console.log("Hi");
-//     query.push({
-//       employeeName: { $regex: req.query.employeeName, $options: "i" },
-//     });
-//   }
-
-//   if (req.query.allocationPercentage) {
-//     query.push({
-//       allocationPercentage: {
-//         $regex: req.query.allocationPercentage,
-//         // $options: "i",
-//       },
-//     });
-//   }
-// if (req.query.employeeName) {
-//     query.push({
-//         employeeName: req.query.employeeName
-//     });
-// }
-// if (req.query.projectAllocated) {
-//     query.push({
-//         projectAllocated: req.query.projectAllocated
-//     });
-// }
-// if (req.query.percentageAllocated) {
-//     query.push({
-//         percentageAllocated: req.query.percentageAllocated
-//     });
-// }
-// if (req.query.allocationStartDate) {
-//     query.push({
-//         allocationStartDate: {
-//             $regex: req.query.allocationStartDate,
-//             $options: 'i'
-//         }
-//     });
-// }
-// if (req.query.allocationEndDate) {
-//     query.push({
-//         allocationEndDate: req.query.allocationEndDate
-//     });
-// }
-// if (req.query.empId) {
-//     query.push({
-//         empId: req.query.empId,
-//     });
-// }
-// if (req.query.projectId) {
-//     query.push({
-//         projectId: req.query.projectId,
-//     });
-// }
-
-//   let findObj = {};
-//   if (req.query && Object.keys(req.query).length > 0) {
-//     console.log("in");
-//     findObj = {
-//       $and: [{ $and: query }],
-//     };
-//   }
