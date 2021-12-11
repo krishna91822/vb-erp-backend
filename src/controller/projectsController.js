@@ -1,5 +1,6 @@
 // importing required Files and Routes
 const { json } = require("body-parser");
+const moment = require("moment")
 const ProjectsInfoModel = require("../models/projectsModel");
 const { getQueryString } = require("../utility/pmoUtils");
 //JOI
@@ -73,12 +74,31 @@ const getActiveProjects = async (req, res) => {
 
   try {
     const Projects = await ProjectsInfoModel.find({});
-    Projects.forEach((element)=>{
-      if (element.startDate <= current_date && element.endDate >= current_date) {
-        Projects.updateOne({ "$set": { "vbProjectStatus": "Active" } });
-        res.status(200).send(Projects);
+    Projects.forEach(async(element)=>{
+      // console.log(element,"aahdjqwdhbqw")
+      var date = moment( current_date, "YYYY-MM-DD");
+      var startDate = moment(element.startDate, "YYYY-MM-DD");
+      var endDate = moment(element.endDate, "YYYY-MM-DD");
+      // console.log(date,startDate,endDate);
+      if(date.isBefore(endDate) && date.isAfter(startDate) || (date.isSame(startDate) || date.isSame(endDate))) {
+      let updateElement  = await ProjectsInfoModel.findOneAndUpdate( {_id:element._id} ,{ "$set": { "vbProjectStatus": "Active" } });
+      // console.log(updateElement);
+      updateElement.save()
+      // res.status(200).send(updateElement);
     }
-    });
+    else{
+      let updateElement  = await ProjectsInfoModel.findOneAndUpdate( {_id:element._id} ,{ "$set": { "vbProjectStatus": "Done" } });
+      console.log(updateElement);
+      updateElement.save()
+    }
+    })
+    // console.log(element,"bahar")
+    // return res.status(200).send(updateElement);
+    const updatedProjects = await ProjectsInfoModel.find({});
+    res.status(200).send(updatedProjects);
+
+
+
   }
    catch (error) {
     res.status(400).send(error);
