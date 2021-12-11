@@ -189,7 +189,7 @@ const getFilteredClients = async(req, res) => {
     const query = req.query;
     try {
         if (Object.keys(req.query).length === 0) {
-            const client = await compModal.find({});
+            const client = await compModal.find({}, { brandName: 1, "contacts.primaryContact.contactNumber": 1 });
             return res.status(200).send(client);
         } else {
             const client = await compModal.find({
