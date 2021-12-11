@@ -4,9 +4,11 @@ const EmployeeRouter = express.Router();
 
 //importing from controller
 const {
+
   storeEmployees,
+  getFilteredEmp,
   // getEmployees,
-  getFilterEmployees,
+  // getFilterEmployees,
 } = require("../controller/employeeController");
 
 // POST request
@@ -16,6 +18,7 @@ EmployeeRouter.post("/", storeEmployees);
 // EmployeeRouter.get('/', getEmployees);
 
 // GET request for filtering the drop-down options
-EmployeeRouter.get("/", getFilterEmployees);
+// EmployeeRouter.get("/", getFilterEmployees);
+EmployeeRouter.get("/empfilter", getFilteredEmp);
 
 module.exports = EmployeeRouter;
