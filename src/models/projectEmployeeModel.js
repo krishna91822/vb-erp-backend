@@ -9,6 +9,9 @@ const projectAndEmployee = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "employeeSchema",
   },
+  primaryCapiblities:{
+    type:Array
+  },
   allocationStartDate: {
     type: String,
   },
