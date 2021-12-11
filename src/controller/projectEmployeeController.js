@@ -34,9 +34,8 @@ const updateAllocation = async(req, res) => {
             empId: req.body.empId,
             projectId,
         });
-        console.log(updateResource);
+
         if (updateResource.length === 0) {
-            console.log(updateResource);
             let allocation = await projectEmployeeModel.insertMany(req.body);
             return res.status(200).send(allocation);
         }
@@ -91,7 +90,6 @@ const getAllocationsOnBench = async(req, res) => {
             );
 
         const filteredData = getOnBenchFilteredData(query, projectDetails);
-        console.log(filteredData);
 
         res.status(200).json(filteredData);
     } catch (error) {
