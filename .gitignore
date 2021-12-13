@@ -60,3 +60,6 @@ config.env
 
 # next.js build output
 .next
+
+# api docs
+public/api-docs/swagger-output.json

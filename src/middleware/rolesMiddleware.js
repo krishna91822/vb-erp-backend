@@ -1,7 +1,8 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
-const Employee = require("./../models/employeeModel");
+const { Employee } = require("../models/employeeModel");
 const AppError = require("../utility/appError");
+console.log(`Employee is ${JSON.stringify(Employee)}`);
 
 exports.checkAndAssignRole = async (req, res, next) => {
   // 1) Getting token and check if its there

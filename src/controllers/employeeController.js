@@ -1,9 +1,14 @@
-const Employee = require("./../models/employeeModel");
+const { Employee } = require("../models/employeeModel");
 const ReviewModel = require("../models/ReviewModel");
 
 const catchAsync = require("../middleware/catchAsync");
 const AppError = require("../utility/appError");
 const APIFeatures = require("../utility/apiFeatures");
+const { customResponse } = require("../utility/helper");
+const {
+  employeeSchema,
+  employeeUpdateSchema,
+} = require("../schema/employeeSchema");
 
 exports.getAllEmployees = catchAsync(async (req, res, next) => {
   //Build the query
@@ -43,6 +48,17 @@ exports.getEmployee = catchAsync(async (req, res, next) => {
 });
 
 exports.createEmployee = catchAsync(async (req, res, next) => {
+  const { error } = employeeSchema.validate(req.body);
+  if (error) {
+    code = 422;
+    message = "Invalid request data";
+    const resData = customResponse({
+      code,
+      message,
+      err: error && error.details,
+    });
+    return res.status(code).send(resData);
+  }
   const newEmployee = await Employee.create(req.body);
 
   res.status(201).json({
@@ -52,6 +68,17 @@ exports.createEmployee = catchAsync(async (req, res, next) => {
 });
 
 exports.updateEmployee = catchAsync(async (req, res, next) => {
+  const { error } = employeeUpdateSchema.validate(req.body);
+  if (error) {
+    code = 422;
+    message = "Invalid request data";
+    const resData = customResponse({
+      code,
+      message,
+      err: error && error.details,
+    });
+    return res.status(code).send(resData);
+  }
   const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,

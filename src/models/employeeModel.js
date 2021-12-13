@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
-const validator = require("validator");
-const bcrypt = require("bcryptjs");
 
 const otherField = new mongoose.Schema({
   fieldName: {
@@ -37,7 +35,6 @@ const employeeSchema = new mongoose.Schema(
       required: [true, "Please provide your email"],
       trim: true,
       unique: true,
-      validate: [validator.isEmail, "Please provide a valid email address"],
     },
     empPersonalEmail: {
       type: String,
@@ -115,6 +112,11 @@ const employeeSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    empCtc: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
     empGraduation: {
       type: String,
       required: true,
@@ -191,4 +193,4 @@ employeeSchema.plugin(AutoIncrement, { inc_field: "empId" });
 //Employee model class
 const Employee = mongoose.model("Employee", employeeSchema);
 
-module.exports = Employee;
+module.exports = { Employee };
