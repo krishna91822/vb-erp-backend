@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+// const userSchema = new mongoose.Schema({
+//   emp_id: {
+//     type: Number
+//   },
+//   emp_email: {
+//     type: String
+//   },
+//   emp_name: {
+//     type: String
+//   },
+// });
 // creating rewards schema
 const rewardsSchema = mongoose.Schema(
   {
@@ -24,23 +35,21 @@ const rewardsSchema = mongoose.Schema(
       enum: ["ceo", "manager", "selected"],
       required: true,
     },
-    selected_sender: {
-      type: [mongoose.Schema.Types.Mixed],
-      required: function () {
-        return this.reward_sender === "selected"
-    }
-    },
     reward_receiver: {
       type: String,
       enum: ["manager", "employees", "everyone", "selected"],
       required: true,
     },
-    selected_receiver: {
-      type: [mongoose.Schema.Types.Mixed],
-      required: function () {
-        return this.reward_receiver === "selected"
-    }
-    },
+    sender_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+  },
+  recipients_ids: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+  }],
     receiver_message: {
       type: String,
       required: true,
@@ -69,42 +78,13 @@ const rewardsSchema = mongoose.Schema(
     receipients_id:{
       type: [Number]
     },
-    //     selected_senders: [{
-//       id: {
-//         type: Number,
-//         required: function () {
-//           return this.reward_sender === "selected"
-//       }
-//       },
-//       email: {
-//         type: String,
-//         required: function () {
-//           return this.reward_sender === "selected"
-//       }
-//       }
-//     }
-//   ],
-//   selected_receivers: [{
-//     id: {
-//       type: [Number],
-//       required: function () {
-//         return this.reward_receiver === "selected"
-//     }
-//     },
-//     email: {
-//       type: [String],
-//       required: function () {
-//         return this.reward_receiver === "selected"
-//     }
-//     }
-//   }
-// ],
   },
   {
     timestamps: true,
   }
 );
 
+//const User = mongoose.model("User", userSchema);
 // creating rewards collection with rewardsSchema
 const rewardsModal = mongoose.model("rewards", rewardsSchema);
 
