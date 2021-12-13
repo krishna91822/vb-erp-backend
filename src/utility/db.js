@@ -8,7 +8,6 @@ const mongoose = require("mongoose");
 const db = mongoose.connection;
 
 const connectToDb = () => {
-  console.log(`DB is ${DB}`);
   mongoose.connect(DB);
   db.on("error", console.error.bind(console, "connection error: "));
   db.on("open", console.error.bind(console, "DB connected: "));

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
@@ -15,39 +16,6 @@ const { closeConnection } = require("./src/utility/db");
 const router = require("./src/routes");
 
 const app = express();
-
-//mongoDb connection
-console.log(`process.env.NODE_ENV is ${process.env.NODE_ENV}`);
-// const DB =
-//   process.env.NODE_ENV === "test"
-//     ? process.env.TEST_DATABASE_URI
-//     : process.env.DATABASE_URL;
-
-// mongoose
-//   .connect(DB, {
-//     useNewUrlParser: true,
-//   })
-//   .then(() => console.log("DB connection successful"))
-//   .catch((err) => {
-//     console.log(err);
-//   });
-
-// mongoose.connection.on("disconnected", () => {
-//   console.log(`mongoose disconnected`);
-// });
-
-// mongoose.connection.on("error", (err) => {
-//   console.log(`mongoose err is ${err}`);
-// });
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//   })
-// );
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
 
 //middlewares
 // if (process.env.NODE_ENV === "development") {
@@ -71,7 +39,6 @@ app.all("*", (req, res, next) => {
 //error handler
 app.use(globalErrorHandler);
 if (process.env.NODE_ENV !== "test") {
-  console.log(`app is not test`);
   const server = app.listen(process.env.PORT, async () => {
     await connectToDb();
 
@@ -89,7 +56,6 @@ if (process.env.NODE_ENV !== "test") {
     });
   });
 } else {
-  console.log(`app is test`);
   connectToDb();
 }
 
