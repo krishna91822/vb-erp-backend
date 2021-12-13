@@ -25,6 +25,34 @@ const getEmployees = async (req, res) => {
   /*
       #swagger.tags = ['Employees']
       #swagger.description = 'Get all employees' 
+      #swagger.parameters['search'] = {
+      in: 'query',
+      type: 'string'
+    }
+    #swagger.parameters['dob'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['workAnniversary'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['staroftheMonthId'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['empId'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['empName'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['empDes'] = {
+      in: 'query',
+      type: 'string'
+    }
       #swagger.responses[200] = {
         schema:{
           "status": "success",
@@ -131,7 +159,7 @@ if(req.query.empName){
         if(req.query.empId || req.query.empName){
           employees= await employeesModal.aggregate(empidSearch);
         }
-        else if(req.query.empDes){
+        else if(req.query.empDes==="manager"){
          employees= await employeesModal.aggregate(empmanagerSearch);
         }
     else{

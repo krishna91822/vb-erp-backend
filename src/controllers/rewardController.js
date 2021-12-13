@@ -91,7 +91,6 @@ const getRewards = async (req, res) => {
       },
     });
   }
-
   if (req.query.startdate && req.query.enddate) {
     query.push({
       $match: {
