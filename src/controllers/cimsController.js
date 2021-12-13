@@ -1,0 +1,216 @@
+const compModal = require("../models/compSchema");
+const { cimsSchema, updateSchema } = require("../schema/cimsSchema");
+const { customResponse } = require("../utility/helper");
+
+//Get all records in database
+const cimsGet = async (req, res) => {
+    try {
+        const sort = req.query.sort;
+        const filter = req.query.filter;
+        const sortOrder = req.query.sortOrder;
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
+
+        const Comps = await compModal
+            .find(filter == "" || !filter ? {} : { status: [filter] })
+            .collation({ locale: "en" })
+            .sort(
+                sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
+            );
+
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const count = await compModal
+            .find(filter == "" || !filter ? {} : { status: [filter] })
+            .collation({ locale: "en" })
+            .sort(
+                sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
+            )
+            .countDocuments();
+
+        const data = {};
+        data.data = Comps.slice(startIndex, endIndex);
+
+        data.data.forEach((record, i) => {
+            record.rowNumber = startIndex + i + 1;
+        });
+
+        data.totalPages = Math.ceil(count / limit);
+        code = 200;
+        message = "Data fetched successfully";
+
+        const resData = customResponse({
+            data,
+            code,
+            message,
+        });
+        res.send(resData);
+    } catch (error) {
+        code = 422;
+
+        const resData = customResponse({
+            code,
+            error: error && error.details,
+        });
+        return res.send(resData);
+    }
+};
+
+//Post record in database
+const cimsPost = async (req, res) => {
+
+    try {
+        const { error } = cimsSchema.validate(req.body);
+
+        if (error) {
+
+            code = 422;
+            message = "Invalid request data";
+
+            const resData = customResponse({
+                code,
+                message,
+                err: error && error.details,
+            });
+            return res.send(resData);
+
+        }
+        const newComp = await compModal.create(req.body);
+
+        data = newComp
+        code = 200
+        message = "Data created successfully"
+
+        const resData = customResponse({
+            data,
+            code,
+            message
+        })
+        res.send(resData);
+    }
+    catch (err) {
+
+        code = 422;
+        const resData = customResponse({
+            code,
+            error: error && error.details
+        });
+        return res.send(resData);
+    }
+};
+
+//Delete record in database
+const setStatus = async (req, res) => {
+
+    const { id } = req.query;
+
+    try {
+        const del = await compModal.findById(id);
+
+        await compModal.findOneAndUpdate({ _id: id }, {status: !del.status});
+
+        code = 200;
+        message = "Status updated successfully"
+
+        const resData = customResponse({
+            code,
+            message
+        });
+        res.send(resData)
+    } catch (error) {
+        code = 422;
+
+        const resData = customResponse({
+            code,
+            error: error && error.details
+        });
+        return res.send(resData);
+    }
+};
+
+//Update record in database
+const cimsPatch = async (req, res) => {
+
+    const _id = req.body._id;
+    //const { designation, brandname, clientname, domain, baselocation,address, status,contacts } = req.body;
+
+    try {
+        const { error } = updateSchema.validate(req.body);
+        if (error) {
+
+            code = 422;
+            message = "Invalid request data";
+
+            const resData = customResponse({
+                code,
+                message,
+                err: error && error.details,
+            });
+            return res.send(resData);
+
+        }
+
+        await compModal.findOneAndUpdate({ _id: _id }, req.body);
+
+        code = 200;
+        data = req.body
+        message = "Data updated successfully";
+
+        const resData = customResponse({
+            code,
+            message,
+            data
+        });
+        return res.send(resData);
+    }
+    catch (error) {
+
+        code = 422;
+
+        const resData = customResponse({
+            code,
+            error: error && error.details
+        });
+        res.send(resData)
+    }
+};
+
+//Searching the records
+const searchRecords = async (req, res) => {
+    try {
+        const searchData = req.query.searchData;
+        let regex = new RegExp(searchData, "i");
+
+        const records = await compModal.find({ $or: [{ brandName: [regex] }, { 'registeredAddress.country': [regex] }, { 'contacts.primaryContact.firstName': [regex] }] })
+
+        const data = records
+
+
+        data.forEach((record, i) => {
+            record.rowNumber = i + 1;
+        });
+
+        code = 200
+        message = "Data fetched successfully"
+
+        const resData = customResponse({
+            code,
+            data,
+            message,
+        });
+
+        res.send(resData);
+
+    } catch (err) {
+        code = 422;
+        const resData = customResponse({
+            code,
+            error: err && err.details,
+        });
+
+        res.send(resData);
+    }
+}
+
+
+module.exports = { searchRecords, setStatus, cimsGet, cimsPatch, cimsPost }
