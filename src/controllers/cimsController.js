@@ -5,7 +5,7 @@ const { customResponse } = require("../utility/helper");
 //Get all records in database
 const cimsGet = async (req, res) => {
     try {
-        const sort = req.query.sort;
+        const sort = parseInt(req.query.sort);
         const filter = req.query.filter;
         const sortOrder = req.query.sortOrder;
         const page = parseInt(req.query.page) || 1;
