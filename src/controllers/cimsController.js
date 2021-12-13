@@ -28,6 +28,7 @@ const cimsGet = async (req, res) => {
       )
       .countDocuments();
 
+    const totalPages = Math.ceil(count / limit);
     const data = {};
     data.data = Comps.slice(startIndex, endIndex);
     data.data.forEach((record, i) => {
@@ -35,13 +36,15 @@ const cimsGet = async (req, res) => {
     });
 
     if (data.data.length == 0) {
-      data.data = Comps.slice(0, 5);
+      const startIndex = (totalPages - 1) * limit;
+      const endIndex = totalPages * limit;
+      data.data = Comps.slice(startIndex, endIndex);
       data.data.forEach((record, i) => {
-        record.rowNumber = 0 + i + 1;
+        record.rowNumber = startIndex + i + 1;
       });
     }
 
-    data.totalPages = Math.ceil(count / limit);
+    data.totalPages = totalPages;
     code = 200;
     message = "Data fetched successfully";
 
