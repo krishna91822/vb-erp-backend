@@ -2,12 +2,12 @@ const express = require("express");
 const jsonwebtoken = require("jsonwebtoken");
 const cimsRouter = express.Router();
 const {
-    cimsDel,
-    cimsGet,
-    cimsPatch,
-    cimsPost,
-    getbystatus,
-    getFilteredClients,
+  cimsDel,
+  cimsGet,
+  cimsPatch,
+  cimsPost,
+  getbystatus,
+  getFilteredClients,
 } = require("../controller/cimsController");
 
 cimsRouter.get("/", cimsGet);

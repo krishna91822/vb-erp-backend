@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // database connection
 const db = mongoose.connection;
@@ -8,7 +8,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/pmo");
 
 //successful connection method
 db.once("open", function () {
-    console.log("PMO database connected successfully.");
+  console.log("PMO database connected successfully.");
 });
 
 //successful connection method
