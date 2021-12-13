@@ -2,16 +2,6 @@ const compModal = require("../models/compSchema");
 const { cimsSchema, updateSchema } = require("../schema/cimsSchema");
 const { customResponse } = require("../utility/helper");
 
-
-//get by status
-const getbystatus = async (req, res) => {
-    const { status } = req.headers
-
-    compModal.find({ status: [status] }).then(clientData => res.send(clientData))
-
-
-}
-
 //Get all records in database
 const cimsGet = async (req, res) => {
 
@@ -217,4 +207,4 @@ const searchRecords = async (req, res) => {
 }
 
 
-module.exports = { searchRecords, cimsDel, cimsGet, cimsPatch, cimsPost, getbystatus }
+module.exports = { searchRecords, cimsDel, cimsGet, cimsPatch, cimsPost }
