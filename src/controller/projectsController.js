@@ -68,8 +68,8 @@ const getActiveProjects = async (req, res) => {
   try {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
-      let date = moment().format("YYYY-MM-DD")
-      date = moment(date, "YYYY-MM-DD");
+      let date = moment().format("YYYY-MM-DD");
+      // date = moment(date, "YYYY-MM-DD");
       let endDate = moment(element.endDate, "YYYY-MM-DD");
 
       if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
