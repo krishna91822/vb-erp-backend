@@ -1,17 +1,5 @@
 const mongoose = require("mongoose");
 
-// const userSchema = new mongoose.Schema({
-//   emp_id: {
-//     type: Number
-//   },
-//   emp_email: {
-//     type: String
-//   },
-//   emp_name: {
-//     type: String
-//   },
-// });
-// creating rewards schema
 const rewardsSchema = mongoose.Schema(
   {
     reward_display_name: {
