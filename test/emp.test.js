@@ -55,7 +55,7 @@ describe("Employee API tests", () => {
           res.should.be.a("object");
           res.body.status.should.equal("success");
           // res.body.results.should.be.above(0);
-          res.body.data.should.be.a("object");
+          res.body.data.should.be.a("array");
           done();
         });
     });
@@ -71,7 +71,7 @@ describe("Employee API tests", () => {
           res.should.have.status(200);
           res.should.be.a("object");
           res.body.status.should.equal("success");
-          res.body.data.employee.should.be.a("object");
+          res.body.data.should.be.a("object");
           done();
         });
     });
