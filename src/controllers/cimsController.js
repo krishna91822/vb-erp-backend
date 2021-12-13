@@ -110,7 +110,7 @@ const setStatus = async (req, res) => {
         await compModal.findOneAndUpdate({ _id: id }, {status: !del.status});
 
         code = 200;
-        message = "Status updated successfully"
+        del.status? message = `The client ${del.brandName} has been deactivated` : message = `The client ${del.brandName} has been activated` 
 
         const resData = customResponse({
             code,
