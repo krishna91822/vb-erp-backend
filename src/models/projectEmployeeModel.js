@@ -7,7 +7,7 @@ const projectAndEmployee = mongoose.Schema({
   },
   empId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "employeeSchema",
+    ref: "Employee",
   },
   primaryCapiblities:{
     type:Array
