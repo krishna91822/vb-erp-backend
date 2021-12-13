@@ -64,7 +64,7 @@ const getAllocations = async(req, res) => {
     try {
         const projectDetails = await projectEmployeeModel
             .find({ query })
-            .populate("empId", "_id empId employeeName")
+            .populate("empId", "_id empId empName")
             .populate(
                 "projectId",
                 "_id vbProjectId startDate endDate vbProjectStatus projectName"
@@ -83,7 +83,7 @@ const getAllocationsOnBench = async(req, res) => {
     try {
         const projectDetails = await projectEmployeeModel
             .find({})
-            .populate("empId", "_id empId employeeName")
+            .populate("empId", "_id empId empName")
             .populate(
                 "projectId",
                 "_id vbProjectId startDate endDate vbProjectStatus projectName"
@@ -107,7 +107,7 @@ const getTotalAllocationByEmpId = async(req, res) => {
     try {
         const projectDetails = await projectEmployeeModel
             .find({})
-            .populate("empId", "_id empId employeeName")
+            .populate("empId", "_id empId empName")
             .populate(
                 "projectId",
                 "_id vbProjectId startDate endDate vbProjectStatus projectName"
