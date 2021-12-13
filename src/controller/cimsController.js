@@ -190,7 +190,15 @@ const getFilteredClients = async(req, res) => {
     const query = req.query;
     try {
         if (Object.keys(req.query).length === 0) {
-            const client = await compModal.find({}, { brandName: 1, "contacts.primaryContact.contactNumber": 1 });
+            const client = await compModal.find({}, {
+                brandName: 1,
+                primaryContact: 1,
+                secondaryContact: 1,
+                tertiaryContact: 1,
+                otherContact1: 1,
+                otherContact2: 1,
+                "contacts.primaryContact.contactNumber": 1,
+            });
             return res.status(200).send(client);
         } else {
             const client = await compModal.find({
@@ -200,7 +208,15 @@ const getFilteredClients = async(req, res) => {
                         $options: "i",
                     },
                 }, ],
-            }, { brandName: 1, "contacts.primaryContact.contactNumber": 1 });
+            }, {
+                brandName: 1,
+                primaryContact: 1,
+                secondaryContact: 1,
+                tertiaryContact: 1,
+                otherContact1: 1,
+                otherContact2: 1,
+                "contacts.primaryContact.contactNumber": 1,
+            });
             return res.status(200).send(client);
         }
     } catch (error) {
