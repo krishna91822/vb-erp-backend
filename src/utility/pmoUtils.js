@@ -1,4 +1,5 @@
 const { reduce, values } = require("lodash");
+const moment = require("moment");
 
 const getQueryString = (queryString) => {
   let query = [
@@ -141,7 +142,7 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
       if (!result[value.empId.empId]) {
         result[value.empId.empId] = {
           empId: value.empId.empId,
-          employeeName: value.empId.employeeName,
+          empName: value.empId.empName,
           remainingAllocation: 100,
           projects: [],
         };
@@ -159,7 +160,6 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
         vbProjectStatus: value.projectId.vbProjectStatus,
         projectName: value.projectId.projectName,
       });
-      console.log("rupesh");
       return result;
     },
     {}
@@ -195,11 +195,17 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
 
 const getTotalAllocationCalculated = (empId, projectDetails) => {
   let details = projectDetails;
-
+  const currentDate = moment().format("YYYY-MM-DD");
   if (empId) {
-    details = details.filter((detail) => detail.empId.empId.includes(empId));
+    details = details.filter(
+      (detail) =>
+        detail.empId.empId.toString() === empId &&
+        moment(detail.allocationEndDate, "YYYY-MM-DD").isSameOrAfter(
+          currentDate,
+          "YYYY-MM-DD"
+        )
+    );
   }
-
   const totalAllocation = reduce(
     details,
     (result, value) => result + value.allocationPercentage,
