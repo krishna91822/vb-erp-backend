@@ -3,14 +3,13 @@ const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
-// const cors = require("cors");
+const cors = require("cors");
+const constants = require("./src/utility/constant");
 
 const AppError = require("./src/utility/appError");
 const globalErrorHandler = require("./src/middleware/errorMiddleware");
 const { checkAndAssignRole } = require("./src/middleware/rolesMiddleware");
 const { isAuthorized } = require("./src/middleware/auth");
-const employeeRouter = require("./src/routes/employeeRoutes");
-const reviewRouter = require("./src/routes/ReviewRoutes");
 const { connectToDb } = require("./src/utility/db");
 const { closeConnection } = require("./src/utility/db");
 const router = require("./src/routes");
@@ -30,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //For Assigning role
 // app.use(checkAndAssignRole);
 
+app.use(cors(constants.CORS_OPTIONS));
 //Routes
 app.use(router);
 app.all("*", (req, res, next) => {

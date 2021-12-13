@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "swagger-autogen": "node swagger.js",
-    "start": "npm run swagger-autogen && nodemon server.js",
-    "start:prod": "SET NODE_ENV=production & nodemon server.js",
+    "start": "npm run swagger-autogen && nodemon app.js",
+    "start:prod": "SET NODE_ENV=production & nodemon app.js",
     "test": "mocha --reporter spec "
   },
   "dependencies": {
