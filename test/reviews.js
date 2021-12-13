@@ -3,7 +3,6 @@ let mongoose = require("mongoose");
 let reviews = require("../src/models/ReviewModel");
 let chai = require("chai");
 let chaiHttp = require("chai-http");
-let server = require("../server");
 let should = chai.should();
 const app = require("../app");
 chai.use(chaiHttp);
