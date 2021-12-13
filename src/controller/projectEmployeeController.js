@@ -5,10 +5,10 @@ const {
   getAllocationsFilteredData,
   getOnBenchFilteredData,
   getTotalAllocationCalculated,
-} = require("../utils/pmoUtils");
+} = require("../utility/pmoUtils");
 //JOI
 const { projectEmployeeSchema } = require("../schema/projectEmployeeSchema");
-const { customResponse } = require("../utils/helper");
+const { customResponse, customPagination } = require("../utility/helper");
 
 // Create request
 const createAllocations = async (req, res) => {
@@ -99,11 +99,9 @@ const getAllocationsOnBench = async (req, res) => {
 
 const getTotalAllocationByEmpId = async (req, res) => {
   let empId = "";
-
   if (req.query.empId) {
     empId = req.query.empId;
   }
-
   try {
     const projectDetails = await projectEmployeeModel
       .find({})
@@ -112,9 +110,7 @@ const getTotalAllocationByEmpId = async (req, res) => {
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-
     const totalAllocation = getTotalAllocationCalculated(empId, projectDetails);
-
     res.status(200).json(totalAllocation);
   } catch (error) {
     res.status(400).send(error);

@@ -10,30 +10,30 @@ const storeEmployees = async (req, res) => {
   }
 };
 
-// Filtering
-const getFilterEmployees = async (req, res) => {
-  const searchName = req.query;
+const getFilteredEmp = async (req, res) => {
+  const query = req.query;
   try {
     if (Object.keys(req.query).length === 0) {
-      const employee = await EmployeeInfoModel.find({});
-      return res.status(200).send(employee);
+      const filterEmployee = await EmployeeInfoModel.find(
+        {},
+        { empId: 1, empName: 1, empPrimaryCapability: 1 }
+      );
+      return res.status(200).send(filterEmployee);
     } else {
-      const employee = await EmployeeInfoModel.find({
-        $or: [
-          {
-            empName: {
-              $regex: searchName.empName.trim(),
-              $options: "i",
+      const filterEmployee = await EmployeeInfoModel.find(
+        {
+          $or: [
+            {
+              empName: {
+                $regex: query.empName.trim(),
+                $options: "i",
+              },
             },
-          },
-        ],
-      });
-      if (employee.length < 1) {
-        return res
-          .status(400)
-          .send({ message: "Bad Request, No employee found" });
-      }
-      return res.status(200).send(employee);
+          ],
+        },
+        { empId: 1, empName: 1, empPrimaryCapability: 1 }
+      );
+      return res.status(200).send(filterEmployee);
     }
   } catch (error) {
     res.status(400).send(error);
@@ -42,6 +42,5 @@ const getFilterEmployees = async (req, res) => {
 
 module.exports = {
   storeEmployees,
-  // getEmployees,
-  getFilterEmployees,
+  getFilteredEmp,
 };

@@ -8,7 +8,6 @@ const {
   getActiveProjects,
   getDoneProjects,
   getProjectById,
-  // getProjectBySlug,
   createProjects,
   updateProject,
 } = require("../controller/projectsController");
@@ -30,8 +29,5 @@ ProjectRouter.get("/done", getDoneProjects);
 
 //GET Method by id
 ProjectRouter.get("/:id", getProjectById);
-
-//GET Method by slug
-// ProjectRouter.get("/:slug", getProjectBySlug);
 
 module.exports = ProjectRouter;
