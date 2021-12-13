@@ -4,10 +4,10 @@ const { customResponse } = require("../utility/helper");
 
 
 //get by status
-const getbystatus = async(req,res)=>{
-    const {status} = req.headers
-   
- compModal.find({status:[status]}).then(clientData=>res.send(clientData))
+const getbystatus = async (req, res) => {
+    const { status } = req.headers
+
+    compModal.find({ status: [status] }).then(clientData => res.send(clientData))
 
 
 }
@@ -21,17 +21,17 @@ const cimsGet = async (req, res) => {
         const page = parseInt(req.query.page)
         const limit = parseInt(req.query.limit)
 
-        const Comps = await compModal.find(filter == '' || !filter ? {} : {status: [filter]}).collation({ 'locale': 'en' }).sort( sort == '' || !sort ? {} : {[sort.replace(/['"]+/g, '')] : 1});
+        const Comps = await compModal.find(filter == '' || !filter ? {} : { status: [filter] }).collation({ 'locale': 'en' }).sort(sort == '' || !sort ? {} : { [sort.replace(/['"]+/g, '')]: 1 });
 
         const startIndex = (page - 1) * limit
         const endIndex = page * limit
-        const count = await compModal.find(filter == '' || !filter ? {} : {status: [filter]}).collation({ 'locale': 'en' }).sort( sort == '' || !sort ? {} : {[sort.replace(/['"]+/g, '')] : 1}).countDocuments()
+        const count = await compModal.find(filter == '' || !filter ? {} : { status: [filter] }).collation({ 'locale': 'en' }).sort(sort == '' || !sort ? {} : { [sort.replace(/['"]+/g, '')]: 1 }).countDocuments()
 
         const data = {}
         data.data = Comps.slice(startIndex, endIndex)
 
-        data.data.forEach((record, i)=>{
-            record.rowNumber = startIndex+i+1;
+        data.data.forEach((record, i) => {
+            record.rowNumber = startIndex + i + 1;
         });
 
 
@@ -154,7 +154,7 @@ const cimsPatch = async (req, res) => {
 
         }
 
-       await compModal.findOneAndUpdate({ _id: _id }, req.body);
+        await compModal.findOneAndUpdate({ _id: _id }, req.body);
 
         code = 200;
         data = req.body
@@ -179,4 +179,42 @@ const cimsPatch = async (req, res) => {
     }
 };
 
-module.exports = { cimsDel, cimsGet, cimsPatch, cimsPost, getbystatus }
+//Searching the records
+const searchRecords = async (req, res) => {
+    try {
+        const searchData = req.query.searchData;
+        let regex = new RegExp(searchData, "i");
+        
+        const records = await compModal.find({ $or: [{ brandName: [regex] }, { 'registeredAddress.country': [regex] }, { 'contacts.primaryContact.firstName': [regex] }] })
+
+        const data = records
+
+
+        data.forEach((record, i) => {
+            record.rowNumber = i + 1;
+        });
+
+        code = 200
+        message = "Data fetched successfully"
+
+        const resData = customResponse({
+            code,
+            data,
+            message,
+        });
+
+        res.send(resData);
+
+    } catch (err) {
+        code = 422;
+        const resData = customResponse({
+            code,
+            error: err && err.details,
+        });
+
+        res.send(resData);
+    }
+}
+
+
+module.exports = { searchRecords, cimsDel, cimsGet, cimsPatch, cimsPost, getbystatus }
