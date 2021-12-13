@@ -1,9 +1,10 @@
 const Review = require("../models/ReviewModel");
 const Employee = require("../models/employeeModel");
+const { reviewSchema, reviewupdatedSchema } = require("../Validation/reviews");
 
-const catchAsync = require("../middleware/catchAsync");
-const AppError = require("../utility/appError");
-const APIFeatures = require("../utility/apiFeatures");
+const catchAsync = require("./../utils/catchAsync");
+const AppError = require("./../utils/appError");
+const APIFeatures = require("./../utils/apiFeatures");
 
 exports.getAllReviews = catchAsync(async (req, res, next) => {
   //Build the query
@@ -42,6 +43,18 @@ exports.getReview = catchAsync(async (req, res, next) => {
 });
 
 exports.createReview = catchAsync(async (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    code = 422;
+    message = "Invalid request data";
+    const resData = customResponse({
+      code,
+      message,
+      err: error && error.details,
+    });
+    return res.status(code).send(resData);
+  }
+
   const newReview = await Review.create(req.body);
 
   res.status(201).json({
@@ -51,6 +64,18 @@ exports.createReview = catchAsync(async (req, res, next) => {
 });
 
 exports.updateReview = catchAsync(async (req, res, next) => {
+  const { error } = reviewupdatedSchema.validate(req.body);
+  if (error) {
+    code = 422;
+    message = "Invalid request data";
+    const resData = customResponse({
+      code,
+      message,
+      err: error && error.details,
+    });
+    return res.status(code).send(resData);
+  }
+
   const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
