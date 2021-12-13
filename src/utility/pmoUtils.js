@@ -76,8 +76,8 @@ const getAllocationQuery = (queryString) => {
     query.empId = queryString.empId;
   }
 
-  if (queryString.employeeName) {
-    query.employeeName = queryString.employeeName;
+  if (queryString.empName) {
+    query.empName = queryString.empName;
   }
 
   if (queryString.allocatedProject) {
@@ -97,6 +97,18 @@ const getAllocationQuery = (queryString) => {
 
 const getAllocationsFilteredData = (findObj, projectDetails) => {
   let details = projectDetails;
+  const curr_date = moment().format("YYYY-MM-DD");
+
+  details = details.filter((detail) => {
+    if (
+      moment(curr_date).isSameOrAfter(detail.allocationStartDate) &&
+      moment(curr_date).isSameOrBefore(detail.allocationEndDate)
+    ) {
+      return detail;
+    }
+    return null;
+  });
+
   if (findObj.projectId) {
     details = details.filter((detail) =>
       detail.projectId._id.valueOf().includes(findObj.projectId)
@@ -109,11 +121,9 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
     );
   }
 
-  if (findObj.employeeName) {
+  if (findObj.empName) {
     details = details.filter((detail) =>
-      detail.empId.employeeName
-        .toLowerCase()
-        .includes(findObj.employeeName.toLowerCase())
+      detail.empId.empName.toLowerCase().includes(findObj.empName.toLowerCase())
     );
   }
 
@@ -136,6 +146,8 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
 };
 
 const getOnBenchFilteredData = (findObj, projectDetails) => {
+  const curr_date = moment().format("YYYY-MM-DD");
+
   const reduceData = reduce(
     projectDetails,
     (result, value) => {
@@ -147,10 +159,14 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
           projects: [],
         };
       }
-
-      result[value.empId.empId].remainingAllocation =
-        result[value.empId.empId].remainingAllocation -
-        value.allocationPercentage;
+      if (
+        moment(curr_date).isSameOrAfter(value.allocationStartDate) &&
+        moment(curr_date).isSameOrBefore(value.allocationEndDate)
+      ) {
+        result[value.empId.empId].remainingAllocation =
+          result[value.empId.empId].remainingAllocation -
+          value.allocationPercentage;
+      }
       result[value.empId.empId].projects.push({
         allocationStartDate: value.allocationStartDate,
         allocationEndDate: value.allocationEndDate,
@@ -175,11 +191,9 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
     details = details.filter((detail) => detail.empId.includes(findObj.empId));
   }
 
-  if (findObj.employeeName) {
+  if (findObj.empName) {
     details = details.filter((detail) =>
-      detail.employeeName
-        .toLowerCase()
-        .includes(findObj.employeeName.toLowerCase())
+      detail.empName.toLowerCase().includes(findObj.empName.toLowerCase())
     );
   }
 

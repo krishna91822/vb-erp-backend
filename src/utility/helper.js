@@ -10,7 +10,6 @@ const customResponse = ({ code = 200, message = "", data = {}, err = {} }) => {
   };
 };
 
-  
 //customPagination
 const customPagination = ({ data = [], limit = 10, page = 1 }) => {
   const totalCount = data.length;

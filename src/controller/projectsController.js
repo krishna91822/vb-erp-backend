@@ -5,13 +5,7 @@ const ProjectsInfoModel = require("../models/projectsModel");
 const { getQueryString } = require("../utility/pmoUtils");
 //JOI
 const { projectsSchema } = require("../schema/projectsSchema");
-const { customResponse } = require("../utility/helper");
-
-//current_date
-let currentDate = new Date();
-let current_date = `${currentDate.getFullYear()}-${
-  currentDate.getMonth() + 1
-}-${currentDate.getDate()}`;
+const { customResponse, customPagination } = require("../utility/helper");
 
 // Creating and Storing Created Projects data into database by POST request
 const createProjects = async (req, res) => {
@@ -58,35 +52,36 @@ const updateProject = async (req, res) => {
 
 const getProjects = async (req, res) => {
   const query = getQueryString(req.query);
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
   try {
+    code = 200;
     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
-    res.status(200).send(Projects);
+    const data = customPagination({ data: Projects, page, limit });
+    const resData = customResponse({ code, data });
+    res.status(200).send(resData);
   } catch (error) {
-    res.status(400).send(error);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
   }
 };
 
 const getActiveProjects = async (req, res) => {
-  const query = getQueryString(req.query);
-
   try {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
-      var date = moment(current_date, "YYYY-MM-DD");
-      var startDate = moment(element.startDate, "YYYY-MM-DD");
-      var endDate = moment(element.endDate, "YYYY-MM-DD");
-      if (element.vbProjectStatus == "On Hold") {
-      } else if (
-        (date.isBefore(endDate) && date.isAfter(startDate)) ||
-        date.isSame(startDate) ||
-        date.isSame(endDate)
-      ) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
-          { _id: element._id },
-          { $set: { vbProjectStatus: "Active" } }
-        );
-        updateElement.save();
-      } else {
+      let date = moment().format("YYYY-MM-DD");
+      let endDate = moment(element.endDate, "YYYY-MM-DD");
+
+      if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
+      } else if (date.isAfter(endDate)) {
         let updateElement = await ProjectsInfoModel.findOneAndUpdate(
           { _id: element._id },
           { $set: { vbProjectStatus: "Done" } }
@@ -108,36 +103,21 @@ const getActiveProjects = async (req, res) => {
 };
 
 const getDoneProjects = async (req, res) => {
-  const query = getQueryString(req.query);
-
   try {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
-      let date = moment(current_date, "YYYY-MM-DD");
-      let startDate = moment(element.startDate, "YYYY-MM-DD");
+      let date = moment().format("YYYY-MM-DD");
       let endDate = moment(element.endDate, "YYYY-MM-DD");
-      if (element.vbProjectStatus == "On Hold") {
-      } else if (
-        (date.isBefore(endDate) && date.isAfter(startDate)) ||
-        date.isSame(startDate) ||
-        date.isSame(endDate)
-      ) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
-          { _id: element._id },
-          { $set: { vbProjectStatus: "Active" } }
-        );
-        updateElement.save();
-      } else {
+
+      if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
+      } else if (date.isAfter(endDate)) {
         let updateElement = await ProjectsInfoModel.findOneAndUpdate(
           { _id: element._id },
           { $set: { vbProjectStatus: "Done" } }
         );
-        // console.log(updateElement);
         updateElement.save();
       }
     });
-    // console.log(element,"bahar")
-    // return res.status(200).send(updateElement);
     const updatedProjects = await ProjectsInfoModel.find({
       $and: [{ vbProjectStatus: "Done" }],
     });
