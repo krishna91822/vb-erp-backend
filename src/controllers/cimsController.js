@@ -9,7 +9,7 @@ const cimsGet = async (req, res) => {
         const filter = req.query.filter;
         const sortOrder = req.query.sortOrder;
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit)|| 1;
+        const limit = parseInt(req.query.limit)|| 5;
 
         const Comps = await compModal
             .find(filter == "" || !filter ? {} : { status: [parseInt(filter)] })
@@ -30,11 +30,18 @@ const cimsGet = async (req, res) => {
 
         const data = {};
         data.data = Comps.slice(startIndex, endIndex);
-
         data.data.forEach((record, i) => {
             record.rowNumber = startIndex + i + 1;
         });
 
+
+        if(data.data.length == 0){
+            data.data = Comps.slice(0, 5)
+            data.data.forEach((record, i) => {
+                record.rowNumber = 0 + i + 1;
+            });
+        }
+        
         data.totalPages = Math.ceil(count / limit);
         code = 200;
         message = "Data fetched successfully";
