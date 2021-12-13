@@ -5,7 +5,7 @@ const ProjectsInfoModel = require("../models/projectsModel");
 const { getQueryString } = require("../utility/pmoUtils");
 //JOI
 const { projectsSchema } = require("../schema/projectsSchema");
-const { customResponse } = require("../utility/helper");
+const { customResponse , customPagination} = require("../utility/helper");
 
 
 // Creating and Storing Created Projects data into database by POST request
@@ -56,11 +56,25 @@ const updateProject = async (req, res) => {
 //getting all the projects
 const getProjects = async (req, res) => {
   const query = getQueryString(req.query);
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
   try {
+    code = 200;
     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
-    res.status(200).send(Projects);
-  } catch (error) {
-    res.status(400).send(error);
+    const data = customPagination({ data: Projects, page, limit });
+    const resData = customResponse({ code, data });
+    res.status(200).send(resData);
+  } 
+  catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error
+    });
+    return res.status(code).send(resData);
   }
 };
 
