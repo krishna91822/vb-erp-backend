@@ -111,10 +111,28 @@ if(req.query.empName){
     }
   })
 }
+  const empmanagerSearch=[{
+    $project:{
+       empReportingManager: 1, _id: 0
+    },
+  }]
+  if(req.query.empDes){
+    if(req.query.empDes==="manager"){
+    empmanagerSearch.push({
+      $match: {
+        empReportingManager: { $regex: "" },
+      }
+    })
+  }
+  }
+
     try {
         code=200;
         if(req.query.empId || req.query.empName){
           employees= await employeesModal.aggregate(empidSearch);
+        }
+        else if(req.query.empDes){
+         employees= await employeesModal.aggregate(empmanagerSearch);
         }
     else{
       employees = await employeesModal.aggregate(query);
