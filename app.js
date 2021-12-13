@@ -3,7 +3,8 @@ const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
-// const cors = require("cors");
+const cors = require("cors");
+const constants = require("./src/utility/constant");
 
 const AppError = require("./src/utility/appError");
 const globalErrorHandler = require("./src/middleware/errorMiddleware");
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //For Assigning role
 // app.use(checkAndAssignRole);
 
+app.use(cors(constants.CORS_OPTIONS));
 //Routes
 app.use(router);
 app.all("*", (req, res, next) => {
