@@ -91,7 +91,6 @@ const getRewards = async (req, res) => {
       },
     });
   }
-
   if (req.query.startdate && req.query.enddate) {
     query.push({
       $match: {
@@ -534,7 +533,7 @@ const launchRewards = async(req,res)=>{
    let code,message;
   try{
       code=200
-      const status="Launch"
+      const status="in progress"
       // update reward status to launch
       const rewards = await rewardsModal.findOneAndUpdate({_id:req.params.id},{$set:{status:status}});
       if(!rewards){
@@ -543,7 +542,7 @@ const launchRewards = async(req,res)=>{
         const resdata=customResponse({code,message})
           return res.status(code).send(resdata);
       }
-      if(rewards.status==="Launch"){ 
+      if(rewards.status==="in progress"){ 
         message="Rewards are already in launch state"
         const resdata=customResponse({code,message})
           return res.status(200).send(resdata);

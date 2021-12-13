@@ -25,6 +25,34 @@ const getEmployees = async (req, res) => {
   /*
       #swagger.tags = ['Employees']
       #swagger.description = 'Get all employees' 
+      #swagger.parameters['search'] = {
+      in: 'query',
+      type: 'string'
+    }
+    #swagger.parameters['dob'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['workAnniversary'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['staroftheMonthId'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['empId'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['empName'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['empDes'] = {
+      in: 'query',
+      type: 'string'
+    }
       #swagger.responses[200] = {
         schema:{
           "status": "success",
@@ -216,12 +244,8 @@ const searchEmployees = async (req, res) => {
     if (Object.keys(req.query).length === 0) {
       const employees = await employeesModal.find({});
       code = 200;
-      const data = customPagination({
-        data: employees,
-        page: page,
-        limit: limit,
-      });
-      const resData = customResponse({ code, data });
+      //const data=customPagination({data:employees,page:page,limit:limit});
+      const resData = customResponse({ code, data: employees });
       res.status(code).send(resData);
     } else {
       const employees = await employeesModal.find({
