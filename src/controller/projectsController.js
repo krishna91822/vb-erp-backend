@@ -1,12 +1,11 @@
 // importing required Files and Routes
 const { json } = require("body-parser");
-const moment = require("moment")
+const moment = require("moment");
 const ProjectsInfoModel = require("../models/projectsModel");
 const { getQueryString } = require("../utility/pmoUtils");
 //JOI
 const { projectsSchema } = require("../schema/projectsSchema");
-const { customResponse , customPagination} = require("../utility/helper");
-
+const { customResponse, customPagination } = require("../utility/helper");
 
 // Creating and Storing Created Projects data into database by POST request
 const createProjects = async (req, res) => {
@@ -31,12 +30,10 @@ const createProjects = async (req, res) => {
     project.save();
     res.status(201).json(project);
   } catch (error) {
-    // console.log("hi");
     res.status(400).send(error);
   }
 };
 
-// Updating project by its _id
 const updateProject = async (req, res) => {
   try {
     const _id = req.params.id;
@@ -53,7 +50,6 @@ const updateProject = async (req, res) => {
   }
 };
 
-//getting all the projects
 const getProjects = async (req, res) => {
   const query = getQueryString(req.query);
   const page = req.query.page ? req.query.page : 1;
@@ -65,14 +61,13 @@ const getProjects = async (req, res) => {
     const data = customPagination({ data: Projects, page, limit });
     const resData = customResponse({ code, data });
     res.status(200).send(resData);
-  } 
-  catch (error) {
+  } catch (error) {
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
       code,
       message,
-      err: error
+      err: error,
     });
     return res.status(code).send(resData);
   }
@@ -83,28 +78,26 @@ const getActiveProjects = async (req, res) => {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
       let date = moment().format("YYYY-MM-DD");
-      // date = moment(date, "YYYY-MM-DD");
       let endDate = moment(element.endDate, "YYYY-MM-DD");
 
       if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
-
+      } else if (date.isAfter(endDate)) {
+        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
+          { _id: element._id },
+          { $set: { vbProjectStatus: "Done" } }
+        );
+        updateElement.save();
       }
-      else if (date.isAfter(endDate)) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
-        updateElement.save()  
-      }
-    })
+    });
     const updatedProjects = await ProjectsInfoModel.find({
       $or: [
         { vbProjectStatus: "On Hold" },
         { vbProjectStatus: "Active" },
         { vbProjectStatus: "Un Assigned" },
-      ]
-    }
-    );
+      ],
+    });
     res.status(200).send(updatedProjects);
-  }
-  catch (error) {
+  } catch (error) {
     res.status(400).send(error);
   }
 };
@@ -113,20 +106,21 @@ const getDoneProjects = async (req, res) => {
   try {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
-      let date = moment().format("YYYY-MM-DD")
-      date = moment(date, "YYYY-MM-DD");
-      let startDate = moment(element.startDate, "YYYY-MM-DD");
+      let date = moment().format("YYYY-MM-DD");
       let endDate = moment(element.endDate, "YYYY-MM-DD");
 
       if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
-
+      } else if (date.isAfter(endDate)) {
+        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
+          { _id: element._id },
+          { $set: { vbProjectStatus: "Done" } }
+        );
+        updateElement.save();
       }
-      else if (date.isAfter(endDate)) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
-        updateElement.save()
-      }
-    })
-    const updatedProjects = await ProjectsInfoModel.find({$and:[{ vbProjectStatus: "Done" }]});
+    });
+    const updatedProjects = await ProjectsInfoModel.find({
+      $and: [{ vbProjectStatus: "Done" }],
+    });
     res.status(200).send(updatedProjects);
   } catch (error) {
     res.status(400).send(error);
@@ -152,5 +146,4 @@ module.exports = {
   getActiveProjects,
   getDoneProjects,
   getProjectById,
-  // getProjectBySlug,
 };

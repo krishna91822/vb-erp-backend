@@ -19,17 +19,6 @@ const createAllocations = async (req, res) => {
       ...eachResource,
       projectId,
     }));
-    const { error } = projectEmployeeSchema.validate(resourcesToInsert);
-    if (error) {
-      code = 422;
-      message = "Invalid request data";
-      const resData = customResponse({
-        code,
-        message,
-        err: error && error.details,
-      });
-      return res.status(code).send(resData);
-    }
     allocation = await projectEmployeeModel.insertMany(resourcesToInsert);
     res.status(201).json(allocation);
   } catch (error) {
@@ -99,7 +88,6 @@ const getAllocationsOnBench = async (req, res) => {
       );
 
     const filteredData = getOnBenchFilteredData(query, projectDetails);
-    console.log(filteredData);
 
     res.status(200).json(filteredData);
   } catch (error) {
@@ -109,11 +97,9 @@ const getAllocationsOnBench = async (req, res) => {
 
 const getTotalAllocationByEmpId = async (req, res) => {
   let empId = "";
-
   if (req.query.empId) {
     empId = req.query.empId;
   }
-
   try {
     const projectDetails = await projectEmployeeModel
       .find({})
@@ -122,9 +108,7 @@ const getTotalAllocationByEmpId = async (req, res) => {
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-
     const totalAllocation = getTotalAllocationCalculated(empId, projectDetails);
-
     res.status(200).json(totalAllocation);
   } catch (error) {
     res.status(400).send(error);
