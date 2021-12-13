@@ -29,6 +29,17 @@ describe('employees apis', () => {
                 done();
             });
         });
+        it('It gives all employees reporting managers list', (done)=>{
+            chai.request(server)
+            .get('/employees')
+            .query({empDes: "manager"})
+            .end((err,res)=>{
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.data.should.be.a("array");
+                done();
+            });
+        });
     });
 
     describe('get /search', ()=>{
