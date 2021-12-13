@@ -4,44 +4,53 @@ const { customResponse } = require("../utility/helper");
 
 //Get all records in database
 const cimsGet = async (req, res) => {
-
     try {
-        const sort = req.query.sort
-        const filter = (req.query.filter)
-        const page = parseInt(req.query.page)
-        const limit = parseInt(req.query.limit)
+        const sort = req.query.sort;
+        const filter = req.query.filter;
+        const sortOrder = req.query.sortOrder;
+        const page = parseInt(req.query.page);
+        const limit = parseInt(req.query.limit);
 
-        const Comps = await compModal.find(filter == '' || !filter ? {} : { status: [filter] }).collation({ 'locale': 'en' }).sort(sort == '' || !sort ? {} : { [sort.replace(/['"]+/g, '')]: 1 });
+        const Comps = await compModal
+            .find(filter == "" || !filter ? {} : { status: [filter] })
+            .collation({ locale: "en" })
+            .sort(
+                sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
+            );
 
-        const startIndex = (page - 1) * limit
-        const endIndex = page * limit
-        const count = await compModal.find(filter == '' || !filter ? {} : { status: [filter] }).collation({ 'locale': 'en' }).sort(sort == '' || !sort ? {} : { [sort.replace(/['"]+/g, '')]: 1 }).countDocuments()
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const count = await compModal
+            .find(filter == "" || !filter ? {} : { status: [filter] })
+            .collation({ locale: "en" })
+            .sort(
+                sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
+            )
+            .countDocuments();
 
-        const data = {}
-        data.data = Comps.slice(startIndex, endIndex)
+        const data = {};
+        data.data = Comps.slice(startIndex, endIndex);
 
         data.data.forEach((record, i) => {
             record.rowNumber = startIndex + i + 1;
         });
 
-
-        data.totalPages = Math.ceil(count / limit)
-        code = 200
-        message = "Data fetched successfully"
+        data.totalPages = Math.ceil(count / limit);
+        code = 200;
+        message = "Data fetched successfully";
 
         const resData = customResponse({
             data,
             code,
-            message
-        })
+            message,
+        });
         res.send(resData);
-
     } catch (error) {
         code = 422;
 
         const resData = customResponse({
             code,
-            error: error && error.details
+            error: error && error.details,
         });
         return res.send(resData);
     }
@@ -91,31 +100,28 @@ const cimsPost = async (req, res) => {
 };
 
 //Delete record in database
-const cimsDel = async (req, res) => {
+const setStatus = async (req, res) => {
 
     const { id } = req.query;
 
     try {
         const del = await compModal.findById(id);
-        await del.remove();
+
+        await compModal.findOneAndUpdate({ _id: id }, {status: !del.status});
 
         code = 200;
-        message = "Data deleted successfully"
+        message = "Status updated successfully"
 
         const resData = customResponse({
             code,
-            message,
-            error
+            message
         });
         res.send(resData)
     } catch (error) {
-
         code = 422;
-        data = req.body
 
         const resData = customResponse({
             code,
-            message,
             error: error && error.details
         });
         return res.send(resData);
@@ -174,7 +180,7 @@ const searchRecords = async (req, res) => {
     try {
         const searchData = req.query.searchData;
         let regex = new RegExp(searchData, "i");
-        
+
         const records = await compModal.find({ $or: [{ brandName: [regex] }, { 'registeredAddress.country': [regex] }, { 'contacts.primaryContact.firstName': [regex] }] })
 
         const data = records
@@ -207,4 +213,4 @@ const searchRecords = async (req, res) => {
 }
 
 
-module.exports = { searchRecords, cimsDel, cimsGet, cimsPatch, cimsPost }
+module.exports = { searchRecords, setStatus, cimsGet, cimsPatch, cimsPost }

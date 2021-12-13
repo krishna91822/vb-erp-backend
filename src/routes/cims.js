@@ -1,11 +1,11 @@
 const express=require("express");
 const jsonwebtoken=require("jsonwebtoken");
 const router = express.Router()
-const {searchRecords, cimsDel,cimsGet,cimsPatch,cimsPost,getbystatus}=require("../controllers/cimsController");
+const {searchRecords, setStatus,cimsGet,cimsPatch,cimsPost}=require("../controllers/cimsController");
 
 router.get('/',authenticateToken,cimsGet)
 router.post('/', cimsPost)
-router.delete('/', cimsDel)
+router.patch('/status', setStatus)
 router.patch('/', cimsPatch)
 router.get('/search', searchRecords)
 
