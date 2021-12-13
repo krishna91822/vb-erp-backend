@@ -8,8 +8,8 @@ const cimsGet = async (req, res) => {
         const sort = req.query.sort;
         const filter = req.query.filter;
         const sortOrder = req.query.sortOrder;
-        const page = parseInt(req.query.page);
-        const limit = parseInt(req.query.limit);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit)|| 1;
 
         const Comps = await compModal
             .find(filter == "" || !filter ? {} : { status: [filter] })
