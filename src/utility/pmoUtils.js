@@ -159,6 +159,7 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
           projects: [],
         };
       }
+
       if (
         moment(curr_date).isSameOrAfter(value.allocationStartDate) &&
         moment(curr_date).isSameOrBefore(value.allocationEndDate)
@@ -167,6 +168,7 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
           result[value.empId.empId].remainingAllocation -
           value.allocationPercentage;
       }
+
       result[value.empId.empId].projects.push({
         allocationStartDate: value.allocationStartDate,
         allocationEndDate: value.allocationEndDate,
@@ -210,6 +212,7 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
 const getTotalAllocationCalculated = (empId, projectDetails) => {
   let details = projectDetails;
   const currentDate = moment().format("YYYY-MM-DD");
+
   if (empId) {
     details = details.filter(
       (detail) =>
@@ -220,6 +223,7 @@ const getTotalAllocationCalculated = (empId, projectDetails) => {
         )
     );
   }
+
   const totalAllocation = reduce(
     details,
     (result, value) => result + value.allocationPercentage,

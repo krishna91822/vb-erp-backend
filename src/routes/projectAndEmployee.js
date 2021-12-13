@@ -16,7 +16,7 @@ const {
 ProjectEmployeeRouter.post("/", createAllocations);
 
 // PUT request
-ProjectEmployeeRouter.put("/:id", updateAllocation);
+ProjectEmployeeRouter.put("/:projectId", updateAllocation);
 
 // DELETE request
 ProjectEmployeeRouter.delete("/:id", deleteAllocation);

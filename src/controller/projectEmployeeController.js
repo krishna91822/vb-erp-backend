@@ -26,18 +26,20 @@ const createAllocations = async (req, res) => {
   }
 };
 
-// Update request
+// Update request for updating the allocation and creating new resources
 const updateAllocation = async (req, res) => {
   try {
-    const _id = req.params.id;
-    const updateResource = await projectEmployeeModel.findOneAndUpdate(
-      { empId: _id },
-      req.body,
-      {
-        new: true,
-      }
-    );
-    res.status(200).send(updateResource);
+    const { projectId } = req.params;
+    const updateResource = await projectEmployeeModel.find({
+      empId: req.body.empId,
+      projectId,
+    });
+
+    if (updateResource.length === 0) {
+      let allocation = await projectEmployeeModel.insertMany(req.body);
+      return res.status(200).send(allocation);
+    }
+    res.status(400).json({ message: "Employee already allocated!" });
   } catch (error) {
     res.status(400).send(error);
   }

@@ -1,4 +1,6 @@
-//customResponse
+/**
+ * @ Custom Response Helper
+ */
 const customResponse = ({ code = 200, message = "", data = {}, err = {} }) => {
   const responseStatus = code < 300 ? "success" : "failure";
   return {
@@ -10,8 +12,10 @@ const customResponse = ({ code = 200, message = "", data = {}, err = {} }) => {
   };
 };
 
-//customPagination
-const customPagination = ({ data = [], limit = 10, page = 1 }) => {
+/**
+ * @ Custom Pagination Helper
+ */
+const customPagination = ({ data = [], limit = 15, page = 1 }) => {
   const totalCount = data.length;
   const pageCount = Math.ceil(totalCount / limit);
   const currentPage = page;
