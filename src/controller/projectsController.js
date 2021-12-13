@@ -76,24 +76,25 @@ const getActiveProjects = async (req, res) => {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
       // console.log(element,"aahdjqwdhbqw")
-      var date = moment(current_date, "YYYY-MM-DD");
-      var startDate = moment(element.startDate, "YYYY-MM-DD");
+      let date = moment().format("YYYY-MM-DD")
+      date = moment(date, "YYYY-MM-DD");
+      // var startDate = moment(element.startDate, "YYYY-MM-DD");
       var endDate = moment(element.endDate, "YYYY-MM-DD");
-      // console.log(date,startDate,endDate);
-      if (element.vbProjectStatus == "On Hold") {
+
+      if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
 
       }
-      else if (date.isBefore(endDate) && date.isAfter(startDate) || (date.isSame(startDate) || date.isSame(endDate))) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Active" } });
+      else if (date.isAfter(endDate)) {
+        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
         // console.log(updateElement);
         updateElement.save()
         // res.status(200).send(updateElement);
       }
-      else {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
-        // console.log(updateElement);
-        updateElement.save()
-      }
+      // else {
+      //   let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
+      //   // console.log(updateElement);
+      //   updateElement.save()
+      // }
     })
     // console.log(element,"bahar")
     // return res.status(200).send(updateElement);
@@ -123,24 +124,26 @@ const getDoneProjects = async (req, res) => {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
       // console.log(element,"aahdjqwdhbqw")
-      let date = moment(current_date, "YYYY-MM-DD");
+      let date = moment().format("YYYY-MM-DD")
+      date = moment(date, "YYYY-MM-DD");
       let startDate = moment(element.startDate, "YYYY-MM-DD");
       let endDate = moment(element.endDate, "YYYY-MM-DD");
       // console.log(date,startDate,endDate);
-      if (element.vbProjectStatus == "On Hold") {
+      
+      if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
 
       }
-      else if (date.isBefore(endDate) && date.isAfter(startDate) || (date.isSame(startDate) || date.isSame(endDate))) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Active" } });
+      else if (date.isAfter(endDate)) {
+        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
         // console.log(updateElement);
         updateElement.save()
         // res.status(200).send(updateElement);
       }
-      else {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
-        // console.log(updateElement);
-        updateElement.save()
-      }
+      // else {
+      //   let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
+      //   // console.log(updateElement);
+      //   updateElement.save()
+      // }
     })
     // console.log(element,"bahar")
     // return res.status(200).send(updateElement);
