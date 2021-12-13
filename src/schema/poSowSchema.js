@@ -28,6 +28,7 @@ const poSowSchema = Joi.object()
 const querySchema = Joi.object().keys({
   page: Joi.number().integer().positive(),
   limit: Joi.number().integer().positive(),
+  keyword: Joi.string().empty(""),
 });
 
 module.exports = { poSowSchema, querySchema };

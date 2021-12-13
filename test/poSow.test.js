@@ -123,36 +123,6 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
         });
     });
 
-    describe("/GET PO/SOW", () => {
-      it("it should throw Query validation error", (done) => {
-        chai
-          .request(server)
-          .get("/poSow")
-          .query({
-            page: -1,
-            limit: 0,
-          })
-          .end((err, res) => {
-            res.should.have.status(422);
-            res.body.should.be.a("object");
-            res.body.should.have.property("error");
-            done();
-          });
-      });
-
-      it("it should GET all the PO/SOW", (done) => {
-        chai
-          .request(server)
-          .get("/poSow")
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.data.results.should.be.a("array");
-            res.body.data.results.length.should.be.above(0);
-            done();
-          });
-      });
-    });
-
     describe("/GET/sort/fieldName PO/SOW", () => {
       it("it should throw Query validation error", (done) => {
         chai

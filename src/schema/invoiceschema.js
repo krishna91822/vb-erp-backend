@@ -13,4 +13,9 @@ const invoiceSchema = Joi.object()
   })
   .options({ abortEarly: false });
 
-module.exports = { invoiceSchema };
+const querySchema = Joi.object().keys({
+  page: Joi.number().integer().positive(),
+  limit: Joi.number().integer().positive(),
+});
+
+module.exports = { invoiceSchema, querySchema };

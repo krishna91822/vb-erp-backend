@@ -1,8 +1,8 @@
-const { invoiceSchema } = require("../schema/invoiceschema");
+const { invoiceSchema, querySchema } = require("../schema/invoiceschema");
 const Invoice = require("../models/invoicemodel");
 const { emailContent } = require("../controllers/poEmailController");
 const { emailSender } = require("../middleware/POMailNotification");
-const { customResponse } = require("../utility/helper");
+const { customResponse, customPagination } = require("../utility/helper");
 
 const newInvoice = async (req, res) => {
   /*
@@ -89,7 +89,6 @@ const newInvoice = async (req, res) => {
       invoice,
     });
   } catch (error) {
-    console.log(error);
     res.status(422).send(error);
   }
 };
@@ -149,6 +148,16 @@ const getInvoiceDetailsById = async (req, res) => {
 const getInvoiceDetails = async (req, res) => {
   /* 	#swagger.tags = ['invoices']
       #swagger.description = 'Get sorted Invoice list' 
+      #swagger.parameters['page'] = {
+        in: 'query',
+        type: 'integer',
+        description: 'Page number' 
+      }
+      #swagger.parameters['limit'] = {
+        in: 'query',
+        type: 'integer',
+        description: 'Data limit per page' 
+      }
       #swagger.responses[200] = {
         schema:{
           "status": "success",
@@ -184,6 +193,20 @@ const getInvoiceDetails = async (req, res) => {
   */
   let code, message;
   try {
+    const { error } = querySchema.validate(req.query);
+    if (error) {
+      code = 422;
+      message = "Invalid request Query";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 15;
+
     const data = req.params.data;
     const val = "invoice_raised";
     const val2 = "Client_Name";
@@ -203,7 +226,9 @@ const getInvoiceDetails = async (req, res) => {
         },
         { $unwind: "$purchase_orders" },
       ]);
-      const resData = customResponse({ code, data: details });
+
+      const data = customPagination({ data: details, page, limit });
+      const resData = customResponse({ code, data });
       return res.status(code).send(resData);
     } else if (data === val) {
       code = 200;
@@ -220,7 +245,8 @@ const getInvoiceDetails = async (req, res) => {
       ])
         .sort(data)
         .collation({ locale: "en" });
-      const resData = customResponse({ code, data: details });
+      const data = customPagination({ data: details, page, limit });
+      const resData = customResponse({ code, data });
       return res.status(code).send(resData);
     } else if (data === val2) {
       code = 200;
@@ -236,7 +262,8 @@ const getInvoiceDetails = async (req, res) => {
         { $unwind: "$purchase_orders" },
         { $sort: { "purchase_orders.Client_Name": 1 } },
       ]).collation({ locale: "en" });
-      const resData = customResponse({ code, data: details });
+      const data = customPagination({ data: details, page, limit });
+      const resData = customResponse({ code, data });
       return res.status(code).send(resData);
     } else if (data === val4) {
       code = 200;
@@ -252,7 +279,8 @@ const getInvoiceDetails = async (req, res) => {
         { $unwind: "$purchase_orders" },
         { $sort: { "purchase_orders.Project_Name": 1 } },
       ]).collation({ locale: "en" });
-      const resData = customResponse({ code, data: details });
+      const data = customPagination({ data: details, page, limit });
+      const resData = customResponse({ code, data });
       return res.status(code).send(resData);
     } else {
       code = 400;

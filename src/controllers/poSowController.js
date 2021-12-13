@@ -71,88 +71,6 @@ const createPoSow = async (req, res) => {
   }
 };
 
-const getPoSowList = async (req, res) => {
-  /* 	#swagger.tags = ['PO/SOW']
-      #swagger.description = 'Get PO/SOW list' 
-      #swagger.parameters['page'] = {
-        in: 'query',
-        type: 'integer',
-        description: 'Page number' 
-      }
-      #swagger.parameters['limit'] = {
-        in: 'query',
-        type: 'integer',
-        description: 'Data limit per page' 
-      }
-      #swagger.responses[200] = {
-        schema:{
-          "status": "success",
-          "code": 200,
-          "message": "",
-          "data": {
-            "pageCount": 1,
-            "totalCount": 1,
-            "currentPage": 1,
-            "results": [
-              {
-                "_id": "61a49363c343b8220cff6c08",
-                "Client_Name": "Valuebound Solutions",
-                "Project_Name": "ERP System",
-                "Client_Sponser": ["ABD","DEF"],
-                "Client_Finance_Controller": ["VMN","QWE"],
-                "Targetted_Resources": ["WSJ","GHJ"],
-                "Status": "Drafted",
-                "Type": "PO",
-                "PO_Number": "ERP34",
-                "PO_Amount": 3434,
-                "Currency": "USD",
-                "Document_Name": "VB_ERP",
-                "Document_Type": "pdf",
-                "POSOW_endDate": "2014-01-22T14:56:59.301Z",
-                "Remarks": "Created New PO",
-                "__v": 0,
-                "Created_At": "2021-12-10T05:55:17.961Z"
-              }
-            ]
-          },
-          "error": {}
-        } 
-      }
-  */
-  let code, message;
-
-  try {
-    const { error } = querySchema.validate(req.query);
-    if (error) {
-      code = 422;
-      message = "Invalid request Query";
-      const resData = customResponse({
-        code,
-        message,
-        err: error && error.details,
-      });
-      return res.status(code).send(resData);
-    }
-
-    const page = req.query.page ? req.query.page : 1;
-    const limit = req.query.limit ? req.query.limit : 15;
-    code = 200;
-    const users = await purchaseOrderModel.find({});
-    const data = customPagination({ data: users, page, limit });
-    const resData = customResponse({ code, data });
-    return res.status(code).send(resData);
-  } catch (error) {
-    code = 500;
-    message = "Internal server error";
-    const resData = customResponse({
-      code,
-      message,
-      err: error,
-    });
-    return res.status(code).send(resData);
-  }
-};
-
 const getSortedPoList = async (req, res) => {
   /* 	#swagger.tags = ['PO/SOW']
       #swagger.description = 'Get PO/SOW list' 
@@ -208,6 +126,7 @@ const getSortedPoList = async (req, res) => {
   try {
     const { error } = querySchema.validate(req.query);
     if (error) {
+      console.log(error);
       code = 422;
       message = "Invalid request Query";
       const resData = customResponse({
@@ -220,7 +139,21 @@ const getSortedPoList = async (req, res) => {
     const page = req.query.page ? req.query.page : 1;
     const limit = req.query.limit ? req.query.limit : 15;
     code = 200;
-    const users = await purchaseOrderModel.find({}).sort(fieldName);
+
+    let query = {};
+    if (req.query.keyword) {
+      query.$or = [
+        { Client_Name: { $regex: req.query.keyword, $options: "i" } },
+        { Project_Name: { $regex: req.query.keyword, $options: "i" } },
+      ];
+    }
+    if (fieldName === "Id") {
+      const users = await purchaseOrderModel.find(query);
+      const data = customPagination({ data: users, page, limit });
+      const resData = customResponse({ code, data });
+      return res.status(code).send(resData);
+    }
+    const users = await purchaseOrderModel.find(query).sort(fieldName);
     const data = customPagination({ data: users, page, limit });
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
@@ -452,7 +385,6 @@ const updatePOStatus = async (req, res) => {
 
 module.exports = {
   createPoSow,
-  getPoSowList,
   getPoDeatil,
   getSortedPoList,
   updatePOStatus,
