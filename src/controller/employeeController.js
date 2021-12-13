@@ -20,8 +20,8 @@ const getFilterEmployees = async(req, res) => {
         } else {
             const employee = await EmployeeInfoModel.find({
                 $or: [{
-                    employeeName: {
-                        $regex: searchName.employeeName.trim(),
+                    empName: {
+                        $regex: searchName.empName.trim(),
                         $options: "i",
                     },
                 }, ],

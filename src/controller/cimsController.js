@@ -192,12 +192,17 @@ const getFilteredClients = async(req, res) => {
         if (Object.keys(req.query).length === 0) {
             const client = await compModal.find({}, {
                 brandName: 1,
-                primaryContact: 1,
-                secondaryContact: 1,
-                tertiaryContact: 1,
-                otherContact1: 1,
-                otherContact2: 1,
+                "contacts.primaryContact.firstName": 1,
+                "contacts.primaryContact.lastName": 1,
                 "contacts.primaryContact.contactNumber": 1,
+                "contacts.secondaryContact.firstName": 1,
+                "contacts.secondaryContact.lastName": 1,
+                "contacts.tertiaryContact.firstName": 1,
+                "contacts.tertiaryContact.lastName": 1,
+                "contacts.otherContact1.firstName": 1,
+                "contacts.otherContact1.lastName": 1,
+                "contacts.otherContact2.firstName": 1,
+                "contacts.otherContact2.lastName": 1,
             });
             return res.status(200).send(client);
         } else {
@@ -210,12 +215,17 @@ const getFilteredClients = async(req, res) => {
                 }, ],
             }, {
                 brandName: 1,
-                primaryContact: 1,
-                secondaryContact: 1,
-                tertiaryContact: 1,
-                otherContact1: 1,
-                otherContact2: 1,
+                "contacts.primaryContact.firstName": 1,
+                "contacts.primaryContact.lastName": 1,
                 "contacts.primaryContact.contactNumber": 1,
+                "contacts.secondaryContact.firstName": 1,
+                "contacts.secondaryContact.lastName": 1,
+                "contacts.tertiaryContact.firstName": 1,
+                "contacts.tertiaryContact.lastName": 1,
+                "contacts.otherContact1.firstName": 1,
+                "contacts.otherContact1.lastName": 1,
+                "contacts.otherContact2.firstName": 1,
+                "contacts.otherContact2.lastName": 1,
             });
             return res.status(200).send(client);
         }
