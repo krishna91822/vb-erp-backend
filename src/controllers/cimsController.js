@@ -5,14 +5,14 @@ const { customResponse } = require("../utility/helper");
 //Get all records in database
 const cimsGet = async (req, res) => {
     try {
-        const sort = parseInt(req.query.sort);
+        const sort = req.query.sort;
         const filter = req.query.filter;
         const sortOrder = req.query.sortOrder;
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit)|| 1;
 
         const Comps = await compModal
-            .find(filter == "" || !filter ? {} : { status: [filter] })
+            .find(filter == "" || !filter ? {} : { status: [parseInt(filter)] })
             .collation({ locale: "en" })
             .sort(
                 sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
@@ -21,7 +21,7 @@ const cimsGet = async (req, res) => {
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
         const count = await compModal
-            .find(filter == "" || !filter ? {} : { status: [filter] })
+            .find(filter == "" || !filter ? {} : { status: [parseInt(filter)] })
             .collation({ locale: "en" })
             .sort(
                 sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
