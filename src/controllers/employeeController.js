@@ -196,8 +196,8 @@ try{
   if(Object.keys(req.query).length===0){
     const employees =await employeesModal.find({});
   code=200;
-  const data=customPagination({data:employees,page:page,limit:limit});
-  const resData=customResponse({code,data})
+  //const data=customPagination({data:employees,page:page,limit:limit});
+  const resData=customResponse({code,data:employees})
   res.status(code).send(resData);  
   }
    else{  
