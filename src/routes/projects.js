@@ -4,8 +4,8 @@ const ProjectRouter = express.Router();
 
 //importing from controller
 const {
-  getProjects,
-  getSortedProjects,
+  // getProjects,
+  // getSortedProjects,
   getActiveProjects,
   getSortedActiveProjects,
   getDoneProjects,

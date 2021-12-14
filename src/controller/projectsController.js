@@ -52,59 +52,60 @@ const updateProject = async (req, res) => {
   }
 };
 
-//getting all the projects
-const getProjects = async (req, res) => {
-  const query = getQueryString(req.query);
-  const page = req.query.page ? req.query.page : 1;
-  const limit = req.query.limit ? req.query.limit : 10;
-  let code, message;
-  try {
-    code = 200;
-    message = "Displayed Successfully";
-    const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
-    const data = customPagination({ data: Projects, page, limit });
-    const resData = customResponse({ code, message, data });
-    res.status(200).send(resData);
-  } catch (error) {
-    code = 500;
-    message = "Internal server error";
-    const resData = customResponse({
-      code,
-      message,
-      err: error,
-    });
-    return res.status(code).send(resData);
-  }
-};
+// //getting all the projects
+// const getProjects = async (req, res) => {
+//   const query = getQueryString(req.query);
+//   const page = req.query.page ? req.query.page : 1;
+//   const limit = req.query.limit ? req.query.limit : 10;
+//   let code, message;
+//   try {
+//     code = 200;
+//     message = "Displayed Successfully";
+//     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
+//     const data = customPagination({ data: Projects, page, limit });
+//     const resData = customResponse({ code, message, data });
+//     res.status(200).send(resData);
+//   } catch (error) {
+//     code = 500;
+//     message = "Internal server error";
+//     const resData = customResponse({
+//       code,
+//       message,
+//       err: error,
+//     });
+//     return res.status(code).send(resData);
+//   }
+// };
 
-//getting sorted all the projects
-const getSortedProjects = async (req, res) => {
-  const fieldName = req.params.fieldName;
-  const query = getQueryString(req.query);
-  const page = req.query.page ? req.query.page : 1;
-  const limit = req.query.limit ? req.query.limit : 10;
-  let code, message;
-  try {
-    code = 200;
-    message = "Displayed Successfully";
-    const Projects = await ProjectsInfoModel.find({
-      $and: [{ $and: query }],
-    }).sort(fieldName);
-    const data = customPagination({ data: Projects, page, limit });
-    const resData = customResponse({ code, message, data });
-    res.status(200).send(resData);
-  } catch (error) {
-    code = 500;
-    message = "Internal server error";
-    const resData = customResponse({
-      code,
-      message,
-      err: error,
-    });
-    return res.status(code).send(resData);
-  }
-};
+// //getting sorted all the projects
+// const getSortedProjects = async (req, res) => {
+//   const fieldName = req.params.fieldName;
+//   const query = getQueryString(req.query);
+//   const page = req.query.page ? req.query.page : 1;
+//   const limit = req.query.limit ? req.query.limit : 10;
+//   let code, message;
+//   try {
+//     code = 200;
+//     message = "Displayed Successfully";
+//     const Projects = await ProjectsInfoModel.find({
+//       $and: [{ $and: query }],
+//     }).sort(fieldName);
+//     const data = customPagination({ data: Projects, page, limit });
+//     const resData = customResponse({ code, message, data });
+//     res.status(200).send(resData);
+//   } catch (error) {
+//     code = 500;
+//     message = "Internal server error";
+//     const resData = customResponse({
+//       code,
+//       message,
+//       err: error,
+//     });
+//     return res.status(code).send(resData);
+//   }
+// };
 
+//getting all the active projects
 const getActiveProjects = async (req, res) => {
   const query = getQueryString(req.query);
   const page = req.query.page ? req.query.page : 1;
@@ -155,6 +156,7 @@ const getActiveProjects = async (req, res) => {
   }
 };
 
+//getting all the active sorted projects
 const getSortedActiveProjects = async (req, res) => {
   const fieldName = req.params.fieldName;
   const query = getQueryString(req.query);
@@ -206,6 +208,7 @@ const getSortedActiveProjects = async (req, res) => {
   }
 };
 
+//getting all the done projects
 const getDoneProjects = async (req, res) => {
   const query = getQueryString(req.query);
   const page = req.query.page ? req.query.page : 1;
@@ -248,6 +251,7 @@ const getDoneProjects = async (req, res) => {
   }
 };
 
+//getting all the done sorted projects
 const getSortedDoneProjects = async (req, res) => {
   const fieldName = req.params.fieldName;
   const query = getQueryString(req.query);
@@ -306,8 +310,8 @@ const getProjectById = async (req, res) => {
 module.exports = {
   createProjects,
   updateProject,
-  getProjects,
-  getSortedProjects,
+  // getProjects,
+  // getSortedProjects,
   getActiveProjects,
   getSortedActiveProjects,
   getDoneProjects,
