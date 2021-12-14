@@ -12,6 +12,7 @@ let compModal = require('../src/models/compSchema')
 describe("CIMS unit testing with Mocha..!!", () => {
 
 
+
     describe("/Get all the CIMS records", () => {
         it("It should return first 5 CIMS records", (done) => {
             chai
@@ -159,10 +160,10 @@ describe("CIMS unit testing with Mocha..!!", () => {
             record.save((err, data) => {
                 chai
                     .request(server)
-                    .patch("/cims/status?id=" + record._id)
+                    .patch("/cims/status?id=" + record._id + "?status=" + record.status)
                     .end((err, res) => {
                         res.should.have.status(200);
-                        res.body.should.have.property('message').eql(res.status ? 'The client Kyoto has been activated' : 'The client Kyoto has been deactivated')
+                        res.body.should.have.property('message').eql('The client has been Reactivated')
                         done();
                     })
             })
@@ -517,3 +518,87 @@ describe("CIMS unit testing with Mocha..!!", () => {
         });
     })
 })
+////////
+describe("/Get clientinfo with some id", () => {
+        it("It should return data with the searched id", (done) => {
+            let record = new compModal({
+                registeredAddress: {
+                    addressLine1: "#1",
+                    addressLine2: "",
+                    pincode: "560102",
+                    country: "India-in",
+                    state: "Karnataka",
+                    district: "Bengaluru",
+                    city: "HSR Layout",
+                    landmark: ""
+                },
+                communicationAddress: {
+                    addressLine1: "#1",
+                    addressLine2: "",
+                    pincode: "560102",
+                    country: "India-in",
+                    state: "Karnataka",
+                    district: "Bengaluru",
+                    city: "HSR Layout",
+                    landmark: ""
+                },
+                status: 1,
+                _id: "61b0353611630d1a129ffee4",
+                designation: "infote",
+                brandName: "Kyoto",
+                domain: "Education",
+                baseLocation: "Bangalore",
+                gstNumber: "",
+                panNumber: "AAAAA5555A",
+                companyType: "GST Unregistered",
+                contacts: {
+                    primaryContact: {
+                        title: "Manager",
+                        firstName: "Ram",
+                        lastName: "G",
+                        email: "ram@myedutech.in",
+                        contactNumber: "999911111",
+                        otherContactNumber: ""
+                    },
+                    secondaryContact: {
+                        title: "CEO",
+                        firstName: "Jai",
+                        lastName: "K",
+                        email: "jai@myedutech.in",
+                        contactNumber: "919696969696",
+                        otherContactNumber: ""
+                    },
+                    tertiaryContact: {
+                        title: "",
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        contactNumber: "",
+                        otherContactNumber: ""
+                    }
+                }
+            });
+            const searchid = "61b0353611630d1a129ffee4"
+            record.save((err, data) => {
+                chai
+                    .request(server)
+                    .get("/getclientinfo"  ).set("id","61b0353611630d1a129ffee4")
+                    
+                    //.headers({'_id':'61b0353611630d1a129ffee4'})
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                       // console.log(res.body)
+                        res.body.data.should.be.a('array')
+                        res.body.data[0].should.have.property("_id").eq("61b0353611630d1a129ffee4");
+
+                        done();
+                    });
+            })
+        });
+        
+        
+        
+            
+        
+    })
+
