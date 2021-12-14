@@ -159,10 +159,10 @@ describe("CIMS unit testing with Mocha..!!", () => {
             record.save((err, data) => {
                 chai
                     .request(server)
-                    .patch("/cims/status?id=" + record._id)
+                    .patch("/cims/status?id=" + record._id + "?status=" + record.status)
                     .end((err, res) => {
                         res.should.have.status(200);
-                        res.body.should.have.property('message').eql(res.status ? 'The client Kyoto has been Reactivated' : 'The client Kyoto has been Deactivated')
+                        res.body.should.have.property('message').eql('The client has been Reactivated')
                         done();
                     })
             })

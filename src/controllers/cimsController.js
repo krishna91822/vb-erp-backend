@@ -89,7 +89,7 @@ const cimsPost = async (req, res) => {
             message,
         });
         res.send(resData);
-        
+
     } catch (error) {
         code = 422;
         const resData = customResponse({
@@ -102,17 +102,17 @@ const cimsPost = async (req, res) => {
 
 //Delete record in database
 const setStatus = async (req, res) => {
-    const { id } = req.query;
+    const { clientId, brandName } = req.query;
+    const clientStatus = parseInt(req.query.clientStatus)
 
     try {
-        const del = await compModal.findById(id);
-
-        await compModal.findOneAndUpdate({ _id: id }, { status: !del.status });
+        
+        await compModal.findOneAndUpdate({ _id: clientId }, { status: !clientStatus });
 
         code = 200;
-        del.status
-            ? (message = `The client ${del.brandName} has been Deactivated`)
-            : (message = `The client ${del.brandName} has been Reactivated`);
+        clientStatus
+            ? (message = `The client ${brandName} has been Deactivated`)
+            : (message = `The client ${brandName} has been Reactivated`);
 
         const resData = customResponse({
             code,
