@@ -105,6 +105,12 @@ const employeeSchemaForReview = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    empPersonalEmail: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+    },
     empGraduationUniversity: {
       type: String,
       lowercase: true,
@@ -168,6 +174,10 @@ const employeeSchemaForReview = new mongoose.Schema(
     skillsDetails: {
       type: [otherField],
       default: undefined,
+    },
+    slackMemId: {
+      type: String,
+      default: "",
     },
   },
   { _id: false }
