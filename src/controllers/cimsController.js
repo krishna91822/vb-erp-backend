@@ -101,7 +101,7 @@ const cimsPost = async (req, res) => {
 //Delete record in database
 const setStatus = async (req, res) => {
   const { id, brandName } = req.query;
-  const status = req.query.status;
+  const status = parseInt(req.query.status);
 
   try {
     await compModal.findOneAndUpdate({ _id: id }, { status: !status });
