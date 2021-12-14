@@ -143,6 +143,7 @@ const employeeSchemaForReview = new mongoose.Schema(
     },
     role: {
       type: String,
+      uppercase: true,
       enum: {
         values: [
           "USER",

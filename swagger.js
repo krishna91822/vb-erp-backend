@@ -28,7 +28,7 @@ const doc = {
   },
 };
 
-let outputFile = "./public/stylesheets/api-docs/swagger-output.json";
+let outputFile = "./public/api-docs/swagger-output.json";
 if (!fs.existsSync(outputFile)) {
   outputFile = fs.openSync(outputFile, "w");
 }
