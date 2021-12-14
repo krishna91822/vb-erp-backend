@@ -37,7 +37,15 @@ const getEmployees = async (req, res) => {
       in: 'query',
       type: 'string'
     }
-     #swagger.parameters['staroftheMonthId'] = {
+     #swagger.parameters['getEmpByID'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['empUnderManager'] = {
+      in: 'query',
+      type: 'string'
+    }
+     #swagger.parameters['managerDetail'] = {
       in: 'query',
       type: 'string'
     }
