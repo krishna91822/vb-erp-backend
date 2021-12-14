@@ -93,6 +93,18 @@ exports.updateReview = catchAsync(async (req, res, next) => {
 });
 
 exports.updateReviewStatus = catchAsync(async (req, res, next) => {
+  const { error } = reviewupdatedSchema.validate(req.body);
+  if (error) {
+    code = 422;
+    message = "Invalid request data";
+    const resData = customResponse({
+      code,
+      message,
+      err: error && error.details,
+    });
+    return res.status(code).send(resData);
+  }
+
   const review = await Review.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -110,6 +122,18 @@ exports.updateReviewStatus = catchAsync(async (req, res, next) => {
 
   // check and create employee
   if (review.reqType === "profile-creation" && req.body.status === "accepted") {
+    const { error } = reviewSchema.validate(req.body);
+    if (error) {
+      code = 422;
+      message = "Invalid request data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+
     const newEmployee = await Employee.create(employeeData);
     if (!newEmployee) {
       await Review.findByIdAndUpdate(
@@ -137,6 +161,18 @@ exports.updateReviewStatus = catchAsync(async (req, res, next) => {
   };
 
   if (review.reqType === "profile-update" && req.body.status === "accepted") {
+    const { error } = reviewupdatedSchema.validate(req.body);
+    if (error) {
+      code = 422;
+      message = "Invalid request data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+
     const employee = await Employee.findOneAndUpdate(
       { empEmail: review.employeeDetails.empEmail },
       employeeDataToUpdate,

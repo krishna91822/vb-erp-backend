@@ -1,3 +1,4 @@
+const { string } = require("joi");
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
@@ -184,6 +185,10 @@ const employeeSchema = new mongoose.Schema(
     skillsDetails: {
       type: [otherField],
       default: undefined,
+    },
+    slackMemId: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }
