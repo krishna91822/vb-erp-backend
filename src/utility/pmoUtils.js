@@ -62,6 +62,24 @@ const getQueryString = (queryString) => {
     });
   }
 
+  if (queryString.allocationStartDate) {
+    query.push({
+      allocationStartDate: {
+        $regex: queryString.allocationStartDate,
+        $options: "i",
+      },
+    });
+  }
+
+  if (queryString.allocationEndDate) {
+    query.push({
+      allocationEndDate: {
+        $regex: queryString.allocationEndDate,
+        $options: "i",
+      },
+    });
+  }
+
   return query;
 };
 
@@ -92,6 +110,14 @@ const getAllocationQuery = (queryString) => {
     query.remainingAllocation = queryString.remainingAllocation;
   }
 
+  if (queryString.allocationStartDate) {
+    query.allocationStartDate = queryString.allocationStartDate;
+  }
+
+  if (queryString.allocationEndDate) {
+    query.allocationEndDate = queryString.allocationEndDate;
+  }
+
   return query;
 };
 
@@ -114,10 +140,9 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
       detail.projectId._id.valueOf().includes(findObj.projectId)
     );
   }
-
   if (findObj.empId) {
     details = details.filter((detail) =>
-      detail.empId.empId.includes(findObj.empId)
+      detail.empId.empId.toString().includes(findObj.empId)
     );
   }
 
@@ -142,6 +167,17 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
     );
   }
 
+  if (findObj.allocationStartDate) {
+    details = details.filter(
+      (detail) => detail.allocationStartDate === findObj.allocationStartDate
+    );
+  }
+
+  if (findObj.allocationEndDate) {
+    details = details.filter(
+      (detail) => detail.allocationEndDate === findObj.allocationEndDate
+    );
+  }
   return details;
 };
 
@@ -190,7 +226,9 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
   }
 
   if (findObj.empId) {
-    details = details.filter((detail) => detail.empId.includes(findObj.empId));
+    details = details.filter((detail) =>
+      detail.empId.toString().includes(findObj.empId)
+    );
   }
 
   if (findObj.empName) {
