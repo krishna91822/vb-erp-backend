@@ -60,6 +60,24 @@ const getQueryString = (queryString) => {
         });
     }
 
+    if (queryString.allocationStartDate) {
+        query.push({
+            allocationStartDate: {
+                $regex: queryString.allocationStartDate,
+                $options: "i",
+            },
+        });
+    }
+
+    if (queryString.allocationEndDate) {
+        query.push({
+            allocationEndDate: {
+                $regex: queryString.allocationEndDate,
+                $options: "i",
+            },
+        });
+    }
+
     return query;
 };
 
@@ -89,6 +107,7 @@ const getAllocationQuery = (queryString) => {
     if (queryString.remainingAllocation) {
         query.remainingAllocation = queryString.remainingAllocation;
     }
+    allocationEndDate;
 
     if (queryString.allocationStartDate) {
         query.allocationStartDate = queryString.allocationStartDate;
