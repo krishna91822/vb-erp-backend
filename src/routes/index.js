@@ -10,9 +10,8 @@ const assigneeRoutes = require("./assign")
 const invoiceRoutes = require("./invoiceroutes")
 const { auth, getAccount } = require("../controllers/userController");
 const { isAuthorized } = require("../middleware/auth");
-const { postLogin } = require("../controllers/othersController");
 
-router.post("/login", postLogin);
+router.post("/login", auth);
 router.get("/account", isAuthorized, getAccount);
 router.use("/users", isAuthorized, userRoutes);
 router.use("/rewards", rewardRoutes);
