@@ -236,6 +236,17 @@ const getFilteredClients = async(req, res) => {
     }
 };
 
+/* ****************************************** */
+const getClientById = async(req, res) => {
+    try {
+        const _id = req.params.id;
+        const client = await compModal.find({ _id: _id });
+        res.status(200).send(client);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+
 module.exports = {
     cimsDel,
     cimsGet,
@@ -243,4 +254,5 @@ module.exports = {
     cimsPost,
     getbystatus,
     getFilteredClients,
+    getClientById,
 };

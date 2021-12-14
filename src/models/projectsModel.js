@@ -4,7 +4,13 @@ const projectSchema = new mongoose.Schema({
     vbProjectId: {
         type: String,
     },
+    clientId: {
+        type: String,
+    },
     clientName: {
+        type: String,
+    },
+    clientPrimaryContactName: {
         type: String,
     },
     projectName: {
