@@ -202,3 +202,34 @@ exports.deleteEmployee = catchAsync(async (req, res, next) => {
   const resData = customResponse({ code, message });
   return res.status(code).send(resData);
 });
+
+//For PMO integration
+exports.getFilteredEmp = async (req, res) => {
+  const query = req.query;
+  try {
+    if (Object.keys(req.query).length === 0) {
+      const filterEmployee = await Employee.find(
+        {},
+        { empId: 1, empName: 1, empPrimaryCapability: 1 }
+      );
+      return res.status(200).send(filterEmployee);
+    } else {
+      const filterEmployee = await Employee.find(
+        {
+          $or: [
+            {
+              empName: {
+                $regex: query.empName.trim(),
+                $options: "i",
+              },
+            },
+          ],
+        },
+        { empId: 1, empName: 1, empPrimaryCapability: 1 }
+      );
+      return res.status(200).send(filterEmployee);
+    }
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};

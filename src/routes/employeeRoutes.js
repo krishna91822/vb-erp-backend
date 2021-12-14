@@ -7,6 +7,7 @@ const {
   createEmployee,
   updateEmployee,
   deleteEmployee,
+  getFilteredEmp,
 } = require("./../controllers/employeeController");
 const { restrictTo } = require("../middleware/rolesMiddleware");
 
@@ -14,6 +15,8 @@ router.route("/").get(getAllEmployees).post(
   // restrictTo(["USER", "SUPER_ADMIN"]),
   createEmployee
 );
+
+router.route("/filteremp").get(getFilteredEmp); //For PMO integration
 
 router
   .route("/:id")
