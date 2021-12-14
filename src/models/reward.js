@@ -30,16 +30,27 @@ const rewardsSchema = mongoose.Schema(
         return this.reward_sender === "selected"
     }
     },
-    reward_receiver: {
-      type: String,
-      enum: ["manager", "employees", "everyone", "selected"],
-      required: true,
-    },
     selected_receiver: {
       type: [mongoose.Schema.Types.Mixed],
       required: function () {
         return this.reward_receiver === "selected"
     }
+    },
+  //   sender_id: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "User",
+  //     required: false,
+  // },
+  // recipients_ids: [{
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "User",
+  //     required: false,
+  // }],
+
+    reward_receiver: {
+      type: String,
+      enum: ["manager", "employees", "everyone", "selected"],
+      required: true,
     },
     receiver_message: {
       type: String,
