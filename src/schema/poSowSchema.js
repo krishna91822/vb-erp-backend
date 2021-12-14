@@ -24,4 +24,10 @@ const poSowSchema = Joi.object()
     })
     .options({ abortEarly: false });
 
-module.exports = { poSowSchema };
+const querySchema = Joi.object()
+    .keys({
+        page: Joi.number().integer().positive(),
+        limit: Joi.number().integer().positive()
+    })
+
+module.exports = { poSowSchema, querySchema };
