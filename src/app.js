@@ -16,7 +16,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // PORT
-const PORT = 3000;
+const PORT = 3030;
 
 // Routes
 const router = require("./routes/index");
