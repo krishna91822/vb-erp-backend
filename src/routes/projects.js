@@ -21,9 +21,9 @@ ProjectRouter.post("/", createProjects);
 //PUT method for update
 ProjectRouter.put("/:id", updateProject);
 
-//GET Method
-ProjectRouter.get("/", getProjects);
-ProjectRouter.get("/:fieldName", getSortedProjects);
+// //GET Method
+// ProjectRouter.get("/", getProjects);
+// ProjectRouter.get("/:fieldName", getSortedProjects);
 
 // GET Method for Active Projects
 ProjectRouter.get("/active", getActiveProjects);
