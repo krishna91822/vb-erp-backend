@@ -72,7 +72,6 @@ const rewardsSchema = mongoose.Schema(
   }
 );
 
-//const User = mongoose.model("User", userSchema);
 // creating rewards collection with rewardsSchema
 const rewardsModal = mongoose.model("rewards", rewardsSchema);
 
