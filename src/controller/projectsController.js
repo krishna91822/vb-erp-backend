@@ -37,11 +37,11 @@ const createProjects = async(req, res) => {
 const updateProject = async(req, res) => {
     try {
         const _id = req.params.id;
-        const updateProject = await ProjectsInfoModel.findOneAndUpdate({ vbProjectId: _id },
+        const updateProject = await ProjectsInfoModel.findById({ vbProjectId: _id },
             req.body, {
                 new: true,
             }
-        );
+        ).populate("clientId");
         res.status(200).send(updateProject);
     } catch (error) {
         res.status(400).send(error);
