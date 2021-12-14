@@ -8,15 +8,15 @@ const rewardsSchema = mongoose.Schema(
     },
     reward_type: {
       type: String,
-      enum:["daily", "weekly", "monthly", "yearly", "on-demand"],
-      required: true
+      enum: ["daily", "weekly", "monthly", "yearly", "on-demand"],
+      required: true,
     },
     reward_subType: {
       type: String,
-      enum:["work-anniversary", "birthday-celebration","starOfTheMonth"],
+      enum: ["work-anniversary", "birthday-celebration", "starOfTheMonth"],
       required: function () {
-        return this.reward_type === "daily"
-    }
+        return this.reward_type === "daily";
+      },
     },
     reward_sender: {
       type: String,
@@ -26,51 +26,39 @@ const rewardsSchema = mongoose.Schema(
     selected_sender: {
       type: [mongoose.Schema.Types.Mixed],
       required: function () {
-        return this.reward_sender === "selected"
-    }
+        return this.reward_sender === "selected";
+      },
     },
     selected_receiver: {
       type: [mongoose.Schema.Types.Mixed],
       required: function () {
-        return this.reward_receiver === "selected"
-    }
+        return this.reward_receiver === "selected";
+      },
     },
-  //   sender_id: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "User",
-  //     required: false,
-  // },
-  // recipients_ids: [{
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "User",
-  //     required: false,
-  // }],
-
     reward_receiver: {
       type: String,
       enum: ["manager", "employees", "everyone", "selected"],
       required: true,
     },
-<<<<<<< HEAD
-=======
     sender_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "employees",
       required: false,
-  },
-  recipients_ids: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: false,
-  }],
->>>>>>> cae49bfa3a7ad4325b83ab3697eacf397f479754
+    },
+    recipients_ids: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "employees",
+        required: false,
+      },
+    ],
     receiver_message: {
       type: String,
       required: true,
     },
     announcement_type: {
       type: String,
-      enum:["public", "private"],
+      enum: ["public", "private"],
       required: true,
     },
     slack_channel: {
@@ -89,8 +77,8 @@ const rewardsSchema = mongoose.Schema(
     sender_id: {
       type: Number,
     },
-    receipients_id:{
-      type: [Number]
+    receipients_id: {
+      type: [Number],
     },
   },
   {
