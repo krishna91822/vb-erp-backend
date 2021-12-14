@@ -14,10 +14,10 @@ const newInvoice = async (req, res) => {
             $PO_Id: '61a8bb6ab7dcd452dc0f5e05',
             $client_sponsor: 'AB',
             $client_finance_controller: 'CD',
-            $invoice_raised: 'ARS436PY',
-            $invoice_amount_received: '999999',
+            $invoice_raised: 6789,
+            $invoice_amount_received: 87634788,
             $vb_bank_account: 'SBIN00004567',
-            $amount_received_on: 'Fri Aug 01 2014 21:11:54 GMT+0530 (India Standard Time)'
+            $amount_received_on: '2021-12-10T06:01:50.178Z'
         }
       }
       #swagger.responses[201] = {
@@ -30,11 +30,11 @@ const newInvoice = async (req, res) => {
             "PO_Id": '61a8bb6ab7dcd452dc0f5e05',
             "client_sponsor": 'AB',
             "client_finance_controller": 'CD',
-            "invoice_raised": 'ARS436PY',
-            $invoice_amount_received: '999999',
+            "invoice_raised": 6395879,
+            $invoice_amount_received: 467389738,
             $vb_bank_account: 'SBIN00004567',
-            $amount_received_on: 'Fri Aug 01 2014 21:11:54 GMT+0530 (India Standard Time)',
-            $created_at: 'Fri Aug 01 2014 21:11:54 GMT+0530 (India Standard Time)',
+            $amount_received_on: '2021-12-10T06:01:50.178Z',
+            $created_at: '2021-12-10T06:01:50.178Z',
           },
           "error": {}
         }
@@ -44,7 +44,7 @@ const newInvoice = async (req, res) => {
     const { error } = invoiceSchema.validate(req.body);
 
     if (error) {
-      res.status(422).send(error);
+      return res.status(422).send(error);
     }
 
     const invoice = await Invoice.create(req.body);
@@ -89,7 +89,8 @@ const newInvoice = async (req, res) => {
       invoice,
     });
   } catch (error) {
-    res.status(422).send(error);
+    console.log(error);
+    res.status(401).send(error);
   }
 };
 
@@ -115,7 +116,7 @@ const getInvoiceDetailsById = async (req, res) => {
               },
             "client_sponsor": "Tanmay",
             "client_finance_controller": "xyz",
-            "invoice_raised": "huirvkhio",
+            "invoice_raised": 736398,
             "invoice_amount_received": 5689339,
             "vb_bank_account": "dwrjhgcriwog",
             "amount_received_on": "2014-01-22T14:56:59.301Z",
@@ -179,7 +180,7 @@ const getInvoiceDetails = async (req, res) => {
               },
             "client_sponsor": "Tanmay",
             "client_finance_controller": "xyz",
-            "invoice_raised": "huirvkhio",
+            "invoice_raised": 4738687,
             "invoice_amount_received": 5689339,
             "vb_bank_account": "dwrjhgcriwog",
             "amount_received_on": "2014-01-22T14:56:59.301Z",
@@ -208,10 +209,11 @@ const getInvoiceDetails = async (req, res) => {
     const limit = req.query.limit ? req.query.limit : 15;
 
     const data = req.params.data;
-    const val = "invoice_raised";
+    const val = "invoice_amount_received";
     const val2 = "Client_Name";
     const val3 = "Id";
     const val4 = "Project_Name";
+    const searchKeyword = req.query.keyword || "";
 
     if (data === val3) {
       code = 200;
@@ -225,6 +227,25 @@ const getInvoiceDetails = async (req, res) => {
           },
         },
         { $unwind: "$purchase_orders" },
+
+        {
+          $match: {
+            $or: [
+              {
+                "purchase_orders.Client_Name": {
+                  $regex: `${searchKeyword}`,
+                  $options: "i",
+                },
+              },
+              {
+                "purchase_orders.Project_Name": {
+                  $regex: `${searchKeyword}`,
+                  $options: "i",
+                },
+              },
+            ],
+          },
+        },
       ]);
 
       const data = customPagination({ data: details, page, limit });
@@ -242,9 +263,26 @@ const getInvoiceDetails = async (req, res) => {
           },
         },
         { $unwind: "$purchase_orders" },
-      ])
-        .sort(data)
-        .collation({ locale: "en" });
+
+        {
+          $match: {
+            $or: [
+              {
+                "purchase_orders.Client_Name": {
+                  $regex: `${searchKeyword}`,
+                  $options: "i",
+                },
+              },
+              {
+                "purchase_orders.Project_Name": {
+                  $regex: `${searchKeyword}`,
+                  $options: "i",
+                },
+              },
+            ],
+          },
+        },
+      ]).sort("invoice_amount_received");
       const data = customPagination({ data: details, page, limit });
       const resData = customResponse({ code, data });
       return res.status(code).send(resData);
@@ -261,6 +299,24 @@ const getInvoiceDetails = async (req, res) => {
         },
         { $unwind: "$purchase_orders" },
         { $sort: { "purchase_orders.Client_Name": 1 } },
+        {
+          $match: {
+            $or: [
+              {
+                "purchase_orders.Client_Name": {
+                  $regex: `${searchKeyword}`,
+                  $options: "i",
+                },
+              },
+              {
+                "purchase_orders.Project_Name": {
+                  $regex: `${searchKeyword}`,
+                  $options: "i",
+                },
+              },
+            ],
+          },
+        },
       ]).collation({ locale: "en" });
       const data = customPagination({ data: details, page, limit });
       const resData = customResponse({ code, data });
@@ -278,6 +334,24 @@ const getInvoiceDetails = async (req, res) => {
         },
         { $unwind: "$purchase_orders" },
         { $sort: { "purchase_orders.Project_Name": 1 } },
+        {
+          $match: {
+            $or: [
+              {
+                "purchase_orders.Client_Name": {
+                  $regex: `${searchKeyword}`,
+                  $options: "i",
+                },
+              },
+              {
+                "purchase_orders.Project_Name": {
+                  $regex: `${searchKeyword}`,
+                  $options: "i",
+                },
+              },
+            ],
+          },
+        },
       ]).collation({ locale: "en" });
       const data = customPagination({ data: details, page, limit });
       const resData = customResponse({ code, data });
@@ -292,6 +366,7 @@ const getInvoiceDetails = async (req, res) => {
       return res.status(code).send(resData);
     }
   } catch (error) {
+    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({

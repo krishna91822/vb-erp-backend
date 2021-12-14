@@ -6,16 +6,17 @@ const invoiceSchema = Joi.object()
     PO_Id: Joi.objectId().required(),
     client_sponsor: Joi.string().required(),
     client_finance_controller: Joi.string().required(),
-    invoice_raised: Joi.string().required(),
+    invoice_raised: Joi.number().required(),
     invoice_amount_received: Joi.number().required(),
     vb_bank_account: Joi.string(),
-    amount_received_on: Joi.date(),
+    amount_received_on: Joi.date().iso(),
   })
   .options({ abortEarly: false });
 
 const querySchema = Joi.object().keys({
   page: Joi.number().integer().positive(),
   limit: Joi.number().integer().positive(),
+  keyword: Joi.string().empty(""),
 });
 
 module.exports = { invoiceSchema, querySchema };
