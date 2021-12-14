@@ -93,7 +93,7 @@ const cimsPost = async (req, res) => {
       message,
     });
     res.send(resData);
-  } catch (err) {
+  } catch (error) {
     code = 422;
     const resData = customResponse({
       code,
