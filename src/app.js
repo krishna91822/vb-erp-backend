@@ -10,13 +10,13 @@ const swaggerUi = require("swagger-ui-express");
 swaggerDocument = require("../swagger.json");
 
 var corsOptions = {
-  origin: "http://localhost:3000",
+    origin: "http://localhost:3000",
 };
 
 app.use(cors(corsOptions));
 
 // PORT
-const PORT = 3030;
+const PORT = 3333;
 
 // Routes
 const router = require("./routes/index");
@@ -24,11 +24,11 @@ app.use(express.json());
 
 // Home Page
 app.get("/", (req, res) =>
-  res.send(
-    `<h1 style="text-align: center; font-family: Ubuntu">
+    res.send(
+        `<h1 style="text-align: center; font-family: Ubuntu">
             Welcome to PMO API
         </h1>`
-  )
+    )
 );
 app.use(router);
 
@@ -37,12 +37,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Server
 app.listen(PORT, () => {
-  try {
-    console.log(`Server Running on the PORT ${PORT}`);
-  } catch (error) {
-    // PORT errors
-    console.log(`Something went wrong! ${PORT} port!`);
-  }
+    try {
+        console.log(`Server Running on the PORT ${PORT}`);
+    } catch (error) {
+        // PORT errors
+        console.log(`Something went wrong! ${PORT} port!`);
+    }
 });
 
 module.exports = app;
