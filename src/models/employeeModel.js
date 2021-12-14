@@ -168,7 +168,8 @@ const employeeSchema = new mongoose.Schema(
           "PMS_ADMIN",
           "SUPER_ADMIN",
         ],
-        message: "role must be admin, employee and aprover only!",
+        message:
+          "role must be USER, APPROVER,LEADERSHIP,HR_ADMIN,FINANCE_ADMIN,PMS_ADMIN,SUPER_ADMIN, only",
       },
       default: "USER",
     },

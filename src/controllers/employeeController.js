@@ -23,13 +23,18 @@ exports.getAllEmployees = catchAsync(async (req, res, next) => {
   const employees = await features.query;
 
   //Send response
-  res.status(200).json({
-    status: "success",
-    results: employees.length,
-    data: {
-      employees,
-    },
-  });
+  // res.status(200).json({
+  //   status: "success",
+  //   results: employees.length,
+  //   data: {
+  //     employees,
+  //   },
+  // });
+  let code = 200;
+  let message = "success";
+  let data = employees;
+  const resData = customResponse({ code, message, data });
+  return res.status(code).send(resData);
 });
 
 exports.getEmployee = catchAsync(async (req, res, next) => {
@@ -39,19 +44,24 @@ exports.getEmployee = catchAsync(async (req, res, next) => {
     return next(new AppError("No employee found with that ID", 404));
   }
 
-  res.status(200).json({
-    status: "success",
-    data: {
-      employee,
-    },
-  });
+  let code = 200;
+  let message = "success";
+  let data = employee;
+  const resData = customResponse({ code, message, data });
+  // res.status(200).json({
+  //   status: "success",
+  //   data: {
+  //     employee,
+  //   },
+  // });
+  return res.status(code).send(resData);
 });
 
 exports.createEmployee = catchAsync(async (req, res, next) => {
   const { error } = employeeSchema.validate(req.body);
   if (error) {
-    code = 422;
-    message = "Invalid request data";
+    let code = 422;
+    let message = "Invalid request data";
     const resData = customResponse({
       code,
       message,
@@ -61,10 +71,15 @@ exports.createEmployee = catchAsync(async (req, res, next) => {
   }
   const newEmployee = await Employee.create(req.body);
 
-  res.status(201).json({
-    status: "success",
-    data: newEmployee,
-  });
+  let code = 201;
+  let message = "success";
+  let data = newEmployee;
+  // res.status(201).json({
+  //   status: "success",
+  //   data: newEmployee,
+  // });
+  const resData = customResponse({ code, message, data });
+  return res.status(code).send(resData);
 });
 
 exports.updateEmployee = catchAsync(async (req, res, next) => {
@@ -88,10 +103,15 @@ exports.updateEmployee = catchAsync(async (req, res, next) => {
     return next(new AppError("No employee found with that ID", 404));
   }
 
-  res.status(200).json({
-    status: "success",
-    data: employee,
-  });
+  let code = 200;
+  let message = "succcess";
+  let data = employee;
+  const resData = customResponse({ code, message, data });
+  // res.status(200).json({
+  //   status: "success",
+  //   data: employee,
+  // });
+  return res.status(code).send(resData);
 });
 
 exports.deleteEmployee = catchAsync(async (req, res, next) => {
@@ -101,8 +121,12 @@ exports.deleteEmployee = catchAsync(async (req, res, next) => {
     return next(new AppError("No employee found with that ID", 404));
   }
 
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
+  let code = 204;
+  let message = "success";
+  // res.status(204).json({
+  //   status: "success",
+  //   data: null,
+  // });
+  const resData = customResponse({ code, message });
+  return res.status(code).send(resData);
 });
