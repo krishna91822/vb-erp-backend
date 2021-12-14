@@ -162,7 +162,7 @@ describe("CIMS unit testing with Mocha..!!", () => {
                     .patch("/cims/status?id=" + record._id)
                     .end((err, res) => {
                         res.should.have.status(200);
-                        res.body.should.have.property('message').eql(res.status ? 'The client Kyoto has been activated' : 'The client Kyoto has been deactivated')
+                        res.body.should.have.property('message').eql(res.status ? 'The client Kyoto has been Reactivated' : 'The client Kyoto has been Deactivated')
                         done();
                     })
             })
