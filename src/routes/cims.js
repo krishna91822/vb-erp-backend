@@ -9,7 +9,7 @@ const {
   cimsPost,
 } = require("../controllers/cimsController");
 
-router.get("/", authenticateToken, cimsGet);
+router.get("/", cimsGet);
 router.post("/", cimsPost);
 router.patch("/status", setStatus);
 router.patch("/", cimsPatch);

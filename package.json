@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "test": "mocha --reporter spec",
+    "test": "mocha --reporter spec --timeout 10000",
     "swagger-autogen": "node swagger.js",
     "start": "npm run swagger-autogen && nodemon app.js"
   },

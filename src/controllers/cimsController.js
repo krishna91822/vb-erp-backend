@@ -20,13 +20,8 @@ const cimsGet = async (req, res) => {
 
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const count = await compModal
-      .find(filter == "" || !filter ? {} : { status: [parseInt(filter)] })
-      .collation({ locale: "en" })
-      .sort(
-        sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
-      )
-      .countDocuments();
+
+    const count = Comps.length;
 
     const totalPages = Math.ceil(count / limit);
     const data = {};
@@ -136,7 +131,6 @@ const setStatus = async (req, res) => {
 //Update record in database
 const cimsPatch = async (req, res) => {
   const _id = req.body._id;
-  //const { designation, brandname, clientname, domain, baselocation,address, status,contacts } = req.body;
 
   try {
     const { error } = updateSchema.validate(req.body);

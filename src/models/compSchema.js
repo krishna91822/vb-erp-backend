@@ -35,10 +35,6 @@ const compSchema = mongoose.Schema({
     contacts: Object,
     status: {
         type: Number,
-        enum: {
-            values: [0, 1],
-            message: "0 for inactive and 1 for active",
-        },
         default: 1,
     },
 },
