@@ -23,7 +23,6 @@ const rewardsSchema = mongoose.Schema(
       enum: ["ceo", "manager", "selected"],
       required: true,
     },
-<<<<<<< HEAD
     selected_sender: {
       type: [mongoose.Schema.Types.Mixed],
       required: function () {
@@ -47,8 +46,6 @@ const rewardsSchema = mongoose.Schema(
   //     required: false,
   // }],
 
-=======
->>>>>>> cae49bfa3a7ad4325b83ab3697eacf397f479754
     reward_receiver: {
       type: String,
       enum: ["manager", "employees", "everyone", "selected"],
