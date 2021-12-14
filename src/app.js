@@ -1,6 +1,6 @@
 // importing packages
 const express = require("express");
-require("./db/config");
+require("./utility/db");
 const cors = require("cors"); // importing middleware packages
 
 const app = express();
