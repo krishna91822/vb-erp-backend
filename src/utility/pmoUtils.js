@@ -181,7 +181,7 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
   return details;
 };
 
-const getOnBenchFilteredData = (findObj, projectDetails) => {
+const getOnBenchFilteredData = (findObj, projectDetails, employeesData) => {
   const curr_date = moment().format("YYYY-MM-DD");
 
   const reduceData = reduce(
@@ -191,6 +191,7 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
         result[value.empId.empId] = {
           empId: value.empId.empId,
           empName: value.empId.empName,
+          empPrimaryCapability: value.empId.empPrimaryCapability,
           remainingAllocation: 100,
           projects: [],
         };
@@ -220,6 +221,23 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
   );
 
   let details = values(reduceData);
+  details = employeesData.map((employ) => {
+    const filter = details
+      ? details.filter((detail) => detail.empId === employ.empId)
+      : [];
+
+    if (filter.length) {
+      return filter[0];
+    } else {
+      return {
+        empId: employ.empId,
+        empName: employ.empName,
+        empPrimaryCapability: employ.empPrimaryCapability,
+        remainingAllocation: 100,
+        projects: [],
+      };
+    }
+  });
 
   if (details.length) {
     details = details.filter((obj) => obj.remainingAllocation > 0);
