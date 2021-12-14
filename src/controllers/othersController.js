@@ -104,6 +104,7 @@ const getclientinfo = async (req, res) => {
 
     try {
         const clientId = req.headers['id']
+        //const clientId=req.params.id
         const Comps = await compModal.find({ _id: clientId });
 
         code = 200
