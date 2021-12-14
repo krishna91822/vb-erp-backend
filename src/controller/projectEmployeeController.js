@@ -98,12 +98,11 @@ const getAllocationsOnBench = async (req, res) => {
   try {
     const projectDetails = await projectEmployeeModel
       .find({})
-      .populate("empId", "_id empId empName")
+      .populate("empId", "_id empId empName empPrimaryCapability")
       .populate(
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-
     const filteredData = getOnBenchFilteredData(query, projectDetails);
 
     res.status(200).json(filteredData);
