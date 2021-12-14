@@ -39,10 +39,6 @@ exports.getAllEmployees = catchAsync(async (req, res, next) => {
 
 exports.getEmployee = catchAsync(async (req, res, next) => {
   const employee = await Employee.findById(req.params.id);
-  employee.getFormattedEmpId(function (docs) {
-    console.log(docs);
-    console.log(typeof docs);
-  });
 
   if (!employee) {
     return next(new AppError("No employee found with that ID", 404));
@@ -62,6 +58,78 @@ exports.getEmployee = catchAsync(async (req, res, next) => {
 });
 
 exports.createEmployee = catchAsync(async (req, res, next) => {
+  /* 	#swagger.tags = ['Create Employee']
+      #swagger.description = 'Create new Employee'
+      #swagger.parameters['obj'] = {
+        in: 'body',
+        schema: {
+          $empName: "name3",
+          $empEmail: "name3@email.com",
+          $empDoj: "11/10/90",
+          $empDepartment: "Development",
+          $empDesignation: "Developer Relations",
+          $empBand: "90",
+          $empCtc: 600000,
+          $empReportingManager: "Gautam",
+          $empPersonalEmail: "name3@email.com",
+          $empPhoneNumber: "8984645",
+          $empDob: "1/1/20",
+          $empGraduation:"College_name_goes_here",
+          $empAboutMe: "Tech Enthusiast",
+          $empHobbies: [ "Cricket", "Movies" ],
+          $empPrimaryCapability: [],
+          $empSkillSet: [],
+          $empCertifications: [ "AWS", "Scrum" ],
+          $role: "LEADERSHIP"
+        }
+      }
+      #swagger.responses[201] = {
+        description: 'Employee created successfully.',
+        schema: { 
+          "status": "success",
+    "code": 201,
+    "message": "success",
+    "data": {
+        "empId": "",
+        "empName": "name3",
+        "empEmail": "name3@email.com",
+        "empPersonalEmail": "name3@email.com",
+        "empPhoneNumber": "8984645",
+        "empDoj": "1990-11-09T18:30:00.000Z",
+        "empDob": "2019-12-31T18:30:00.000Z",
+        "empDepartment": "Development",
+        "empDesignation": "Developer Relations",
+        "empReportingManager": "Gautam",
+        "empConnections": 0,
+        "empHobbies": [
+            "Cricket",
+            "Movies"
+        ],
+        "empAboutMe": "Tech Enthusiast",
+        "empCurrentAddress": "",
+        "empResidentialAddress": "",
+        "empBand": "90",
+        "empCtc": 600000,
+        "empGraduation": "College_name_goes_here",
+        "empGraduationUniversity": "",
+        "empPostGraduation": "",
+        "empPostGraduationUniversity": "",
+        "empPrimaryCapability": [],
+        "empSkillSet": [],
+        "empCertifications": [
+            "AWS",
+            "Scrum"
+        ],
+        "role": "LEADERSHIP",
+        "slackMemId": "",
+        "createdAt": "2021-12-14T11:08:22.017Z",
+        "updatedAt": "2021-12-14T11:08:22.017Z",
+        "count": 3
+          },
+          "error": {}
+        }
+      }
+  */
   const { error } = employeeSchema.validate(req.body);
   if (error) {
     let code = 422;

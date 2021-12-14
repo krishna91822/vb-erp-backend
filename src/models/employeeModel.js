@@ -1,4 +1,3 @@
-const { string } = require("joi");
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
@@ -19,10 +18,14 @@ const otherField = new mongoose.Schema({
 
 const employeeSchema = new mongoose.Schema(
   {
-    empId: {
+    count: {
       type: Number,
       unique: true,
-      // required: true,
+    },
+    empId: {
+      type: String,
+      default: "",
+      unique: true,
     },
     empName: {
       type: String,
@@ -194,16 +197,20 @@ const employeeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-employeeSchema.methods.getFormattedEmpId = function (cb) {
-  let temp;
-  const id = this.empId;
-  if (id < 10) temp = "00" + id.toString();
-  else if (id < 100) temp = "0" + id.toString();
-  else temp = id.toString();
-  return cb("VB" + temp);
-};
-employeeSchema.plugin(AutoIncrement, { inc_field: "empId" });
+employeeSchema.plugin(AutoIncrement, { inc_field: "count" });
 
+employeeSchema.post("save", function () {
+  let temp;
+  const c = this.count;
+  if (c < 10) temp = "00" + c.toString();
+  else if (c < 100) temp = "0" + c.toString();
+  else temp = c.toString();
+  const res = "VB" + temp;
+  Employee.findOneAndUpdate({ count: c }, { empId: res }).then((err, docs) => {
+    if (err) console.log(err);
+    else console.log(`docs are ${JSON.stringify(docs)}`);
+  });
+});
 //Employee model class
 const Employee = mongoose.model("Employee", employeeSchema);
 
