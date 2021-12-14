@@ -107,7 +107,6 @@ const getAllocationQuery = (queryString) => {
     if (queryString.remainingAllocation) {
         query.remainingAllocation = queryString.remainingAllocation;
     }
-    allocationEndDate;
 
     if (queryString.allocationStartDate) {
         query.allocationStartDate = queryString.allocationStartDate;
@@ -164,6 +163,20 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
         details = details.filter(
             (detail) =>
             detail.allocationPercentage === parseInt(findObj.allocationPercentage)
+        );
+    }
+
+    if (findObj.allocationStartDate) {
+        details = details.filter(
+            (detail) =>
+            detail.allocationStartDate === parseInt(findObj.allocationStartDate)
+        );
+    }
+
+    if (findObj.allocationEndDate) {
+        details = details.filter(
+            (detail) =>
+            detail.allocationEndDate === parseInt(findObj.allocationEndDate)
         );
     }
 
