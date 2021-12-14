@@ -1,5 +1,6 @@
 const purchaseOrderModel = require("../models/poSow");
 const { poSowSchema, querySchema } = require("../schema/poSowSchema");
+const  projectsSchema = require("../models/projectsModel")
 const { customResponse, customPagination } = require("../utility/helper");
 
 const createPoSow = async (req, res) => {
@@ -383,10 +384,103 @@ const updatePOStatus = async (req, res) => {
   }
 };
 
+const getClients = async (req,res) => {
+  /* 	#swagger.tags = ['PO/SOW']
+      #swagger.description = 'Get Client list' 
+      #swagger.responses[200] = {
+        schema:{
+         "status": "success",
+         "code": 200,
+         "message": "",
+         "data": [
+             {
+               "clientName": "Valuebound"
+             },
+             {
+               "clientName": "Nasdaq"
+             }
+           ],
+         "error": {}
+       }
+      }
+  */
+
+  let code, message;
+   try {
+    const data = await projectsSchema.aggregate([
+      { "$group": {
+         "_id": "$clientName",
+        "Counter": { "$sum": 1 }
+     }},
+     { "$match": {
+       "Counter": { "$gte": 1 },
+     }},
+     {"$project": {"clientName" : "$_id", "_id" : 0} }
+ ])
+ code = 200;
+ const resData = customResponse({ code, data });
+ return res.status(code).send(resData);
+   } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+   }
+   
+}
+
+const getProjects = async (req,res) => {
+  /* 	#swagger.tags = ['PO/SOW']
+      #swagger.description = 'Get Project list of a Client' 
+      #swagger.responses[200] = {
+        schema:{
+         "status": "success",
+         "code": 200,
+         "message": "",
+         "data": [
+           {
+             "_id": "61b857d0b08340b2ddad1341",
+             "projectName": "Employee Management"
+           }
+         ],
+         "error": {}
+       }
+      }
+  */
+
+  let code, message;
+   try {
+    const data = await projectsSchema.find(
+      {clientName: req.params.clientName},
+      {projectName: 1}
+      ) 
+ code = 200;
+ const resData = customResponse({ code, data });
+ return res.status(code).send(resData);
+   } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+   }
+   
+}
+
+
 module.exports = {
   createPoSow,
   getPoDeatil,
   getSortedPoList,
   updatePOStatus,
   updatePODetais,
+  getClients,
+  getProjects
 };
