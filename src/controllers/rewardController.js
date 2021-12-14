@@ -4,7 +4,7 @@ const { rewardSchema } = require("../schema/rewardSchema");
 const { customResponse, customPagination } = require("../utility/helper");
 
 const getRewards = async (req, res) => {
-    /*
+  /*
       #swagger.tags = ['Rewards']
       #swagger.description = 'Get all rewards' 
       #swagger.parameters['page'] = {
@@ -75,12 +75,30 @@ const getRewards = async (req, res) => {
         }
       }
   */
-  let code ,message;
+  let code, message;
   let rewards;
   let query = [
     {
+      $lookup: {
+        from: "employees",
+        localField: "sender_id",
+        foreignField: "_id",
+        as: "sender_employee",
+      },
+    },
+    // { $unwind: "$sender_employee" },
+    {
+      $lookup: {
+        from: "employees",
+        localField: "recipients_ids",
+        foreignField: "_id",
+        as: "receiver_employee",
+      },
+    },
+    // { $unwind: "$recepients_employee" },
+    {
       $match: {
-        reward_display_name:{ $regex: "" },
+        reward_display_name: { $regex: "" },
       },
     },
   ];
@@ -91,7 +109,6 @@ const getRewards = async (req, res) => {
       },
     });
   }
-
   if (req.query.startdate && req.query.enddate) {
     query.push({
       $match: {
@@ -102,7 +119,13 @@ const getRewards = async (req, res) => {
       },
     });
   }
-
+  if (req.query.rewardType) {
+    query.push({
+      $match: {
+        reward_type: req.query.rewardType,
+      },
+    });
+  }
   if (req.query.sortBy) {
     let sortOrder = 1;
     if (req.query.sortOrder === "desc") sortOrder = -1;
@@ -119,15 +142,41 @@ const getRewards = async (req, res) => {
   const limit = 10;
   const page = req.query.page ? parseInt(req.query.page) : 1;
   try {
-   code=200;
-    rewards = await rewardsModal.aggregate(query);
-    const data=customPagination({data:rewards,page:page,limit:limit});
-    const resData=customResponse({code,data})
+    code = 200;
+    rewards = await rewardsModal.aggregate(query).project({
+      "sender_employee.empName": 1,
+      "sender_employee.empId": 1,
+      "sender_employee.empEmail": 1,
+      "sender_employee.slack_member_id": 1,
+      "receiver_employee.empName": 1,
+      "receiver_employee.empId": 1,
+      "receiver_employee.empEmail": 1,
+      "receiver_employee.slack_member_id": 1,
+      reward_display_name: 1,
+      reward_type: 1,
+      reward_subType: 1,
+      reward_sender: 1,
+      selected_sender: 1,
+      selected_receiver: 1,
+      reward_receiver: 1,
+      sender_id: 1,
+      recipients_ids: 1,
+      receiver_message: 1,
+      announcement_type: 1,
+      slack_channel: 1,
+      channel_message: 1,
+      status: 1,
+      sender_id: 1,
+      receipients_id: 1,
+      createdAt: 1,
+      updatedAt: 1,
+    });
+    const data = customPagination({ data: rewards, page: page, limit: limit });
+    const resData = customResponse({ code, data });
     res.status(code).send(resData);
-    
   } catch (error) {
-    code=500;
-    message="Internal Server error"
+    code = 500;
+    message = "Internal Server error";
     res.status(code).send(error.message);
   }
 };
@@ -195,38 +244,38 @@ const storeReward = async (req, res) => {
         }
       }
   */
- let code,message
- const { error } = rewardSchema.validate(req.body)
- if (error) {
-  code = 422;
-  message = "Invalid request data";
-  const resData = customResponse({
-    code,
-    message,
-    err: error && error.details,
-  });
-  return res.status(code).send(resData);
-}
+  let code, message;
+  const { error } = rewardSchema.validate(req.body);
+  if (error) {
+    code = 422;
+    message = "Invalid request data";
+    const resData = customResponse({
+      code,
+      message,
+      err: error && error.details,
+    });
+    return res.status(code).send(resData);
+  }
   try {
     code = 201;
-      const rewards = await new rewardsModal(req.body);
-      rewards.save()
-      const resdata=customResponse({code,data:rewards})
-    return res.status(code).send(resdata)
-    } catch (error) {
-      code = 500;
-      message = "Internal server error";
-      const resData = customResponse({
-        code,
-        message,
-        err: error,
-      });
-      return res.status(code).send(resData);
-    }
+    const rewards = await new rewardsModal(req.body);
+    rewards.save();
+    const resdata = customResponse({ code, data: rewards });
+    return res.status(code).send(resdata);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
 
 const getRewardDetail = async (req, res) => {
-    /* 	
+  /* 	
       #swagger.tags = ['Rewards']
       #swagger.description = 'Get Rewatd Detail' 
        #swagger.parameters['id'] = {
@@ -278,25 +327,25 @@ const getRewardDetail = async (req, res) => {
         }
       }
   */
- let code,message;
- const _id=req.params.id
-  try{
-    code=200;
-      const rewards = await rewardsModal.findById({_id});
-      if(!rewards){
-        code = 400;
-        message="Bad Request"
-        const resdata=customResponse({code,message})
-          return res.status(code).send(resdata);
-      }
-      const resdata=customResponse({code,data:rewards})
-      res.status(code).send(resdata);
-  } catch (error){
-      code=500;
-      message="Internal Server Error"
-      const resdata=customResponse({code,message,err:error});
-      res.status(code).send(resdata);
+  let code, message;
+  const _id = req.params.id;
+  try {
+    code = 200;
+    const rewards = await rewardsModal.findById({ _id });
+    if (!rewards) {
+      code = 400;
+      message = "Bad Request";
+      const resdata = customResponse({ code, message });
+      return res.status(code).send(resdata);
     }
+    const resdata = customResponse({ code, data: rewards });
+    res.status(code).send(resdata);
+  } catch (error) {
+    code = 500;
+    message = "Internal Server Error";
+    const resdata = customResponse({ code, message, err: error });
+    res.status(code).send(resdata);
+  }
 };
 
 const editReward = async (req, res) => {
@@ -367,27 +416,26 @@ const editReward = async (req, res) => {
         }
       }
   */
- let code,message;
- let _id=req.params.id
-  try{
-    code=200;
-    message= "rewards successfully updated!";
-      const rewards = await rewardsModal.findOneAndUpdate
-      (
-        {_id},
-        {...req.body},
-        {new:true}
-      );
-      if(!rewards){
-        code=400;
-        message="Bad Request";
-        const resdata=customResponse({code,message});
-        return res.status(code).send(resdata)
-      };
-      rewards.save()
-      const resdata=customResponse({code,message,data:rewards})
-      res.status(code).send(resdata);
-  }catch (error){
+  let code, message;
+  let _id = req.params.id;
+  try {
+    code = 200;
+    message = "rewards successfully updated!";
+    const rewards = await rewardsModal.findOneAndUpdate(
+      { _id },
+      { ...req.body },
+      { new: true }
+    );
+    if (!rewards) {
+      code = 400;
+      message = "Bad Request";
+      const resdata = customResponse({ code, message });
+      return res.status(code).send(resdata);
+    }
+    rewards.save();
+    const resdata = customResponse({ code, message, data: rewards });
+    res.status(code).send(resdata);
+  } catch (error) {
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -451,34 +499,34 @@ const deleteReward = async (req, res) => {
         }
       }
   */
- let code,message;
- const _id=req.params.id
-  try{
-      code=200;
-      // find and delete reward by id
-      const rewards = await rewardsModal.findByIdAndDelete({_id});
-      if(!rewards){
-        code=400;
-        message="Bad Request";
-        const resdata=customResponse({code,message});
-        return res.status(code).send(resdata)
-      };
-      message = "rewards successfully deleted!";
-      const resdata=customResponse({code,message,data:rewards})
-      res.status(code).send(resdata);
-      } catch(error){
-        code = 500;
-        message = "Internal server error";
-        const resData = customResponse({
-          code,
-          message,
-          err: error,
-        });
-        return res.status(code).send(resData);
-      }
+  let code, message;
+  const _id = req.params.id;
+  try {
+    code = 200;
+    // find and delete reward by id
+    const rewards = await rewardsModal.findByIdAndDelete({ _id });
+    if (!rewards) {
+      code = 400;
+      message = "Bad Request";
+      const resdata = customResponse({ code, message });
+      return res.status(code).send(resdata);
+    }
+    message = "rewards successfully deleted!";
+    const resdata = customResponse({ code, message, data: rewards });
+    res.status(code).send(resdata);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
-const launchRewards = async(req,res)=>{
-    /*
+const launchRewards = async (req, res) => {
+  /*
       #swagger.tags = ['Rewards']
       #swagger.description = 'Launch Rewards'
       #swagger.parameters['id'] = {
@@ -525,27 +573,30 @@ const launchRewards = async(req,res)=>{
         }
       }
     */
-   let code,message;
-  try{
-      code=200
-      const status="Launch"
-      // update reward status to launch
-      const rewards = await rewardsModal.findOneAndUpdate({_id:req.params.id},{$set:{status:status}});
-      if(!rewards){
-        code=400;
-        message="Bad Request"
-        const resdata=customResponse({code,message})
-          return res.status(code).send(resdata);
-      }
-      if(rewards.status==="Launch"){ 
-        message="Rewards are already in launch state"
-        const resdata=customResponse({code,message})
-          return res.status(200).send(resdata);
-      }
-      message="Rewards are launch"
-      const resdata=customResponse({code,message})
-      res.status(code).send(resdata);
-  }catch (error){
+  let code, message;
+  try {
+    code = 200;
+    const status = "in progress";
+    // update reward status to launch
+    const rewards = await rewardsModal.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { status: status } }
+    );
+    if (!rewards) {
+      code = 400;
+      message = "Bad Request";
+      const resdata = customResponse({ code, message });
+      return res.status(code).send(resdata);
+    }
+    if (rewards.status === "in progress") {
+      message = "Rewards are already in launch state";
+      const resdata = customResponse({ code, message });
+      return res.status(200).send(resdata);
+    }
+    message = "Rewards are launch";
+    const resdata = customResponse({ code, message });
+    res.status(code).send(resdata);
+  } catch (error) {
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -557,7 +608,7 @@ const launchRewards = async(req,res)=>{
   }
 };
 
-const searchRewards = async(req, res) => {
+const searchRewards = async (req, res) => {
   /* 	
     #swagger.tags = ['Rewards']
     #swagger.description = 'Search Rewards' 
@@ -614,37 +665,52 @@ const searchRewards = async(req, res) => {
       }
     }
 */
-let code,message;
-const limit = 10;
+  let code, message;
+  const limit = 10;
   const page = req.query.page ? parseInt(req.query.page) : 1;
-  const searchName= req.query;
-try{
-  if(Object.keys(req.query).length===0){
-    const rewards =await rewardsModal.find({});
-  code=200;
-  const data=customPagination({data:rewards,page:page,limit:limit});
-  const resData=customResponse({code,data})
-  res.status(code).send(resData);  
-  }
-   else{  
-  const rewards = await rewardsModal.find({$or:[{reward_display_name: {$regex:searchName.search.trim(), $options: 'i'}},
-                                               {reward_type: {$regex:searchName.search.trim(), $options: 'i'}}]});
-    if(rewards.length<1) {
-      code=400;
-      message="Bad Request, No rewards found"
-      const resdata=customResponse({code,message})
+  const searchName = req.query;
+  try {
+    if (Object.keys(req.query).length === 0) {
+      const rewards = await rewardsModal.find({});
+      code = 200;
+      const data = customPagination({
+        data: rewards,
+        page: page,
+        limit: limit,
+      });
+      const resData = customResponse({ code, data });
+      res.status(code).send(resData);
+    } else {
+      const rewards = await rewardsModal.find({
+        $or: [
+          {
+            reward_display_name: {
+              $regex: searchName.search.trim(),
+              $options: "i",
+            },
+          },
+          { reward_type: { $regex: searchName.search.trim(), $options: "i" } },
+        ],
+      });
+      if (rewards.length < 1) {
+        code = 400;
+        message = "Bad Request, No rewards found";
+        const resdata = customResponse({ code, message });
         return res.status(code).send(resdata);
+      }
+      code = 200;
+      const data = customPagination({
+        data: rewards,
+        page: page,
+        limit: limit,
+      });
+      const resData = customResponse({ code, data });
+      return res.status(code).send(resData);
     }
-        code=200;
-        const data=customPagination({data:rewards,page:page,limit:limit});
-    const resData=customResponse({code,data})
-     return res.status(code).send(resData);  
-  }  
-  }
-catch (error){
-    code=500;
-    message="Internal Server Error"
-    const resdata=customResponse({code,message,err:error});
+  } catch (error) {
+    code = 500;
+    message = "Internal Server Error";
+    const resdata = customResponse({ code, message, err: error });
     res.status(code).send(resdata);
   }
 };
@@ -656,4 +722,4 @@ module.exports = {
   deleteReward,
   launchRewards,
   searchRewards,
-  };
+};

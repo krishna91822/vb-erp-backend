@@ -166,6 +166,10 @@ const employeeSchema = new mongoose.Schema(
       type: [otherField],
       default: undefined,
     },
+    slack_member_id:{
+      type: String,
+      unique: true
+    },
   },
   { timestamps: true }
 );
