@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const employees= require("./employee");
 const rewardsSchema = mongoose.Schema(
   {
     reward_display_name: {
@@ -42,13 +42,13 @@ const rewardsSchema = mongoose.Schema(
     },
     sender_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "employees",
+      ref: employees,
       required: false,
     },
     recipients_ids: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "employees",
+        ref: employees,
         required: false,
       },
     ],
@@ -74,12 +74,7 @@ const rewardsSchema = mongoose.Schema(
       enum: ["created", "in progress", "stopped"],
       default: "created",
     },
-    sender_id: {
-      type: Number,
-    },
-    receipients_id: {
-      type: [Number],
-    },
+    
   },
   {
     timestamps: true,
