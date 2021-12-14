@@ -1,12 +1,11 @@
 // importing required Files and Routes
 const { json } = require("body-parser");
-const moment = require("moment")
+const moment = require("moment");
 const ProjectsInfoModel = require("../models/projectsModel");
 const { getQueryString } = require("../utility/pmoUtils");
 //JOI
 const { projectsSchema } = require("../schema/projectsSchema");
 const { customResponse, customPagination } = require("../utility/helper");
-
 
 // Creating and Storing Created Projects data into database by POST request
 const createProjects = async (req, res) => {
@@ -53,59 +52,58 @@ const updateProject = async (req, res) => {
   }
 };
 
-// //getting all the projects
-// const getProjects = async (req, res) => {
-//   const query = getQueryString(req.query);
-//   const page = req.query.page ? req.query.page : 1;
-//   const limit = req.query.limit ? req.query.limit : 10;
-//   let code, message;
-//   try {
-//     code = 200;
-//     message = "Displayed Successfully";
-//     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
-//     const data = customPagination({ data: Projects, page, limit });
-//     const resData = customResponse({ code,message, data });
-//     res.status(200).send(resData);
-//   }
-//   catch (error) {
-//     code = 500;
-//     message = "Internal server error";
-//     const resData = customResponse({
-//       code,
-//       message,
-//       err: error
-//     });
-//     return res.status(code).send(resData);
-//   }
-// };
+//getting all the projects
+const getProjects = async (req, res) => {
+  const query = getQueryString(req.query);
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
+  try {
+    code = 200;
+    message = "Displayed Successfully";
+    const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
+    const data = customPagination({ data: Projects, page, limit });
+    const resData = customResponse({ code, message, data });
+    res.status(200).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
 
-// //getting sorted all the projects
-// const getSortedProjects = async (req, res) => {
-//   const fieldName = req.params.fieldName;
-//   const query = getQueryString(req.query);
-//   const page = req.query.page ? req.query.page : 1;
-//   const limit = req.query.limit ? req.query.limit : 10;
-//   let code, message;
-//   try {
-//     code = 200;
-//     message = "Displayed Successfully";
-//     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] }).sort(fieldName);
-//     const data = customPagination({ data: Projects, page, limit });
-//     const resData = customResponse({ code,message, data });
-//     res.status(200).send(resData);
-//   }
-//   catch (error) {
-//     code = 500;
-//     message = "Internal server error";
-//     const resData = customResponse({
-//       code,
-//       message,
-//       err: error
-//     });
-//     return res.status(code).send(resData);
-//   }
-// };
-
+//getting sorted all the projects
+const getSortedProjects = async (req, res) => {
+  const fieldName = req.params.fieldName;
+  const query = getQueryString(req.query);
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
+  try {
+    code = 200;
+    message = "Displayed Successfully";
+    const Projects = await ProjectsInfoModel.find({
+      $and: [{ $and: query }],
+    }).sort(fieldName);
+    const data = customPagination({ data: Projects, page, limit });
+    const resData = customResponse({ code, message, data });
+    res.status(200).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
 
 const getActiveProjects = async (req, res) => {
   const query = getQueryString(req.query);
@@ -120,36 +118,38 @@ const getActiveProjects = async (req, res) => {
       let endDate = moment(element.endDate, "YYYY-MM-DD");
 
       if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
-
+      } else if (date.isAfter(endDate)) {
+        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
+          { _id: element._id },
+          { $set: { vbProjectStatus: "Done" } }
+        );
+        updateElement.save();
       }
-      else if (date.isAfter(endDate)) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
-        updateElement.save()
-      }
-    })
+    });
     code = 200;
     message = "Displayed Successfully";
     const updatedProjects = await ProjectsInfoModel.find({
-      $and: [{
-        $and: query,
-        $or: [
-          { vbProjectStatus: "On Hold" },
-          { vbProjectStatus: "Active" },
-          { vbProjectStatus: "Un Assigned" },
-        ],
-      },],
+      $and: [
+        {
+          $and: query,
+          $or: [
+            { vbProjectStatus: "On Hold" },
+            { vbProjectStatus: "Active" },
+            { vbProjectStatus: "Un Assigned" },
+          ],
+        },
+      ],
     });
     const data = customPagination({ data: updatedProjects, page, limit });
     const resData = customResponse({ code, message, data });
     res.status(200).send(resData);
-  }
-  catch (error) {
+  } catch (error) {
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
       code,
       message,
-      err: error
+      err: error,
     });
     return res.status(code).send(resData);
   }
@@ -169,36 +169,38 @@ const getSortedActiveProjects = async (req, res) => {
       let endDate = moment(element.endDate, "YYYY-MM-DD");
 
       if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
-
+      } else if (date.isAfter(endDate)) {
+        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
+          { _id: element._id },
+          { $set: { vbProjectStatus: "Done" } }
+        );
+        updateElement.save();
       }
-      else if (date.isAfter(endDate)) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
-        updateElement.save()
-      }
-    })
+    });
     code = 200;
     message = "Displayed Successfully";
     const updatedProjects = await ProjectsInfoModel.find({
-      $and: [{
-        $and: query,
-        $or: [
-          { vbProjectStatus: "On Hold" },
-          { vbProjectStatus: "Active" },
-          { vbProjectStatus: "Un Assigned" },
-        ],
-      },],
+      $and: [
+        {
+          $and: query,
+          $or: [
+            { vbProjectStatus: "On Hold" },
+            { vbProjectStatus: "Active" },
+            { vbProjectStatus: "Un Assigned" },
+          ],
+        },
+      ],
     }).sort(fieldName);
     const data = customPagination({ data: updatedProjects, page, limit });
     const resData = customResponse({ code, message, data });
     res.status(200).send(resData);
-  }
-  catch (error) {
+  } catch (error) {
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
       code,
       message,
-      err: error
+      err: error,
     });
     return res.status(code).send(resData);
   }
@@ -212,19 +214,20 @@ const getDoneProjects = async (req, res) => {
   try {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
-      let date = moment().format("YYYY-MM-DD")
+      let date = moment().format("YYYY-MM-DD");
       date = moment(date, "YYYY-MM-DD");
       let startDate = moment(element.startDate, "YYYY-MM-DD");
       let endDate = moment(element.endDate, "YYYY-MM-DD");
 
       if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
-
+      } else if (date.isAfter(endDate)) {
+        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
+          { _id: element._id },
+          { $set: { vbProjectStatus: "Done" } }
+        );
+        updateElement.save();
       }
-      else if (date.isAfter(endDate)) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
-        updateElement.save()
-      }
-    })
+    });
     code = 200;
     message = "Displayed Successfully";
     const updatedProjects = await ProjectsInfoModel.find({
@@ -239,7 +242,7 @@ const getDoneProjects = async (req, res) => {
     const resData = customResponse({
       code,
       message,
-      err: error
+      err: error,
     });
     return res.status(code).send(resData);
   }
@@ -254,19 +257,20 @@ const getSortedDoneProjects = async (req, res) => {
   try {
     const Projects = await ProjectsInfoModel.find({});
     await Projects.forEach(async (element) => {
-      let date = moment().format("YYYY-MM-DD")
+      let date = moment().format("YYYY-MM-DD");
       date = moment(date, "YYYY-MM-DD");
       let startDate = moment(element.startDate, "YYYY-MM-DD");
       let endDate = moment(element.endDate, "YYYY-MM-DD");
 
       if (element.vbProjectStatus == "On Hold" || "Un Assigned") {
-
+      } else if (date.isAfter(endDate)) {
+        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
+          { _id: element._id },
+          { $set: { vbProjectStatus: "Done" } }
+        );
+        updateElement.save();
       }
-      else if (date.isAfter(endDate)) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { "$set": { "vbProjectStatus": "Done" } });
-        updateElement.save()
-      }
-    })
+    });
     code = 200;
     message = "Displayed Successfully";
     const updatedProjects = await ProjectsInfoModel.find({
@@ -281,7 +285,7 @@ const getSortedDoneProjects = async (req, res) => {
     const resData = customResponse({
       code,
       message,
-      err: error
+      err: error,
     });
     return res.status(code).send(resData);
   }
@@ -302,8 +306,8 @@ const getProjectById = async (req, res) => {
 module.exports = {
   createProjects,
   updateProject,
-//   getProjects,
-//   getSortedProjects,
+  getProjects,
+  getSortedProjects,
   getActiveProjects,
   getSortedActiveProjects,
   getDoneProjects,

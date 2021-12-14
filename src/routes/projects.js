@@ -29,11 +29,9 @@ ProjectRouter.put("/:id", updateProject);
 ProjectRouter.get("/active", getActiveProjects);
 ProjectRouter.get("/active/:fieldName", getSortedActiveProjects);
 
-
 // GET Method for Active Projects
 ProjectRouter.get("/done", getDoneProjects);
 ProjectRouter.get("/done/:fieldName", getSortedDoneProjects);
-
 
 //GET Method by id
 ProjectRouter.get("/:id", getProjectById);
