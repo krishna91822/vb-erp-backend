@@ -141,10 +141,9 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
 
     if (findObj.empId) {
         details = details.filter((detail) =>
-            detail.empId.empId.includes(findObj.empId)
+            detail.empId.empId.toString().includes(findObj.empId)
         );
     }
-
     if (findObj.empName) {
         details = details.filter((detail) =>
             detail.empId.empName.toLowerCase().includes(findObj.empName.toLowerCase())
