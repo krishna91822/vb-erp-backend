@@ -15,7 +15,7 @@ const customResponse = ({ code = 200, message = "", data = {}, err = {} }) => {
 /**
  * @ Custom Pagination Helper
  */
-const customPagination = ({ data = [], limit = 15, page = 1 }) => {
+const customPagination = ({ data = [], limit = 10, page = 1 }) => {
   const totalCount = data.length;
   const pageCount = Math.ceil(totalCount / limit);
   const currentPage = page;
