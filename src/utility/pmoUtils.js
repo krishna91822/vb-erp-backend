@@ -140,10 +140,9 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
       detail.projectId._id.valueOf().includes(findObj.projectId)
     );
   }
-
   if (findObj.empId) {
     details = details.filter((detail) =>
-      detail.empId.empId.includes(findObj.empId)
+      detail.empId.empId.toString().includes(findObj.empId)
     );
   }
 
@@ -168,6 +167,17 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
     );
   }
 
+  if (findObj.allocationStartDate) {
+    details = details.filter(
+      (detail) => detail.allocationStartDate === findObj.allocationStartDate
+    );
+  }
+
+  if (findObj.allocationEndDate) {
+    details = details.filter(
+      (detail) => detail.allocationEndDate === findObj.allocationEndDate
+    );
+  }
   return details;
 };
 
