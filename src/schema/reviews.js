@@ -1,5 +1,5 @@
 const Joi = require("joi");
-Joi.objectId = require("joi-objectid")(Joi);
+//Joi.objectId = require("joi-objectid")(Joi);
 
 const reviewSchema = Joi.object({
   reqId: Joi.number().required(),

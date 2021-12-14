@@ -143,7 +143,6 @@ const employeeSchemaForReview = new mongoose.Schema(
     },
     role: {
       type: String,
-      uppercase: true,
       enum: {
         values: [
           "USER",
@@ -154,8 +153,6 @@ const employeeSchemaForReview = new mongoose.Schema(
           "PMS_ADMIN",
           "SUPER_ADMIN",
         ],
-        message:
-          "role must be USER, APPROVER,LEADERSHIP,HR_ADMIN,FINANCE_ADMIN,PMS_ADMIN,SUPER_ADMIN, only",
       },
       default: "employee",
     },
