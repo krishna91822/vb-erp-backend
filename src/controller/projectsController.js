@@ -30,34 +30,110 @@ const createProjects = async(req, res) => {
         project.save();
         res.status(201).json(project);
     } catch (error) {
+        // console.log("hi");
         res.status(400).send(error);
     }
 };
 
+// Updating project by its _id
 const updateProject = async(req, res) => {
     try {
         const _id = req.params.id;
-        const updateProject = await ProjectsInfoModel.findById({ vbProjectId: _id },
+        const updateProject = await ProjectsInfoModel.findOneAndUpdate({ vbProjectId: _id },
             req.body, {
                 new: true,
             }
-        ).populate("clientId");
+        );
         res.status(200).send(updateProject);
     } catch (error) {
         res.status(400).send(error);
     }
 };
 
-const getProjects = async(req, res) => {
+// //getting all the projects
+// const getProjects = async (req, res) => {
+//   const query = getQueryString(req.query);
+//   const page = req.query.page ? req.query.page : 1;
+//   const limit = req.query.limit ? req.query.limit : 10;
+//   let code, message;
+//   try {
+//     code = 200;
+//     message = "Displayed Successfully";
+//     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
+//     const data = customPagination({ data: Projects, page, limit });
+//     const resData = customResponse({ code,message, data });
+//     res.status(200).send(resData);
+//   }
+//   catch (error) {
+//     code = 500;
+//     message = "Internal server error";
+//     const resData = customResponse({
+//       code,
+//       message,
+//       err: error
+//     });
+//     return res.status(code).send(resData);
+//   }
+// };
+
+// //getting sorted all the projects
+// const getSortedProjects = async (req, res) => {
+//   const fieldName = req.params.fieldName;
+//   const query = getQueryString(req.query);
+//   const page = req.query.page ? req.query.page : 1;
+//   const limit = req.query.limit ? req.query.limit : 10;
+//   let code, message;
+//   try {
+//     code = 200;
+//     message = "Displayed Successfully";
+//     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] }).sort(fieldName);
+//     const data = customPagination({ data: Projects, page, limit });
+//     const resData = customResponse({ code,message, data });
+//     res.status(200).send(resData);
+//   }
+//   catch (error) {
+//     code = 500;
+//     message = "Internal server error";
+//     const resData = customResponse({
+//       code,
+//       message,
+//       err: error
+//     });
+//     return res.status(code).send(resData);
+//   }
+// };
+
+const getActiveProjects = async(req, res) => {
     const query = getQueryString(req.query);
     const page = req.query.page ? req.query.page : 1;
     const limit = req.query.limit ? req.query.limit : 10;
     let code, message;
     try {
+        const Projects = await ProjectsInfoModel.find({});
+        await Projects.forEach(async(element) => {
+            let date = moment().format("YYYY-MM-DD");
+            // date = moment(date, "YYYY-MM-DD");
+            let endDate = moment(element.endDate, "YYYY-MM-DD");
+
+            if (element.vbProjectStatus == "On Hold" || "Un Assigned") {} else if (date.isAfter(endDate)) {
+                let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { $set: { vbProjectStatus: "Done" } });
+                updateElement.save();
+            }
+        });
         code = 200;
-        const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
-        const data = customPagination({ data: Projects, page, limit });
-        const resData = customResponse({ code, data });
+        message = "Displayed Successfully";
+        const updatedProjects = await ProjectsInfoModel.find({
+            $and: [{
+                $and: query,
+                $or: [
+                    { vbProjectStatus: "On Hold" },
+                    { vbProjectStatus: "Active" },
+                    { vbProjectStatus: "Un Assigned" },
+                ],
+            }, ],
+        });
+        const data = customPagination({ data: updatedProjects, page, limit });
+        const resData = customResponse({ code, message, data });
         res.status(200).send(resData);
     } catch (error) {
         code = 500;
@@ -71,12 +147,17 @@ const getProjects = async(req, res) => {
     }
 };
 
-const getActiveProjects = async(req, res) => {
+const getSortedActiveProjects = async(req, res) => {
+    const fieldName = req.params.fieldName;
     const query = getQueryString(req.query);
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 10;
+    let code, message;
     try {
         const Projects = await ProjectsInfoModel.find({});
         await Projects.forEach(async(element) => {
             let date = moment().format("YYYY-MM-DD");
+            // date = moment(date, "YYYY-MM-DD");
             let endDate = moment(element.endDate, "YYYY-MM-DD");
 
             if (element.vbProjectStatus == "On Hold" || "Un Assigned") {} else if (date.isAfter(endDate)) {
@@ -84,6 +165,8 @@ const getActiveProjects = async(req, res) => {
                 updateElement.save();
             }
         });
+        code = 200;
+        message = "Displayed Successfully";
         const updatedProjects = await ProjectsInfoModel.find({
             $and: [{
                 $and: query,
@@ -93,19 +176,33 @@ const getActiveProjects = async(req, res) => {
                     { vbProjectStatus: "Un Assigned" },
                 ],
             }, ],
-        });
-        res.status(200).send(updatedProjects);
+        }).sort(fieldName);
+        const data = customPagination({ data: updatedProjects, page, limit });
+        const resData = customResponse({ code, message, data });
+        res.status(200).send(resData);
     } catch (error) {
-        res.status(400).send(error);
+        code = 500;
+        message = "Internal server error";
+        const resData = customResponse({
+            code,
+            message,
+            err: error,
+        });
+        return res.status(code).send(resData);
     }
 };
 
 const getDoneProjects = async(req, res) => {
     const query = getQueryString(req.query);
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 10;
+    let code, message;
     try {
         const Projects = await ProjectsInfoModel.find({});
         await Projects.forEach(async(element) => {
             let date = moment().format("YYYY-MM-DD");
+            date = moment(date, "YYYY-MM-DD");
+            let startDate = moment(element.startDate, "YYYY-MM-DD");
             let endDate = moment(element.endDate, "YYYY-MM-DD");
 
             if (element.vbProjectStatus == "On Hold" || "Un Assigned") {} else if (date.isAfter(endDate)) {
@@ -113,12 +210,62 @@ const getDoneProjects = async(req, res) => {
                 updateElement.save();
             }
         });
+        code = 200;
+        message = "Displayed Successfully";
         const updatedProjects = await ProjectsInfoModel.find({
             $and: [{ $and: query }, { vbProjectStatus: "Done" }],
         });
-        res.status(200).send(updatedProjects);
+        const data = customPagination({ data: updatedProjects, page, limit });
+        const resData = customResponse({ code, message, data });
+        res.status(200).send(resData);
     } catch (error) {
-        res.status(400).send(error);
+        code = 500;
+        message = "Internal server error";
+        const resData = customResponse({
+            code,
+            message,
+            err: error,
+        });
+        return res.status(code).send(resData);
+    }
+};
+
+const getSortedDoneProjects = async(req, res) => {
+    const fieldName = req.params.fieldName;
+    const query = getQueryString(req.query);
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 10;
+    let code, message;
+    try {
+        const Projects = await ProjectsInfoModel.find({});
+        await Projects.forEach(async(element) => {
+            let date = moment().format("YYYY-MM-DD");
+            date = moment(date, "YYYY-MM-DD");
+            let startDate = moment(element.startDate, "YYYY-MM-DD");
+            let endDate = moment(element.endDate, "YYYY-MM-DD");
+
+            if (element.vbProjectStatus == "On Hold" || "Un Assigned") {} else if (date.isAfter(endDate)) {
+                let updateElement = await ProjectsInfoModel.findOneAndUpdate({ _id: element._id }, { $set: { vbProjectStatus: "Done" } });
+                updateElement.save();
+            }
+        });
+        code = 200;
+        message = "Displayed Successfully";
+        const updatedProjects = await ProjectsInfoModel.find({
+            $and: [{ $and: query }, { vbProjectStatus: "Done" }],
+        }).sort(fieldName);
+        const data = customPagination({ data: updatedProjects, page, limit });
+        const resData = customResponse({ code, message, data });
+        res.status(200).send(resData);
+    } catch (error) {
+        code = 500;
+        message = "Internal server error";
+        const resData = customResponse({
+            code,
+            message,
+            err: error,
+        });
+        return res.status(code).send(resData);
     }
 };
 
@@ -137,8 +284,12 @@ const getProjectById = async(req, res) => {
 module.exports = {
     createProjects,
     updateProject,
-    getProjects,
+    //   getProjects,
+    //   getSortedProjects,
     getActiveProjects,
+    getSortedActiveProjects,
     getDoneProjects,
+    getSortedDoneProjects,
     getProjectById,
+    // getProjectBySlug,
 };

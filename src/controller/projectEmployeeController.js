@@ -26,24 +26,40 @@ const createAllocations = async (req, res) => {
   }
 };
 
-// Update request for updating the allocation and creating new resources
 const updateAllocation = async (req, res) => {
   try {
-    const { projectId } = req.params;
-    const updateResource = await projectEmployeeModel.find({
-      empId: req.body.empId,
+    let allocation;
+    const { projectId, resources } = req.body;
+    const newResources = resources.filter((eachResource) => !eachResource._id);
+    const resourcesToInsert = newResources.map((eachResource) => ({
+      ...eachResource,
       projectId,
-    });
-
-    if (updateResource.length === 0) {
-      let allocation = await projectEmployeeModel.insertMany(req.body);
-      return res.status(200).send(allocation);
-    }
-    res.status(400).json({ message: "Employee already allocated!" });
+    }));
+    allocation = await projectEmployeeModel.insertMany(resourcesToInsert);
+    res.status(201).json(allocation);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).json(error);
   }
 };
+
+// Update request for updating the allocation and creating new resources
+// const updateAllocation = async (req, res) => {
+//   try {
+//     const { projectId } = req.params;
+//     const updateResource = await projectEmployeeModel.find({
+//       empId: req.body.empId,
+//       projectId,
+//     });
+
+//     if (updateResource.length === 0) {
+//       let allocation = await projectEmployeeModel.insertMany(req.body);
+//       return res.status(200).send(allocation);
+//     }
+//     res.status(400).json({ message: "Employee already allocated!" });
+//   } catch (error) {
+//     res.status(400).send(error);
+//   }
+// };
 
 // Delete Request
 const deleteAllocation = async (req, res) => {
@@ -60,7 +76,6 @@ const deleteAllocation = async (req, res) => {
 // Get allocations
 const getAllocations = async (req, res) => {
   const query = getAllocationQuery(req.query);
-
   try {
     const projectDetails = await projectEmployeeModel
       .find({ query })
