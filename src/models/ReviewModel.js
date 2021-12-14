@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
-const validator = require('validator');
+const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
+const validator = require("validator");
 
 const otherField = new mongoose.Schema({
   fieldName: {
@@ -21,25 +21,25 @@ const employeeSchemaForReview = new mongoose.Schema(
   {
     empName: {
       type: String,
-      required: [true, 'A employee must have a name'],
+      required: [true, "A employee must have a name"],
       trim: true,
-      maxlength: [30, 'A employee name must be less or equal to 30 characters'],
+      maxlength: [30, "A employee name must be less or equal to 30 characters"],
       lowercase: true,
     },
     empEmail: {
       type: String,
-      required: [true, 'Please provide your email'],
+      required: [true, "Please provide your email"],
       trim: true,
       lowercase: true,
-      validate: [validator.isEmail, 'Please provide a valid email address'],
+      validate: [validator.isEmail, "Please provide a valid email address"],
     },
     empDoj: {
       type: Date,
-      required: [true, 'A employee must have a date of joining'],
+      required: [true, "A employee must have a date of joining"],
     },
     empDob: {
       type: Date,
-      required: [true, 'A employee must have a date of birth'],
+      required: [true, "A employee must have a date of birth"],
     },
     empPhoto: {
       type: String,
@@ -49,19 +49,19 @@ const employeeSchemaForReview = new mongoose.Schema(
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empDesignation: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empReportingManager: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empConnections: {
       type: Number,
@@ -79,49 +79,49 @@ const employeeSchemaForReview = new mongoose.Schema(
       type: String,
       lowercase: true,
       trim: true,
-      default: 'Something about me.',
+      default: "Something about me.",
     },
     empCurrentAddress: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empResidentialAddress: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empBand: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empGraduation: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empGraduationUniversity: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empPostGraduation: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empPostGraduationUniversity: {
       type: String,
       lowercase: true,
       trim: true,
-      default: '',
+      default: "",
     },
     empPrimaryCapability: {
       type: Array,
@@ -143,12 +143,18 @@ const employeeSchemaForReview = new mongoose.Schema(
     },
     role: {
       type: String,
-      lowercase: true,
       enum: {
-        values: ['admin', 'employee', 'aprover'],
-        message: 'role must be admin, employee and aprover only!',
+        values: [
+          "USER",
+          "APPROVER",
+          "LEADERSHIP",
+          "HR_ADMIN",
+          "FINANCE_ADMIN",
+          "PMS_ADMIN",
+          "SUPER_ADMIN",
+        ],
       },
-      default: 'employee',
+      default: "employee",
     },
     personalDetails: {
       type: [otherField],
@@ -177,13 +183,13 @@ const ReviewSchema = mongoose.Schema(
     },
     reqType: {
       required: true,
-      enum: ['profile-creation', 'profile-update'],
+      enum: ["profile-creation", "profile-update"],
       type: String,
     },
     status: {
       type: String,
-      enum: ['accepted', 'pending', 'rejected'],
-      default: 'pending',
+      enum: ["accepted", "pending", "rejected"],
+      default: "pending",
     },
     employeeDetails: {
       type: employeeSchemaForReview,
@@ -193,9 +199,9 @@ const ReviewSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-ReviewSchema.plugin(AutoIncrement, { inc_field: 'reqId' });
+ReviewSchema.plugin(AutoIncrement, { inc_field: "reqId" });
 
 //Review model class
-const Review = mongoose.model('Review', ReviewSchema);
+const Review = mongoose.model("Review", ReviewSchema);
 
 module.exports = Review;
