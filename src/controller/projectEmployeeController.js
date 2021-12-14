@@ -30,9 +30,7 @@ const updateAllocation = async (req, res) => {
   try {
     let allocation;
     const { projectId, resources } = req.body;
-    const newResources = resources.filter(
-      (eachResource) => eachResource._id === undefined
-    );
+    const newResources = resources.filter((eachResource) => !eachResource._id);
     const resourcesToInsert = newResources.map((eachResource) => ({
       ...eachResource,
       projectId,

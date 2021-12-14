@@ -226,7 +226,9 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
   }
 
   if (findObj.empId) {
-    details = details.filter((detail) => detail.empId.includes(findObj.empId));
+    details = details.filter((detail) =>
+      detail.empId.toString().includes(findObj.empId)
+    );
   }
 
   if (findObj.empName) {
