@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const projectsSchema = Joi.object()
   .keys({
+    clientId : Joi.string(),
     clientName: Joi.string().required(),
     projectName: Joi.string().required(),
     clientProjectManager: Joi.string().required(),
