@@ -81,7 +81,6 @@ describe("/POST reviews", () => {
         empResidentialAddress: "gujrat",
         empBand: "12",
         empGraduation: "bba",
-        // empGraduationUniversity: "du",
         empPostGraduation: "mba",
         empPostGraduationUniversity: "iim",
         empPrimaryCapability: ["Communication"],

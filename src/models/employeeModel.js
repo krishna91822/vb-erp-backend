@@ -189,6 +189,15 @@ const employeeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+employeeSchema.methods.getFormattedEmpId = function (cb) {
+  let temp;
+  let id = this.empId;
+  if (id < 10) temp = "00" + id.toString();
+  else if (id < 100) temp = "0" + id.toString();
+  else temp = id.toString();
+  return cb("VB" + temp);
+  // return "VB" + temp;
+};
 employeeSchema.plugin(AutoIncrement, { inc_field: "empId" });
 
 //Employee model class

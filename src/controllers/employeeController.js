@@ -39,6 +39,10 @@ exports.getAllEmployees = catchAsync(async (req, res, next) => {
 
 exports.getEmployee = catchAsync(async (req, res, next) => {
   const employee = await Employee.findById(req.params.id);
+  employee.getFormattedEmpId(function (docs) {
+    console.log(docs);
+    console.log(typeof docs);
+  });
 
   if (!employee) {
     return next(new AppError("No employee found with that ID", 404));
