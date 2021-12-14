@@ -114,8 +114,8 @@ const setStatus = async (req, res) => {
 
     code = 200;
     del.status
-      ? (message = `The client ${del.brandName} has been deactivated`)
-      : (message = `The client ${del.brandName} has been activated`);
+      ? (message = `The client ${del.brandName} has been Deactivated`)
+      : (message = `The client ${del.brandName} has been Reactivated`);
 
     const resData = customResponse({
       code,
