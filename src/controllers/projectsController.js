@@ -286,13 +286,13 @@ const getProjectById = async(req, res) => {
 
 //exporting to use in other files
 module.exports = {
-    createProjects,
-    updateProject,
-    // getProjects,
-    // getSortedProjects,
-    getActiveProjects,
-    getSortedActiveProjects,
-    getDoneProjects,
-    getSortedDoneProjects,
-    getProjectById,
+  createProjects,
+  updateProject,
+  // getProjects,
+  // getSortedProjects,
+  getActiveProjects,
+  getSortedActiveProjects,
+  getDoneProjects,
+  getSortedDoneProjects,
+  getProjectById,
 };
