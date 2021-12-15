@@ -122,15 +122,34 @@ const getAllocationQuery = (queryString) => {
 };
 
 const getAllocationsFilteredData = (findObj, projectDetails) => {
-  let details = projectDetails;
-  const curr_date = moment().format("YYYY-MM-DD");
+    let details = projectDetails;
+    const curr_date = moment().format("YYYY-MM-DD");
 
-  details = details.filter((detail) => {
-    if (
-      moment(curr_date).isSameOrAfter(detail.allocationStartDate) &&
-      moment(curr_date).isSameOrBefore(detail.allocationEndDate)
-    ) {
-      return detail;
+    details = details.filter((detail) => {
+        if (
+            moment(curr_date).isSameOrAfter(detail.allocationStartDate) &&
+            moment(curr_date).isSameOrBefore(detail.allocationEndDate)
+        ) {
+            return detail;
+        }
+        return null;
+    });
+
+    if (findObj.projectId) {
+        details = details.filter((detail) =>
+            detail.projectId._id.valueOf().toString().includes(findObj.projectId)
+        );
+    }
+    if (findObj.empId) {
+        details = details.filter((detail) =>
+            detail.empId.empId.toString().includes(findObj.empId)
+        );
+    }
+
+    if (findObj.empName) {
+        details = details.filter((detail) =>
+            detail.empId.empName.toLowerCase().includes(findObj.empName.toLowerCase())
+        );
     }
     return null;
   });

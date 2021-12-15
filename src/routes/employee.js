@@ -1,13 +1,14 @@
 const express = require("express");
 const EmployeeRouter = express.Router();
 const {
-    storeEmployees,
     getFilteredEmp,
+    getVbManagers,
 } = require("../controllers/employeeController");
-
-EmployeeRouter.post("/", storeEmployees);
 
 // GET request
 EmployeeRouter.get("/filteremp", getFilteredEmp);
+
+// GET request
+EmployeeRouter.get("/empManagers", getVbManagers);
 
 module.exports = EmployeeRouter;
