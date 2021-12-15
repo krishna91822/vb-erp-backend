@@ -25,6 +25,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, constants.SWAGER_OPTIONS)
+);
+
 //For checking token
 // app.use(isAuthorized);
 //For Assigning role
