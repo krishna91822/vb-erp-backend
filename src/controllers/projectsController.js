@@ -58,7 +58,7 @@ const updateProject = async(req, res) => {
 //   let code, message;
 //   try {
 //     code = 200;
-//     message = "Displayed Successfully";
+//     message = "Data Fetched Successfully!!";
 //     const Projects = await ProjectsInfoModel.find({ $and: [{ $and: query }] });
 //     const data = customPagination({ data: Projects, page, limit });
 //     const resData = customResponse({ code, message, data });
@@ -84,7 +84,7 @@ const updateProject = async(req, res) => {
 //   let code, message;
 //   try {
 //     code = 200;
-//     message = "Displayed Successfully";
+//     message = "Data Fetched Successfully!!";
 //     const Projects = await ProjectsInfoModel.find({
 //       $and: [{ $and: query }],
 //     }).sort(fieldName);
@@ -122,7 +122,7 @@ const getActiveProjects = async(req, res) => {
             }
         });
         code = 200;
-        message = "Displayed Successfully";
+        message = "Data Fetched Successfully!!";
         const updatedProjects = await ProjectsInfoModel.find({
             $and: [{
                 $and: query,
@@ -168,7 +168,7 @@ const getSortedActiveProjects = async(req, res) => {
             }
         });
         code = 200;
-        message = "Displayed Successfully";
+        message = "Data Fetched Successfully!!";
         const updatedProjects = await ProjectsInfoModel.find({
             $and: [{
                 $and: query,
@@ -214,7 +214,7 @@ const getDoneProjects = async(req, res) => {
             }
         });
         code = 200;
-        message = "Displayed Successfully";
+        message = "Data Fetched Successfully!!";
         const updatedProjects = await ProjectsInfoModel.find({
             $and: [{ $and: query }, { vbProjectStatus: "Done" }],
         });
@@ -254,7 +254,7 @@ const getSortedDoneProjects = async(req, res) => {
             }
         });
         code = 200;
-        message = "Displayed Successfully";
+        message = "Data Fetched Successfully!!";
         const updatedProjects = await ProjectsInfoModel.find({
             $and: [{ $and: query }, { vbProjectStatus: "Done" }],
         }).sort(fieldName);
