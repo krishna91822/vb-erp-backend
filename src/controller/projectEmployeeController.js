@@ -1,5 +1,6 @@
 const { json } = require("body-parser");
 const projectEmployeeModel = require("../models/projectEmployeeModel");
+const EmployeeInfoModel = require("../models/employeeModel");
 const {
   getAllocationQuery,
   getAllocationsFilteredData,
@@ -84,8 +85,8 @@ const getAllocations = async (req, res) => {
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-    const filteredData = getAllocationsFilteredData(query, projectDetails);
 
+    const filteredData = getAllocationsFilteredData(query, projectDetails);
     res.status(200).json(filteredData);
   } catch (error) {
     res.status(400).send(error);
@@ -103,7 +104,16 @@ const getAllocationsOnBench = async (req, res) => {
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-    const filteredData = getOnBenchFilteredData(query, projectDetails);
+    const employeesData = await EmployeeInfoModel.find(
+      {},
+      { empId: 1, empName: 1, empPrimaryCapability: 1 }
+    );
+
+    const filteredData = getOnBenchFilteredData(
+      query,
+      projectDetails,
+      employeesData
+    );
 
     res.status(200).json(filteredData);
   } catch (error) {
