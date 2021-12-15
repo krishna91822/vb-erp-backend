@@ -317,5 +317,4 @@ module.exports = {
   getDoneProjects,
   getSortedDoneProjects,
   getProjectById,
-  // getProjectBySlug,
 };
