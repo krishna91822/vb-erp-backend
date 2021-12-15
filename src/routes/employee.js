@@ -1,9 +1,9 @@
 const express = require("express");
 const EmployeeRouter = express.Router();
 const {
-  storeEmployees,
-  getFilteredEmp,
-} = require("../controller/employeeController");
+    storeEmployees,
+    getFilteredEmp,
+} = require("../controllers/employeeController");
 
 EmployeeRouter.post("/", storeEmployees);
 

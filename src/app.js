@@ -12,18 +12,18 @@ const swaggerFile = require("../public/api-docs/swagger-output.json");
 
 app.use(express.json());
 app.use(
-  express.urlencoded({
-    extended: true,
-  })
+    express.urlencoded({
+        extended: true,
+    })
 );
 app.use(cors(constants.CORS_OPTIONS));
 app.use(router);
 app.use(
-  "/",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerFile, constants.SWAGER_OPTIONS)
+    "/",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerFile, constants.SWAGER_OPTIONS)
 );
-app.listen(port, async () => {
-  await connectToDb();
+app.listen(port, async() => {
+    await connectToDb();
 });
 module.exports = app;

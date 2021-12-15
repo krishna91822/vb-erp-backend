@@ -9,7 +9,7 @@ const {
     getbystatus,
     getFilteredClients,
     getClientById,
-} = require("../controller/cimsController");
+} = require("../controllers/cimsController");
 
 cimsRouter.get("/", cimsGet);
 cimsRouter.post("/", cimsPost);
