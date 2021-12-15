@@ -8,11 +8,23 @@ const cimsGet = async (req, res) => {
         const sort = req.query.sort;
         const filter = req.query.filter;
         const sortOrder = req.query.sortOrder;
+        const searchData = req.query.searchData;
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 5;
 
+        const findQuery = filter == "" || !filter ? {} : { status: [parseInt(filter)] }
+
+        let regex = new RegExp(searchData, "i");
+
+        const searchQuery = searchData == "" || !searchData ? "" : { $or: [{ brandName: [regex] }, { "registeredAddress.country": [regex] }, { "contacts.primaryContact.firstName": [regex] }] }
+
+        const query = {
+            ...findQuery,
+            ...searchQuery
+        }
+
         const Comps = await compModal
-            .find(filter == "" || !filter ? {} : { status: [parseInt(filter)] })
+            .find(query)
             .collation({ locale: "en" })
             .sort(
                 sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
@@ -229,4 +241,70 @@ const searchRecords = async (req, res) => {
     }
 };
 
-module.exports = { searchRecords, setStatus, cimsGet, cimsPatch, cimsPost };
+/* ****************************************** */
+// PMO integration functionality
+
+const getFilteredClients = async (req, res) => {
+    const query = req.query;
+    try {
+        if (Object.keys(req.query).length === 0) {
+            const client = await compModal.find({}, {
+                _id: 1,
+                brandName: 1,
+                "contacts.primaryContact.firstName": 1,
+                "contacts.primaryContact.lastName": 1,
+                "contacts.primaryContact.contactNumber": 1,
+                "contacts.secondaryContact.firstName": 1,
+                "contacts.secondaryContact.lastName": 1,
+                "contacts.tertiaryContact.firstName": 1,
+                "contacts.tertiaryContact.lastName": 1,
+                "contacts.otherContact1.firstName": 1,
+                "contacts.otherContact1.lastName": 1,
+                "contacts.otherContact2.firstName": 1,
+                "contacts.otherContact2.lastName": 1,
+            });
+            return res.status(200).send(client);
+        } else {
+            const client = await compModal.find({
+                $or: [{
+                    brandName: {
+                        $regex: query.brandName.trim(),
+                        $options: "i",
+                    },
+                },],
+            }, {
+                _id: 1,
+                brandName: 1,
+                "contacts.primaryContact.firstName": 1,
+                "contacts.primaryContact.lastName": 1,
+                "contacts.primaryContact.contactNumber": 1,
+                "contacts.secondaryContact.firstName": 1,
+                "contacts.secondaryContact.lastName": 1,
+                "contacts.tertiaryContact.firstName": 1,
+                "contacts.tertiaryContact.lastName": 1,
+                "contacts.otherContact1.firstName": 1,
+                "contacts.otherContact1.lastName": 1,
+                "contacts.otherContact2.firstName": 1,
+                "contacts.otherContact2.lastName": 1,
+            });
+            return res.status(200).send(client);
+        }
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+
+const getClientById = async(req, res) => {
+    try {
+        const _id = req.params.id;
+        const client = await compModal.find({ _id: _id });
+        res.status(200).send(client);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+};
+/* ****************************************** */
+
+
+
+module.exports = { searchRecords, setStatus, cimsGet, cimsPatch, cimsPost, getFilteredClients, getClientById };
