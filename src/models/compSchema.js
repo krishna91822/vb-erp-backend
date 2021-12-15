@@ -1,11 +1,12 @@
 const { number } = require("joi");
 const mongoose = require("mongoose");
 
-const compSchema = mongoose.Schema({
+const compSchema = mongoose.Schema(
+  {
     rowNumber: Number,
-    designation: String,
+    legalName: String,
     brandName: { type: String, unique: true },
-    
+
     domain: String,
     baseLocation: String,
     gstNumber: String,
@@ -13,36 +14,35 @@ const compSchema = mongoose.Schema({
     companyType: String,
 
     registeredAddress: {
-        addressLine1: String,
-        addressLine2: String,
-        pincode: String,
-        country: String,
-        state: String,
-        district: String,
-        city: String,
-        landmark: String,
+      addressLine1: String,
+      addressLine2: String,
+      pincode: String,
+      country: String,
+      state: String,
+      district: String,
+      area: String,
+      landmark: String,
     },
     communicationAddress: {
-        addressLine1: String,
-        addressLine2: String,
-        pincode: String,
-        country: String,
-        state: String,
-        district: String,
-        city: String,
-        landmark: String,
+      addressLine1: String,
+      addressLine2: String,
+      pincode: String,
+      country: String,
+      state: String,
+      district: String,
+      area: String,
+      landmark: String,
     },
     contacts: Object,
     status: {
-        type: Number,
-        default: 1,
+      type: Number,
+      default: 1,
     },
-},
+  },
 
-    {
-        timestamps: true,
-    }
-
+  {
+    timestamps: true,
+  }
 );
 const compModal = mongoose.model("Comp", compSchema);
 module.exports = compModal;

@@ -1,9 +1,9 @@
-const Joi = require("joi")
+const Joi = require("joi");
 //validation
 
 const cimsSchema = Joi.object()
   .keys({
-    designation: Joi.string().required(),
+    legalName: Joi.string().required(),
     brandName: Joi.string().required(),
     domain: Joi.string().required(),
     baseLocation: Joi.string().required(),
@@ -11,22 +11,21 @@ const cimsSchema = Joi.object()
     //country: Joi.string().min(4).required(),
     //state: Joi.string().required(),
     ///district: Joi.string().required(),
-    //city: Joi.string().required(),
-
+    //area: Joi.string().required(),
   })
 
   .options({ abortEarly: false, allowUnknown: true });
 
-  
-  const locationSchema = Joi.object()
+const locationSchema = Joi.object()
   .keys({
     pincode: Joi.string(),
-    country: Joi.string()
-  }).options({ allowUnknown: true });
-  
-  const updateSchema = Joi.object()
+    country: Joi.string(),
+  })
+  .options({ allowUnknown: true });
+
+const updateSchema = Joi.object()
   .keys({
-    designation: Joi.string(),
+    legalName: Joi.string(),
     brandName: Joi.string(),
     domain: Joi.string(),
     baseLocation: Joi.string(),
@@ -34,8 +33,8 @@ const cimsSchema = Joi.object()
     //country: Joi.string().min(4).required(),
     //state: Joi.string().required(),
     //district: Joi.string().required(),
-    //city: Joi.string().required()
-  }).options({  abortEarly: false, allowUnknown: true });
+    //area: Joi.string().required()
+  })
+  .options({ abortEarly: false, allowUnknown: true });
 
-
-module.exports = { cimsSchema, locationSchema,updateSchema };
+module.exports = { cimsSchema, locationSchema, updateSchema };
