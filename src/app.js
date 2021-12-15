@@ -4,16 +4,17 @@ const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const constants = require("./src/utility/constant");
+const constants = require("./utility/constant");
 
-const AppError = require("./src/utility/appError");
-const globalErrorHandler = require("./src/middleware/errorMiddleware");
-const { checkAndAssignRole } = require("./src/middleware/rolesMiddleware");
-const { isAuthorized } = require("./src/middleware/auth");
-const { connectToDb } = require("./src/utility/db");
-const { closeConnection } = require("./src/utility/db");
-const router = require("./src/routes");
-
+const AppError = require("./utility/appError");
+const globalErrorHandler = require("./middleware/errorMiddleware");
+const { checkAndAssignRole } = require("./middleware/rolesMiddleware");
+const { isAuthorized } = require("./middleware/auth");
+const { connectToDb } = require("./utility/db");
+const { closeConnection } = require("./utility/db");
+const router = require("./routes");
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("../public/api-docs/swagger-output.json");
 const app = express();
 
 //middlewares
@@ -32,6 +33,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors(constants.CORS_OPTIONS));
 //Routes
 app.use(router);
+app.use(
+  "/",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, constants.SWAGER_OPTIONS)
+);
 app.all("*", (req, res, next) => {
   next(new AppError(`can't find ${req.originalUrl} on this server!`, 404));
 });

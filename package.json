@@ -1,13 +1,20 @@
 {
-  "name": "demo",
-  "version": "0.0.0",
-  "private": true,
+  "name": "vb-erp-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
   "scripts": {
     "swagger-autogen": "node swagger.js",
     "start": "npm run swagger-autogen && nodemon app.js",
     "start:prod": "SET NODE_ENV=production & nodemon app.js",
     "test": "mocha --reporter spec "
   },
+  "keywords": [
+    "cms",
+    "headless cms"
+  ],
+  "author": "Valuebound LLP",
+  "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",

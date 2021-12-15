@@ -1,8 +1,8 @@
 require("dotenv").config();
-const DB = "mongodb://127.0.0.1:27017/vb-erp";
-// process.env.NODE_ENV === "test"
-//   ? process.env.TEST_DATABASE_URI
-//   : process.env.DATABASE_URL;
+const DB =
+  process.env.NODE_ENV === "test"
+    ? process.env.TEST_DATABASE_URI
+    : process.env.DATABASE_URL;
 
 const mongoose = require("mongoose");
 const db = mongoose.connection;

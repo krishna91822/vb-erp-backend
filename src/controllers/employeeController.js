@@ -9,6 +9,7 @@ const {
   employeeSchema,
   employeeUpdateSchema,
 } = require("../schema/employeeSchema");
+const QRCode = require("qrcode");
 
 exports.getAllEmployees = catchAsync(async (req, res, next) => {
   //Build the query
@@ -233,8 +234,6 @@ exports.getFilteredEmp = async (req, res) => {
     res.status(400).send(error);
   }
 };
-
-var QRCode = require("qrcode");
 
 exports.generateQR = async (req, res) => {
   try {

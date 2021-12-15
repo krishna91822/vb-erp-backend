@@ -1,6 +1,6 @@
 require("dotenv").config();
 const fs = require("fs");
-const swaggerAutogen = require("swagger-autogen");
+const swaggerAutogen = require("swagger-autogen")();
 
 const doc = {
   info: {
