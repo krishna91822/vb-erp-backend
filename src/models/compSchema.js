@@ -8,7 +8,8 @@ const compSchema = mongoose.Schema(
     brandName: { type: String, unique: true },
 
     domain: String,
-    baseLocation: String,
+    // Need to verify this field
+    // baseLocation: String,
     gstNumber: String,
     panNumber: String,
     companyType: String,
