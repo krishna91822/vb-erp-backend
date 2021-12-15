@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
-
-// database connection
 const db = mongoose.connection;
 
-// database connection
-mongoose.connect("mongodb://127.0.0.1:27017/pmo");
+const connectToDb = () => {
+  mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  });
+  db.on("error", console.error.bind(console, "connection error: "));
+  db.on("open", console.error.bind(console, "DB connected: "));
+};
 
-//successful connection method
-db.once("open", function () {
-  console.log("PMO database connected successfully.");
-});
-
-//successful connection method
-db.on("error", () => console.log(`Database connection error`));
+module.exports = { connectToDb };

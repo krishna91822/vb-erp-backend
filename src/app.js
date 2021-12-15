@@ -1,48 +1,29 @@
-// importing packages
+require("dotenv").config();
 const express = require("express");
-require("./utility/db");
-const cors = require("cors"); // importing middleware packages
-
-const app = express();
-
-//Swagger UI
+const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
-swaggerDocument = require("../swagger.json");
+const { connectToDb } = require("./utility/db");
+const constants = require("./utility/constant");
 
-var corsOptions = {
-  origin: "http://localhost:3000",
-};
+const router = require("./routes");
+const app = express();
+const port = process.env.PORT || 3000;
+const swaggerFile = require("../public/api-docs/swagger-output.json");
 
-app.use(cors(corsOptions));
-
-// PORT
-const PORT = 3000;
-
-// Routes
-const router = require("./routes/index");
 app.use(express.json());
-
-// Home Page
-app.get("/", (req, res) =>
-  res.send(
-    `<h1 style="text-align: center; font-family: Ubuntu">
-            Welcome to PMO API
-        </h1>`
-  )
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
 );
+app.use(cors(constants.CORS_OPTIONS));
 app.use(router);
-
-//Swagger UI
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// Server
-app.listen(PORT, () => {
-  try {
-    console.log(`Server Running on the PORT ${PORT}`);
-  } catch (error) {
-    // PORT errors
-    console.log(`Something went wrong! ${PORT} port!`);
-  }
+app.use(
+  "/",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, constants.SWAGER_OPTIONS)
+);
+app.listen(port, async () => {
+  await connectToDb();
 });
-
 module.exports = app;
