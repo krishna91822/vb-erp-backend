@@ -123,7 +123,7 @@ const getEmployees = async (req, res) => {
   if (req.query.getEmpByID) {
     query.push({
       $match: {
-        empId: parseInt(req.query.getEmpByID),
+        empId: req.query.getEmpByID,
       },
     });
   }
@@ -156,7 +156,7 @@ const getEmployees = async (req, res) => {
   if (req.query.empId) {
     empidSearch.push({
       $match: {
-        empId: parseInt(req.query.empId),
+        empId: req.query.empId,
       },
     });
   }
