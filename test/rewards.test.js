@@ -71,7 +71,7 @@ describe('rewards apis', () => {
         it('It gives all rewards with sorting and filtering', (done)=>{
             chai.request(server)
             .get('/rewards')
-            .query({page:"2",sortBy:"reward_type",sortOrder:"desc",status:"Launch",startdate:"2021-04-01",enddate:"2021-11-01"})
+            .query({page:"2",sortBy:"reward_type",sortOrder:"desc",status:"Launch",startdate:"2021-04-01",enddate:"2021-11-01",rewardType:"daily"})
             .end((err,res)=>{
                 res.should.have.status(200);
                 res.body.should.be.a('object');

@@ -22,6 +22,11 @@ const getRewards = async (req, res) => {
         type: 'string',
         description: 'sort order like desc' 
       }
+      #swagger.parameters['rewardType'] = {
+        in: 'query',
+        type: 'string',
+        description: 'reward type' 
+      }
       #swagger.parameters['status'] = {
         in: 'query',
         type: 'string',
@@ -83,16 +88,16 @@ const getRewards = async (req, res) => {
         from: "employees",
         localField: "sender_id",
         foreignField: "_id",
-        as: "sender_employee",
+        as: "sender_id",
       },
     },
-    // { $unwind: "$sender_employee" },
+    // { $unwind: "$sender_id" },
     {
       $lookup: {
         from: "employees",
         localField: "recipients_ids",
         foreignField: "_id",
-        as: "receiver_employee",
+        as: "recipients_ids",
       },
     },
     // { $unwind: "$recepients_employee" },
@@ -144,14 +149,16 @@ const getRewards = async (req, res) => {
   try {
     code = 200;
     rewards = await rewardsModal.aggregate(query).project({
-      "sender_employee.empName": 1,
-      "sender_employee.empId": 1,
-      "sender_employee.empEmail": 1,
-      "sender_employee.slack_member_id": 1,
-      "receiver_employee.empName": 1,
-      "receiver_employee.empId": 1,
-      "receiver_employee.empEmail": 1,
-      "receiver_employee.slack_member_id": 1,
+      "sender_id.empName": 1,
+      "sender_id.empId": 1,
+      "sender_id.empEmail": 1,
+      "sender_id.slackMemId": 1,
+      "sender_id.empReportingManager":1,
+      "recipients_ids.empName": 1,
+      "recipients_ids.empId": 1,
+      "recipients_ids.empEmail": 1,
+      "recipients_ids.slackMemId": 1,
+      "recipients_ids.empReportingManager":1,
       reward_display_name: 1,
       reward_type: 1,
       reward_subType: 1,
@@ -159,15 +166,11 @@ const getRewards = async (req, res) => {
       selected_sender: 1,
       selected_receiver: 1,
       reward_receiver: 1,
-      sender_id: 1,
-      recipients_ids: 1,
       receiver_message: 1,
       announcement_type: 1,
       slack_channel: 1,
       channel_message: 1,
       status: 1,
-      sender_id: 1,
-      receipients_id: 1,
       createdAt: 1,
       updatedAt: 1,
     });
@@ -331,7 +334,9 @@ const getRewardDetail = async (req, res) => {
   const _id = req.params.id;
   try {
     code = 200;
-    const rewards = await rewardsModal.findById({ _id });
+    const rewards = await rewardsModal.findById({ _id })
+    .populate("recipients_ids",{empName: 1,empId: 1,slackMemId: 1,empEmail: 1,empReportingManager:1})
+    .populate("sender_id",{empName: 1,empId: 1,slackMemId: 1,empEmail: 1,empReportingManager:1});
     if (!rewards) {
       code = 400;
       message = "Bad Request";
@@ -345,6 +350,7 @@ const getRewardDetail = async (req, res) => {
     message = "Internal Server Error";
     const resdata = customResponse({ code, message, err: error });
     res.status(code).send(resdata);
+    console.log(error);
   }
 };
 
@@ -534,6 +540,13 @@ const launchRewards = async (req, res) => {
         type: 'string',
         description: 'Reward id which we want to find'
       }
+       #swagger.parameters['recipients_ids'] = {
+        in: 'body',
+        schema: {
+            $recipients_ids: ["610bc1b31b82a66f6bcd64ea"]
+           
+        }
+      }
       #swagger.responses[200] = {
       schema:{
         "status": "success",
@@ -577,10 +590,11 @@ const launchRewards = async (req, res) => {
   try {
     code = 200;
     const status = "in progress";
+    const rec_ids = req.body.recipients_ids;
     // update reward status to launch
     const rewards = await rewardsModal.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: { status: status } }
+      { $set: { status: status, recipients_ids: rec_ids } }
     );
     if (!rewards) {
       code = 400;

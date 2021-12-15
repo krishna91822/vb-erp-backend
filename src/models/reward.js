@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const employees= require("./employee");
 const rewardsSchema = mongoose.Schema(
   {
     reward_display_name: {
@@ -8,19 +8,19 @@ const rewardsSchema = mongoose.Schema(
     },
     reward_type: {
       type: String,
-      enum: ["daily", "weekly", "monthly", "yearly", "on-demand"],
+      enum: ["Daily", "Weekly", "Monthly", "Yearly", "On-Demand"],
       required: true,
     },
     reward_subType: {
       type: String,
       enum: ["work-anniversary", "birthday-celebration", "starOfTheMonth"],
       required: function () {
-        return this.reward_type === "daily";
+        return (this.reward_type === "daily"|this.reward_type === "monthly");
       },
     },
     reward_sender: {
       type: String,
-      enum: ["ceo", "manager", "selected"],
+      enum: ["CEO", "Manager", "selected"],
       required: true,
     },
     selected_sender: {
@@ -37,18 +37,18 @@ const rewardsSchema = mongoose.Schema(
     },
     reward_receiver: {
       type: String,
-      enum: ["manager", "employees", "everyone", "selected"],
+      enum: ["Manager", "Employees", "Everyone", "selected"],
       required: true,
     },
     sender_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "employees",
+      ref: employees,
       required: false,
     },
     recipients_ids: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "employees",
+        ref: employees,
         required: false,
       },
     ],
@@ -63,30 +63,28 @@ const rewardsSchema = mongoose.Schema(
     },
     slack_channel: {
       type: String,
-      required: false,
+      required:  function () {
+        return (this.announcement_type === "public");
+      },
     },
     channel_message: {
       type: String,
-      required: false,
+      required: function () {
+        return (this.announcement_type === "public");
+      },
     },
     status: {
       type: String,
-      enum: ["created", "in progress", "stopped"],
-      default: "created",
+      enum: ["Created", "In Progress", "Stopped"],
+      default: "Created",
     },
-    sender_id: {
-      type: Number,
-    },
-    receipients_id: {
-      type: [Number],
-    },
+    
   },
   {
     timestamps: true,
   }
 );
 
-//const User = mongoose.model("User", userSchema);
 // creating rewards collection with rewardsSchema
 const rewardsModal = mongoose.model("rewards", rewardsSchema);
 
