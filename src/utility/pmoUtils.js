@@ -135,7 +135,7 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
 
     if (findObj.projectId) {
         details = details.filter((detail) =>
-            detail.projectId._id.valueOf().includes(findObj.projectId)
+            detail.projectId._id.valueOf().toString().includes(findObj.projectId)
         );
     }
     if (findObj.empId) {

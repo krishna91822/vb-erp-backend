@@ -193,6 +193,7 @@ const getFilteredClients = async(req, res) => {
             const client = await compModal.find({}, {
                 _id: 1,
                 brandName: 1,
+                domain: 1,
                 "contacts.primaryContact.firstName": 1,
                 "contacts.primaryContact.lastName": 1,
                 "contacts.primaryContact.contactNumber": 1,
@@ -217,6 +218,7 @@ const getFilteredClients = async(req, res) => {
             }, {
                 _id: 1,
                 brandName: 1,
+                domain: 1,
                 "contacts.primaryContact.firstName": 1,
                 "contacts.primaryContact.lastName": 1,
                 "contacts.primaryContact.contactNumber": 1,
