@@ -5,9 +5,9 @@ let chaiHttp = require("chai-http");
 let server = require("../src/app");
 let should = chai.should();
 chai.use(chaiHttp);
-require("dotenv").config()
+require("dotenv").config();
 
-let compModal = require('../src/models/compSchema')
+let compModal = require("../src/models/compSchema");
 
 describe("CIMS unit testing with Mocha..!!", () => {
 
@@ -273,69 +273,6 @@ describe("CIMS unit testing with Mocha..!!", () => {
                     res.body.should.have.property('message').eql('Data updated successfully')
                     done();
                 })
-        })
-    })
-
-    describe("/Search for a CIMS record", () => {
-
-        it("It should send data with Brandname same as the searched field", (done) => {
-
-            const searchData = 'Kyoto'
-            chai
-                .request(server)
-                .get("/cims/search?searchData=" + searchData)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.data.should.be.a('array')
-                    res.body.data[0].should.have.property("brandName").eq('Kyoto');
-
-                    done();
-                });
-        });
-
-        it("It should send data with Country same as the searched field", (done) => {
-
-            const searchData = 'India-in'
-            chai
-                .request(server)
-                .get("/cims/search?searchData=" + searchData)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.data.should.be.a('array')
-                    res.body.data[0].registeredAddress.should.have.property("country").eq('India-in');
-
-                    done();
-                });
-        });
-
-        it("It should send data with Primary Contact same as the searched field", (done) => {
-
-            const searchData = 'Ram'
-            chai
-                .request(server)
-                .get("/cims/search?searchData=" + searchData)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.data.should.be.a('array')
-                    res.body.data[0].contacts.primaryContact.should.have.property("firstName").eq('Ram');
-
-                    done();
-                });
-        })
-
-        it("It should send no record containing Testsearch exists", (done)=>{
-
-            const searchData = 'TestSearch'
-            chai
-                .request(server)
-                .get("/cims/search?searchData=" + searchData)
-                .end((err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.have.property("code").eql(422)
-                    res.body.should.have.property("message").eql(`No record containing ${searchData} exists`)
-
-                    done();
-                });
         })
     })
 

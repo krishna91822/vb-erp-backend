@@ -2,7 +2,6 @@ const express = require("express");
 const jsonwebtoken = require("jsonwebtoken");
 const router = express.Router();
 const {
-  searchRecords,
   setStatus,
   cimsGet,
   cimsPatch,
@@ -15,7 +14,6 @@ router.get("/", cimsGet);
 router.post("/", cimsPost);
 router.patch("/status", setStatus);
 router.patch("/", cimsPatch);
-router.get("/search", searchRecords);
 
 /* ************************************************** */
 // new filter for PMO integration
