@@ -233,3 +233,14 @@ exports.getFilteredEmp = async (req, res) => {
     res.status(400).send(error);
   }
 };
+
+var QRCode = require("qrcode");
+
+exports.generateQR = async (req, res) => {
+  try {
+    res.send(await QRCode.toDataURL(`https://www.geeksforgeeks.org/`));
+    //`http://localhost:3000/employees/${req.params.id}`));
+  } catch (err) {
+    console.error(err);
+  }
+};

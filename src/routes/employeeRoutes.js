@@ -8,6 +8,7 @@ const {
   updateEmployee,
   deleteEmployee,
   getFilteredEmp,
+  generateQR,
 } = require("./../controllers/employeeController");
 const { restrictTo } = require("../middleware/rolesMiddleware");
 
@@ -17,6 +18,8 @@ router.route("/").get(getAllEmployees).post(
 );
 
 router.route("/filteremp").get(getFilteredEmp); //For PMO integration
+
+router.get("/qr", generateQR); //for get QRcode
 
 router
   .route("/:id")
