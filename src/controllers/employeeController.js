@@ -147,7 +147,7 @@ const getEmployees = async (req, res) => {
     {
       $project: {
         empId: 1,
-        slack_member_id: 1,
+        slackMemId: 1,
         _id: 0,
         empName: 1,
       },

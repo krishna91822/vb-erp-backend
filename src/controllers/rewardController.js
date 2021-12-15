@@ -22,6 +22,11 @@ const getRewards = async (req, res) => {
         type: 'string',
         description: 'sort order like desc' 
       }
+      #swagger.parameters['rewardType'] = {
+        in: 'query',
+        type: 'string',
+        description: 'reward type' 
+      }
       #swagger.parameters['status'] = {
         in: 'query',
         type: 'string',
@@ -147,11 +152,11 @@ const getRewards = async (req, res) => {
       "sender_id.empName": 1,
       "sender_id.empId": 1,
       "sender_id.empEmail": 1,
-      "sender_id.slack_member_id": 1,
+      "sender_id.slackMemId": 1,
       "recipients_ids.empName": 1,
       "recipients_ids.empId": 1,
       "recipients_ids.empEmail": 1,
-      "recipients_ids.slack_member_id": 1,
+      "recipients_ids.slackMemId": 1,
       reward_display_name: 1,
       reward_type: 1,
       reward_subType: 1,
@@ -328,8 +333,8 @@ const getRewardDetail = async (req, res) => {
   try {
     code = 200;
     const rewards = await rewardsModal.findById({ _id })
-    .populate("recipients_ids",{empName: 1,empId: 1,slack_member_id: 1,empEmail: 1})
-    .populate("sender_id",{empName: 1,empId: 1,slack_member_id: 1,empEmail: 1});
+    .populate("recipients_ids",{empName: 1,empId: 1,slackMemId: 1,empEmail: 1})
+    .populate("sender_id",{empName: 1,empId: 1,slackMemId: 1,empEmail: 1});
     if (!rewards) {
       code = 400;
       message = "Bad Request";
@@ -532,6 +537,13 @@ const launchRewards = async (req, res) => {
         in: 'path',
         type: 'string',
         description: 'Reward id which we want to find'
+      }
+       #swagger.parameters['recipients_ids'] = {
+        in: 'body',
+        schema: {
+            $recipients_ids: ["610bc1b31b82a66f6bcd64ea"]
+           
+        }
       }
       #swagger.responses[200] = {
       schema:{

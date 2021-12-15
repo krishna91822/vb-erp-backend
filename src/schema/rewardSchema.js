@@ -13,8 +13,8 @@ const rewardSchema = Joi.object()
     recipients_ids: Joi.array(),
     receiver_message: Joi.string().required(),
     announcement_type: Joi.string().valid("public", "private").required(),
-    slack_channel: Joi.string().required(),
-    channel_message: Joi.string().required(),
+    slack_channel: Joi.string(),
+    channel_message: Joi.string(),
     status: Joi.string().valid("created", "in progress", "stopped")
   })
   .options({ abortEarly: false });
