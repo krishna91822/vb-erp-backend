@@ -5,50 +5,87 @@ const { customResponse } = require("../utility/helper");
 //Get all records in database
 const cimsGet = async (req, res) => {
   try {
-    const sort = req.query.sort;
-    const filter = req.query.filter;
-    const sortOrder = req.query.sortOrder;
+    const sort = req.query.sort || "createdAt";
+    const filter = req.query.filter || 1;
+    const sortOrder = req.query.sortOrder || -1;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
 
+    const searchData = req.query.searchData || "";
+    const regex = new RegExp(searchData, "i");
+
+    const filterQuery =
+      filter === "" || !filter ? {} : { status: [parseInt(filter)] };
+    const searchQuery =
+      searchData === "" || !searchData
+        ? ""
+        : {
+            $or: [
+              { brandName: [regex] },
+              { "registeredAddress.country": [regex] },
+              { "contacts.primaryContact.firstName": [regex] },
+              { "contacts.primaryContact.lastName": [regex] },
+            ],
+          };
+
+    const findQuery = { ...filterQuery, ...searchQuery };
+    const sortQuery =
+      sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder };
+
     const Comps = await compModal
-      .find(filter == "" || !filter ? {} : { status: [parseInt(filter)] })
+      .find(findQuery)
       .collation({ locale: "en" })
-      .sort(
-        sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder }
-      );
+      .sort(sortQuery);
 
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
     const count = Comps.length;
 
-    const totalPages = Math.ceil(count / limit);
-    const data = {};
-    data.data = Comps.slice(startIndex, endIndex);
-    data.data.forEach((record, i) => {
-      record.rowNumber = startIndex + i + 1;
-    });
+    if (count === 0) {
+      code = 422;
+      message = `No record containing ${searchData} exists`;
 
-    if (data.data.length == 0) {
-      const startIndex = (totalPages - 1) * limit;
-      const endIndex = totalPages * limit;
+      const resData = customResponse({
+        code,
+        data: {},
+        message,
+        err: [
+          {
+            message,
+          },
+        ],
+      });
+
+      res.send(resData);
+    } else {
+      const totalPages = Math.ceil(count / limit);
+      const data = {};
       data.data = Comps.slice(startIndex, endIndex);
       data.data.forEach((record, i) => {
         record.rowNumber = startIndex + i + 1;
       });
+
+      if (data.data.length == 0) {
+        const startIndex = (totalPages - 1) * limit;
+        const endIndex = totalPages * limit;
+        data.data = Comps.slice(startIndex, endIndex);
+        data.data.forEach((record, i) => {
+          record.rowNumber = startIndex + i + 1;
+        });
+      }
+
+      data.totalPages = totalPages;
+      code = 200;
+      message = "Data fetched successfully";
+
+      const resData = customResponse({
+        data,
+        code,
+        message,
+      });
+      res.send(resData);
     }
-
-    data.totalPages = totalPages;
-    code = 200;
-    message = "Data fetched successfully";
-
-    const resData = customResponse({
-      data,
-      code,
-      message,
-    });
-    res.send(resData);
   } catch (error) {
     code = 422;
 
@@ -98,7 +135,6 @@ const cimsPost = async (req, res) => {
   }
 };
 
-//Delete record in database
 const setStatus = async (req, res) => {
   const { id, brandName } = req.query;
   const status = parseInt(req.query.status);
@@ -168,63 +204,4 @@ const cimsPatch = async (req, res) => {
   }
 };
 
-//Searching the records
-const searchRecords = async (req, res) => {
-  try {
-    const searchData = req.query.searchData;
-    let regex = new RegExp(searchData, "i");
-
-    const records = await compModal.find({
-      $or: [
-        { brandName: [regex] },
-        { "registeredAddress.country": [regex] },
-        { "contacts.primaryContact.firstName": [regex] },
-      ],
-    });
-
-    const data = records;
-
-    if (data.length == 0) {
-      code = 422;
-      message = `No record containing ${searchData} exists`;
-
-      const resData = customResponse({
-        code,
-        data,
-        message,
-        err: [
-          {
-            message,
-          },
-        ],
-      });
-
-      res.send(resData);
-    } else {
-      data.forEach((record, i) => {
-        record.rowNumber = i + 1;
-      });
-
-      code = 200;
-      message = "Data fetched successfully";
-
-      const resData = customResponse({
-        code,
-        data,
-        message,
-      });
-
-      res.send(resData);
-    }
-  } catch (err) {
-    code = 422;
-    const resData = customResponse({
-      code,
-      error: err && err.details,
-    });
-
-    res.send(resData);
-  }
-};
-
-module.exports = { searchRecords, setStatus, cimsGet, cimsPatch, cimsPost };
+module.exports = { setStatus, cimsGet, cimsPatch, cimsPost };
