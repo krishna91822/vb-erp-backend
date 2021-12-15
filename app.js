@@ -5,6 +5,8 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const constants = require("./src/utility/constant");
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./public/api-docs/swagger-output.json");
 
 const AppError = require("./src/utility/appError");
 const globalErrorHandler = require("./src/middleware/errorMiddleware");
@@ -23,6 +25,12 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, constants.SWAGER_OPTIONS)
+);
 
 //For checking token
 // app.use(isAuthorized);

@@ -1,0 +1,28 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Eversana",
+      "description": "A fully integrated, life sciences commercial services company -designed to solve pricing, access, reimbursement, adherence and product delivery challenges.",
+      "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "User",
+        "description": "Endpoints"
+      }
+    ],
+    "schemes": [
+      "http",
+      "https"
+    ],
+    "securityDefinitions": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Bareer ${token}"
+      }
+    }
+  }
