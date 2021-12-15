@@ -91,7 +91,7 @@ const getRewards = async (req, res) => {
         as: "sender_id",
       },
     },
-    // { $unwind: "$sender_employee" },
+    // { $unwind: "$sender_id" },
     {
       $lookup: {
         from: "employees",
@@ -152,11 +152,21 @@ const getRewards = async (req, res) => {
       "sender_id.empName": 1,
       "sender_id.empId": 1,
       "sender_id.empEmail": 1,
+<<<<<<< HEAD
       "sender_id.slackMemId": 1,
       "recipients_ids.empName": 1,
       "recipients_ids.empId": 1,
       "recipients_ids.empEmail": 1,
       "recipients_ids.slackMemId": 1,
+=======
+      "sender_id.slack_member_id": 1,
+      "sender_id.empReportingManager": 1,
+      "recipients_ids.empName": 1,
+      "recipients_ids.empId": 1,
+      "recipients_ids.empEmail": 1,
+      "recipients_ids.slack_member_id": 1,
+      "recipients_ids.empReportingManager": 1,
+>>>>>>> 72bfd3e9fe61683bac257ce72c8fddee1ff8e717
       reward_display_name: 1,
       reward_type: 1,
       reward_subType: 1,
@@ -588,12 +598,11 @@ const launchRewards = async (req, res) => {
   try {
     code = 200;
     const status = "in progress";
-    const rec_ids= req.body.recipients_ids;
+    const rec_ids = req.body.recipients_ids;
     // update reward status to launch
     const rewards = await rewardsModal.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: { status: status ,recipients_ids: rec_ids} 
-    }
+      { $set: { status: status, recipients_ids: rec_ids } }
     );
     if (!rewards) {
       code = 400;
