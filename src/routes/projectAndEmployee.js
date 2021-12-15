@@ -4,12 +4,12 @@ const ProjectEmployeeRouter = express.Router();
 
 //importing from controller
 const {
-    createAllocations,
-    updateAllocation,
-    deleteAllocation,
-    getAllocations,
-    getAllocationsOnBench,
-    getTotalAllocationByEmpId,
+  createAllocations,
+  updateAllocation,
+  deleteAllocation,
+  getAllocations,
+  getAllocationsOnBench,
+  getTotalAllocationByEmpId,
 } = require("../controllers/projectEmployeeController");
 
 // POST request
@@ -28,6 +28,6 @@ ProjectEmployeeRouter.get("/", getAllocations);
 ProjectEmployeeRouter.get("/onbench", getAllocationsOnBench);
 
 // GET request
-ProjectEmployeeRouter.get("/totalallocation/", getTotalAllocationByEmpId);
+ProjectEmployeeRouter.get("/totalallocation", getTotalAllocationByEmpId);
 
 module.exports = ProjectEmployeeRouter;
