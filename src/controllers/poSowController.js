@@ -1,6 +1,7 @@
 const purchaseOrderModel = require("../models/poSow");
 const { poSowSchema, querySchema } = require("../schema/poSowSchema");
 const  projectsSchema = require("../models/projectsModel")
+const projectEmployeeModel = require("../models/projectEmployeeModel")
 const { customResponse, customPagination } = require("../utility/helper");
 
 const createPoSow = async (req, res) => {
@@ -474,6 +475,25 @@ const getProjects = async (req,res) => {
    
 }
 
+const getDetails = async (req, res) => {
+  const query =  req.query.projectId;
+  console.log(query)
+  try {
+    const projectDetails = await projectEmployeeModel
+      .find({ projectId:query })
+      .populate("empId", "_id empId empName")
+      .populate(
+        "projectId",
+        "_id vbProjectId startDate endDate vbProjectStatus projectName"
+      );
+      console.log(projectDetails)
+
+    res.status(200).json(projectDetails);
+  } catch (error) {
+    console.log(error)
+    res.status(400).send(error);
+  }
+};
 
 module.exports = {
   createPoSow,
@@ -482,5 +502,6 @@ module.exports = {
   updatePOStatus,
   updatePODetais,
   getClients,
-  getProjects
+  getProjects,
+  getDetails
 };
