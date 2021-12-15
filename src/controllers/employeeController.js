@@ -1,15 +1,5 @@
 const EmployeeInfoModel = require("../models/employeeModel");
 
-const storeEmployees = async(req, res) => {
-    try {
-        const employee = await EmployeeInfoModel(req.body);
-        employee.save();
-        res.status(201).json(employee);
-    } catch (error) {
-        res.status(400).json(error);
-    }
-};
-
 const getFilteredEmp = async(req, res) => {
     const query = req.query;
     try {
@@ -32,7 +22,14 @@ const getFilteredEmp = async(req, res) => {
     }
 };
 
+const getVbManagers = async(req, res) => {
+    const filterManagers = await EmployeeInfoModel.find({
+        empDesignation: "Manager",
+    }, { empName: 1 });
+    return res.status(200).send(filterManagers);
+};
+
 module.exports = {
-    storeEmployees,
     getFilteredEmp,
+    getVbManagers,
 };
