@@ -8,7 +8,9 @@ const {
   updateAllocation,
   deleteAllocation,
   getAllocations,
+  // getSortedAllocations,
   getAllocationsOnBench,
+  getSortedAllocationsOnBench,
   getTotalAllocationByEmpId,
 } = require("../controllers/projectEmployeeController");
 
@@ -23,9 +25,14 @@ ProjectEmployeeRouter.delete("/:id", deleteAllocation);
 
 // GET request
 ProjectEmployeeRouter.get("/", getAllocations);
+// ProjectEmployeeRouter.get("/sorted/:fieldName", getSortedAllocations);
 
 // GET request
 ProjectEmployeeRouter.get("/onbench", getAllocationsOnBench);
+ProjectEmployeeRouter.get(
+  "/onbench/sorted/:fieldName",
+  getSortedAllocationsOnBench
+);
 
 // GET request
 ProjectEmployeeRouter.get("/totalallocation", getTotalAllocationByEmpId);
