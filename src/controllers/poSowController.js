@@ -1,7 +1,8 @@
 const purchaseOrderModel = require("../models/poSow");
 const { poSowSchema, querySchema } = require("../schema/poSowSchema");
-const  projectsSchema = require("../models/projectsModel")
+const projectsSchema = require("../models/projectsModel")
 const projectEmployeeModel = require("../models/projectEmployeeModel")
+const Employee = require("../models/employeeModel")
 const { customResponse, customPagination } = require("../utility/helper");
 
 const createPoSow = async (req, res) => {
@@ -385,7 +386,7 @@ const updatePOStatus = async (req, res) => {
   }
 };
 
-const getClients = async (req,res) => {
+const getClients = async (req, res) => {
   /* 	#swagger.tags = ['PO/SOW']
       #swagger.description = 'Get Client list' 
       #swagger.responses[200] = {
@@ -407,21 +408,25 @@ const getClients = async (req,res) => {
   */
 
   let code, message;
-   try {
+  try {
     const data = await projectsSchema.aggregate([
-      { "$group": {
-         "_id": "$clientName",
-        "Counter": { "$sum": 1 }
-     }},
-     { "$match": {
-       "Counter": { "$gte": 1 },
-     }},
-     {"$project": {"clientName" : "$_id", "_id" : 0} }
- ])
- code = 200;
- const resData = customResponse({ code, data });
- return res.status(code).send(resData);
-   } catch (error) {
+      {
+        "$group": {
+          "_id": "$clientName",
+          "Counter": { "$sum": 1 }
+        }
+      },
+      {
+        "$match": {
+          "Counter": { "$gte": 1 },
+        }
+      },
+      { "$project": { "clientName": "$_id", "_id": 0 } }
+    ])
+    code = 200;
+    const resData = customResponse({ code, data });
+    return res.status(code).send(resData);
+  } catch (error) {
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -430,11 +435,11 @@ const getClients = async (req,res) => {
       err: error,
     });
     return res.status(code).send(resData);
-   }
-   
+  }
+
 }
 
-const getProjects = async (req,res) => {
+const getProjects = async (req, res) => {
   /* 	#swagger.tags = ['PO/SOW']
       #swagger.description = 'Get Project list of a Client' 
       #swagger.responses[200] = {
@@ -454,15 +459,15 @@ const getProjects = async (req,res) => {
   */
 
   let code, message;
-   try {
+  try {
     const data = await projectsSchema.find(
-      {clientName: req.params.clientName},
-      {projectName: 1}
-      ) 
- code = 200;
- const resData = customResponse({ code, data });
- return res.status(code).send(resData);
-   } catch (error) {
+      { clientName: req.params.clientName },
+      { projectName: 1 }
+    )
+    code = 200;
+    const resData = customResponse({ code, data });
+    return res.status(code).send(resData);
+  } catch (error) {
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -471,27 +476,33 @@ const getProjects = async (req,res) => {
       err: error,
     });
     return res.status(code).send(resData);
-   }
-   
+  }
+
 }
 
 const getDetails = async (req, res) => {
-  const query =  req.query.projectId;
-  console.log(query)
+  const query = req.query.projectId;
+  let code;
   try {
-    const projectDetails = await projectEmployeeModel
-      .find({ projectId:query })
-      .populate("empId", "_id empId empName")
+    const data = await projectEmployeeModel
+      .find({ projectId: query })
+      .populate({ path: "empId", model: "Employee", select: "_id empId empName" })
       .populate(
         "projectId",
-        "_id vbProjectId startDate endDate vbProjectStatus projectName"
+        "_id vbProjectId projectName clientProjectSponsor clientFinanceController"
       );
-      console.log(projectDetails)
-
-    res.status(200).json(projectDetails);
+    code = 200;
+    const resData = customResponse({ code, data });
+    return res.status(code).send(resData);
   } catch (error) {
-    console.log(error)
-    res.status(400).send(error);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
   }
 };
 
