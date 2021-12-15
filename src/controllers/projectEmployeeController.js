@@ -79,7 +79,7 @@ const getAllocations = async(req, res) => {
     const query = getAllocationQuery(req.query);
     try {
         const projectDetails = await projectEmployeeModel
-            .find({ query })
+            .find({})
             .populate("empId", "_id empId empName")
             .populate(
                 "projectId",
