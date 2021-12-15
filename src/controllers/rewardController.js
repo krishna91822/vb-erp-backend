@@ -152,21 +152,11 @@ const getRewards = async (req, res) => {
       "sender_id.empName": 1,
       "sender_id.empId": 1,
       "sender_id.empEmail": 1,
-<<<<<<< HEAD
       "sender_id.slackMemId": 1,
       "recipients_ids.empName": 1,
       "recipients_ids.empId": 1,
       "recipients_ids.empEmail": 1,
       "recipients_ids.slackMemId": 1,
-=======
-      "sender_id.slack_member_id": 1,
-      "sender_id.empReportingManager": 1,
-      "recipients_ids.empName": 1,
-      "recipients_ids.empId": 1,
-      "recipients_ids.empEmail": 1,
-      "recipients_ids.slack_member_id": 1,
-      "recipients_ids.empReportingManager": 1,
->>>>>>> 72bfd3e9fe61683bac257ce72c8fddee1ff8e717
       reward_display_name: 1,
       reward_type: 1,
       reward_subType: 1,
@@ -343,8 +333,8 @@ const getRewardDetail = async (req, res) => {
   try {
     code = 200;
     const rewards = await rewardsModal.findById({ _id })
-    .populate("recipients_ids",{empName: 1,empId: 1,slackMemId: 1,empEmail: 1})
-    .populate("sender_id",{empName: 1,empId: 1,slackMemId: 1,empEmail: 1});
+    .populate("recipients_ids",{empName: 1,empId: 1,slackMemId: 1,empEmail: 1,empReportingManager:1})
+    .populate("sender_id",{empName: 1,empId: 1,slackMemId: 1,empEmail: 1,empReportingManager:1});
     if (!rewards) {
       code = 400;
       message = "Bad Request";
