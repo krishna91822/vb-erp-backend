@@ -8,7 +8,7 @@ const rewardsSchema = mongoose.Schema(
     },
     reward_type: {
       type: String,
-      enum: ["daily", "weekly", "monthly", "yearly", "on-demand"],
+      enum: ["Daily", "Weekly", "Monthly", "Yearly", "On-Demand"],
       required: true,
     },
     reward_subType: {
@@ -20,7 +20,7 @@ const rewardsSchema = mongoose.Schema(
     },
     reward_sender: {
       type: String,
-      enum: ["ceo", "manager", "selected"],
+      enum: ["CEO", "Manager", "selected"],
       required: true,
     },
     selected_sender: {
@@ -37,7 +37,7 @@ const rewardsSchema = mongoose.Schema(
     },
     reward_receiver: {
       type: String,
-      enum: ["manager", "employees", "everyone", "selected"],
+      enum: ["Manager", "Employees", "Everyone", "selected"],
       required: true,
     },
     sender_id: {
@@ -75,8 +75,8 @@ const rewardsSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["created", "in progress", "stopped"],
-      default: "created",
+      enum: ["Created", "In Progress", "Stopped"],
+      default: "Created",
     },
     
   },
