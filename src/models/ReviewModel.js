@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 const validator = require("validator");
-const bcrypt = require("bcryptjs");
 
 const otherField = new mongoose.Schema({
   fieldName: {
@@ -18,17 +17,8 @@ const otherField = new mongoose.Schema({
   },
 });
 
-const employeeSchema = new mongoose.Schema(
+const employeeSchemaForReview = new mongoose.Schema(
   {
-    count: {
-      type: Number,
-      unique: true,
-    },
-    empId: {
-      type: String,
-      default: "",
-      unique: true,
-    },
     empName: {
       type: String,
       required: [true, "A employee must have a name"],
@@ -40,18 +30,8 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide your email"],
       trim: true,
-      unique: true,
+      lowercase: true,
       validate: [validator.isEmail, "Please provide a valid email address"],
-    },
-    empPersonalEmail: {
-      type: String,
-      trim: true,
-      required: true,
-      unique: true,
-    },
-    empPhoneNumber: {
-      type: String,
-      required: true,
     },
     empDoj: {
       type: Date,
@@ -67,20 +47,20 @@ const employeeSchema = new mongoose.Schema(
     },
     empDepartment: {
       type: String,
+      lowercase: true,
       trim: true,
       default: "",
-      required: true,
     },
     empDesignation: {
       type: String,
+      lowercase: true,
       trim: true,
-      required: true,
       default: "",
     },
     empReportingManager: {
       type: String,
+      lowercase: true,
       trim: true,
-      required: true,
       default: "",
     },
     empConnections: {
@@ -91,14 +71,15 @@ const employeeSchema = new mongoose.Schema(
     },
     empHobbies: {
       type: Array,
+      lowercase: true,
       trim: true,
       default: [],
     },
     empAboutMe: {
       type: String,
+      lowercase: true,
       trim: true,
       default: "Something about me.",
-      required: true,
     },
     empCurrentAddress: {
       type: String,
@@ -118,16 +99,26 @@ const employeeSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    empGraduation: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      default: "",
+    },
+    empPersonalEmail: {
+      type: String,
+      trim: true,
+      required: true,
+      unique: true,
+    },
     empCtc: {
       type: Number,
       required: true,
       min: 0,
     },
-    empGraduation: {
+    empPhoneNumber: {
       type: String,
       required: true,
-      trim: true,
-      default: "",
     },
     empGraduationUniversity: {
       type: String,
@@ -137,6 +128,7 @@ const employeeSchema = new mongoose.Schema(
     },
     empPostGraduation: {
       type: String,
+      lowercase: true,
       trim: true,
       default: "",
     },
@@ -148,16 +140,19 @@ const employeeSchema = new mongoose.Schema(
     },
     empPrimaryCapability: {
       type: Array,
+      lowercase: true,
       trim: true,
       default: [],
     },
     empSkillSet: {
       type: Array,
+      lowercase: true,
       trim: true,
       default: [],
     },
     empCertifications: {
       type: Array,
+      lowercase: true,
       trim: true,
       default: [],
     },
@@ -174,10 +169,8 @@ const employeeSchema = new mongoose.Schema(
           "PMS_ADMIN",
           "SUPER_ADMIN",
         ],
-        message:
-          "role must be USER, APPROVER,LEADERSHIP,HR_ADMIN,FINANCE_ADMIN,PMS_ADMIN,SUPER_ADMIN, only",
       },
-      default: "USER",
+      default: "employee",
     },
     personalDetails: {
       type: [otherField],
@@ -193,27 +186,43 @@ const employeeSchema = new mongoose.Schema(
     },
     slackMemId: {
       type: String,
-      default: "",
+      unique: true,
+    },
+  },
+  { _id: false }
+);
+
+const ReviewSchema = mongoose.Schema(
+  {
+    reqId: {
+      required: true,
+      type: Number,
+    },
+    reqName: {
+      required: true,
+      type: String,
+    },
+    reqType: {
+      required: true,
+      enum: ["profile-creation", "profile-update"],
+      type: String,
+    },
+    status: {
+      type: String,
+      enum: ["accepted", "pending", "rejected"],
+      default: "pending",
+    },
+    employeeDetails: {
+      type: employeeSchemaForReview,
+      required: true,
     },
   },
   { timestamps: true }
 );
 
-employeeSchema.plugin(AutoIncrement, { inc_field: "count" });
+ReviewSchema.plugin(AutoIncrement, { inc_field: "reqId" });
 
-employeeSchema.post("save", function () {
-  let temp;
-  const c = this.count;
-  if (c < 10) temp = "00" + c.toString();
-  else if (c < 100) temp = "0" + c.toString();
-  else temp = c.toString();
-  const res = "VB" + temp;
-  Employee.findOneAndUpdate({ count: c }, { empId: res }).then((err, docs) => {
-    if (err) console.log(err);
-    else console.log(`docs are ${JSON.stringify(docs)}`);
-  });
-});
-//Employee model class
-const Employee = mongoose.model("Employee", employeeSchema);
+//Review model class
+const Review = mongoose.model("Review", ReviewSchema);
 
-module.exports = { Employee };
+module.exports = Review;
