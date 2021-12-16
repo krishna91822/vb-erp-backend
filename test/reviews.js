@@ -45,7 +45,7 @@ describe("/GET reviews", () => {
     };
     chai
       .request(app)
-      .get("/reviews")
+      .get(`/reviews/`)
       .send(review)
       .end((err, res) => {
         res.should.have.status(200);
@@ -101,99 +101,6 @@ describe("/POST reviews", () => {
   });
 });
 
-//testing for update method
-describe("/PATCh reviews", () => {
-  it("it should patch data into myreviews collection", (done) => {
-    let review = new reviews({
-      reqName: "admiiin",
-      reqType: "profile-creation",
-      status: "accepted",
-      reqId: 28,
-      employeeDetails: {
-        empName: "alan sajan",
-        empEmail: "sanju@mail.com",
-        empPersonalEmail: "al@mail.com",
-        empDoj: "2021-11-20",
-        empDob: "2021-11-20",
-        empDepartment: "sales",
-        empDesignation: "marketing",
-        empReportingManager: "sunilee",
-        empConnections: 10,
-        empHobbies: ["Music", "Dance"],
-        empAboutMe: "i'm always cool..!",
-        empCurrentAddress: "gujrat",
-        empResidentialAddress: "gujrat",
-        empBand: "12",
-        empGraduation: "bba",
-        empGraduationUniversity: "du",
-        empPostGraduation: "mba",
-        empPostGraduationUniversity: "iim",
-        empPrimaryCapability: ["Communication"],
-        empSkillSet: ["Communication skill"],
-        empCertifications: ["Power Bi"],
-        role: "employee",
-        personalDetails: [],
-        professionalDetails: [],
-        skillsDetails: [],
-      },
-    });
-    review.save((err, review) => {
-      chai
-        .request(app)
-        .patch(`/reviews/` + review.id)
-        .send(review)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a("object");
-          res.body.should.have.property("status");
-          done();
-        });
-    });
-  });
-});
-
-describe("DELETE a review", () => {
-  it("Deletes a review using _id", (done) => {
-    let review = new reviews({
-      reqName: "admiiin",
-      reqType: "profile-creation",
-      status: "accepted",
-      reqId: 28,
-      employeeDetails: {
-        empName: "alan sajan",
-        empEmail: "sanju@mail.com",
-        empPersonalEmail: "al@mail.com",
-        empDoj: "2021-11-20",
-        empDob: "2021-11-20",
-        empDepartment: "sales",
-        empDesignation: "marketing",
-        empReportingManager: "sunilee",
-        empConnections: 10,
-        empHobbies: ["Music", "Dance"],
-        empAboutMe: "i'm always cool..!",
-        empCurrentAddress: "gujrat",
-        empResidentialAddress: "gujrat",
-        empBand: "12",
-        empGraduation: "bba",
-        empGraduationUniversity: "du",
-        empPostGraduation: "mba",
-        empPostGraduationUniversity: "iim",
-        empPrimaryCapability: ["Communication"],
-        empSkillSet: ["Communication skill"],
-        empCertifications: ["Power Bi"],
-        role: "employee",
-        personalDetails: [],
-        professionalDetails: [],
-        skillsDetails: [],
-      },
-    });
-    chai
-      .request(app)
-      .delete(`/reviews/` + review.id)
-      .end((err, res) => {
-        res.should.have.status(204);
-        res.should.be.a("object");
-        done();
-      });
-  });
+after(async () => {
+  console.log("end of tests");
 });

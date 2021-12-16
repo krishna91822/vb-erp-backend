@@ -1,6 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
-const swaggerAutogen = require("swagger-autogen");
+const swaggerAutogen = require("swagger-autogen")();
+const Review = require("./src/models/ReviewModel");
 
 const doc = {
   info: {
@@ -14,7 +15,7 @@ const doc = {
   produces: ["application/json"],
   tags: [
     {
-      name: "User",
+      name: "Users",
       description: "Endpoints",
     },
   ],

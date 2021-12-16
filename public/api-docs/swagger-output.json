@@ -1,28 +1,548 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "title": "Eversana",
-      "description": "A fully integrated, life sciences commercial services company -designed to solve pricing, access, reimbursement, adherence and product delivery challenges.",
-      "version": "1.0.0"
-    },
-    "host": "localhost:3000",
-    "basePath": "/",
-    "tags": [
-      {
-        "name": "User",
-        "description": "Endpoints"
+  "swagger": "2.0",
+  "info": {
+    "title": "REST API",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Endpoints"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "authorization token"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/employees/": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      },
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
       }
-    ],
-    "schemes": [
-      "http",
-      "https"
-    ],
-    "securityDefinitions": {
-      "apiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization",
-        "description": "Bareer ${token}"
+    },
+    "/employees/filteremp": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/employees/qr": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/employees/{id}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/reviews/": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Get reviews list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "610d090636ba149966bd3b55"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2021-11-26T09:25:14.681Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2021-11-26T09:25:14.681Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/reviews/{id}": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Get reviews list",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61af3ce7fd077c922fadd9ba"
+                          },
+                          "reqId": {
+                            "type": "number",
+                            "example": 10
+                          },
+                          "reqName": {
+                            "type": "string",
+                            "example": "admin"
+                          },
+                          "reqType": {
+                            "type": "string",
+                            "example": "profile-creation"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "pending"
+                          },
+                          "employeeDetails": {
+                            "type": "object",
+                            "properties": {
+                              "slackMemId": {
+                                "type": "string",
+                                "example": ""
+                              },
+                              "empName": {
+                                "type": "string",
+                                "example": "alan sajan"
+                              },
+                              "empEmail": {
+                                "type": "string",
+                                "example": "sajan@mail.com"
+                              },
+                              "empDoj": {
+                                "type": "string",
+                                "example": "2021-11-20T00:00:00.000Z"
+                              },
+                              "empDob": {
+                                "type": "string",
+                                "example": "2021-11-20T00:00:00.000Z"
+                              },
+                              "empDepartment": {
+                                "type": "string",
+                                "example": "sales"
+                              },
+                              "empDesignation": {
+                                "type": "string",
+                                "example": "marketing"
+                              },
+                              "empReportingManager": {
+                                "type": "string",
+                                "example": "sunilee"
+                              },
+                              "empConnections": {
+                                "type": "number",
+                                "example": 10
+                              },
+                              "empHobbies": {
+                                "type": "array",
+                                "example": [
+                                  "Music",
+                                  "Dance"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "empAboutMe": {
+                                "type": "string",
+                                "example": "i'm always cool..!"
+                              },
+                              "empCurrentAddress": {
+                                "type": "string",
+                                "example": "gujrat"
+                              },
+                              "empResidentialAddress": {
+                                "type": "string",
+                                "example": "gujrat"
+                              },
+                              "empBand": {
+                                "type": "string",
+                                "example": "12"
+                              },
+                              "empGraduation": {
+                                "type": "string",
+                                "example": "bba"
+                              },
+                              "empGraduationUniversity": {
+                                "type": "string",
+                                "example": "du"
+                              },
+                              "empPostGraduation": {
+                                "type": "string",
+                                "example": "mba"
+                              },
+                              "empPostGraduationUniversity": {
+                                "type": "string",
+                                "example": "iim"
+                              },
+                              "empPrimaryCapability": {
+                                "type": "array",
+                                "example": [
+                                  "Communication"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "empSkillSet": {
+                                "type": "array",
+                                "example": [
+                                  "Communication skill"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "empCertifications": {
+                                "type": "array",
+                                "example": [
+                                  "Power Bi"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "role": {
+                                "type": "string",
+                                "example": "employee"
+                              },
+                              "personalDetails": {
+                                "type": "array",
+                                "example": [],
+                                "items": {}
+                              },
+                              "professionalDetails": {
+                                "type": "array",
+                                "example": [],
+                                "items": {}
+                              },
+                              "skillsDetails": {
+                                "type": "array",
+                                "example": [],
+                                "items": {}
+                              }
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2021-12-07T10:52:23.199Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2021-12-07T10:52:23.199Z"
+                          },
+                          "__v": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Delete review",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reqId",
+            "in": "path",
+            "type": "string",
+            "description": "Review which we want to delete",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Review deleted successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 204
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Deleted"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     }
-  }
+  },
+  "definitions": {}
+}

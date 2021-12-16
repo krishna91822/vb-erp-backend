@@ -111,6 +111,15 @@ const employeeSchemaForReview = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    empCtc: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    empPhoneNumber: {
+      type: String,
+      required: true,
+    },
     empGraduationUniversity: {
       type: String,
       lowercase: true,
@@ -177,7 +186,7 @@ const employeeSchemaForReview = new mongoose.Schema(
     },
     slackMemId: {
       type: String,
-      default: "",
+      unique: true,
     },
   },
   { _id: false }
@@ -186,6 +195,7 @@ const employeeSchemaForReview = new mongoose.Schema(
 const ReviewSchema = mongoose.Schema(
   {
     reqId: {
+      required: true,
       type: Number,
     },
     reqName: {
