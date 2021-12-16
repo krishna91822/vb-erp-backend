@@ -149,11 +149,13 @@ const getRewards = async (req, res) => {
   try {
     code = 200;
     rewards = await rewardsModal.aggregate(query).project({
+      "sender_id._id": 1,
       "sender_id.empName": 1,
       "sender_id.empId": 1,
       "sender_id.empEmail": 1,
       "sender_id.slackMemId": 1,
       "sender_id.empReportingManager": 1,
+      "recipients_ids._id": 1,
       "recipients_ids.empName": 1,
       "recipients_ids.empId": 1,
       "recipients_ids.empEmail": 1,
@@ -708,17 +710,22 @@ const searchRewards = async (req, res) => {
       const resData = customResponse({ code, data });
       res.status(code).send(resData);
     } else {
-      const rewards = await rewardsModal.find({
-        $or: [
-          {
-            reward_display_name: {
-              $regex: searchName.search.trim(),
-              $options: "i",
+      const rewards = await rewardsModal
+        .find({
+          $or: [
+            {
+              reward_display_name: {
+                $regex: searchName.search.trim(),
+                $options: "i",
+              },
             },
-          },
-          { reward_type: { $regex: searchName.search.trim(), $options: "i" } },
-        ],
-      });
+            {
+              reward_type: { $regex: searchName.search.trim(), $options: "i" },
+            },
+          ],
+        }).populate("recipients_ids", {empName: 1,empId: 1,slackMemId: 1,empEmail: 1,empReportingManager: 1,})
+        .populate("sender_id", {empName: 1, empId: 1, slackMemId: 1, empEmail: 1, empReportingManager: 1,})
+        .sort({ createdAt: -1 });
       if (rewards.length < 1) {
         code = 400;
         message = "Bad Request, No rewards found";

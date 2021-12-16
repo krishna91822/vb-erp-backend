@@ -7,8 +7,6 @@ const rewardSchema = Joi.object()
     reward_subType: Joi.string().valid("work-anniversary", "birthday-celebration","starOfTheMonth"),
     reward_sender: Joi.string().valid("CEO", "Manager", "selected").required(),
     reward_receiver: Joi.string().valid("Manager", "Employees", "Everyone", "selected").required(),
-    selected_sender: Joi.object(),
-    selected_receiver: Joi.array(),
     sender_id: Joi.string(),
     recipients_ids: Joi.array(),
     receiver_message: Joi.string().required(),
