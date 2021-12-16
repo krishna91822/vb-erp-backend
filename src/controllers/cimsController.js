@@ -44,7 +44,7 @@ const cimsGet = async (req, res) => {
 
     if (count === 0) {
       code = 422;
-      message = `No record containing ${searchData} exists`;
+      message = `No record containing "${searchData}" exists`;
 
       const resData = customResponse({
         code,
