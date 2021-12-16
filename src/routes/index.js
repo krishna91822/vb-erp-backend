@@ -18,10 +18,8 @@ router.use("/users", isAuthorized, userRoutes);
 router.use("/rewards", rewardRoutes);
 router.use('/cims', cimsRoutes)
 router.use('/', otherRoutes)
-//router.use("/poSow",  poSowRoutes)
 router.use("/assign", assigneeRoutes)
 router.use("/invoice",invoiceRoutes)
-
 router.use("/poSow",isAuthorized, poSowRoutes);
 router.use("/employees",employeeRoutes);
 module.exports = router;
