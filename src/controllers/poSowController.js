@@ -173,7 +173,6 @@ const getSortedPoList = async (req, res) => {
   let code, message;
 
   const fieldName = req.params.fieldName;
-
   try {
     const { error } = querySchema.validate(req.query);
     if (error) {
@@ -190,7 +189,6 @@ const getSortedPoList = async (req, res) => {
     const page = req.query.page ? req.query.page : 1;
     const limit = req.query.limit ? req.query.limit : 15;
     code = 200;
-
     let query = {};
     if (req.query.keyword) {
       query.$or = [
@@ -204,7 +202,10 @@ const getSortedPoList = async (req, res) => {
       const resData = customResponse({ code, data });
       return res.status(code).send(resData);
     }
-    const users = await purchaseOrderModel.find(query).sort(fieldName);
+    const users = await purchaseOrderModel
+      .find(query)
+      .sort(fieldName)
+      .collation({ locale: "en" });
     const data = customPagination({ data: users, page, limit });
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
