@@ -107,40 +107,40 @@ const getAllocations = async (req, res) => {
   }
 };
 
-// // Get Sorted allocations
-// const getSortedAllocations = async (req, res) => {
-//   const fieldName = req.params.fieldName;
-//   const query = getAllocationQuery(req.query);
-//   const page = req.query.page ? req.query.page : 1;
-//   const limit = req.query.limit ? req.query.limit : 10;
-//   let code, message;
-//   try {
-//     code = 200;
-//     message = "Displayed Successfully";
-//     const projectDetails = await projectEmployeeModel
-//       .find({})
-//       .populate("empId", "_id empId empName")
-//       .populate(
-//         "projectId",
-//         "_id vbProjectId startDate endDate vbProjectStatus projectName"
-//       )
-//       .sort(fieldName);
+// Get Sorted allocations
+const getSortedAllocations = async (req, res) => {
+  const fieldName = req.params.fieldName;
+  const query = getAllocationQuery(req.query);
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
+  try {
+    code = 200;
+    message = "Displayed Successfully";
+    const projectDetails = await projectEmployeeModel
+      .find({})
+      .populate("empId", "_id empId empName")
+      .populate(
+        "projectId",
+        "_id vbProjectId startDate endDate vbProjectStatus projectName"
+      )
+      .sort(fieldName);
 
-//     const filteredData = getAllocationsFilteredData(query, projectDetails);
-//     const data = customPagination({ data: filteredData, page, limit });
-//     const resData = customResponse({ code, message, data });
-//     res.status(code).send(resData);
-//   } catch (error) {
-//     code = 500;
-//     message = "Internal server error";
-//     const resData = customResponse({
-//       code,
-//       message,
-//       err: error,
-//     });
-//     return res.status(code).send(resData);
-//   }
-// };
+    const filteredData = getAllocationsFilteredData(query, projectDetails);
+    const data = customPagination({ data: filteredData, page, limit });
+    const resData = customResponse({ code, message, data });
+    res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
 
 //GET on Bench
 const getAllocationsOnBench = async (req, res) => {
