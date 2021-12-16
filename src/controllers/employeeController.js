@@ -22,7 +22,7 @@ const getFilteredEmp = async(req, res) => {
     }
 };
 
-const getVbManagers = async(req, res) => {
+const getManagers = async(req, res) => {
     const filterManagers = await EmployeeInfoModel.find({
         empDesignation: "Manager",
     }, { empName: 1 });
@@ -31,5 +31,5 @@ const getVbManagers = async(req, res) => {
 
 module.exports = {
     getFilteredEmp,
-    getVbManagers,
+    getManagers,
 };
