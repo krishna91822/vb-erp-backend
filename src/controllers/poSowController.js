@@ -4,6 +4,8 @@ const projectsSchema = require("../models/projectsModel");
 const projectEmployeeModel = require("../models/projectEmployeeModel");
 const Employee = require("../models/employeeModel");
 const Invoice = require("../models/invoicemodel");
+const { emailContent } = require("../controllers/poEmailController");
+const { emailSender } = require("../middleware/POMailNotification");
 const StatusLifeCycle = require("../utility/constant");
 const { customResponse, customPagination } = require("../utility/helper");
 
@@ -21,7 +23,6 @@ const createPoSow = async (req, res) => {
             $Targetted_Resources: {"ABC":"true","DCH":"false"},
             $Status: 'Drafted',
             $Type: 'PO',
-            $PO_Number: 'ERP34',
             $PO_Amount: 3434,
             $Currency: 'USD',
             $Document_Name: 'VB_ERP',
@@ -79,42 +80,43 @@ const createPoSow = async (req, res) => {
 
     if (st.toLowerCase() === "po") {
       counter = await purchaseOrderModel.countDocuments({ Type: "PO" });
-      if (counter < 10) {
-        po += "000";
-      } else if (counter < 100) {
-        po += "00";
-      } else if (counter < 1000) {
-        po += "0";
-      }
-      po += counter;
-      num = po;
+      counter = counter + 1;
+      const genarateID = generateId(counter, po);
+      num = genarateID;
     } else {
       counter = await purchaseOrderModel.countDocuments({ Type: "SOW" });
-      if (counter < 10) {
-        sow += "000";
-      } else if (counter < 100) {
-        sow += "00";
-      } else if (counter < 1000) {
-        sow += "0";
-      }
-      sow += counter;
-      num = sow;
+      counter = counter + 1;
+      const genarateID = generateId(counter, sow);
+      num = genarateID;
     }
     const poSow = await new purchaseOrderModel({
       ...req.body,
       PO_Number: num,
     }).save();
-    if (st.toLowerCase() === "po") {
-      const invoice = new Invoice({
-        PO_Id: poSow._id,
-        client_sponsor: req.body.Client_Sponser,
-        client_finance_controller: req.body.Client_Finance_Controller,
-      });
 
-      await invoice.save();
-    }
+    const invoices = new Invoice({
+      PO_Id: poSow._id,
+      client_sponsor: req.body.Client_Sponser,
+      client_finance_controller: req.body.Client_Finance_Controller,
+    });
+
+    const invoice = await invoices.save();
+    const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
+      "PO_Id",
+      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
+    );
+    const data = {
+      Client_Name: getDetails.PO_Id.Client_Name,
+      Project_Name: getDetails.PO_Id.Project_Name,
+      PO_Amount: getDetails.PO_Id.PO_Amount,
+      Received_Amount: getDetails.invoice_amount_received,
+    };
+    const content = await emailContent("N001", data);
+    emailSender(content);
+
     res.status(200).send(poSow);
   } catch (error) {
+    console.log(error);
     res.status(401).send(error);
   }
 };
@@ -597,6 +599,17 @@ const getDetails = async (req, res) => {
     return res.status(code).send(resData);
   }
 };
+
+function generateId(counter, posow) {
+  if (counter < 10) {
+    posow += "000";
+  } else if (counter < 100) {
+    posow += "00";
+  } else if (counter < 1000) {
+    posow += "0";
+  }
+  return posow + counter;
+}
 
 module.exports = {
   createPoSow,

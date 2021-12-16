@@ -433,6 +433,34 @@ const updateInvoice = async (req, res) => {
         $set: { ...req.body, updated_at: new Date() },
       }
     );
+
+    if (req.body.amount_received_on) {
+      const getDetails = await Invoice.findOne({ _id: req.params.id }).populate(
+        "PO_Id",
+        "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
+      );
+      const isoDate = getDetails.amount_received_on;
+      const date = new Date(isoDate);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const dt = date.getDate();
+      let curr = getDetails.PO_Id.Currency;
+      curr = curr === "INR" ? "Rs." : "$";
+
+      const newDate = dt + "-" + month + "-" + year;
+      const data2 = {
+        Client_Name: getDetails.PO_Id.Client_Name,
+        Project_Name: getDetails.PO_Id.Project_Name,
+        PO_Number: getDetails.PO_Id.PO_Number,
+        amount_received_on: newDate,
+        invoice_raised: getDetails.invoice_raised,
+        invoice_amount_received: getDetails.invoice_amount_received,
+        Currency: curr,
+      };
+
+      const emailTemplate2 = await emailContent("N003", data2);
+      emailSender(emailTemplate2);
+    }
     code = 200;
     message = "data updated successfully";
     const resData = customResponse({
