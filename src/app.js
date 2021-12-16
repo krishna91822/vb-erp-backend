@@ -9,12 +9,18 @@ const router = require("./routes");
 const app = express();
 const port = process.env.PORT || 3000;
 const swaggerFile = require("../public/api-docs/swagger-output.json");
+const globalErrorHandler = require("./middleware/errorMiddleware");
 
 app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
   })
+);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, constants.SWAGER_OPTIONS)
 );
 app.use(cors(constants.CORS_OPTIONS));
 app.use(router);
@@ -23,6 +29,7 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerFile, constants.SWAGER_OPTIONS)
 );
+app.use(globalErrorHandler);
 app.listen(port, async () => {
   await connectToDb();
 });

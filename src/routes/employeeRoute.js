@@ -1,18 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const employeeController = require("../controllers/employeeController");
 
-//Get all employee documents
-router.get("/", employeeController.getAllEmployees);
+const {
+  getEmployee,
+  getAllEmployees,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
+  getFilteredEmp,
+  generateQR,
+  getDesignations,
+  getDepartments,
+} = require("../controllers/employeeController");
 
-//Create Employee (FOR ADMIN)
-router.post("/", employeeController.createEmployee);
-
-//Get Employee details (FOR READ ONLY)
-router.get("/:empId", employeeController.getEmployee);
-
-//Update Employee details
-//This api will be called when the update request status is accepted
-router.patch("/:empId", employeeController.updateEmployee);
+router.get("/filteremp", getFilteredEmp);
+router.get("/qr", generateQR);
+router.get("/designations", getDesignations);
+router.get("/departments", getDepartments);
+router.get("/:id", getEmployee);
+router.patch("/:id", updateEmployee);
+router.delete("/:id", deleteEmployee);
+router.get("/", getAllEmployees);
+router.post("/", createEmployee);
 
 module.exports = router;

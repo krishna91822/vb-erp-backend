@@ -1,140 +1,151 @@
 process.env.NODE_ENV = "test";
 require("dotenv").config();
-const EmployeeModel = require("../src/models/employeeModel");
-const request = require("supertest");
 const app = require("../src/app");
 const mongoose = require("mongoose");
-const employeeModel = require("../src/models/employeeModel");
+const { Employee } = require("../src/models/employeeModel");
+const jwt = require("jsonwebtoken");
+const chai = require("chai");
+const chaiHttp = require("chai-http");
+chai.use(chaiHttp);
+const should = chai.should();
 
-describe("GET / ", () => {
-  beforeAll(async () => {
-    await new EmployeeModel({
-      empId: "001",
-      empRole: "USER",
-      empDoj: "18-12-2001",
-      empDepartment: "MGR",
-      empDesignation: "SFT",
-      empEmail: "dv@gdgaj.com",
-      empName: "Div",
-      empBand: "hey",
-      empCtc: "6.50",
-      empReportingManager: "Raj",
-      empGraduation: true,
-      empPostGraduation: false,
-      empPersonalEmail: "div.vb@ahg",
-      empPhoneNumber: "123654",
-      empDob: "13-12-1997",
-      empAboutMe: "Sup?",
-      empHobbies: "Medidation",
-      empPrimaryCpapability: [],
-      empSkillSet: [],
-      empCertification: [],
-    }).save();
+describe("Employee API tests", () => {
+  let token;
+  let empId;
+  before(async () => {
+    const data = {
+      empName: "ryan",
+      role: "SUPER_ADMIN",
+      empId: "33",
+      empEmail: "ryan@email.com",
+      empDoj: "12/12/21",
+      empDepartment: "Development",
+      empDesignation: "SDE",
+      empBand: "emp band",
+      empCtc: 0,
+      empReportingManager: "ManagerName10",
+      empPersonalEmail: "ryan@email.com",
+      empPhoneNumber: "1231114891",
+      empDob: "10/10/1998",
+      empAboutMe: "About me goes here",
+      empGraduation: "College name",
+    };
+    try {
+      const employee = new Employee(data);
+      const res = await employee.save();
+      empId = res._id.toString();
+      // token = jwt.sign(
+      //   { email: data.empEmail, password: "myPassword" },
+      //   process.env.JWT_SECRET
+      // );
+    } catch (err) {
+      console.log(err);
+    }
   });
 
-  test("It should respond with employees details", async () => {
-    const response = await request(app).get("/employee/001");
-    expect(response.body).toHaveProperty("empId");
-    expect(response.body.empId).toBe("001");
-    expect(response.body).toHaveProperty("empDoj");
-    expect(response.body.empDoj).toBe("18-12-2001");
-    expect(response.body).toHaveProperty("empDepartment");
-    expect(response.body.empDepartment).toBe("MGR");
-    expect(response.body).toHaveProperty("empDesignation");
-    expect(response.body.empDesignation).toBe("SFT");
-    expect(response.body).toHaveProperty("empEmail");
-    expect(response.body.empEmail).toBe("dv@gdgaj.com");
-    expect(response.body).toHaveProperty("empName");
-    expect(response.body.empName).toBe("Div");
-    expect(response.body).toHaveProperty("empBand");
-    expect(response.body.empBand).toBe("hey");
-    expect(response.body).toHaveProperty("empCtc");
-    expect(response.body.empCtc).toBe(6.5);
-    expect(response.body).toHaveProperty("empReportingManager");
-    expect(response.body.empReportingManager).toBe("Raj");
-    expect(response.body).toHaveProperty("empPersonalEmail");
-    expect(response.body.empPersonalEmail).toBe("div.vb@ahg");
-    expect(response.body).toHaveProperty("empPhoneNumber");
-    expect(response.body.empPhoneNumber).toBe("123654");
-    expect(response.body).toHaveProperty("empDob");
-    expect(response.body.empDob).toBe("13-12-1997");
-    expect(response.body).toHaveProperty("empAboutMe");
-    expect(response.body.empAboutMe).toBe("Sup?");
-    expect(response.body).toHaveProperty("empHobbies");
-    expect(response.body).toHaveProperty("empPrimaryCapability");
-    expect(response.body).toHaveProperty("empSkillSet");
-    expect(response.body).toHaveProperty("empCertifications");
-    expect(response.statusCode).toBe(200);
-  });
-});
-
-describe("POST /", () => {
-  test("It responds with the new data", async () => {
-    const newEmp = await request(app).post("/employee").send({
-      empId: "002",
-      empRole: "USER",
-      empDoj: "18-12-2050",
-      empDepartment: "ahjs",
-      empDesignation: "dkj",
-      empEmail: "dasjk.com",
-      empName: "Cj",
-      empBand: "hio",
-      empCtc: "13.00",
-      empReportingManager: "dfs",
-      empPersonalEmail: "ads@djas",
-      empPhoneNumber: "1654",
-      empDob: "1-3-9561",
-      empAboutMe: "Sup?",
-      empHobbies: "Medidation",
-      empPrimaryCpapability: [],
-      empSkillSet: [],
-      empCertification: [],
+  describe("Get employees from collection", () => {
+    it("user can get all employees using GET API", (done) => {
+      chai
+        .request(app)
+        .get("/employees")
+        // .set({ Authorization: `Bearer ${token}` })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.a("object");
+          res.body.status.should.equal("success");
+          // res.body.results.should.be.above(0);
+          res.body.data.should.be.a("array");
+          done();
+        });
     });
-
-    expect(newEmp.body).toHaveProperty("empId");
-    expect(newEmp.body.empId).toBe("002");
-    expect(newEmp.body).toHaveProperty("empDoj");
-    expect(newEmp.body.empDoj).toBe("18-12-2050");
-    expect(newEmp.body).toHaveProperty("empDepartment");
-    expect(newEmp.body.empDepartment).toBe("ahjs");
-    expect(newEmp.body).toHaveProperty("empDesignation");
-    expect(newEmp.body.empDesignation).toBe("dkj");
-    expect(newEmp.body).toHaveProperty("empEmail");
-    expect(newEmp.body.empEmail).toBe("dasjk.com");
-    expect(newEmp.body).toHaveProperty("empName");
-    expect(newEmp.body.empName).toBe("Cj");
-    expect(newEmp.body).toHaveProperty("empBand");
-    expect(newEmp.body.empBand).toBe("hio");
-    expect(newEmp.body).toHaveProperty("empCtc");
-    expect(newEmp.body.empCtc).toBe(13.0);
-    expect(newEmp.body).toHaveProperty("empReportingManager");
-    expect(newEmp.body.empReportingManager).toBe("dfs");
-    expect(newEmp.body).toHaveProperty("empPersonalEmail");
-    expect(newEmp.body.empPersonalEmail).toBe("ads@djas");
-    expect(newEmp.body).toHaveProperty("empPhoneNumber");
-    expect(newEmp.body.empPhoneNumber).toBe("1654");
-    expect(newEmp.body).toHaveProperty("empDob");
-    expect(newEmp.body.empDob).toBe("1-3-9561");
-    expect(newEmp.body).toHaveProperty("empAboutMe");
-    expect(newEmp.body.empAboutMe).toBe("Sup?");
-    expect(newEmp.body).toHaveProperty("empHobbies");
-    expect(newEmp.body).toHaveProperty("empSkillSet");
-
-    expect(newEmp.statusCode).toBe(200);
-  });
-});
-
-describe("PATCH /", () => {
-  afterAll(async () => {
-    await employeeModel.deleteMany({});
   });
 
-  test("It responds with an updated employee", async () => {
-    const updatedEmp = await request(app)
-      .patch(`/employee/002`)
-      .send({ empName: "UpdatedName" });
-    expect(updatedEmp.body.empName).toBe("UpdatedName");
-    expect(updatedEmp.body).toHaveProperty("empId");
-    expect(updatedEmp.statusCode).toBe(200);
+  describe("Get employee details by using _id", () => {
+    it("Returns employee details using _id", (done) => {
+      chai
+        .request(app)
+        .get(`/employees/${empId}`)
+        // .set({ Authorization: `Bearer ${token}` })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.a("object");
+          res.body.status.should.equal("success");
+          res.body.data.should.be.a("object");
+          done();
+        });
+    });
+  });
+
+  describe("POST new employee ", () => {
+    it("Creates a new employee and stores the document in the database", (done) => {
+      const newEmployee = {
+        empName: "rohan",
+        role: "HR_ADMIN",
+        empEmail: "rohan@email.com",
+        empDoj: "12/12/21",
+        empDepartment: "HR",
+        empDesignation: "HR",
+        empBand: "emp band",
+        empCtc: 100000,
+        empReportingManager: "ManagerName12",
+        empPersonalEmail: "rohan_personal@email.com",
+        empPhoneNumber: "1231004891",
+        empDob: "10/10/1998",
+        empAboutMe: "About me goes here",
+        empGraduation: "College name",
+      };
+      chai
+        .request(app)
+        .post(`/employees/`)
+        .send(newEmployee)
+        // .set({ Authorization: `Bearer ${token}` })
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.should.be.a("object");
+          res.body.status.should.equal("success");
+          res.body.data.should.be.a("object");
+          done();
+        });
+    });
+  });
+
+  describe("PATCH an employee", () => {
+    it("Updates an employee using _id", (done) => {
+      const data = {
+        empCertifications: ["Aws", "Azure"],
+        empSkillSet: ["Backend", "Dev Ops"],
+      };
+
+      chai
+        .request(app)
+        .patch(`/employees/${empId}`)
+        .send(data)
+        // .set({ Authorization: `Bearer ${token}` })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.a("object");
+          res.body.status.should.equal("success");
+          res.body.data.should.be.a("object");
+          done();
+        });
+    });
+  });
+
+  describe("DELETE an employee", () => {
+    it("Deletes an employee using _id", (done) => {
+      chai
+        .request(app)
+        .delete(`/employees/${empId}`)
+        // .set({ Authorization: `Bearer ${token}` })
+        .end((err, res) => {
+          res.should.have.status(204);
+          res.should.be.a("object");
+          done();
+        });
+    });
+  });
+
+  after(async () => {
+    console.log("end of tests");
   });
 });
