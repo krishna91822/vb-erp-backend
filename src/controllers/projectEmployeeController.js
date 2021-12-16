@@ -236,7 +236,7 @@ module.exports = {
   updateAllocation,
   deleteAllocation,
   getAllocations,
-  //   getSortedAllocations,
+  getSortedAllocations,
   getAllocationsOnBench,
   getSortedAllocationsOnBench,
   getTotalAllocationByEmpId,
