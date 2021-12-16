@@ -1,8 +1,8 @@
 const purchaseOrderModel = require("../models/poSow");
 const { poSowSchema, querySchema } = require("../schema/poSowSchema");
-const projectsSchema = require("../models/projectsModel")
-const projectEmployeeModel = require("../models/projectEmployeeModel")
-const Employee = require("../models/employeeModel")
+const projectsSchema = require("../models/projectsModel");
+const projectEmployeeModel = require("../models/projectEmployeeModel");
+const Employee = require("../models/employeeModel");
 const { customResponse, customPagination } = require("../utility/helper");
 
 const createPoSow = async (req, res) => {
@@ -411,18 +411,18 @@ const getClients = async (req, res) => {
   try {
     const data = await projectsSchema.aggregate([
       {
-        "$group": {
-          "_id": "$clientName",
-          "Counter": { "$sum": 1 }
-        }
+        $group: {
+          _id: "$clientName",
+          Counter: { $sum: 1 },
+        },
       },
       {
-        "$match": {
-          "Counter": { "$gte": 1 },
-        }
+        $match: {
+          Counter: { $gte: 1 },
+        },
       },
-      { "$project": { "clientName": "$_id", "_id": 0 } }
-    ])
+      { $project: { clientName: "$_id", _id: 0 } },
+    ]);
     code = 200;
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
@@ -436,8 +436,7 @@ const getClients = async (req, res) => {
     });
     return res.status(code).send(resData);
   }
-
-}
+};
 
 const getProjects = async (req, res) => {
   /* 	#swagger.tags = ['PO/SOW']
@@ -463,7 +462,7 @@ const getProjects = async (req, res) => {
     const data = await projectsSchema.find(
       { clientName: req.params.clientName },
       { projectName: 1 }
-    )
+    );
     code = 200;
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
@@ -477,16 +476,60 @@ const getProjects = async (req, res) => {
     });
     return res.status(code).send(resData);
   }
-
-}
+};
 
 const getDetails = async (req, res) => {
+  /* 	#swagger.tags = ['PO/SOW']
+      #swagger.description = 'Get project details of given Id' 
+      #swagger.parameters['projectId'] = {
+        in: 'query',
+        type: 'string',
+        description: 'Project ID' 
+      }
+      #swagger.responses[200] = {
+        schema:{
+          "status": "success",
+          "code": 200,
+          "message": "",
+          "data": [
+           {
+             "empPrimaryCapiblities": [],
+             "_id": "61b8c18ce56e27b307b73168",
+             "projectId": {
+                "_id": "61b8c18ce56e27b307b73166",
+                "vbProjectId": "VB-PROJ-1",
+                "projectName": "Valuebound",
+                "clientProjectSponsor": "Jai K",
+                "clientFinanceController": "Jai K"
+             },
+             "primaryCapiblities": [],
+             "allocationStartDate": "2021-12-14",
+             "allocationEndDate": "2021-12-17",
+             "allocationPercentage": 57,
+             "rackRate": 45132,
+             "__v": 0,
+             "empId": {
+                "_id": "61b59800430ab0392fd92640",
+                "empId": 15,
+                "empName": "sanjay"
+             }
+           }
+          ],
+         "error": {}
+        } 
+      }
+  */
+
   const query = req.query.projectId;
   let code;
   try {
     const data = await projectEmployeeModel
       .find({ projectId: query })
-      .populate({ path: "empId", model: "Employee", select: "_id empId empName" })
+      .populate({
+        path: "empId",
+        model: "Employee",
+        select: "_id empId empName",
+      })
       .populate(
         "projectId",
         "_id vbProjectId projectName clientProjectSponsor clientFinanceController"
@@ -514,5 +557,5 @@ module.exports = {
   updatePODetais,
   getClients,
   getProjects,
-  getDetails
+  getDetails,
 };
