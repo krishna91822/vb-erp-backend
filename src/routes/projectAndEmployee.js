@@ -8,7 +8,7 @@ const {
   updateAllocation,
   deleteAllocation,
   getAllocations,
-  // getSortedAllocations,
+  getSortedAllocations,
   getAllocationsOnBench,
   getSortedAllocationsOnBench,
   getTotalAllocationByEmpId,
@@ -24,15 +24,12 @@ ProjectEmployeeRouter.put("/", updateAllocation);
 ProjectEmployeeRouter.delete("/:id", deleteAllocation);
 
 // GET request
-ProjectEmployeeRouter.get("/", getAllocations);
-// ProjectEmployeeRouter.get("/sorted/:fieldName", getSortedAllocations);
+ProjectEmployeeRouter.get("/allocated", getAllocations);
+ProjectEmployeeRouter.get("/allocated/:fieldName", getSortedAllocations);
 
 // GET request
 ProjectEmployeeRouter.get("/onbench", getAllocationsOnBench);
-ProjectEmployeeRouter.get(
-  "/onbench/sorted/:fieldName",
-  getSortedAllocationsOnBench
-);
+ProjectEmployeeRouter.get("/onbench/:fieldName", getSortedAllocationsOnBench);
 
 // GET request
 ProjectEmployeeRouter.get("/totalallocation", getTotalAllocationByEmpId);
