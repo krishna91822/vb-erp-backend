@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const employees= require("./employee");
+const employees = require("./employee");
 const rewardsSchema = mongoose.Schema(
   {
     reward_display_name: {
@@ -15,7 +15,9 @@ const rewardsSchema = mongoose.Schema(
       type: String,
       enum: ["work-anniversary", "birthday-celebration", "starOfTheMonth"],
       required: function () {
-        return (this.reward_type === "daily"|this.reward_type === "monthly");
+        return (
+          (this.reward_type === "daily") | (this.reward_type === "monthly")
+        );
       },
     },
     reward_sender: {
@@ -63,14 +65,14 @@ const rewardsSchema = mongoose.Schema(
     },
     slack_channel: {
       type: String,
-      required:  function () {
-        return (this.announcement_type === "public");
+      required: function () {
+        return this.announcement_type === "public";
       },
     },
     channel_message: {
       type: String,
       required: function () {
-        return (this.announcement_type === "public");
+        return this.announcement_type === "public";
       },
     },
     status: {
@@ -78,7 +80,6 @@ const rewardsSchema = mongoose.Schema(
       enum: ["Created", "In Progress", "Stopped"],
       default: "Created",
     },
-    
   },
   {
     timestamps: true,

@@ -156,7 +156,7 @@ const getEmployees = async (req, res) => {
   if (req.query.empId) {
     empidSearch.push({
       $match: {
-        empId: parseInt(req.query.empId),
+        empId: req.query.empId,
       },
     });
   }
@@ -189,7 +189,7 @@ const getEmployees = async (req, res) => {
     code = 200;
     if (req.query.empId || req.query.empName) {
       employees = await employeesModal.aggregate(empidSearch);
-    } else if (req.query.empDes==="manager") {
+    } else if (req.query.empDes === "manager") {
       employees = await employeesModal.aggregate(empmanagerSearch);
     } else {
       employees = await employeesModal.aggregate(query);
