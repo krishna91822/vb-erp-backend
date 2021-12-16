@@ -1,6 +1,6 @@
 process.env.NODE_ENV = "test";
 require("dotenv").config();
-const app = require("../app");
+const app = require("../src/app");
 const mongoose = require("mongoose");
 const { Employee } = require("../src/models/employeeModel");
 const jwt = require("jsonwebtoken");

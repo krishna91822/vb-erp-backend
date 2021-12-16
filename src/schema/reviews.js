@@ -92,7 +92,7 @@ const reviewupdatedSchema = Joi.object({
     personalDetails: Joi.any(),
     professionalDetails: Joi.any(),
     skillsDetails: Joi.any(),
-    slackMemId: Joi.any(),
+    slackMemId: Joi.string(),
   }),
 }).options({ abortEarly: false });
 

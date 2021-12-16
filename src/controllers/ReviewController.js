@@ -115,7 +115,14 @@ exports.getReview = async (req, res) => {
     const review = await Review.findById(req.params.id);
 
     if (!review) {
-      return next(new AppError("No review found with that ID", 404));
+      code = 500;
+      message = "Review not found by given id";
+      const resData = customResponse({
+        code,
+        message,
+        err: error,
+      });
+      return res.status(code).send(resData);
     }
 
     res.status(200).json({
@@ -299,7 +306,14 @@ exports.updateReview = async (req, res) => {
     });
 
     if (!review) {
-      return next(new AppError("No review found with that ID", 404));
+      code = 500;
+      message = "review not found by given id";
+      const resData = customResponse({
+        code,
+        message,
+        err: error,
+      });
+      return res.status(code).send(resData);
     }
 
     res.status(200).json({
@@ -331,7 +345,14 @@ exports.updateReviewStatus = async (req, res) => {
     });
 
     if (!review) {
-      return next(new AppError("No review found with that ID", 404));
+      code = 500;
+      message = "review not found by given id";
+      const resData = customResponse({
+        code,
+        message,
+        err: error,
+      });
+      return res.status(code).send(resData);
     }
 
     const employeeData = {
@@ -367,7 +388,14 @@ exports.updateReviewStatus = async (req, res) => {
             runValidators: true,
           }
         );
-        return next(new AppError("Fail to create employee try again", 404));
+        code = 500;
+        message = "Employee not found by given id";
+        const resData = customResponse({
+          code,
+          message,
+          err: error,
+        });
+        return res.status(code).send(resData);
       }
       console.log(newEmployee);
 
@@ -414,7 +442,14 @@ exports.updateReviewStatus = async (req, res) => {
             runValidators: true,
           }
         );
-        return next(new AppError("Fail to update employee try again", 404));
+        code = 500;
+        message = "review not found by given id";
+        const resData = customResponse({
+          code,
+          message,
+          err: error,
+        });
+        return res.status(code).send(resData);
       }
       console.log(employee);
 
@@ -479,7 +514,14 @@ exports.deleteReview = async (req, res) => {
     const review = await Review.findByIdAndDelete(req.params.id);
 
     if (!review) {
-      return next(new AppError("No review found with that ID", 404));
+      code = 500;
+      message = "Review not found by given id";
+      const resData = customResponse({
+        code,
+        message,
+        err: error,
+      });
+      return res.status(code).send(resData);
     }
 
     res.status(204).json({

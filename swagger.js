@@ -1,7 +1,6 @@
 require("dotenv").config();
 const fs = require("fs");
 const swaggerAutogen = require("swagger-autogen")();
-const Review = require("./src/models/ReviewModel");
 
 const doc = {
   info: {

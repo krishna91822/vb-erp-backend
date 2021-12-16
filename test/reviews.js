@@ -4,7 +4,7 @@ let reviews = require("../src/models/ReviewModel");
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 let should = chai.should();
-const app = require("../app");
+const app = require("../src/app");
 chai.use(chaiHttp);
 
 //testing for get method
@@ -99,8 +99,4 @@ describe("/POST reviews", () => {
         done();
       });
   });
-});
-
-after(async () => {
-  console.log("end of tests");
 });
