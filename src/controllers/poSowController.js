@@ -93,7 +93,7 @@ const createPoSow = async (req, res) => {
       ...req.body,
       PO_Number: num,
     }).save();
-
+    console.log(poSow);
     const invoices = new Invoice({
       PO_Id: poSow._id,
       client_sponsor: req.body.Client_Sponser,
@@ -204,7 +204,10 @@ const getSortedPoList = async (req, res) => {
       const resData = customResponse({ code, data });
       return res.status(code).send(resData);
     }
-    const users = await purchaseOrderModel.find(query).sort(fieldName);
+    const users = await purchaseOrderModel
+      .find(query)
+      .sort(fieldName)
+      .collation({ locale: "en" });
     const data = customPagination({ data: users, page, limit });
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
