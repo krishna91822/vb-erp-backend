@@ -45,7 +45,7 @@ describe("/GET reviews", () => {
     };
     chai
       .request(app)
-      .get("/reviews")
+      .get(`/reviews/`)
       .send(review)
       .end((err, res) => {
         res.should.have.status(200);
