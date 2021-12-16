@@ -4,78 +4,107 @@ const { customResponse } = require("../utility/helper");
 
 //Get all records in database
 const cimsGet = async (req, res) => {
-  try {
-    const sort = req.query.sort || "createdAt";
-    const filter = req.query.filter || 1;
-    const sortOrder = req.query.sortOrder || -1;
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+  const sort = req.query.sort || "createdAt";
+  const filter = req.query.filter || 1;
+  const sortOrder = req.query.sortOrder || -1;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
 
-    const searchData = req.query.searchData || "";
-    const regex = new RegExp(searchData, "i");
+  const searchData = req.query.searchData || "";
+  const regex = new RegExp(searchData, "i");
 
-    const filterQuery =
-      filter === "" || !filter ? {} : { status: [parseInt(filter)] };
-    const searchQuery =
-      searchData === "" || !searchData
-        ? ""
-        : {
-            $or: [
-              { brandName: [regex] },
-              { "registeredAddress.country": [regex] },
-              { "contacts.primaryContact.firstName": [regex] },
-              { "contacts.primaryContact.lastName": [regex] },
-            ],
-          };
+  const filterQuery = { status: [parseInt(filter)] };
+  const searchQuery = {
+    $or: [
+      { brandName: [regex] },
+      { "registeredAddress.country": [regex] },
+      { "contacts.primaryContact.firstName": [regex] },
+      { "contacts.primaryContact.lastName": [regex] },
+    ],
+  };
 
-    const findQuery = { ...filterQuery, ...searchQuery };
-    const sortQuery =
-      sort == "" || !sort ? {} : { [sort.replace(/['"]+/g, "")]: sortOrder };
+  const findQuery = { ...filterQuery, ...searchQuery };
+  const sortQuery = { [sort.replace(/['"]+/g, "")]: sortOrder };
 
+  const fetchData = async (findQuery, sortQuery) => {
     const Comps = await compModal
       .find(findQuery)
       .collation({ locale: "en" })
       .sort(sortQuery);
 
+    return { Comps, count: Comps.length };
+  };
+
+  const handelPagination = (count, Comps) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
+    const totalPages = Math.ceil(count / limit);
+    const data = {};
+    data.data = Comps.slice(startIndex, endIndex);
+    data.data.forEach((record, i) => {
+      record.rowNumber = startIndex + i + 1;
+    });
 
-    const count = Comps.length;
-
-    if (count === 0) {
-      code = 422;
-      message = `No record containing "${searchData}" exists`;
-
-      const resData = customResponse({
-        code,
-        data: {},
-        message,
-        err: [
-          {
-            message,
-          },
-        ],
-      });
-
-      res.send(resData);
-    } else {
-      const totalPages = Math.ceil(count / limit);
-      const data = {};
+    if (data.data.length == 0) {
+      const startIndex = (totalPages - 1) * limit;
+      const endIndex = totalPages * limit;
       data.data = Comps.slice(startIndex, endIndex);
       data.data.forEach((record, i) => {
         record.rowNumber = startIndex + i + 1;
       });
+    }
 
-      if (data.data.length == 0) {
-        const startIndex = (totalPages - 1) * limit;
-        const endIndex = totalPages * limit;
-        data.data = Comps.slice(startIndex, endIndex);
-        data.data.forEach((record, i) => {
-          record.rowNumber = startIndex + i + 1;
+    data.totalPages = totalPages;
+
+    return data;
+  };
+
+  try {
+    const { Comps, count } = await fetchData(findQuery, sortQuery);
+
+    if (count === 0) {
+      const { Comps, count } = await fetchData(filterQuery, sortQuery);
+
+      if (count === 0) {
+        code = 404;
+        message = `No "${
+          filterQuery ? "Active Client" : "Inactive Client"
+        }" records exists`;
+
+        const resData = customResponse({
+          code,
+          data: {},
+          message,
+          err: [
+            {
+              message,
+            },
+          ],
         });
-      }
 
-      data.totalPages = totalPages;
+        res.send(resData);
+      } else {
+        code = 404;
+        message = `No record containing "${searchData}" exists`;
+
+        const data = handelPagination(count, Comps);
+
+        const resData = customResponse({
+          code,
+          data,
+          message,
+          err: [
+            {
+              message,
+            },
+          ],
+        });
+
+        res.send(resData);
+      }
+    } else {
+      const data = handelPagination(count, Comps);
+
       code = 200;
       message = "Data fetched successfully";
 
