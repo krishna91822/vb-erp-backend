@@ -365,7 +365,6 @@ const getRewardDetail = async (req, res) => {
     message = "Internal Server Error";
     const resdata = customResponse({ code, message, err: error });
     res.status(code).send(resdata);
-    console.log(error);
   }
 };
 
