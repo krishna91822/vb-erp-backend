@@ -3,14 +3,14 @@ const {
   getInvoiceDetails,
   getInvoiceDetailsById,
   newInvoice,
+  getRelatedInvoices,
 } = require("../controllers/invoicecontroller");
-
-const Invoice = require("../models/invoicemodel");
 
 const router = express.Router();
 
 router.post("/", newInvoice);
 router.get("/sort/:data", getInvoiceDetails);
 router.get("/:id", getInvoiceDetailsById);
+router.get("/", getRelatedInvoices);
 
 module.exports = router;

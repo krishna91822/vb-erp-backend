@@ -139,10 +139,21 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
             done();
           });
       });
-      it("it should SORT the list based on given field", (done) => {
+      it("it should SORT the list By Id", (done) => {
         chai
           .request(server)
-          .get("/poSow/sort/Client_Name")
+          .get("/poSow/sort/Id?keyword=info")
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.data.results.should.be.a("array");
+            res.body.data.results.length.should.be.above(0);
+            done();
+          });
+      });
+      it("it should SORT the list By field", (done) => {
+        chai
+          .request(server)
+          .get("/poSow/sort/Client_Name?keyword=info")
           .end((err, res) => {
             res.should.have.status(200);
             res.body.data.results.should.be.a("array");
@@ -198,6 +209,41 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
             });
         });
       });
+
+      it("it should throw an exception", (done) => {
+        let details = {
+          Client_Name: "Valuebound Solutions",
+          Project_Name: "ERP System",
+          Client_Sponser: ["ABD", "DEF"],
+          Client_Finance_Controller: ["VMN", "QWE"],
+          Targetted_Resources: ["WSJ", "GHJ"],
+          Status: "Drafted",
+          Type: "PO",
+          PO_Number: "ERP34",
+          PO_Amount: 3434,
+          Currency: "USD",
+          Document_Name: "VB_ERP",
+          Document_Type: "pdf",
+          POSOW_endDate: "2014-01-22T14:56:59.301Z",
+          Remarks: "Created New PO",
+        };
+        const poDetails = new poSow(details);
+        const id = "61aee1b97af12a205c1a16z5";
+        poDetails.save((err, data) => {
+          chai
+            .request(server)
+            .get("/poSow/" + id)
+            .send(details)
+            .end((err, res) => {
+              res.should.have.status(500);
+              res.body.should.have
+                .property("message")
+                .eql("Internal server error");
+              res.body.should.have.property("error");
+              done();
+            });
+        });
+      });
     });
   });
   it("it should update PO details", (done) => {
@@ -242,6 +288,38 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a("object");
+          done();
+        });
+    });
+  });
+  it("it should throw an exception", (done) => {
+    const details = {
+      id: "45hf873f748",
+      Client_Name: "Valuebound Solutions",
+      Project_Name: "ERP System",
+      Client_Sponser: ["ABD", "DEF"],
+      Client_Finance_Controller: ["VMN", "QWE"],
+      Targetted_Resources: ["WSJ", "GHJ"],
+      Status: "Drafted",
+      Type: "PO",
+      PO_Number: "ERP34",
+      PO_Amount: 3434,
+      Currency: "USD",
+      Document_Name: "VB_ERP",
+      Document_Type: "pdf",
+      POSOW_endDate: "2014-01-22T14:56:59.301Z",
+      Remarks: "Created New PO",
+    };
+    const poDetails = new poSow(details);
+    const id = "61a@@@1b97af125";
+    poDetails.save((err, data) => {
+      chai
+        .request(server)
+        .patch("/poSow" + id)
+        .end((err, res) => {
+          res.should.have.status(500);
+          res.body.should.have.property("message").eql("Internal server error");
+          res.body.should.have.property("error");
           done();
         });
     });
@@ -308,6 +386,38 @@ describe("/update PO/SOW status", () => {
           res.body.should.have
             .property("message")
             .eql("status already updated");
+          done();
+        });
+    });
+  });
+
+  it("throw an exception", (done) => {
+    const details = {
+      Client_Name: "Valuebound Solutions",
+      Project_Name: "ERP System",
+      Client_Sponser: ["ABD", "DEF"],
+      Client_Finance_Controller: ["VMN", "QWE"],
+      Targetted_Resources: ["WSJ", "GHJ"],
+      Status: "Pending",
+      Type: "PO",
+      PO_Number: "ERP34",
+      PO_Amount: 3434,
+      Currency: "USD",
+      Document_Name: "VB_ERP",
+      Document_Type: "pdf",
+      POSOW_endDate: "2014-01-22T14:56:59.301Z",
+      Remarks: "Created New PO",
+    };
+    const poDetails = new poSow(details);
+    const id = "61aee1b97af125";
+    poDetails.save((err, data) => {
+      chai
+        .request(server)
+        .patch("/poSow/status/" + id)
+        .end((err, res) => {
+          res.should.have.status(500);
+          res.body.should.have.property("message").eql("Internal server error");
+          res.body.should.have.property("error");
           done();
         });
     });

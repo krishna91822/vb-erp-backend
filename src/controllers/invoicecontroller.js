@@ -14,7 +14,7 @@ const newInvoice = async (req, res) => {
             $PO_Id: '61a8bb6ab7dcd452dc0f5e05',
             $client_sponsor: 'AB',
             $client_finance_controller: 'CD',
-            $invoice_raised: 6789,
+            $invoice_raised: "Yes",
             $invoice_amount_received: 87634788,
             $vb_bank_account: 'SBIN00004567',
             $amount_received_on: '2021-12-10T06:01:50.178Z'
@@ -30,7 +30,7 @@ const newInvoice = async (req, res) => {
             "PO_Id": '61a8bb6ab7dcd452dc0f5e05',
             "client_sponsor": 'AB',
             "client_finance_controller": 'CD',
-            "invoice_raised": 6395879,
+            "invoice_raised": "Yes",
             $invoice_amount_received: 467389738,
             $vb_bank_account: 'SBIN00004567',
             $amount_received_on: '2021-12-10T06:01:50.178Z',
@@ -89,7 +89,6 @@ const newInvoice = async (req, res) => {
       invoice,
     });
   } catch (error) {
-    console.log(error);
     res.status(401).send(error);
   }
 };
@@ -378,8 +377,44 @@ const getInvoiceDetails = async (req, res) => {
   }
 };
 
+const getRelatedInvoices = async (req, res) => {
+  const data = req.query.project;
+  let code;
+  try {
+    const details = await Invoice.aggregate([
+      {
+        $lookup: {
+          from: "purchase_orders",
+          localField: "PO_Id",
+          foreignField: "_id",
+          as: "purchase_orders",
+        },
+      },
+      { $unwind: "$purchase_orders" },
+      {
+        $match: {
+          "purchase_orders.Project_Name": data,
+        },
+      },
+    ]);
+    code = 200;
+    const resData = customResponse({ code, data: details });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
+
 module.exports = {
   newInvoice,
   getInvoiceDetailsById,
   getInvoiceDetails,
+  getRelatedInvoices,
 };
