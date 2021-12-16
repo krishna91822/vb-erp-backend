@@ -13,7 +13,6 @@ describe("Employee API tests", () => {
   let token;
   let empId;
   before(async () => {
-    await Employee.deleteMany({});
     const data = {
       empName: "ryan",
       role: "SUPER_ADMIN",
@@ -80,16 +79,16 @@ describe("Employee API tests", () => {
   describe("POST new employee ", () => {
     it("Creates a new employee and stores the document in the database", (done) => {
       const newEmployee = {
-        empName: "hank",
+        empName: "rohan",
         role: "HR_ADMIN",
-        empEmail: "hank@email.com",
+        empEmail: "rohan@email.com",
         empDoj: "12/12/21",
         empDepartment: "HR",
         empDesignation: "HR",
         empBand: "emp band",
         empCtc: 100000,
         empReportingManager: "ManagerName12",
-        empPersonalEmail: "hank_personal@email.com",
+        empPersonalEmail: "rohan_personal@email.com",
         empPhoneNumber: "1231004891",
         empDob: "10/10/1998",
         empAboutMe: "About me goes here",
@@ -148,6 +147,5 @@ describe("Employee API tests", () => {
 
   after(async () => {
     console.log("end of tests");
-    await Employee.deleteMany({});
   });
 });

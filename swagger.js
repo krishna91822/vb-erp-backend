@@ -14,7 +14,7 @@ const doc = {
   produces: ["application/json"],
   tags: [
     {
-      name: "Users",
+      name: "User",
       description: "Endpoints",
     },
   ],

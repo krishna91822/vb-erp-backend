@@ -1,3 +1,26 @@
+//const employeesModal = require("../models/employeeModel");
+// const { customResponse, customPagination } = require("../utility/helper");
+
+// const storeEmployee = async (req, res) => {
+//   let code, message;
+//   try {
+//     code = 201;
+//     const employees = await new employeesModal(req.body);
+//     employees.save();
+//     const resdata = customResponse({ code, data: employees });
+//     return res.status(code).send(resdata);
+//   } catch (error) {
+//     code = 500;
+//     message = "Internal server error";
+//     const resData = customResponse({
+//       code,
+//       message,
+//       err: error,
+//     });
+//     return res.status(code).send(resData);
+//   }
+// };
+
 const { Employee } = require("../models/employeeModel");
 const APIFeatures = require("../utility/apiFeatures");
 const { customResponse } = require("../utility/helper");
@@ -542,6 +565,24 @@ exports.getFilteredEmp = async (req, res) => {
   } catch (error) {
     res.status(400).send(error);
   }
+};
+
+exports.getManagers = async (req, res) => {
+  const filterManagers = await EmployeeInfoModel.find(
+    {
+      $or: [
+        {
+          empDesignation: "Manager",
+          empName: {
+            $regex: req.query.empName,
+            $options: "i",
+          },
+        },
+      ],
+    },
+    { _id: 0, empName: 1 }
+  );
+  return res.status(200).send(filterManagers);
 };
 
 exports.generateQR = async (req, res) => {

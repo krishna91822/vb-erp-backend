@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
+const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const addressSchema = new mongoose.Schema(
   {
@@ -22,6 +24,7 @@ const addressSchema = new mongoose.Schema(
   },
   { _id: false }
 );
+
 
 const otherField = new mongoose.Schema({
   fieldName: {
