@@ -12,17 +12,21 @@ const { auth, getAccount } = require("../controllers/userController");
 const { isAuthorized } = require("../middleware/auth");
 const reviewRoutes = require("./ReviewRoutes");
 const employeeRoutes = require("./employeeRoute");
+const ProjectRouter = require("./projects");
+const ProjectEmployeeRouter = require("./projectAndEmployee");
 
 router.post("/login", auth);
 router.get("/account", isAuthorized, getAccount);
 router.use("/users", isAuthorized, userRoutes);
 router.use("/rewards", rewardRoutes);
-router.use("/cims", cimsRoutes);
 router.use("/", otherRoutes);
 router.use("/assign", assigneeRoutes);
 router.use("/invoice", invoiceRoutes);
 router.use("/poSow", isAuthorized, poSowRoutes);
 router.use("/employees", employeeRoutes);
 router.use("/reviews", reviewRoutes);
+router.use("/projects", ProjectRouter);
+router.use("/allocations", ProjectEmployeeRouter);
+router.use("/cims", cimsRoutes);
 
 module.exports = router;

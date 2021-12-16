@@ -4,7 +4,7 @@ const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const { connectToDb } = require("./utility/db");
 const constants = require("./utility/constant");
-const {scheduler} = require("./utility/jobScheduler")
+const { scheduler } = require("./utility/jobScheduler");
 
 const router = require("./routes");
 const app = express();
@@ -33,6 +33,6 @@ app.use(
 app.use(globalErrorHandler);
 app.listen(port, async () => {
   await connectToDb();
-  scheduler()
+  scheduler();
 });
 module.exports = app;
