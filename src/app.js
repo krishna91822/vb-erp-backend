@@ -57,13 +57,11 @@ if (process.env.NODE_ENV !== "test") {
     process.on("uncaughtException", function () {
       server.close(function () {
         console.log("Finished all requests");
-        closeConnection();
       });
     });
     process.on("SIGTERM", function () {
       server.close(function () {
         console.log("Finished all requests");
-        closeConnection();
       });
     });
   });
