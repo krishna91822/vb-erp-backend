@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 //Creating PO/SOW Schema
 const purchaseOrderSchema = mongoose.Schema({
+  Project_Id: {
+    type: String,
+    required: [true, "Project Id is required"],
+  },
   Client_Name: {
     trim: true,
     type: String,
@@ -13,15 +17,15 @@ const purchaseOrderSchema = mongoose.Schema({
     required: [true, "project name is required"],
   },
   Client_Sponser: {
-    type: [{ type: String }],
+    type: String,
     required: [true, "client sponser is required"],
   },
   Client_Finance_Controller: {
-    type: [{ type: String }],
+    type: String,
     required: [true, "client finance controller is required"],
   },
   Targetted_Resources: {
-    type: [{ type: String }],
+    type: Object,
     required: [true, "targetted Resources is required"],
   },
   Status: {

@@ -14,7 +14,8 @@ const newInvoice = async (req, res) => {
             $PO_Id: '61a8bb6ab7dcd452dc0f5e05',
             $client_sponsor: 'AB',
             $client_finance_controller: 'CD',
-            $invoice_raised: 6789,
+            $invoice_raised: "Yes",
+            $invoice_received: "Yes",
             $invoice_amount_received: 87634788,
             $vb_bank_account: 'SBIN00004567',
             $amount_received_on: '2021-12-10T06:01:50.178Z'
@@ -30,11 +31,12 @@ const newInvoice = async (req, res) => {
             "PO_Id": '61a8bb6ab7dcd452dc0f5e05',
             "client_sponsor": 'AB',
             "client_finance_controller": 'CD',
-            "invoice_raised": 6395879,
-            $invoice_amount_received: 467389738,
-            $vb_bank_account: 'SBIN00004567',
-            $amount_received_on: '2021-12-10T06:01:50.178Z',
-            $created_at: '2021-12-10T06:01:50.178Z',
+            "invoice_raised": "Yes",
+            "invoice_received": "Yes",
+            "invoice_amount_received": 467389738,
+            "vb_bank_account": 'SBIN00004567',
+            "amount_received_on": '2021-12-10T06:01:50.178Z',
+            "created_at": '2021-12-10T06:01:50.178Z',
           },
           "error": {}
         }
@@ -89,7 +91,6 @@ const newInvoice = async (req, res) => {
       invoice,
     });
   } catch (error) {
-    console.log(error);
     res.status(401).send(error);
   }
 };

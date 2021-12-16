@@ -14,14 +14,18 @@ const invoiceSchema = new mongoose.Schema({
     type: String,
     required: [true, "client finance controller is required"],
   },
-
   invoice_raised: {
-    type: Number,
+    type: String,
+    enum: ["Yes", "No"],
+    required: [true, "invoice raised is required"],
+  },
+  invoice_received: {
+    type: String,
+    enum: ["Yes", "No"],
     required: [true, "invoice raised is required"],
   },
   invoice_amount_received: {
     type: Number,
-    required: [true, "invoice amount received is required"],
   },
   vb_bank_account: {
     type: String,
@@ -34,6 +38,9 @@ const invoiceSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
+  updated_at:{
+    type:Date
+  }
 });
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);
