@@ -439,6 +439,7 @@ const updateInvoice = async (req, res) => {
         "PO_Id",
         "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
       );
+      console.log(getDetails);
       const isoDate = getDetails.amount_received_on;
       const date = new Date(isoDate);
       const year = date.getFullYear();
@@ -470,6 +471,7 @@ const updateInvoice = async (req, res) => {
     });
     return res.status(code).send(resData);
   } catch (error) {
+    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({

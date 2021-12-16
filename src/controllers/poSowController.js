@@ -93,7 +93,7 @@ const createPoSow = async (req, res) => {
       ...req.body,
       PO_Number: num,
     }).save();
-
+    console.log(poSow);
     const invoices = new Invoice({
       PO_Id: poSow._id,
       client_sponsor: req.body.Client_Sponser,
