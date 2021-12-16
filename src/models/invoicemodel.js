@@ -17,15 +17,12 @@ const invoiceSchema = new mongoose.Schema({
   invoice_raised: {
     type: String,
     enum: ["Yes", "No"],
-<<<<<<< HEAD
-=======
-    required: [true, "invoice raised is required"],
+    default: "No",
   },
   invoice_received: {
     type: String,
     enum: ["Yes", "No"],
->>>>>>> 678272975343fdff469781369b8f64e3e16a46f7
-    required: [true, "invoice raised is required"],
+    default: "No",
   },
   invoice_amount_received: {
     type: Number,
@@ -41,9 +38,9 @@ const invoiceSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
-  updated_at:{
-    type:Date
-  }
+  updated_at: {
+    type: Date,
+  },
 });
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);

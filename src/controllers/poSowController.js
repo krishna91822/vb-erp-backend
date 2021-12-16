@@ -3,6 +3,7 @@ const { poSowSchema, querySchema } = require("../schema/poSowSchema");
 const projectsSchema = require("../models/projectsModel");
 const projectEmployeeModel = require("../models/projectEmployeeModel");
 const Employee = require("../models/employeeModel");
+const Invoice = require("../models/invoicemodel");
 const { customResponse, customPagination } = require("../utility/helper");
 
 const createPoSow = async (req, res) => {
@@ -70,6 +71,16 @@ const createPoSow = async (req, res) => {
       return res.status(code).send(resData);
     }
     const poSow = await new purchaseOrderModel(req.body).save();
+    const st = req.body.Type;
+    if (st.toLowerCase() === "po") {
+      const invoice = new Invoice({
+        PO_Id: poSow._id,
+        client_sponsor: req.body.Client_Sponser,
+        client_finance_controller: req.body.Client_Finance_Controller,
+      });
+
+      await invoice.save();
+    }
     res.status(200).send(poSow);
   } catch (error) {
     res.status(401).send(error);

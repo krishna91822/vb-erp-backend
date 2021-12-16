@@ -15,10 +15,7 @@ const newInvoice = async (req, res) => {
             $client_sponsor: 'AB',
             $client_finance_controller: 'CD',
             $invoice_raised: "Yes",
-<<<<<<< HEAD
-=======
             $invoice_received: "Yes",
->>>>>>> 678272975343fdff469781369b8f64e3e16a46f7
             $invoice_amount_received: 87634788,
             $vb_bank_account: 'SBIN00004567',
             $amount_received_on: '2021-12-10T06:01:50.178Z'
@@ -35,18 +32,11 @@ const newInvoice = async (req, res) => {
             "client_sponsor": 'AB',
             "client_finance_controller": 'CD',
             "invoice_raised": "Yes",
-<<<<<<< HEAD
-            $invoice_amount_received: 467389738,
-            $vb_bank_account: 'SBIN00004567',
-            $amount_received_on: '2021-12-10T06:01:50.178Z',
-            $created_at: '2021-12-10T06:01:50.178Z',
-=======
             "invoice_received": "Yes",
             "invoice_amount_received": 467389738,
             "vb_bank_account": 'SBIN00004567',
             "amount_received_on": '2021-12-10T06:01:50.178Z',
             "created_at": '2021-12-10T06:01:50.178Z',
->>>>>>> 678272975343fdff469781369b8f64e3e16a46f7
           },
           "error": {}
         }
@@ -390,7 +380,7 @@ const getInvoiceDetails = async (req, res) => {
 };
 
 const getRelatedInvoices = async (req, res) => {
-  const data = req.query.project;
+  const data = req.query.id;
   let code;
   try {
     const details = await Invoice.aggregate([
@@ -405,7 +395,7 @@ const getRelatedInvoices = async (req, res) => {
       { $unwind: "$purchase_orders" },
       {
         $match: {
-          "purchase_orders.Project_Name": data,
+          "purchase_orders.Project_Id": data,
         },
       },
     ]);
