@@ -41,7 +41,6 @@ const purchaseOrderSchema = mongoose.Schema({
   PO_Number: {
     trim: true,
     type: String,
-    required: [true, "po number is required"],
   },
   PO_Amount: {
     trim: true,
@@ -68,14 +67,14 @@ const purchaseOrderSchema = mongoose.Schema({
   Remarks: {
     type: String,
   },
-  Created_At: { 
+  Created_At: {
     type: Date,
-     required: true, 
-     default: Date.now
-    },
+    required: true,
+    default: Date.now,
+  },
   Updated_At: {
-    type: Date
-  }
+    type: Date,
+  },
 });
 
 //Creating purchase order collection with purchase order schema

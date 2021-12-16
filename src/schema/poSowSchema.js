@@ -12,7 +12,6 @@ const poSowSchema = Joi.object()
       .valid("Rejected", "Pending", "Accepted", "Closed", "Drafted")
       .required(),
     Type: Joi.string().alphanum().valid("PO", "SOW").required(),
-    PO_Number: Joi.string().alphanum().required(),
     PO_Amount: Joi.number().required(),
     Currency: Joi.string().alphanum().required(),
     Document_Name: Joi.string().required(),

@@ -71,8 +71,39 @@ const createPoSow = async (req, res) => {
       });
       return res.status(code).send(resData);
     }
-    const poSow = await new purchaseOrderModel(req.body).save();
     const st = req.body.Type;
+    let counter;
+    let po = "PO";
+    let sow = "SOW";
+    let num;
+
+    if (st.toLowerCase() === "po") {
+      counter = await purchaseOrderModel.countDocuments({ Type: "PO" });
+      if (counter < 10) {
+        po += "000";
+      } else if (counter < 100) {
+        po += "00";
+      } else if (counter < 1000) {
+        po += "0";
+      }
+      po += counter;
+      num = po;
+    } else {
+      counter = await purchaseOrderModel.countDocuments({ Type: "SOW" });
+      if (counter < 10) {
+        sow += "000";
+      } else if (counter < 100) {
+        sow += "00";
+      } else if (counter < 1000) {
+        sow += "0";
+      }
+      sow += counter;
+      num = sow;
+    }
+    const poSow = await new purchaseOrderModel({
+      ...req.body,
+      PO_Number: num,
+    }).save();
     if (st.toLowerCase() === "po") {
       const invoice = new Invoice({
         PO_Id: poSow._id,
