@@ -7,6 +7,7 @@ const invoiceSchema = Joi.object()
     client_sponsor: Joi.string().required(),
     client_finance_controller: Joi.string().required(),
     invoice_raised: Joi.string().valid("Yes", "No").required(),
+    invoice_received: Joi.string().valid("Yes", "No").required(),
     invoice_amount_received: Joi.number(),
     vb_bank_account: Joi.string(),
     amount_received_on: Joi.date().iso(),

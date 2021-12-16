@@ -2,15 +2,12 @@ const Joi = require("joi");
 
 const poSowSchema = Joi.object()
   .keys({
+    Project_Id: Joi.string().required(),
     Client_Name: Joi.string().min(3).max(30).lowercase().required(),
     Project_Name: Joi.string().required(),
-    Client_Sponser: Joi.array()
-      .items(Joi.string().alphanum().lowercase().required())
-      .required(),
-    Client_Finance_Controller: Joi.array()
-      .items(Joi.string().lowercase().required())
-      .required(),
-    Targetted_Resources: Joi.array().items(Joi.string().required()).required(),
+    Client_Sponser: Joi.string().required(),
+    Client_Finance_Controller: Joi.string().required(),
+    Targetted_Resources: Joi.object().required(),
     Status: Joi.string()
       .valid("Rejected", "Pending", "Accepted", "Closed", "Drafted")
       .required(),

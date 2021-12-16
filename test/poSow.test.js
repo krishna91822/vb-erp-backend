@@ -7,6 +7,7 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 let poSow = require("../src/models/poSow");
+let project = require("../src/models/projectsModel")
 
 describe("PO/SOW Unit Testing with Mocha..!!", () => {
   describe("/Create new PO/SOW", () => {
@@ -421,5 +422,48 @@ describe("/update PO/SOW status", () => {
           done();
         });
     });
+  });
+});
+
+describe("/GET/poSow/capturePO/clients PO/SOW", () => {
+  it("it should fetch all the clients", (done) => {
+    chai
+      .request(server)
+      .get("/poSow/capturePO/clients")
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.data.should.be.a("array");
+        res.body.data.length.should.be.above(0);
+        done();
+      });
+  });
+});
+
+describe("/GET/poSow/capturePO/clients/:clientName PO/SOW", () => {
+  it("it should fetch all the project of given client", (done) => {
+    chai
+      .request(server)
+      .get("/poSow/capturePO/clients/My VB")
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.data.should.be.a("array");
+        res.body.data.length.should.be.above(0);
+        done();
+      });
+  });
+});
+
+describe("/GET/poSow/capturePO/details/ PO/SOW", () => {
+  it("it should fetch the details of given project id", (done) => {
+    chai
+      .request(server)
+      .get("/poSow/capturePO/details")
+      .query({projectId : "61b8c18ce56e27b307b73166"})
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.data.should.be.a("array");
+        res.body.data.length.should.be.above(0);
+        done();
+      });
   });
 });

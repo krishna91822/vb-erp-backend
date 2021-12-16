@@ -1,5 +1,8 @@
 const purchaseOrderModel = require("../models/poSow");
 const { poSowSchema, querySchema } = require("../schema/poSowSchema");
+const projectsSchema = require("../models/projectsModel");
+const projectEmployeeModel = require("../models/projectEmployeeModel");
+const Employee = require("../models/employeeModel");
 const { customResponse, customPagination } = require("../utility/helper");
 
 const createPoSow = async (req, res) => {
@@ -8,11 +11,12 @@ const createPoSow = async (req, res) => {
       #swagger.parameters['obj'] = {
         in: 'body',
         schema: {
+            $Project_Id: '61bb0622bf6c0b45dff12f77',
             $Client_Name:'Valuebound Solutions',
             $Project_Name: 'ERP System',
-            $Client_Sponser: ['ABD','DEF'],
-            $Client_Finance_Controller: ['VMN','QWE'],
-            $Targetted_Resources: ['WSJ','GHJ'],
+            $Client_Sponser: 'Jai',
+            $Client_Finance_Controller: 'Tanmay',
+            $Targetted_Resources: {"ABC":"true","DCH":"false"},
             $Status: 'Drafted',
             $Type: 'PO',
             $PO_Number: 'ERP34',
@@ -31,11 +35,12 @@ const createPoSow = async (req, res) => {
           "code": 201,
           "message": "",
           "data": {
+            "Project_Id": '61bb0622bf6c0b45dff12f77',
             "Client_Name":'Valuebound Solutions',
             "Project_Name": 'ERP System',
-            "Client_Sponser": ['ABD','DEF'],
-            "Client_Finance_Controller": ['VMN','QWE'],
-            "Targetted_Resources": ['WSJ','GHJ'],
+            "Client_Sponser": 'Jai',
+            "Client_Finance_Controller": 'Tanmay',
+            "Targetted_Resources": {"ABC":"true","DCH":"false"},
             "Status": 'Drafted',
             "Type": 'PO',
             "PO_Number": 'ERP34',
@@ -96,11 +101,12 @@ const getSortedPoList = async (req, res) => {
             "results": [
               {
                 "_id": "61a49363c343b8220cff6c08",
+                "Project_Id": '61bb0622bf6c0b45dff12f77',
                 "Client_Name": "Valuebound Solutions",
                 "Project_Name": "ERP System",
-                "Client_Sponser": ["ABD","DEF"],
-                "Client_Finance_Controller": ["VMN","QWE"],
-                "Targetted_Resources": ["WSJ","GHJ"],
+                "Client_Sponser": 'Jai',
+                "Client_Finance_Controller": 'Tanmay',
+                "Targetted_Resources": {"ABC":"true","DCH":"false"},
                 "Status": "Drafted",
                 "Type": "PO",
                 "PO_Number": "ERP34",
@@ -179,11 +185,12 @@ const getPoDeatil = async (req, res) => {
           "message": "",
           "data":  {
             "_id": "61a49363c343b8220cff6c08",
+            "Project_Id": '61bb0622bf6c0b45dff12f77',
             "Client_Name": "Valuebound Solutions",
             "Project_Name": "ERP System",
-            "Client_Sponser": ["ABD","DEF"],
-            "Client_Finance_Controller": ["VMN","QWE"],
-            "Targetted_Resources": ["WSJ","GHJ"],
+            "Client_Sponser": 'Jai',
+            "Client_Finance_Controller": 'Tanmay',
+            "Targetted_Resources": {"ABC":"true","DCH":"false"},
             "Status": "Drafted",
             "Type": "PO",
             "PO_Number": "ERP34",
@@ -225,11 +232,12 @@ const updatePODetais = async (req, res) => {
       #swagger.parameters['obj'] = {
         in: 'body',
         schema: {
+              $Project_Id: '61bb0622bf6c0b45dff12f77',
               $Client_Name:'Valuebound Solutions',
               $Project_Name: 'ERP System',
-              $Client_Sponser: ['ABD','DEF'],
-              $Client_Finance_Controller: ['VMN','QWE'],
-              $Targetted_Resources: ['WSJ','GHJ'],
+              $Client_Sponser: 'Jai',
+              $Client_Finance_Controller: 'Tanmay',
+              $Targetted_Resources: {"ABC":"true","DCH":"false"},
               $Status: 'Drafted',
               $Type: 'PO',
               $PO_Number: 'ERP34',
@@ -248,11 +256,12 @@ const updatePODetais = async (req, res) => {
           "code": 200,
           "message": "",
           "data": {
-            "Client_Name":'Valuebound Solutions',
+              "Project_Id": '61bb0622bf6c0b45dff12f77',
+              "Client_Name":'Valuebound Solutions',
               "Project_Name": 'ERP System Backend',
-              "Client_Sponser": ['ABD','DEF'],
-              "Client_Finance_Controller": ['VMN','QWE'],
-              "Targetted_Resources": ['WSJ','GHJ'],
+              "Client_Sponser": 'Jai',
+              "Client_Finance_Controller": 'Tanmay',
+              "Targetted_Resources": {"ABC":"true","DCH":"false"},
               "Status": 'Drafted',
               "Type": 'PO',
               "PO_Number": 'ERP43',
@@ -316,11 +325,12 @@ const updatePOStatus = async (req, res) => {
           "code": 200,
           "message": "",
           "data": {
-            "Client_Name":'Valuebound Solutions',
+              "Project_Id": '61bb0622bf6c0b45dff12f77',
+              "Client_Name":'Valuebound Solutions',
               "Project_Name": 'ERP System Backend',
-              "Client_Sponser": ['ABD','DEF'],
-              "Client_Finance_Controller": ['VMN','QWE'],
-              "Targetted_Resources": ['WSJ','GHJ'],
+              "Client_Sponser": 'Jai',
+              "Client_Finance_Controller": 'Tanmay',
+              "Targetted_Resources": {"ABC":"true","DCH":"false"},
               "Status": 'Pending',
               "Type": 'PO',
               "PO_Number": 'ERP43',
@@ -383,10 +393,176 @@ const updatePOStatus = async (req, res) => {
   }
 };
 
+const getClients = async (req, res) => {
+  /* 	#swagger.tags = ['PO/SOW']
+      #swagger.description = 'Get Client list' 
+      #swagger.responses[200] = {
+        schema:{
+         "status": "success",
+         "code": 200,
+         "message": "",
+         "data": [
+             {
+               "clientName": "Valuebound"
+             },
+             {
+               "clientName": "Nasdaq"
+             }
+           ],
+         "error": {}
+       }
+      }
+  */
+
+  let code, message;
+  try {
+    const data = await projectsSchema.aggregate([
+      {
+        $group: {
+          _id: "$clientName",
+          Counter: { $sum: 1 },
+        },
+      },
+      {
+        $match: {
+          Counter: { $gte: 1 },
+        },
+      },
+      { $project: { clientName: "$_id", _id: 0 } },
+    ]);
+    code = 200;
+    const resData = customResponse({ code, data });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
+
+const getProjects = async (req, res) => {
+  /* 	#swagger.tags = ['PO/SOW']
+      #swagger.description = 'Get Project list of a Client' 
+      #swagger.responses[200] = {
+        schema:{
+         "status": "success",
+         "code": 200,
+         "message": "",
+         "data": [
+           {
+             "_id": "61b857d0b08340b2ddad1341",
+             "projectName": "Employee Management"
+           }
+         ],
+         "error": {}
+       }
+      }
+  */
+
+  let code, message;
+  try {
+    const data = await projectsSchema.find(
+      { clientName: req.params.clientName },
+      { projectName: 1 }
+    );
+    code = 200;
+    const resData = customResponse({ code, data });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
+
+const getDetails = async (req, res) => {
+  /* 	#swagger.tags = ['PO/SOW']
+      #swagger.description = 'Get project details of given Id' 
+      #swagger.parameters['projectId'] = {
+        in: 'query',
+        type: 'string',
+        description: 'Project ID' 
+      }
+      #swagger.responses[200] = {
+        schema:{
+          "status": "success",
+          "code": 200,
+          "message": "",
+          "data": [
+           {
+             "empPrimaryCapiblities": [],
+             "_id": "61b8c18ce56e27b307b73168",
+             "projectId": {
+                "_id": "61b8c18ce56e27b307b73166",
+                "vbProjectId": "VB-PROJ-1",
+                "projectName": "Valuebound",
+                "clientProjectSponsor": "Jai K",
+                "clientFinanceController": "Jai K"
+             },
+             "primaryCapiblities": [],
+             "allocationStartDate": "2021-12-14",
+             "allocationEndDate": "2021-12-17",
+             "allocationPercentage": 57,
+             "rackRate": 45132,
+             "__v": 0,
+             "empId": {
+                "_id": "61b59800430ab0392fd92640",
+                "empId": 15,
+                "empName": "sanjay"
+             }
+           }
+          ],
+         "error": {}
+        } 
+      }
+  */
+
+  const query = req.query.projectId;
+  let code;
+  try {
+    const data = await projectEmployeeModel
+      .find({ projectId: query })
+      .populate({
+        path: "empId",
+        model: "Employee",
+        select: "_id empId empName",
+      })
+      .populate(
+        "projectId",
+        "_id vbProjectId projectName clientProjectSponsor clientFinanceController"
+      );
+    code = 200;
+    const resData = customResponse({ code, data });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
+
 module.exports = {
   createPoSow,
   getPoDeatil,
   getSortedPoList,
   updatePOStatus,
   updatePODetais,
+  getClients,
+  getProjects,
+  getDetails,
 };
