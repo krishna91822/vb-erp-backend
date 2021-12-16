@@ -115,18 +115,27 @@ exports.getAllEmployees = async (req, res) => {
     //Build the query
     const features = new APIFeatures(Employee.find(), req.query)
       .filter()
-      .search()
+      .searchEmp()
       .sort()
-      // .limitFields()
+      .limitFields()
       .paginate();
 
     //Execute the query
     const employees = await features.query;
+    const countDoc = await Employee.count({});
 
     code = 200;
     message = "success";
     let data = employees;
-    const resData = customResponse({ code, message, data });
+    let totalDocuments = countDoc;
+    let totalResult = employees.length;
+    const resData = customResponse({
+      code,
+      message,
+      data,
+      totalDocuments,
+      totalResult,
+    });
     return res.status(code).send(resData);
   } catch (error) {
     console.log(`error is ${JSON.stringify(error)}`);

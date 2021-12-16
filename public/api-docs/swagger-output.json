@@ -1017,7 +1017,6 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
             "schema": {
               "type": "object",
               "properties": {
@@ -1062,7 +1061,8 @@
               "xml": {
                 "name": "main"
               }
-            }
+            },
+            "description": "OK"
           }
         }
       },

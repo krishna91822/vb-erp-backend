@@ -2,6 +2,28 @@ const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 const validator = require("validator");
 
+const addressSchema = new mongoose.Schema(
+  {
+    empAddressLineOne: {
+      type: String,
+      trim: true,
+    },
+    empAddressCity: {
+      type: String,
+      trim: true,
+    },
+    empAddressState: {
+      type: String,
+      trim: true,
+    },
+    empAddressPinCode: {
+      type: String,
+      trim: true,
+    },
+  },
+  { _id: false }
+);
+
 const otherField = new mongoose.Schema({
   fieldName: {
     type: String,
@@ -33,35 +55,40 @@ const employeeSchemaForReview = new mongoose.Schema(
       lowercase: true,
       validate: [validator.isEmail, "Please provide a valid email address"],
     },
+    empPersonalEmail: {
+      type: String,
+      trim: true,
+      required: true,
+    },
     empDoj: {
       type: Date,
       required: [true, "A employee must have a date of joining"],
     },
     empDob: {
       type: Date,
-      required: [true, "A employee must have a date of birth"],
-    },
-    empPhoto: {
-      type: String,
-      trim: true,
     },
     empDepartment: {
       type: String,
       lowercase: true,
       trim: true,
       default: "",
+      required: true,
     },
     empDesignation: {
       type: String,
-      lowercase: true,
       trim: true,
+      required: true,
       default: "",
     },
     empReportingManager: {
       type: String,
-      lowercase: true,
       trim: true,
+      required: true,
       default: "",
+    },
+    empPhoto: {
+      type: String,
+      trim: true,
     },
     empConnections: {
       type: Number,
@@ -71,27 +98,13 @@ const employeeSchemaForReview = new mongoose.Schema(
     },
     empHobbies: {
       type: Array,
-      lowercase: true,
       trim: true,
       default: [],
     },
     empAboutMe: {
       type: String,
-      lowercase: true,
       trim: true,
       default: "Something about me.",
-    },
-    empCurrentAddress: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      default: "",
-    },
-    empResidentialAddress: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      default: "",
     },
     empBand: {
       type: String,
@@ -104,21 +117,6 @@ const employeeSchemaForReview = new mongoose.Schema(
       lowercase: true,
       trim: true,
       default: "",
-    },
-    empPersonalEmail: {
-      type: String,
-      trim: true,
-      required: true,
-      unique: true,
-    },
-    empCtc: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    empPhoneNumber: {
-      type: String,
-      required: true,
     },
     empGraduationUniversity: {
       type: String,
@@ -140,22 +138,21 @@ const employeeSchemaForReview = new mongoose.Schema(
     },
     empPrimaryCapability: {
       type: Array,
-      lowercase: true,
       trim: true,
       default: [],
     },
     empSkillSet: {
       type: Array,
-      lowercase: true,
       trim: true,
       default: [],
     },
     empCertifications: {
       type: Array,
-      lowercase: true,
       trim: true,
       default: [],
     },
+    empCurrentAddress: addressSchema,
+    empResidentialAddress: addressSchema,
     role: {
       type: String,
       uppercase: true,
@@ -168,9 +165,10 @@ const employeeSchemaForReview = new mongoose.Schema(
           "FINANCE_ADMIN",
           "PMS_ADMIN",
           "SUPER_ADMIN",
+          "ADMIN",
         ],
       },
-      default: "employee",
+      default: "USER",
     },
     personalDetails: {
       type: [otherField],
@@ -186,7 +184,14 @@ const employeeSchemaForReview = new mongoose.Schema(
     },
     slackMemId: {
       type: String,
-      unique: true,
+      default: undefined,
+    },
+    empPhoneNumber: {
+      type: String,
+    },
+    empCtc: {
+      type: Number,
+      min: 0,
     },
   },
   { _id: false }
@@ -195,8 +200,8 @@ const employeeSchemaForReview = new mongoose.Schema(
 const ReviewSchema = mongoose.Schema(
   {
     reqId: {
-      required: true,
       type: Number,
+      unique: true,
     },
     reqName: {
       required: true,

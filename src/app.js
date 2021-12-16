@@ -17,6 +17,12 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("../public/api-docs/swagger-output.json");
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
 //middlewares
 // if (process.env.NODE_ENV === "development") {
 app.use(morgan("dev"));
@@ -53,7 +59,7 @@ app.use(globalErrorHandler);
 if (process.env.NODE_ENV !== "test") {
   const server = app.listen(process.env.PORT, async () => {
     await connectToDb();
-
+    console.log(`App listening on port ${process.env.PORT}`);
     process.on("uncaughtException", function () {
       server.close(function () {
         console.log("Finished all requests");

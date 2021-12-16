@@ -1,6 +1,28 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
+const addressSchema = new mongoose.Schema(
+  {
+    empAddressLineOne: {
+      type: String,
+      trim: true,
+    },
+    empAddressCity: {
+      type: String,
+      trim: true,
+    },
+    empAddressState: {
+      type: String,
+      trim: true,
+    },
+    empAddressPinCode: {
+      type: String,
+      trim: true,
+    },
+  },
+  { _id: false }
+);
+
 const otherField = new mongoose.Schema({
   fieldName: {
     type: String,
@@ -38,16 +60,10 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide your email"],
       trim: true,
-      unique: true,
     },
     empPersonalEmail: {
       type: String,
       trim: true,
-      required: true,
-      unique: true,
-    },
-    empPhoneNumber: {
-      type: String,
       required: true,
     },
     empDoj: {
@@ -56,15 +72,10 @@ const employeeSchema = new mongoose.Schema(
     },
     empDob: {
       type: Date,
-      required: [true, "A employee must have a date of birth"],
-    },
-    empPhoto: {
-      type: String,
-      trim: true,
     },
     empDepartment: {
       type: String,
-      // lowercase: true,
+      lowercase: true,
       trim: true,
       default: "",
       required: true,
@@ -81,6 +92,10 @@ const employeeSchema = new mongoose.Schema(
       required: true,
       default: "",
     },
+    empPhoto: {
+      type: String,
+      trim: true,
+    },
     empConnections: {
       type: Number,
       lowercase: true,
@@ -96,34 +111,14 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       trim: true,
       default: "Something about me.",
-      required: true,
-    },
-    empCurrentAddress: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      default: "",
-    },
-    empResidentialAddress: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      default: "",
     },
     empBand: {
       type: String,
       lowercase: true,
       trim: true,
-      default: "",
-    },
-    empCtc: {
-      type: Number,
-      required: true,
-      min: 0,
     },
     empGraduation: {
       type: String,
-      required: true,
       trim: true,
       default: "",
     },
@@ -159,6 +154,8 @@ const employeeSchema = new mongoose.Schema(
       trim: true,
       default: [],
     },
+    empCurrentAddress: addressSchema,
+    empResidentialAddress: addressSchema,
     role: {
       type: String,
       uppercase: true,
@@ -171,6 +168,7 @@ const employeeSchema = new mongoose.Schema(
           "FINANCE_ADMIN",
           "PMS_ADMIN",
           "SUPER_ADMIN",
+          "ADMIN",
         ],
         message:
           "role must be USER, APPROVER,LEADERSHIP,HR_ADMIN,FINANCE_ADMIN,PMS_ADMIN,SUPER_ADMIN, only",
@@ -191,7 +189,14 @@ const employeeSchema = new mongoose.Schema(
     },
     slackMemId: {
       type: String,
-      default: "",
+      default: undefined,
+    },
+    empPhoneNumber: {
+      type: String,
+    },
+    empCtc: {
+      type: Number,
+      min: 0,
     },
   },
   { timestamps: true }

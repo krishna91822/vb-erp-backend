@@ -15,10 +15,75 @@ class APIFeatures {
     return this;
   }
 
-  search() {
+  searchEmp() {
     if (this.queryString.search) {
       this.query = this.query.find({
-        empName: { $regex: this.queryString.search, $options: "i" },
+        $or: [
+          { empName: { $regex: this.queryString.search, $options: "i" } },
+          { empEmail: { $regex: this.queryString.search, $options: "i" } },
+          {
+            empCurrentAddress: {
+              $regex: this.queryString.search,
+              $options: "i",
+            },
+          },
+          {
+            empHobbies: {
+              $regex: this.queryString.search,
+              $options: "i",
+            },
+          },
+          {
+            empSkillSet: {
+              $regex: this.queryString.search,
+              $options: "i",
+            },
+          },
+          {
+            empCertifications: {
+              $regex: this.queryString.search,
+              $options: "i",
+            },
+          },
+          {
+            empPrimaryCapability: {
+              $regex: this.queryString.search,
+              $options: "i",
+            },
+          },
+          {
+            role: {
+              $regex: this.queryString.search,
+              $options: "i",
+            },
+          },
+          {
+            empDesignation: {
+              $regex: this.queryString.search,
+              $options: "i",
+            },
+          },
+          {
+            empDepartment: {
+              $regex: this.queryString.search,
+              $options: "i",
+            },
+          },
+        ],
+      });
+    }
+
+    return this;
+  }
+
+  searchReview() {
+    if (this.queryString.search) {
+      this.query = this.query.find({
+        $or: [
+          { reqName: { $regex: this.queryString.search, $options: "i" } },
+          { status: { $regex: this.queryString.search, $options: "i" } },
+          { reqType: { $regex: this.queryString.search, $options: "i" } },
+        ],
       });
     }
 

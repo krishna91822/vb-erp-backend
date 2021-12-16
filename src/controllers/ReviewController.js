@@ -30,21 +30,29 @@ exports.getAllReviews = async (req, res) => {
     //Build the query
     const features = new APIFeatures(Review.find(), req.query)
       .filter()
+      .searchReview()
       .sort()
       .limitFields()
       .paginate();
 
     //Execute the query
     const reviews = await features.query;
+    const countDoc = await Review.count({});
 
     //Send response
-    res.status(200).json({
-      status: "success",
-      results: reviews.length,
-      data: {
-        reviews,
-      },
+    let code = 200;
+    let message = "success";
+    let data = { reviews };
+    let totalDocuments = countDoc;
+    let totalResult = reviews.length;
+    const resData = customResponse({
+      code,
+      message,
+      data,
+      totalDocuments,
+      totalResult,
     });
+    return res.status(code).json(resData);
   } catch (err) {
     console.log(error);
   }
@@ -357,8 +365,6 @@ exports.updateReviewStatus = async (req, res) => {
 
     const employeeData = {
       ...review.employeeDetails._doc,
-      password: "12345",
-      passwordConfirm: "12345",
     };
 
     // check and create employee
@@ -366,18 +372,6 @@ exports.updateReviewStatus = async (req, res) => {
       review.reqType === "profile-creation" &&
       req.body.status === "accepted"
     ) {
-      const { error } = reviewSchema.validate(req.body);
-      if (error) {
-        code = 422;
-        message = "Invalid request data";
-        const resData = customResponse({
-          code,
-          message,
-          err: error && error.details,
-        });
-        return res.status(code).send(resData);
-      }
-
       const newEmployee = await Employee.create(employeeData);
       if (!newEmployee) {
         await Review.findByIdAndUpdate(
@@ -412,20 +406,12 @@ exports.updateReviewStatus = async (req, res) => {
     };
 
     if (review.reqType === "profile-update" && req.body.status === "accepted") {
-      const { error } = reviewupdatedSchema.validate(req.body);
-      if (error) {
-        code = 422;
-        message = "Invalid request data";
-        const resData = customResponse({
-          code,
-          message,
-          err: error && error.details,
-        });
-        return res.status(code).send(resData);
-      }
+      const empId = await Employee.findOne({
+        empEmail: review.employeeDetails.empEmail,
+      }).select("_id");
 
-      const employee = await Employee.findOneAndUpdate(
-        { empEmail: review.employeeDetails.empEmail },
+      const employee = await Employee.findByIdAndUpdate(
+        empId,
         employeeDataToUpdate,
         {
           new: true,

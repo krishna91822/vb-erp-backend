@@ -2,7 +2,10 @@ require("dotenv").config();
 const DB =
   process.env.NODE_ENV === "test"
     ? process.env.TEST_DATABASE_URI
-    : process.env.DATABASE_URL;
+    : process.env.DATABASE.replace("<PASSWORD>", process.env.DATABASE_PASSWORD);
+// process.env.NODE_ENV === "test"
+//   ? process.env.TEST_DATABASE_URI
+//   : process.env.DATABASE_URL;
 
 const mongoose = require("mongoose");
 const db = mongoose.connection;
