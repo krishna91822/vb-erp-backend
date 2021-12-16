@@ -1,26 +1,25 @@
-<<<<<<< HEAD
-const employeesModal = require("../models/employee");
+//const employeesModal = require("../models/employeeModel");
 // const { customResponse, customPagination } = require("../utility/helper");
 
-const storeEmployee = async (req, res) => {
-  let code, message;
-  try {
-    code = 201;
-    const employees = await new employeesModal(req.body);
-    employees.save();
-    const resdata = customResponse({ code, data: employees });
-    return res.status(code).send(resdata);
-  } catch (error) {
-    code = 500;
-    message = "Internal server error";
-    const resData = customResponse({
-      code,
-      message,
-      err: error,
-    });
-    return res.status(code).send(resData);
-  }
-};
+// const storeEmployee = async (req, res) => {
+//   let code, message;
+//   try {
+//     code = 201;
+//     const employees = await new employeesModal(req.body);
+//     employees.save();
+//     const resdata = customResponse({ code, data: employees });
+//     return res.status(code).send(resdata);
+//   } catch (error) {
+//     code = 500;
+//     message = "Internal server error";
+//     const resData = customResponse({
+//       code,
+//       message,
+//       err: error,
+//     });
+//     return res.status(code).send(resData);
+//   }
+// };
 
 const { Employee } = require("../models/employeeModel");
 const APIFeatures = require("../utility/apiFeatures");
@@ -628,40 +627,3 @@ exports.getDepartments = (req, res) => {
     return res.status(code).send(resData);
   }
 };
-=======
-const EmployeeInfoModel = require("../models/employeeModel");
-
-const getFilteredEmp = async(req, res) => {
-    const query = req.query;
-    try {
-        if (Object.keys(req.query).length === 0) {
-            const filterEmployee = await EmployeeInfoModel.find({}, { empId: 1, empName: 1, empPrimaryCapability: 1 });
-            return res.status(200).send(filterEmployee);
-        } else {
-            const filterEmployee = await EmployeeInfoModel.find({
-                $or: [{
-                    empName: {
-                        $regex: query.empName.trim(),
-                        $options: "i",
-                    },
-                }, ],
-            }, { empId: 1, empName: 1, empPrimaryCapability: 1 });
-            return res.status(200).send(filterEmployee);
-        }
-    } catch (error) {
-        res.status(400).send(error);
-    }
-};
-
-const getManagers = async(req, res) => {
-    const filterManagers = await EmployeeInfoModel.find({
-        empDesignation: "Manager",
-    }, { empName: 1 });
-    return res.status(200).send(filterManagers);
-};
-
-module.exports = {
-    getFilteredEmp,
-    getManagers,
-};
->>>>>>> 71f2ffda8f75b5f7c80e13cf28ae91f37b43e83d
