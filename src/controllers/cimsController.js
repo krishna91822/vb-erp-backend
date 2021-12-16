@@ -114,10 +114,11 @@ const cimsPost = async (req, res) => {
       return res.send(resData);
     }
     const newComp = await compModal.create(req.body);
+    const brandName = req.body.brandName;
 
     data = newComp;
     code = 200;
-    message = "Data created successfully";
+    message = `Client with Brand name "${brandName}" added successfully`;
 
     const resData = customResponse({
       data,
@@ -144,8 +145,8 @@ const setStatus = async (req, res) => {
 
     code = 200;
     status
-      ? (message = `The client ${brandName} has been Deactivated`)
-      : (message = `The client ${brandName} has been Reactivated`);
+      ? (message = `Client with Brand name "${brandName}" has been Deactivated`)
+      : (message = `Client with Brand name "${brandName}" has been Reactivated`);
 
     const resData = customResponse({
       code,
@@ -182,10 +183,11 @@ const cimsPatch = async (req, res) => {
     }
 
     await compModal.findOneAndUpdate({ _id: _id }, req.body);
+    const brandName = req.body.brandName;
 
     code = 200;
     data = req.body;
-    message = "Data updated successfully";
+    message = `Client with Brand name "${brandName}" updated successfully`;
 
     const resData = customResponse({
       code,
@@ -208,66 +210,79 @@ const cimsPatch = async (req, res) => {
 // PMO integration functionality
 
 const getFilteredClients = async (req, res) => {
-    const query = req.query;
-    try {
-        if (Object.keys(req.query).length === 0) {
-            const client = await compModal.find({}, {
-                _id: 1,
-                brandName: 1,
-                "contacts.primaryContact.firstName": 1,
-                "contacts.primaryContact.lastName": 1,
-                "contacts.primaryContact.contactNumber": 1,
-                "contacts.secondaryContact.firstName": 1,
-                "contacts.secondaryContact.lastName": 1,
-                "contacts.tertiaryContact.firstName": 1,
-                "contacts.tertiaryContact.lastName": 1,
-                "contacts.otherContact1.firstName": 1,
-                "contacts.otherContact1.lastName": 1,
-                "contacts.otherContact2.firstName": 1,
-                "contacts.otherContact2.lastName": 1,
-            });
-            return res.status(200).send(client);
-        } else {
-            const client = await compModal.find({
-                $or: [{
-                    brandName: {
-                        $regex: query.brandName.trim(),
-                        $options: "i",
-                    },
-                },],
-            }, {
-                _id: 1,
-                brandName: 1,
-                "contacts.primaryContact.firstName": 1,
-                "contacts.primaryContact.lastName": 1,
-                "contacts.primaryContact.contactNumber": 1,
-                "contacts.secondaryContact.firstName": 1,
-                "contacts.secondaryContact.lastName": 1,
-                "contacts.tertiaryContact.firstName": 1,
-                "contacts.tertiaryContact.lastName": 1,
-                "contacts.otherContact1.firstName": 1,
-                "contacts.otherContact1.lastName": 1,
-                "contacts.otherContact2.firstName": 1,
-                "contacts.otherContact2.lastName": 1,
-            });
-            return res.status(200).send(client);
+  const query = req.query;
+  try {
+    if (Object.keys(req.query).length === 0) {
+      const client = await compModal.find(
+        {},
+        {
+          _id: 1,
+          brandName: 1,
+          "contacts.primaryContact.firstName": 1,
+          "contacts.primaryContact.lastName": 1,
+          "contacts.primaryContact.contactNumber": 1,
+          "contacts.secondaryContact.firstName": 1,
+          "contacts.secondaryContact.lastName": 1,
+          "contacts.tertiaryContact.firstName": 1,
+          "contacts.tertiaryContact.lastName": 1,
+          "contacts.otherContact1.firstName": 1,
+          "contacts.otherContact1.lastName": 1,
+          "contacts.otherContact2.firstName": 1,
+          "contacts.otherContact2.lastName": 1,
         }
-    } catch (error) {
-        res.status(400).send(error);
+      );
+      return res.status(200).send(client);
+    } else {
+      const client = await compModal.find(
+        {
+          $or: [
+            {
+              brandName: {
+                $regex: query.brandName.trim(),
+                $options: "i",
+              },
+            },
+          ],
+        },
+        {
+          _id: 1,
+          brandName: 1,
+          "contacts.primaryContact.firstName": 1,
+          "contacts.primaryContact.lastName": 1,
+          "contacts.primaryContact.contactNumber": 1,
+          "contacts.secondaryContact.firstName": 1,
+          "contacts.secondaryContact.lastName": 1,
+          "contacts.tertiaryContact.firstName": 1,
+          "contacts.tertiaryContact.lastName": 1,
+          "contacts.otherContact1.firstName": 1,
+          "contacts.otherContact1.lastName": 1,
+          "contacts.otherContact2.firstName": 1,
+          "contacts.otherContact2.lastName": 1,
+        }
+      );
+      return res.status(200).send(client);
     }
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 
-const getClientById = async(req, res) => {
-    try {
-        const _id = req.params.id;
-        const client = await compModal.find({ _id: _id });
-        res.status(200).send(client);
-    } catch (error) {
-        res.status(400).send(error);
-    }
+const getClientById = async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const client = await compModal.find({ _id: _id });
+    res.status(200).send(client);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 /* ****************************************** */
 
-
-
-module.exports = { setStatus, cimsGet, cimsPatch, cimsPost, getFilteredClients, getClientById };
+module.exports = {
+  setStatus,
+  cimsGet,
+  cimsPatch,
+  cimsPost,
+  getFilteredClients,
+  getClientById,
+};
