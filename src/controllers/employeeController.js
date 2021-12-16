@@ -7,6 +7,10 @@ const {
 } = require("../schema/employeeSchema");
 const mongoose = require("mongoose");
 const QRCode = require("qrcode");
+const {
+  getDepartmentsData,
+  getDesignationsData,
+} = require("../utility/dropdown");
 
 exports.getAllEmployees = async (req, res) => {
   /* 	#swagger.tags = ['Employee']
@@ -546,7 +550,7 @@ exports.getDesignations = (req, res) => {
   try {
     code = 200;
     message = "success";
-    const data = ["Software Engineer", "Senior Software Engineer", "Tech Lead"];
+    const data = getDesignationsData();
     const resData = customResponse({ code, message, data });
     return res.status(200).send(resData);
   } catch (error) {
@@ -567,7 +571,7 @@ exports.getDepartments = (req, res) => {
   try {
     code = 200;
     message = "success";
-    const data = ["Development", "Sales", "HR", "Marketing"];
+    const data = getDepartmentsData();
     const resData = customResponse({ code, message, data });
     return res.status(200).send(resData);
   } catch (error) {

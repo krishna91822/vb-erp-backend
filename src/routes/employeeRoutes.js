@@ -28,16 +28,4 @@ router.delete("/:id", deleteEmployee);
 router.get("/", getAllEmployees);
 router.post("/", createEmployee);
 
-// router
-//   .route("/:id")
-//   .get(getEmployee)
-//   .patch(
-//     // restrictTo(["USER", "APPROVER", "LEADERSHIP", "HR_ADMIN", "SUPER_ADMIN"]),
-//     updateEmployee
-//   )
-//   .delete(
-//     // restrictTo(["HR_ADMIN", "SUPER_ADMIN"]),
-//     deleteEmployee
-//   );
-
 module.exports = router;
