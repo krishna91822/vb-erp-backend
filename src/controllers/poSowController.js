@@ -3,6 +3,7 @@ const { poSowSchema, querySchema } = require("../schema/poSowSchema");
 const projectsSchema = require("../models/projectsModel");
 const projectEmployeeModel = require("../models/projectEmployeeModel");
 const Employee = require("../models/employeeModel");
+const StatusLifeCycle = require("../utility/constant")
 const { customResponse, customPagination } = require("../utility/helper");
 
 const createPoSow = async (req, res) => {
@@ -348,12 +349,11 @@ const updatePOStatus = async (req, res) => {
   let code, message;
   try {
     const _id = req.params.id;
+    const newStatus = req.query.status.toLowerCase();
     const getDetails = await purchaseOrderModel.findById({ _id });
-
+    console.log(getDetails)
     const { Status } = getDetails;
-    const status2 = "drafted";
-    const newStatus = "Pending";
-    if (Status.toLowerCase() === status2) {
+    if(StatusLifeCycle[Status.toLowerCase()].indexOf(newStatus) != -1){ 
       code = 200;
       message = "status updated successfully";
       const updateStatus = await purchaseOrderModel.updateOne(
