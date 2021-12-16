@@ -22,3 +22,10 @@ module.exports = Object.freeze({
     optionSuccessStatus: 200,
   },
 });
+
+module.exports = Status = {
+  drafted: ["pending"],
+  pending: ["approved","rejected"],
+  approved: [],
+  rejected:[]
+}

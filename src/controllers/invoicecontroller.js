@@ -413,10 +413,50 @@ const getRelatedInvoices = async (req, res) => {
     return res.status(code).send(resData);
   }
 };
+const updateInvoice = async (req, res) => {
+  let code, message;
+  try {
+    const { error } = invoiceSchema.validate(req.body);
+    if (error) {
+      code = 422;
+      message = "Invalid update data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+    const updateDetails = await Invoice.updateOne(
+      { _id: req.params.id },
+      {
+        $set: { ...req.body, updated_at: new Date() },
+      }
+    );
+    code = 200;
+    message = "data updated successfully";
+    const resData = customResponse({
+      code,
+      data: updateDetails,
+      message,
+    });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
 
 module.exports = {
   newInvoice,
   getInvoiceDetailsById,
   getInvoiceDetails,
   getRelatedInvoices,
+  updateInvoice,
 };
