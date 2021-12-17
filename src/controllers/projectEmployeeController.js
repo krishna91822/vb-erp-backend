@@ -76,7 +76,7 @@ const deleteAllocation = async (req, res) => {
 // Get allocations
 const getAllocations = async (req, res) => {
   const query = getAllocationQuery(req.query);
-  console.log(query)
+  console.log(query);
   try {
     const projectDetails = await projectEmployeeModel
       .find({ query })
@@ -85,7 +85,7 @@ const getAllocations = async (req, res) => {
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-      console.log(projectDetails)
+    console.log(projectDetails);
     const filteredData = getAllocationsFilteredData(query, projectDetails);
 
     res.status(200).json(filteredData);
