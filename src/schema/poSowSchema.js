@@ -15,7 +15,6 @@ const poSowSchema = Joi.object()
     PO_Amount: Joi.number().required(),
     Currency: Joi.string().alphanum().required(),
     Document_Name: Joi.string().required(),
-    Document_Type: Joi.string().required(),
     POSOW_endDate: Joi.date().iso().required(),
     Remarks: Joi.string().empty(""),
   })

@@ -106,9 +106,7 @@ const getInvoiceDetailsById = async (req, res) => {
           "data":  {
             "_id": "610bc1b31b82a66f6bcd64ea",
             "PO_Id": {
-                "Targetted_Resources": [
-                        "NGB"
-                ],
+                "Targetted_Resources": {"ABC":"true","DCH":"false"},
                 "_id": "61aee1b97af12a205c1a16c5",
                 "Client_Name": "Tanmay kesarwani",
                 "Project_Name": "valuebound",
@@ -170,9 +168,7 @@ const getInvoiceDetails = async (req, res) => {
               {
             "_id": "610bc1b31b82a66f6bcd64ea",
             "PO_Id": {
-                "Targetted_Resources": [
-                        "NGB"
-                ],
+                "Targetted_Resources": {"ABC":"true","DCH":"false"},
                 "_id": "61aee1b97af12a205c1a16c5",
                 "Client_Name": "Tanmay kesarwani",
                 "Project_Name": "valuebound",

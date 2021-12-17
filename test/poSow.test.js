@@ -7,7 +7,7 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 let poSow = require("../src/models/poSow");
-let project = require("../src/models/projectsModel")
+let project = require("../src/models/projectsModel");
 
 describe("PO/SOW Unit Testing with Mocha..!!", () => {
   describe("/Create new PO/SOW", () => {
@@ -15,7 +15,10 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
       let data = new poSow({
         Client_Sponser: ["ABD", "DEF"],
         Client_Finance_Controller: ["VMN", "QWE"],
-        Targetted_Resources: ["WSJ", "GHJ"],
+        Targetted_Resources: {
+          ABC: "true",
+          DCH: "false",
+        },
         Status: "Drafted",
         Type: "PO",
         PO_Number: "ERP34",
@@ -38,14 +41,17 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
     });
     it("it should create new PO", (done) => {
       let details = {
+        Project_Id: "61bb0622bf6c0b45dff12f77",
         Client_Name: "Valuebound Solutions",
         Project_Name: "ERP System",
-        Client_Sponser: ["ABD", "DEF"],
-        Client_Finance_Controller: ["VMN", "QWE"],
-        Targetted_Resources: ["WSJ", "GHJ"],
+        Client_Sponser: "ABD",
+        Client_Finance_Controller: "QWE",
+        Targetted_Resources: {
+          ABC: "true",
+          DCH: "false",
+        },
         Status: "Drafted",
         Type: "PO",
-        PO_Number: "ERP34",
         PO_Amount: 3434,
         Currency: "USD",
         Document_Name: "VB_ERP",
@@ -62,6 +68,7 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a("object");
+            res.body.should.have.property("Project_Id");
             res.body.should.have.property("Client_Name");
             res.body.should.have.property("Project_Name");
             res.body.should.have.property("Client_Sponser");
@@ -69,7 +76,6 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
             res.body.should.have.property("Targetted_Resources");
             res.body.should.have.property("Status");
             res.body.should.have.property("Type");
-            res.body.should.have.property("PO_Number");
             res.body.should.have.property("PO_Amount");
             res.body.should.have.property("Currency");
             res.body.should.have.property("Document_Name");
@@ -88,7 +94,10 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
         id: "45hf873f748",
         Client_Sponser: ["ABD", "DEF"],
         Client_Finance_Controller: ["VMN", "QWE"],
-        Targetted_Resources: ["WSJ", "GHJ"],
+        Targetted_Resources: {
+          ABC: "true",
+          DCH: "false",
+        },
         Status: "Drafted",
         Type: "PO",
         PO_Number: "ERP34",
@@ -103,9 +112,12 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
         .request(server)
         .patch("/poSow/" + details.id)
         .send({
-          Client_Sponser: ["xyz"],
-          Client_Finance_Controller: ["VMN", "QWE"],
-          Targetted_Resources: ["WSJ", "GHJ"],
+          Client_Sponser: "xyz",
+          Client_Finance_Controller: "QWE",
+          Targetted_Resources: {
+            ABC: "true",
+            DCH: "false",
+          },
           Status: "Drafted",
           Type: "SOW",
           PO_Number: "ERP43",
@@ -167,14 +179,17 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
     describe("/GET/:id PO/SOW", () => {
       it("it should GET a PO/SOW by given id", (done) => {
         let details = {
+          Project_Id: "61bb0622bf6c0b45dff12f77",
           Client_Name: "Valuebound Solutions",
           Project_Name: "ERP System",
-          Client_Sponser: ["ABD", "DEF"],
-          Client_Finance_Controller: ["VMN", "QWE"],
-          Targetted_Resources: ["WSJ", "GHJ"],
+          Client_Sponser: "ABD",
+          Client_Finance_Controller: "QWE",
+          Targetted_Resources: {
+            ABC: "true",
+            DCH: "false",
+          },
           Status: "Drafted",
           Type: "PO",
-          PO_Number: "ERP34",
           PO_Amount: 3434,
           Currency: "USD",
           Document_Name: "VB_ERP",
@@ -198,7 +213,6 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
               res.body.data.should.have.property("Targetted_Resources");
               res.body.data.should.have.property("Status");
               res.body.data.should.have.property("Type");
-              res.body.data.should.have.property("PO_Number");
               res.body.data.should.have.property("PO_Amount");
               res.body.data.should.have.property("Currency");
               res.body.data.should.have.property("Document_Name");
@@ -215,12 +229,14 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
         let details = {
           Client_Name: "Valuebound Solutions",
           Project_Name: "ERP System",
-          Client_Sponser: ["ABD", "DEF"],
-          Client_Finance_Controller: ["VMN", "QWE"],
-          Targetted_Resources: ["WSJ", "GHJ"],
+          Client_Sponser: "DEF",
+          Client_Finance_Controller: "QWE",
+          Targetted_Resources: {
+            ABC: "true",
+            DCH: "false",
+          },
           Status: "Drafted",
           Type: "PO",
-          PO_Number: "ERP34",
           PO_Amount: 3434,
           Currency: "USD",
           Document_Name: "VB_ERP",
@@ -252,12 +268,14 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
       id: "45hf873f748",
       Client_Name: "Valuebound Solutions",
       Project_Name: "ERP System",
-      Client_Sponser: ["ABD", "DEF"],
-      Client_Finance_Controller: ["VMN", "QWE"],
-      Targetted_Resources: ["WSJ", "GHJ"],
+      Client_Sponser: "ABD",
+      Client_Finance_Controller: "QWE",
+      Targetted_Resources: {
+        ABC: "true",
+        DCH: "false",
+      },
       Status: "Drafted",
       Type: "PO",
-      PO_Number: "ERP34",
       PO_Amount: 3434,
       Currency: "USD",
       Document_Name: "VB_ERP",
@@ -273,12 +291,14 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
         .send({
           Client_Name: "tcs Solutions",
           Project_Name: "ERP System backend",
-          Client_Sponser: ["ABD"],
-          Client_Finance_Controller: ["VMN", "QWE"],
-          Targetted_Resources: ["WSJ", "GHJ"],
+          Client_Sponser: "ABD",
+          Client_Finance_Controller: "QWE",
+          Targetted_Resources: {
+            ABC: "true",
+            DCH: "false",
+          },
           Status: "Drafted",
           Type: "SOW",
-          PO_Number: "ERP43",
           PO_Amount: 3434,
           Currency: "INR",
           Document_Name: "VB_ERP_Backend",
@@ -298,9 +318,12 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
       id: "45hf873f748",
       Client_Name: "Valuebound Solutions",
       Project_Name: "ERP System",
-      Client_Sponser: ["ABD", "DEF"],
-      Client_Finance_Controller: ["VMN", "QWE"],
-      Targetted_Resources: ["WSJ", "GHJ"],
+      Client_Sponser: "ABD",
+      Client_Finance_Controller: "QWE",
+      Targetted_Resources: {
+        ABC: "true",
+        DCH: "false",
+      },
       Status: "Drafted",
       Type: "PO",
       PO_Number: "ERP34",
@@ -330,14 +353,17 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
 describe("/update PO/SOW status", () => {
   it("it should update PO status", (done) => {
     const details = {
+      Project_Id: "61bb0622bf6c0b45dff12f77",
       Client_Name: "Valuebound Solutions",
       Project_Name: "ERP System",
-      Client_Sponser: ["ABD", "DEF"],
-      Client_Finance_Controller: ["VMN", "QWE"],
-      Targetted_Resources: ["WSJ", "GHJ"],
+      Client_Sponser: "ABD",
+      Client_Finance_Controller: "QWE",
+      Targetted_Resources: {
+        ABC: "true",
+        DCH: "false",
+      },
       Status: "Drafted",
       Type: "PO",
-      PO_Number: "ERP34",
       PO_Amount: 3434,
       Currency: "USD",
       Document_Name: "VB_ERP",
@@ -349,7 +375,7 @@ describe("/update PO/SOW status", () => {
     poDetails.save((err, data) => {
       chai
         .request(server)
-        .patch("/poSow/status/" + poDetails.id)
+        .patch("/poSow/status/" + poDetails.id + "?status=pending")
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.have
@@ -362,14 +388,17 @@ describe("/update PO/SOW status", () => {
 
   it("already updated PO status", (done) => {
     const details = {
+      Project_Id: "61bb0622bf6c0b45dff12f77",
       Client_Name: "Valuebound Solutions",
       Project_Name: "ERP System",
-      Client_Sponser: ["ABD", "DEF"],
-      Client_Finance_Controller: ["VMN", "QWE"],
-      Targetted_Resources: ["WSJ", "GHJ"],
-      Status: "Pending",
+      Client_Sponser: "ABD",
+      Client_Finance_Controller: "QWE",
+      Targetted_Resources: {
+        ABC: "true",
+        DCH: "false",
+      },
+      Status: "Drafted",
       Type: "PO",
-      PO_Number: "ERP34",
       PO_Amount: 3434,
       Currency: "USD",
       Document_Name: "VB_ERP",
@@ -394,14 +423,17 @@ describe("/update PO/SOW status", () => {
 
   it("throw an exception", (done) => {
     const details = {
+      Project_Id: "61bb0622bf6c0b45dff12f77",
       Client_Name: "Valuebound Solutions",
       Project_Name: "ERP System",
-      Client_Sponser: ["ABD", "DEF"],
-      Client_Finance_Controller: ["VMN", "QWE"],
-      Targetted_Resources: ["WSJ", "GHJ"],
-      Status: "Pending",
+      Client_Sponser: "ABD",
+      Client_Finance_Controller: "QWE",
+      Targetted_Resources: {
+        ABC: "true",
+        DCH: "false",
+      },
+      Status: "Drafted",
       Type: "PO",
-      PO_Number: "ERP34",
       PO_Amount: 3434,
       Currency: "USD",
       Document_Name: "VB_ERP",
@@ -458,7 +490,7 @@ describe("/GET/poSow/capturePO/details/ PO/SOW", () => {
     chai
       .request(server)
       .get("/poSow/capturePO/details")
-      .query({projectId : "61b8c18ce56e27b307b73166"})
+      .query({ projectId: "61b8c18ce56e27b307b73166" })
       .end((err, res) => {
         res.should.have.status(200);
         res.body.data.should.be.a("array");
