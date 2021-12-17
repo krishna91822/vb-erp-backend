@@ -93,7 +93,6 @@ const createPoSow = async (req, res) => {
       ...req.body,
       PO_Number: num,
     }).save();
-    console.log(poSow);
     const invoices = new Invoice({
       PO_Id: poSow._id,
       client_sponsor: req.body.Client_Sponser,
@@ -396,7 +395,6 @@ const updatePOStatus = async (req, res) => {
     const _id = req.params.id;
     const newStatus = req.query.status.toLowerCase();
     const getDetails = await purchaseOrderModel.findById({ _id });
-    console.log(getDetails);
     const { Status } = getDetails;
     if (StatusLifeCycle[Status.toLowerCase()].indexOf(newStatus) != -1) {
       code = 200;
