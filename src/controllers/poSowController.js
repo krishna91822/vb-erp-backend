@@ -318,7 +318,12 @@ const updatePODetais = async (req, res) => {
 
 const updatePOStatus = async (req, res) => {
   /* 	#swagger.tags = ['PO/SOW'']
-      #swagger.description = 'Update PO/SOW details' 
+      #swagger.description = 'Update PO/SOW Status'
+      #swagger.parameters['status'] = {
+        in: 'query',
+        type: 'string',
+        description: 'Status' 
+      }
       #swagger.responses[200] = {
         description: 'PO/SOW details updated successfully.',
         schema: { 
