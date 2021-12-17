@@ -16,13 +16,13 @@ const ProjectRouter = require("./projects");
 const ProjectEmployeeRouter = require("./projectAndEmployee");
 
 router.post("/login", auth);
-router.get("/account", isAuthorized, getAccount);
-router.use("/users", isAuthorized, userRoutes);
+router.get("/account", getAccount);
+router.use("/users", userRoutes);
 router.use("/rewards", rewardRoutes);
 router.use("/", otherRoutes);
 router.use("/assign", assigneeRoutes);
 router.use("/invoice", invoiceRoutes);
-router.use("/poSow", isAuthorized, poSowRoutes);
+router.use("/poSow", poSowRoutes);
 router.use("/employees", employeeRoutes);
 router.use("/reviews", reviewRoutes);
 router.use("/projects", ProjectRouter);

@@ -639,7 +639,7 @@ exports.getDepartments = (req, res) => {
 
 exports.getEmployeesRR = async (req, res) => {
   /*
-      #swagger.tags = ['Employees']
+      #swagger.tags = ['Employee']
       #swagger.description = 'Get all employees' 
       #swagger.parameters['search'] = {
       in: 'query',
@@ -804,11 +804,11 @@ exports.getEmployeesRR = async (req, res) => {
   try {
     code = 200;
     if (req.query.empId || req.query.empName) {
-      employees = await employeesModal.aggregate(empidSearch);
-    } else if (req.query.empDes === "manager") {
-      employees = await employeesModal.aggregate(empmanagerSearch);
+      employees = await Employee.aggregate(empidSearch);
+    } else if (req.query.empDes === "Manager") {
+      employees = await Employee.aggregate(empmanagerSearch);
     } else {
-      employees = await employeesModal.aggregate(query);
+      employees = await Employee.aggregate(query);
     }
     // const data=customPagination({data:employees});
     const resData = customResponse({ code, data: employees });
@@ -822,7 +822,7 @@ exports.getEmployeesRR = async (req, res) => {
 
 exports.searchEmployeesRR = async (req, res) => {
   /* 	
-    #swagger.tags = ['Employees']
+    #swagger.tags = ['Employee']
     #swagger.description = 'Search Employees' 
     #swagger.parameters['search'] = {
       in: 'query',
@@ -866,13 +866,13 @@ exports.searchEmployeesRR = async (req, res) => {
   const searchName = req.query;
   try {
     if (Object.keys(req.query).length === 0) {
-      const employees = await employeesModal.find({});
+      const employees = await Employee.find({});
       code = 200;
       //const data=customPagination({data:employees,page:page,limit:limit});
       const resData = customResponse({ code, data: employees });
       res.status(code).send(resData);
     } else {
-      const employees = await employeesModal.find({
+      const employees = await Employee.find({
         $or: [
           { empName: { $regex: searchName.search.trim(), $options: "i" } },
           { empEmail: { $regex: searchName.search.trim(), $options: "i" } },

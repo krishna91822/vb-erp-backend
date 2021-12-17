@@ -12,6 +12,8 @@ const {
   getDesignations,
   getDepartments,
   getManagers,
+  getEmployeesRR,
+  searchEmployeesRR,
 } = require("../controllers/employeeController");
 
 router.get("/filteremp", getFilteredEmp);
@@ -24,5 +26,7 @@ router.delete("/:id", deleteEmployee);
 router.get("/", getAllEmployees);
 router.post("/", createEmployee);
 router.get("/empManagers", getManagers);
+router.get("/reward/employee", getEmployeesRR);
+router.get("/rewars/employeesearch", searchEmployeesRR);
 
 module.exports = router;
