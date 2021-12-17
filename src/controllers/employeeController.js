@@ -570,17 +570,9 @@ exports.getFilteredEmp = async (req, res) => {
 exports.getManagers = async (req, res) => {
   const filterManagers = await EmployeeInfoModel.find(
     {
-      $or: [
-        {
-          empDesignation: "Manager",
-          empName: {
-            $regex: req.query.empName,
-            $options: "i",
-          },
-        },
-      ],
+      empDesignation: "Manager",
     },
-    { _id: 0, empName: 1 }
+    { empName: 1 }
   );
   return res.status(200).send(filterManagers);
 };
