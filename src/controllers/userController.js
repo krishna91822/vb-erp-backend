@@ -310,7 +310,6 @@ const auth = async (req, res) => {
       }
   */
   let code, message, data;
-  console.log("Hello");
   const { error } = loginSchema.validate(req.body);
 
   if (error) {

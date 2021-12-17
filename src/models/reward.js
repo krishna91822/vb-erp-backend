@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const employees = require("./employee");
+const { Employee } = require("./employeeModel");
 const rewardsSchema = mongoose.Schema(
   {
     reward_display_name: {
@@ -16,7 +16,7 @@ const rewardsSchema = mongoose.Schema(
       enum: ["work-anniversary", "birthday-celebration", "starOfTheMonth"],
       required: function () {
         return (
-          (this.reward_type === "daily") | (this.reward_type === "monthly")
+          (this.reward_type === "Daily") | (this.reward_type === "Monthly")
         );
       },
     },
@@ -32,13 +32,13 @@ const rewardsSchema = mongoose.Schema(
     },
     sender_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: employees,
+      ref: Employee,
       required: false,
     },
     recipients_ids: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: employees,
+        ref: Employee,
         required: false,
       },
     ],
