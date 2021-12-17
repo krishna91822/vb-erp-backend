@@ -3861,21 +3861,6 @@
         }
       }
     },
-    "/employees/filteremp": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
     "/employees/qr": {
       "get": {
         "tags": [
@@ -4833,18 +4818,6 @@
                 "name": "main"
               }
             }
-          }
-        }
-      }
-    },
-    "/employees/empanagers": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
@@ -5880,6 +5853,42 @@
         "parameters": [
           {
             "name": "empId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/filteremp": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/managers": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "empName",
             "in": "query",
             "type": "string"
           }
