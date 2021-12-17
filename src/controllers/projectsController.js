@@ -284,25 +284,9 @@ const getOtherProjects = async (req, res) => {
   const limit = req.query.limit ? req.query.limit : 10;
   let code, message;
   try {
-    const Projects = await ProjectsInfoModel.find({});
-    await Projects.forEach(async (element) => {
-      let date = moment().format("YYYY-MM-DD");
-      date = moment(date, "YYYY-MM-DD");
-      let startDate = moment(element.startDate, "YYYY-MM-DD");
-      let endDate = moment(element.endDate, "YYYY-MM-DD");
-
-      if (element.vbProjectStatus == "On Hold" || "Yet to Begin") {
-      } else if (date.isAfter(endDate)) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
-          { _id: element._id },
-          { $set: { vbProjectStatus: "Done" } }
-        );
-        updateElement.save();
-      }
-    });
     code = 200;
     message = "Data Fetched Successfully!!";
-    const updatedProjects = await ProjectsInfoModel.find({
+    const Projects = await ProjectsInfoModel.find({
       $and: [
         {
           $and: query,
@@ -313,7 +297,7 @@ const getOtherProjects = async (req, res) => {
         },
       ],
     });
-    const data = customPagination({ data: updatedProjects, page, limit });
+    const data = customPagination({ data: Projects, page, limit });
     const resData = customResponse({ code, message, data });
     res.status(200).send(resData);
   } catch (error) {
@@ -336,25 +320,9 @@ const getSortedOtherProjects = async (req, res) => {
   const limit = req.query.limit ? req.query.limit : 10;
   let code, message;
   try {
-    const Projects = await ProjectsInfoModel.find({});
-    await Projects.forEach(async (element) => {
-      let date = moment().format("YYYY-MM-DD");
-      date = moment(date, "YYYY-MM-DD");
-      let startDate = moment(element.startDate, "YYYY-MM-DD");
-      let endDate = moment(element.endDate, "YYYY-MM-DD");
-
-      if (element.vbProjectStatus == "On Hold" || "Yet to Begin") {
-      } else if (date.isAfter(endDate)) {
-        let updateElement = await ProjectsInfoModel.findOneAndUpdate(
-          { _id: element._id },
-          { $set: { vbProjectStatus: "Done" } }
-        );
-        updateElement.save();
-      }
-    });
     code = 200;
     message = "Data Fetched Successfully!!";
-    const updatedProjects = await ProjectsInfoModel.find({
+    const Projects = await ProjectsInfoModel.find({
       $and: [
         {
           $and: query,
@@ -365,7 +333,7 @@ const getSortedOtherProjects = async (req, res) => {
         },
       ],
     }).sort(fieldName);
-    const data = customPagination({ data: updatedProjects, page, limit });
+    const data = customPagination({ data: Projects, page, limit });
     const resData = customResponse({ code, message, data });
     res.status(200).send(resData);
   } catch (error) {
