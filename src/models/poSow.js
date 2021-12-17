@@ -60,10 +60,6 @@ const purchaseOrderSchema = mongoose.Schema({
     type: String,
     required: [true, "document name is required"],
   },
-  Document_Type: {
-    type: String,
-    required: [true, "document type is required"],
-  },
   POSOW_endDate: {
     type: Date,
     required: [true, "enddate is required"],
