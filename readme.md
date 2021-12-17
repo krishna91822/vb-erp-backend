@@ -1,30 +1,11 @@
-# Valuebound ERP Backend
+### Node Express template project
 
-## Introduction
+This project is based on a GitLab [Project Template](https://docs.gitlab.com/ee/gitlab-basics/create-project.html).
 
-## Installation steps
+Improvements can be proposed in the [original project](https://gitlab.com/gitlab-org/project-templates/express).
 
-> git clone repo_url
+### CI/CD with Auto DevOps
 
-> cd vb_erp_backend
+This template is compatible with [Auto DevOps](https://docs.gitlab.com/ee/topics/autodevops/).
 
-> copy .env.sample .env
-
-> update env variable
-
-> npm i
-
-> npm start
-
-### Responses
-
-| Code | Status                |
-| ---- | --------------------- |
-| 200  | Ok                    |
-| 201  | Created               |
-| 400  | Bad request           |
-| 401  | UnAuthenctcated       |
-| 403  | Forbiden access       |
-| 404  | Not found             |
-| 422  | Invalid input         |
-| 500  | Internal server error |
+If Auto DevOps is not already enabled for this project, you can [turn it on](https://docs.gitlab.com/ee/topics/autodevops/#enabling-auto-devops) in the project settings.
