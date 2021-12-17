@@ -2736,6 +2736,18 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount_received_on": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {}
@@ -2795,10 +2807,6 @@
                   "type": "string",
                   "example": "PO"
                 },
-                "PO_Number": {
-                  "type": "string",
-                  "example": "ERP34"
-                },
                 "PO_Amount": {
                   "type": "number",
                   "example": 3434
@@ -2833,7 +2841,6 @@
                 "Targetted_Resources",
                 "Status",
                 "Type",
-                "PO_Number",
                 "PO_Amount",
                 "Currency",
                 "Document_Name",
