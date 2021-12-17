@@ -2,7 +2,6 @@ class APIFeatures {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
-    console.log(`query is ${query}`);
   }
 
   filter() {
@@ -20,13 +19,8 @@ class APIFeatures {
       this.query = this.query.find({
         $or: [
           { empName: { $regex: this.queryString.search, $options: "i" } },
+          { empId: { $regex: this.queryString.search, $options: "i" } },
           { empEmail: { $regex: this.queryString.search, $options: "i" } },
-          {
-            empCurrentAddress: {
-              $regex: this.queryString.search,
-              $options: "i",
-            },
-          },
           {
             empHobbies: {
               $regex: this.queryString.search,
