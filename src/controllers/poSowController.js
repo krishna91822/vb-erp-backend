@@ -4,6 +4,8 @@ const projectsSchema = require("../models/projectsModel");
 const projectEmployeeModel = require("../models/projectEmployeeModel");
 const Employee = require("../models/employeeModel");
 const Invoice = require("../models/invoicemodel");
+const { emailContent } = require("../controllers/poEmailController");
+const { emailSender } = require("../middleware/POMailNotification");
 const StatusLifeCycle = require("../utility/constant");
 const { customResponse, customPagination } = require("../utility/helper");
 
@@ -21,7 +23,6 @@ const createPoSow = async (req, res) => {
             $Targetted_Resources: {"ABC":"true","DCH":"false"},
             $Status: 'Drafted',
             $Type: 'PO',
-            $PO_Number: 'ERP34',
             $PO_Amount: 3434,
             $Currency: 'USD',
             $Document_Name: 'VB_ERP',
@@ -71,19 +72,51 @@ const createPoSow = async (req, res) => {
       });
       return res.status(code).send(resData);
     }
-    const poSow = await new purchaseOrderModel(req.body).save();
     const st = req.body.Type;
-    if (st.toLowerCase() === "po") {
-      const invoice = new Invoice({
-        PO_Id: poSow._id,
-        client_sponsor: req.body.Client_Sponser,
-        client_finance_controller: req.body.Client_Finance_Controller,
-      });
+    let counter;
+    let po = "PO";
+    let sow = "SOW";
+    let num;
 
-      await invoice.save();
+    if (st.toLowerCase() === "po") {
+      counter = await purchaseOrderModel.countDocuments({ Type: "PO" });
+      counter = counter + 1;
+      const genarateID = generateId(counter, po);
+      num = genarateID;
+    } else {
+      counter = await purchaseOrderModel.countDocuments({ Type: "SOW" });
+      counter = counter + 1;
+      const genarateID = generateId(counter, sow);
+      num = genarateID;
     }
+    const poSow = await new purchaseOrderModel({
+      ...req.body,
+      PO_Number: num,
+    }).save();
+    console.log(poSow);
+    const invoices = new Invoice({
+      PO_Id: poSow._id,
+      client_sponsor: req.body.Client_Sponser,
+      client_finance_controller: req.body.Client_Finance_Controller,
+    });
+
+    const invoice = await invoices.save();
+    const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
+      "PO_Id",
+      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
+    );
+    const data = {
+      Client_Name: getDetails.PO_Id.Client_Name,
+      Project_Name: getDetails.PO_Id.Project_Name,
+      PO_Amount: getDetails.PO_Id.PO_Amount,
+      Received_Amount: getDetails.invoice_amount_received,
+    };
+    const content = await emailContent("N001", data);
+    emailSender(content);
+
     res.status(200).send(poSow);
   } catch (error) {
+    console.log(error);
     res.status(401).send(error);
   }
 };
@@ -140,7 +173,6 @@ const getSortedPoList = async (req, res) => {
   let code, message;
 
   const fieldName = req.params.fieldName;
-
   try {
     const { error } = querySchema.validate(req.query);
     if (error) {
@@ -157,7 +189,6 @@ const getSortedPoList = async (req, res) => {
     const page = req.query.page ? req.query.page : 1;
     const limit = req.query.limit ? req.query.limit : 15;
     code = 200;
-
     let query = {};
     if (req.query.keyword) {
       query.$or = [
@@ -171,7 +202,10 @@ const getSortedPoList = async (req, res) => {
       const resData = customResponse({ code, data });
       return res.status(code).send(resData);
     }
-    const users = await purchaseOrderModel.find(query).sort(fieldName);
+    const users = await purchaseOrderModel
+      .find(query)
+      .sort(fieldName)
+      .collation({ locale: "en" });
     const data = customPagination({ data: users, page, limit });
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
@@ -566,6 +600,17 @@ const getDetails = async (req, res) => {
     return res.status(code).send(resData);
   }
 };
+
+function generateId(counter, posow) {
+  if (counter < 10) {
+    posow += "000";
+  } else if (counter < 100) {
+    posow += "00";
+  } else if (counter < 1000) {
+    posow += "0";
+  }
+  return posow + counter;
+}
 
 module.exports = {
   createPoSow,
