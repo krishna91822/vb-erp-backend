@@ -132,7 +132,7 @@ const getInvoiceDetailsById = async (req, res) => {
     code = 200;
     const getDetails = await Invoice.findById(req.params.id).populate(
       "PO_Id",
-      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
+      "Client_Name Project_Name Targetted_Resources Targeted_Res_AllocationRate PO_Number PO_Amount"
     );
     const resData = customResponse({ code, data: getDetails });
     return res.status(code).send(resData);
