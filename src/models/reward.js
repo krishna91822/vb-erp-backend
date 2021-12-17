@@ -16,7 +16,7 @@ const rewardsSchema = mongoose.Schema(
       enum: ["work-anniversary", "birthday-celebration", "starOfTheMonth"],
       required: function () {
         return (
-          (this.reward_type === "daily") | (this.reward_type === "monthly")
+          (this.reward_type === "Daily") | (this.reward_type === "Monthly")
         );
       },
     },

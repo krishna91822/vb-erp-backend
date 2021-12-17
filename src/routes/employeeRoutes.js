@@ -11,6 +11,8 @@ const {
   generateQR,
   getDesignations,
   getDepartments,
+  getEmployeesRR,
+  searchEmployeesRR,
 } = require("./../controllers/employeeController");
 const { restrictTo } = require("../middleware/rolesMiddleware");
 
@@ -24,6 +26,8 @@ router.get("/designations", getDesignations);
 router.get("/departments", getDepartments);
 router.get("/:id", getEmployee);
 router.patch("/:id", updateEmployee);
+router.get("/reward/employee", getEmployeesRR);
+router.get("/rewars/employeesearch", searchEmployeesRR);
 router.delete("/:id", deleteEmployee);
 router.get("/", getAllEmployees);
 router.post("/", createEmployee);
