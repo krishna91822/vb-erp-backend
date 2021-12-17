@@ -286,7 +286,7 @@ const getOtherProjects = async (req, res) => {
   try {
     code = 200;
     message = "Data Fetched Successfully!!";
-    const updatedProjects = await ProjectsInfoModel.find({
+    const Projects = await ProjectsInfoModel.find({
       $and: [
         {
           $and: query,
@@ -297,7 +297,7 @@ const getOtherProjects = async (req, res) => {
         },
       ],
     });
-    const data = customPagination({ data: updatedProjects, page, limit });
+    const data = customPagination({ data: Projects, page, limit });
     const resData = customResponse({ code, message, data });
     res.status(200).send(resData);
   } catch (error) {
