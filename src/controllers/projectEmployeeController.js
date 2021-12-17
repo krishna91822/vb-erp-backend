@@ -260,7 +260,7 @@ const getManagers = async(req, res) => {
                     $options: "i",
                 },
             }, ],
-        }, { _id: 1, empName: 1 });
+        }, { empId: 1, empName: 1 });
         return res.status(200).send(filterManagers);
     } catch (error) {
         res.status(400).send(error);
