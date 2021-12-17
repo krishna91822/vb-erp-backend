@@ -130,16 +130,7 @@ const getActiveProjects = async (req, res) => {
     code = 200;
     message = "Data Fetched Successfully!!";
     const updatedProjects = await ProjectsInfoModel.find({
-      $and: [
-        {
-          $and: query,
-          $or: [
-            { vbProjectStatus: "On Hold" },
-            { vbProjectStatus: "Active" },
-            { vbProjectStatus: "Yet to Begin" },
-          ],
-        },
-      ],
+      $and: [{ $and: query }, { vbProjectStatus: "Active" }],
     });
     const data = customPagination({ data: updatedProjects, page, limit });
     const resData = customResponse({ code, message, data });
