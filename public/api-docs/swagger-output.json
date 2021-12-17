@@ -4837,17 +4837,11 @@
         }
       }
     },
-    "/employees/empManagers": {
+    "/employees/empanagers": {
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [
-          {
-            "name": "empName",
-            "in": "query",
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
