@@ -25,7 +25,7 @@ router.patch("/:id", updateEmployee);
 router.delete("/:id", deleteEmployee);
 router.get("/", getAllEmployees);
 router.post("/", createEmployee);
-router.get("/empManagers", getManagers);
+router.get("/empanagers", getManagers);
 router.get("/reward/employee", getEmployeesRR);
 router.get("/rewars/employeesearch", searchEmployeesRR);
 

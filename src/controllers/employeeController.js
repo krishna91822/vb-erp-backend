@@ -568,21 +568,26 @@ exports.getFilteredEmp = async (req, res) => {
 };
 
 exports.getManagers = async (req, res) => {
-  const filterManagers = await EmployeeInfoModel.find(
-    {
-      $or: [
-        {
-          empDesignation: "Manager",
-          empName: {
-            $regex: req.query.empName,
-            $options: "i",
+  console.log("getManager");
+  try {
+    const filterManagers = await Employee.find(
+      {
+        $or: [
+          {
+            empDesignation: "Manager",
+            empName: {
+              $regex: req.query.empName,
+              $options: "i",
+            },
           },
-        },
-      ],
-    },
-    { _id: 0, empName: 1 }
-  );
-  return res.status(200).send(filterManagers);
+        ],
+      },
+      { _id: 0, empName: 1 }
+    );
+    return res.status(200).send(filterManagers);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.generateQR = async (req, res) => {
