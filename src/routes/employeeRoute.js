@@ -2,21 +2,18 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getEmployee,
-  getAllEmployees,
-  createEmployee,
-  updateEmployee,
-  deleteEmployee,
-  getFilteredEmp,
-  generateQR,
-  getDesignations,
-  getDepartments,
-  getManagers,
-  getEmployeesRR,
-  searchEmployeesRR,
+    getEmployee,
+    getAllEmployees,
+    createEmployee,
+    updateEmployee,
+    deleteEmployee,
+    generateQR,
+    getDesignations,
+    getDepartments,
+    getEmployeesRR,
+    searchEmployeesRR,
 } = require("../controllers/employeeController");
 
-router.get("/filteremp", getFilteredEmp);
 router.get("/qr", generateQR);
 router.get("/designations", getDesignations);
 router.get("/departments", getDepartments);
@@ -25,7 +22,6 @@ router.patch("/:id", updateEmployee);
 router.delete("/:id", deleteEmployee);
 router.get("/", getAllEmployees);
 router.post("/", createEmployee);
-router.get("/empanagers", getManagers);
 router.get("/reward/employee", getEmployeesRR);
 router.get("/rewars/employeesearch", searchEmployeesRR);
 

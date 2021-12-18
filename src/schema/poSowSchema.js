@@ -8,6 +8,7 @@ const poSowSchema = Joi.object()
     Client_Sponser: Joi.string().required(),
     Client_Finance_Controller: Joi.string().required(),
     Targetted_Resources: Joi.object().required(),
+    Targeted_Res_AllocationRate: Joi.object().required(),
     Status: Joi.string()
       .valid("Rejected", "Pending", "Accepted", "Closed", "Drafted")
       .required(),
@@ -15,7 +16,6 @@ const poSowSchema = Joi.object()
     PO_Amount: Joi.number().required(),
     Currency: Joi.string().alphanum().required(),
     Document_Name: Joi.string().required(),
-    Document_Type: Joi.string().required(),
     POSOW_endDate: Joi.date().iso().required(),
     Remarks: Joi.string().empty(""),
   })

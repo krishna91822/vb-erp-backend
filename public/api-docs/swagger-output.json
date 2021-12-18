@@ -13,10 +13,7 @@
       "description": "Endpoints"
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "securityDefinitions": {
     "Authorization": {
       "type": "apiKey",
@@ -25,18 +22,12 @@
       "description": "authorization token"
     }
   },
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/login": {
       "post": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "description": "Add new user",
         "parameters": [
           {
@@ -62,12 +53,7 @@
                   "example": "admin"
                 }
               },
-              "required": [
-                "first_name",
-                "last_name",
-                "email",
-                "role"
-              ]
+              "required": ["first_name", "last_name", "email", "role"]
             }
           }
         ],
@@ -113,9 +99,7 @@
     },
     "/account": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "description": "Get Account",
         "parameters": [],
         "responses": {
@@ -176,9 +160,7 @@
     },
     "/users/": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "description": "Get users list",
         "parameters": [
           {
@@ -285,9 +267,7 @@
         }
       },
       "post": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "description": "Add new user",
         "parameters": [
           {
@@ -313,12 +293,7 @@
                   "example": "admin"
                 }
               },
-              "required": [
-                "first_name",
-                "last_name",
-                "email",
-                "role"
-              ]
+              "required": ["first_name", "last_name", "email", "role"]
             }
           }
         ],
@@ -376,9 +351,7 @@
     },
     "/users/{id}": {
       "get": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "description": "Get users Detail",
         "parameters": [
           {
@@ -448,9 +421,7 @@
         }
       },
       "put": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "description": "Update user",
         "parameters": [
           {
@@ -482,12 +453,7 @@
                   "example": "admin"
                 }
               },
-              "required": [
-                "first_name",
-                "last_name",
-                "email",
-                "role"
-              ]
+              "required": ["first_name", "last_name", "email", "role"]
             }
           }
         ],
@@ -543,9 +509,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "description": "Delete user",
         "parameters": [
           {
@@ -617,9 +581,7 @@
     },
     "/rewards/": {
       "get": {
-        "tags": [
-          "Rewards"
-        ],
+        "tags": ["Rewards"],
         "description": "Get all rewards",
         "parameters": [
           {
@@ -792,9 +754,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Rewards"
-        ],
+        "tags": ["Rewards"],
         "description": "Create new Reward",
         "parameters": [
           {
@@ -1006,9 +966,7 @@
     },
     "/rewards/search": {
       "get": {
-        "tags": [
-          "Rewards"
-        ],
+        "tags": ["Rewards"],
         "description": "Search Rewards",
         "parameters": [
           {
@@ -1172,9 +1130,7 @@
     },
     "/rewards/{id}": {
       "get": {
-        "tags": [
-          "Rewards"
-        ],
+        "tags": ["Rewards"],
         "description": "Get Rewatd Detail",
         "parameters": [
           {
@@ -1335,9 +1291,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Rewards"
-        ],
+        "tags": ["Rewards"],
         "description": "Update Reward",
         "parameters": [
           {
@@ -1554,9 +1508,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Rewards"
-        ],
+        "tags": ["Rewards"],
         "description": "Delete reward",
         "parameters": [
           {
@@ -1715,9 +1667,7 @@
     },
     "/rewards/launch/{id}": {
       "put": {
-        "tags": [
-          "Rewards"
-        ],
+        "tags": ["Rewards"],
         "description": "Launch Rewards",
         "parameters": [
           {
@@ -1735,17 +1685,13 @@
               "properties": {
                 "recipients_ids": {
                   "type": "array",
-                  "example": [
-                    "610bc1b31b82a66f6bcd64ea"
-                  ],
+                  "example": ["610bc1b31b82a66f6bcd64ea"],
                   "items": {
                     "type": "string"
                   }
                 }
               },
-              "required": [
-                "recipients_ids"
-              ]
+              "required": ["recipients_ids"]
             }
           }
         ],
@@ -1896,9 +1842,7 @@
     },
     "/assign/": {
       "post": {
-        "tags": [
-          "Assign Employee"
-        ],
+        "tags": ["Assign Employee"],
         "description": "Assign new Employee to Project",
         "parameters": [
           {
@@ -2015,9 +1959,7 @@
     },
     "/assign/{id}": {
       "get": {
-        "tags": [
-          "Assign Employee"
-        ],
+        "tags": ["Assign Employee"],
         "description": "Get Assigned Employee list",
         "parameters": [
           {
@@ -2127,9 +2069,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Assign Employee"
-        ],
+        "tags": ["Assign Employee"],
         "description": "Update Employee Details",
         "parameters": [
           {
@@ -2246,9 +2186,7 @@
     },
     "/assign/unassign/{id}": {
       "patch": {
-        "tags": [
-          "Assign Employee"
-        ],
+        "tags": ["Assign Employee"],
         "description": "Unassign Employee from Project",
         "parameters": [
           {
@@ -2324,9 +2262,7 @@
     },
     "/invoice/": {
       "post": {
-        "tags": [
-          "invoices"
-        ],
+        "tags": ["invoices"],
         "description": "Add new invoice",
         "parameters": [
           {
@@ -2473,9 +2409,7 @@
     },
     "/invoice/sort/{data}": {
       "get": {
-        "tags": [
-          "invoices"
-        ],
+        "tags": ["invoices"],
         "description": "Get sorted Invoice list",
         "parameters": [
           {
@@ -2536,9 +2470,7 @@
                             "properties": {
                               "Targetted_Resources": {
                                 "type": "array",
-                                "example": [
-                                  "NGB"
-                                ],
+                                "example": ["NGB"],
                                 "items": {
                                   "type": "string"
                                 }
@@ -2614,9 +2546,7 @@
     },
     "/invoice/{id}": {
       "get": {
-        "tags": [
-          "invoices"
-        ],
+        "tags": ["invoices"],
         "description": "Get invoice Detail by id",
         "parameters": [
           {
@@ -2655,9 +2585,7 @@
                       "properties": {
                         "Targetted_Resources": {
                           "type": "array",
-                          "example": [
-                            "NGB"
-                          ],
+                          "example": ["NGB"],
                           "items": {
                             "type": "string"
                           }
@@ -2755,9 +2683,7 @@
     },
     "/poSow/": {
       "post": {
-        "tags": [
-          "PO/SOW"
-        ],
+        "tags": ["PO/SOW"],
         "description": "Create new PO/SOW",
         "parameters": [
           {
@@ -2789,13 +2715,26 @@
                 "Targetted_Resources": {
                   "type": "object",
                   "properties": {
-                    "ABC": {
+                    "Suresh": {
                       "type": "string",
                       "example": "true"
                     },
-                    "DCH": {
+                    "Akash": {
                       "type": "string",
                       "example": "false"
+                    }
+                  }
+                },
+                "Targeted_Res_AllocationRate": {
+                  "type": "object",
+                  "properties": {
+                    "ABC": {
+                      "type": "number",
+                      "example": 50
+                    },
+                    "DCH": {
+                      "type": "number",
+                      "example": 60
                     }
                   }
                 },
@@ -2819,10 +2758,6 @@
                   "type": "string",
                   "example": "VB_ERP"
                 },
-                "Document_Type": {
-                  "type": "string",
-                  "example": "pdf"
-                },
                 "POSOW_endDate": {
                   "type": "string",
                   "example": "2014-01-22T14:56:59.301Z"
@@ -2839,12 +2774,12 @@
                 "Client_Sponser",
                 "Client_Finance_Controller",
                 "Targetted_Resources",
+                "Targeted_Res_AllocationRate",
                 "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
                 "Document_Name",
-                "Document_Type",
                 "POSOW_endDate",
                 "Remarks"
               ]
@@ -2908,6 +2843,19 @@
                         }
                       }
                     },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
                     "Status": {
                       "type": "string",
                       "example": "Drafted"
@@ -2931,10 +2879,6 @@
                     "Document_Name": {
                       "type": "string",
                       "example": "VB_ERP"
-                    },
-                    "Document_Type": {
-                      "type": "string",
-                      "example": "pdf"
                     },
                     "POSOW_endDate": {
                       "type": "string",
@@ -2972,9 +2916,7 @@
     },
     "/poSow/{id}": {
       "get": {
-        "tags": [
-          "PO/SOW"
-        ],
+        "tags": ["PO/SOW"],
         "description": "Get PO/SOW Detail",
         "parameters": [
           {
@@ -3041,6 +2983,19 @@
                         }
                       }
                     },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
                     "Status": {
                       "type": "string",
                       "example": "Drafted"
@@ -3064,10 +3019,6 @@
                     "Document_Name": {
                       "type": "string",
                       "example": "VB_ERP"
-                    },
-                    "Document_Type": {
-                      "type": "string",
-                      "example": "pdf"
                     },
                     "POSOW_endDate": {
                       "type": "string",
@@ -3101,9 +3052,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "PO/SOW"
-        ],
+        "tags": ["PO/SOW"],
         "description": "Update PO/SOW details",
         "parameters": [
           {
@@ -3151,6 +3100,19 @@
                     }
                   }
                 },
+                "Targeted_Res_AllocationRate": {
+                  "type": "object",
+                  "properties": {
+                    "ABC": {
+                      "type": "number",
+                      "example": 50
+                    },
+                    "DCH": {
+                      "type": "number",
+                      "example": 60
+                    }
+                  }
+                },
                 "Status": {
                   "type": "string",
                   "example": "Drafted"
@@ -3175,10 +3137,6 @@
                   "type": "string",
                   "example": "VB_ERP"
                 },
-                "Document_Type": {
-                  "type": "string",
-                  "example": "pdf"
-                },
                 "POSOW_endDate": {
                   "type": "string",
                   "example": "2014-01-22T14:56:59.301Z"
@@ -3195,13 +3153,13 @@
                 "Client_Sponser",
                 "Client_Finance_Controller",
                 "Targetted_Resources",
+                "Targeted_Res_AllocationRate",
                 "Status",
                 "Type",
                 "PO_Number",
                 "PO_Amount",
                 "Currency",
                 "Document_Name",
-                "Document_Type",
                 "POSOW_endDate",
                 "Remarks"
               ]
@@ -3267,6 +3225,19 @@
                         }
                       }
                     },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
                     "Status": {
                       "type": "string",
                       "example": "Pending"
@@ -3290,10 +3261,6 @@
                     "Document_Name": {
                       "type": "string",
                       "example": "VB_ERP"
-                    },
-                    "Document_Type": {
-                      "type": "string",
-                      "example": "pdf"
                     },
                     "POSOW_endDate": {
                       "type": "string",
@@ -3320,9 +3287,7 @@
     },
     "/poSow/sort/{fieldName}": {
       "get": {
-        "tags": [
-          "PO/SOW"
-        ],
+        "tags": ["PO/SOW"],
         "description": "Get PO/SOW list",
         "parameters": [
           {
@@ -3423,6 +3388,19 @@
                               }
                             }
                           },
+                          "Targeted_Res_AllocationRate": {
+                            "type": "object",
+                            "properties": {
+                              "ABC": {
+                                "type": "number",
+                                "example": 50
+                              },
+                              "DCH": {
+                                "type": "number",
+                                "example": 60
+                              }
+                            }
+                          },
                           "Status": {
                             "type": "string",
                             "example": "Drafted"
@@ -3446,10 +3424,6 @@
                           "Document_Name": {
                             "type": "string",
                             "example": "VB_ERP"
-                          },
-                          "Document_Type": {
-                            "type": "string",
-                            "example": "pdf"
                           },
                           "POSOW_endDate": {
                             "type": "string",
@@ -3488,9 +3462,7 @@
     },
     "/poSow/capturePO/clients": {
       "get": {
-        "tags": [
-          "PO/SOW"
-        ],
+        "tags": ["PO/SOW"],
         "description": "Get Client list",
         "parameters": [],
         "responses": {
@@ -3538,9 +3510,7 @@
     },
     "/poSow/capturePO/clients/{clientName}": {
       "get": {
-        "tags": [
-          "PO/SOW"
-        ],
+        "tags": ["PO/SOW"],
         "description": "Get Project list of a Client",
         "parameters": [
           {
@@ -3599,9 +3569,7 @@
     },
     "/poSow/capturePO/details": {
       "get": {
-        "tags": [
-          "PO/SOW"
-        ],
+        "tags": ["PO/SOW"],
         "description": "Get project details of given Id",
         "parameters": [
           {
@@ -3728,9 +3696,7 @@
     },
     "/poSow/status/{id}": {
       "patch": {
-        "tags": [
-          "PO/SOW"
-        ],
+        "tags": ["PO/SOW"],
         "description": "Update PO/SOW details",
         "parameters": [
           {
@@ -3861,26 +3827,9 @@
         }
       }
     },
-    "/employees/filteremp": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
     "/employees/qr": {
       "get": {
-        "tags": [
-          "Generate QR code"
-        ],
+        "tags": ["Generate QR code"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -3916,9 +3865,7 @@
     },
     "/employees/{id}": {
       "get": {
-        "tags": [
-          "Employee"
-        ],
+        "tags": ["Employee"],
         "description": "Create new Employee",
         "parameters": [
           {
@@ -3995,10 +3942,7 @@
                     },
                     "empHobbies": {
                       "type": "array",
-                      "example": [
-                        "Cricket",
-                        "Movies"
-                      ],
+                      "example": ["Cricket", "Movies"],
                       "items": {
                         "type": "string"
                       }
@@ -4051,10 +3995,7 @@
                     },
                     "empCertifications": {
                       "type": "array",
-                      "example": [
-                        "AWS",
-                        "Scrum"
-                      ],
+                      "example": ["AWS", "Scrum"],
                       "items": {
                         "type": "string"
                       }
@@ -4094,9 +4035,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Employee"
-        ],
+        "tags": ["Employee"],
         "description": "Update Employee",
         "parameters": [
           {
@@ -4125,10 +4064,7 @@
                 },
                 "empPrimaryCapability": {
                   "type": "array",
-                  "example": [
-                    "Frontend",
-                    "Git"
-                  ],
+                  "example": ["Frontend", "Git"],
                   "items": {
                     "type": "string"
                   }
@@ -4210,10 +4146,7 @@
                     },
                     "empHobbies": {
                       "type": "array",
-                      "example": [
-                        "Cricket",
-                        "Movies"
-                      ],
+                      "example": ["Cricket", "Movies"],
                       "items": {
                         "type": "string"
                       }
@@ -4256,10 +4189,7 @@
                     },
                     "empPrimaryCapability": {
                       "type": "array",
-                      "example": [
-                        "Frontend",
-                        "Git"
-                      ],
+                      "example": ["Frontend", "Git"],
                       "items": {
                         "type": "string"
                       }
@@ -4271,10 +4201,7 @@
                     },
                     "empCertifications": {
                       "type": "array",
-                      "example": [
-                        "AWS",
-                        "Scrum"
-                      ],
+                      "example": ["AWS", "Scrum"],
                       "items": {
                         "type": "string"
                       }
@@ -4314,9 +4241,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Employee"
-        ],
+        "tags": ["Employee"],
         "description": "Delete Employee",
         "parameters": [
           {
@@ -4363,9 +4288,7 @@
     },
     "/employees/": {
       "get": {
-        "tags": [
-          "Employee"
-        ],
+        "tags": ["Employee"],
         "description": "Get All Employees from database",
         "parameters": [
           {
@@ -4449,10 +4372,7 @@
                       },
                       "empHobbies": {
                         "type": "array",
-                        "example": [
-                          "Cricket",
-                          "Movies"
-                        ],
+                        "example": ["Cricket", "Movies"],
                         "items": {
                           "type": "string"
                         }
@@ -4505,10 +4425,7 @@
                       },
                       "empCertifications": {
                         "type": "array",
-                        "example": [
-                          "AWS",
-                          "Scrum"
-                        ],
+                        "example": ["AWS", "Scrum"],
                         "items": {
                           "type": "string"
                         }
@@ -4550,9 +4467,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Employee"
-        ],
+        "tags": ["Employee"],
         "description": "Create new Employee",
         "parameters": [
           {
@@ -4615,10 +4530,7 @@
                 },
                 "empHobbies": {
                   "type": "array",
-                  "example": [
-                    "Cricket",
-                    "Movies"
-                  ],
+                  "example": ["Cricket", "Movies"],
                   "items": {
                     "type": "string"
                   }
@@ -4635,10 +4547,7 @@
                 },
                 "empCertifications": {
                   "type": "array",
-                  "example": [
-                    "AWS",
-                    "Scrum"
-                  ],
+                  "example": ["AWS", "Scrum"],
                   "items": {
                     "type": "string"
                   }
@@ -4738,10 +4647,7 @@
                     },
                     "empHobbies": {
                       "type": "array",
-                      "example": [
-                        "Cricket",
-                        "Movies"
-                      ],
+                      "example": ["Cricket", "Movies"],
                       "items": {
                         "type": "string"
                       }
@@ -4794,10 +4700,7 @@
                     },
                     "empCertifications": {
                       "type": "array",
-                      "example": [
-                        "AWS",
-                        "Scrum"
-                      ],
+                      "example": ["AWS", "Scrum"],
                       "items": {
                         "type": "string"
                       }
@@ -4851,9 +4754,7 @@
     },
     "/employees/reward/employee": {
       "get": {
-        "tags": [
-          "Employee"
-        ],
+        "tags": ["Employee"],
         "description": "Get all employees",
         "parameters": [
           {
@@ -4987,9 +4888,7 @@
     },
     "/employees/rewars/employeesearch": {
       "get": {
-        "tags": [
-          "Employee"
-        ],
+        "tags": ["Employee"],
         "description": "Search Employees",
         "parameters": [
           {
@@ -5107,9 +5006,7 @@
     },
     "/reviews/": {
       "get": {
-        "tags": [
-          "Review"
-        ],
+        "tags": ["Review"],
         "description": "Get reviews list",
         "parameters": [],
         "responses": {
@@ -5176,9 +5073,7 @@
     },
     "/reviews/{id}": {
       "get": {
-        "tags": [
-          "Review"
-        ],
+        "tags": ["Review"],
         "description": "Get reviews list",
         "parameters": [
           {
@@ -5271,10 +5166,7 @@
                               },
                               "empHobbies": {
                                 "type": "array",
-                                "example": [
-                                  "Music",
-                                  "Dance"
-                                ],
+                                "example": ["Music", "Dance"],
                                 "items": {
                                   "type": "string"
                                 }
@@ -5313,27 +5205,21 @@
                               },
                               "empPrimaryCapability": {
                                 "type": "array",
-                                "example": [
-                                  "Communication"
-                                ],
+                                "example": ["Communication"],
                                 "items": {
                                   "type": "string"
                                 }
                               },
                               "empSkillSet": {
                                 "type": "array",
-                                "example": [
-                                  "Communication skill"
-                                ],
+                                "example": ["Communication skill"],
                                 "items": {
                                   "type": "string"
                                 }
                               },
                               "empCertifications": {
                                 "type": "array",
-                                "example": [
-                                  "Power Bi"
-                                ],
+                                "example": ["Power Bi"],
                                 "items": {
                                   "type": "string"
                                 }
@@ -5418,9 +5304,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Review"
-        ],
+        "tags": ["Review"],
         "description": "Delete review",
         "parameters": [
           {
@@ -5695,6 +5579,58 @@
         }
       }
     },
+    "/projects/others": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/others/{fieldName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/allocations/": {
       "post": {
         "tags": [],
@@ -5880,6 +5816,42 @@
         "parameters": [
           {
             "name": "empId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/filteremp": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/managers": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "empName",
             "in": "query",
             "type": "string"
           }
