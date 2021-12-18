@@ -2789,13 +2789,26 @@
                 "Targetted_Resources": {
                   "type": "object",
                   "properties": {
-                    "ABC": {
+                    "Suresh": {
                       "type": "string",
                       "example": "true"
                     },
-                    "DCH": {
+                    "Akash": {
                       "type": "string",
                       "example": "false"
+                    }
+                  }
+                },
+                "Targeted_Res_AllocationRate": {
+                  "type": "object",
+                  "properties": {
+                    "ABC": {
+                      "type": "number",
+                      "example": 50
+                    },
+                    "DCH": {
+                      "type": "number",
+                      "example": 60
                     }
                   }
                 },
@@ -2819,10 +2832,6 @@
                   "type": "string",
                   "example": "VB_ERP"
                 },
-                "Document_Type": {
-                  "type": "string",
-                  "example": "pdf"
-                },
                 "POSOW_endDate": {
                   "type": "string",
                   "example": "2014-01-22T14:56:59.301Z"
@@ -2839,12 +2848,12 @@
                 "Client_Sponser",
                 "Client_Finance_Controller",
                 "Targetted_Resources",
+                "Targeted_Res_AllocationRate",
                 "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
                 "Document_Name",
-                "Document_Type",
                 "POSOW_endDate",
                 "Remarks"
               ]
@@ -2908,6 +2917,19 @@
                         }
                       }
                     },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
                     "Status": {
                       "type": "string",
                       "example": "Drafted"
@@ -2931,10 +2953,6 @@
                     "Document_Name": {
                       "type": "string",
                       "example": "VB_ERP"
-                    },
-                    "Document_Type": {
-                      "type": "string",
-                      "example": "pdf"
                     },
                     "POSOW_endDate": {
                       "type": "string",
@@ -3041,6 +3059,19 @@
                         }
                       }
                     },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
                     "Status": {
                       "type": "string",
                       "example": "Drafted"
@@ -3064,10 +3095,6 @@
                     "Document_Name": {
                       "type": "string",
                       "example": "VB_ERP"
-                    },
-                    "Document_Type": {
-                      "type": "string",
-                      "example": "pdf"
                     },
                     "POSOW_endDate": {
                       "type": "string",
@@ -3151,6 +3178,19 @@
                     }
                   }
                 },
+                "Targeted_Res_AllocationRate": {
+                  "type": "object",
+                  "properties": {
+                    "ABC": {
+                      "type": "number",
+                      "example": 50
+                    },
+                    "DCH": {
+                      "type": "number",
+                      "example": 60
+                    }
+                  }
+                },
                 "Status": {
                   "type": "string",
                   "example": "Drafted"
@@ -3175,10 +3215,6 @@
                   "type": "string",
                   "example": "VB_ERP"
                 },
-                "Document_Type": {
-                  "type": "string",
-                  "example": "pdf"
-                },
                 "POSOW_endDate": {
                   "type": "string",
                   "example": "2014-01-22T14:56:59.301Z"
@@ -3195,13 +3231,13 @@
                 "Client_Sponser",
                 "Client_Finance_Controller",
                 "Targetted_Resources",
+                "Targeted_Res_AllocationRate",
                 "Status",
                 "Type",
                 "PO_Number",
                 "PO_Amount",
                 "Currency",
                 "Document_Name",
-                "Document_Type",
                 "POSOW_endDate",
                 "Remarks"
               ]
@@ -3267,6 +3303,19 @@
                         }
                       }
                     },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
                     "Status": {
                       "type": "string",
                       "example": "Pending"
@@ -3290,10 +3339,6 @@
                     "Document_Name": {
                       "type": "string",
                       "example": "VB_ERP"
-                    },
-                    "Document_Type": {
-                      "type": "string",
-                      "example": "pdf"
                     },
                     "POSOW_endDate": {
                       "type": "string",
@@ -3423,6 +3468,19 @@
                               }
                             }
                           },
+                          "Targeted_Res_AllocationRate": {
+                            "type": "object",
+                            "properties": {
+                              "ABC": {
+                                "type": "number",
+                                "example": 50
+                              },
+                              "DCH": {
+                                "type": "number",
+                                "example": 60
+                              }
+                            }
+                          },
                           "Status": {
                             "type": "string",
                             "example": "Drafted"
@@ -3446,10 +3504,6 @@
                           "Document_Name": {
                             "type": "string",
                             "example": "VB_ERP"
-                          },
-                          "Document_Type": {
-                            "type": "string",
-                            "example": "pdf"
                           },
                           "POSOW_endDate": {
                             "type": "string",
