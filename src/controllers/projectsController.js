@@ -122,7 +122,7 @@ const getActiveProjects = async (req, res) => {
       } else if (date.isAfter(endDate)) {
         let updateElement = await ProjectsInfoModel.findOneAndUpdate(
           { _id: element._id },
-          { $set: { vbProjectStatus: "Done" } }
+          { $set: { vbProjectStatus: "Completed" } }
         );
         updateElement.save();
       }
@@ -165,7 +165,7 @@ const getSortedActiveProjects = async (req, res) => {
       } else if (date.isAfter(endDate)) {
         let updateElement = await ProjectsInfoModel.findOneAndUpdate(
           { _id: element._id },
-          { $set: { vbProjectStatus: "Done" } }
+          { $set: { vbProjectStatus: "Completed" } }
         );
         updateElement.save();
       }
@@ -208,7 +208,7 @@ const getDoneProjects = async (req, res) => {
       } else if (date.isAfter(endDate)) {
         let updateElement = await ProjectsInfoModel.findOneAndUpdate(
           { _id: element._id },
-          { $set: { vbProjectStatus: "Done" } }
+          { $set: { vbProjectStatus: "Completed" } }
         );
         updateElement.save();
       }
@@ -216,7 +216,7 @@ const getDoneProjects = async (req, res) => {
     code = 200;
     message = "Data Fetched Successfully!!";
     const updatedProjects = await ProjectsInfoModel.find({
-      $and: [{ $and: query }, { vbProjectStatus: "Done" }],
+      $and: [{ $and: query }, { vbProjectStatus: "Completed" }],
     });
     const data = customPagination({ data: updatedProjects, page, limit });
     const resData = customResponse({ code, message, data });
@@ -252,7 +252,7 @@ const getSortedDoneProjects = async (req, res) => {
       } else if (date.isAfter(endDate)) {
         let updateElement = await ProjectsInfoModel.findOneAndUpdate(
           { _id: element._id },
-          { $set: { vbProjectStatus: "Done" } }
+          { $set: { vbProjectStatus: "Completed" } }
         );
         updateElement.save();
       }
@@ -260,7 +260,7 @@ const getSortedDoneProjects = async (req, res) => {
     code = 200;
     message = "Data Fetched Successfully!!";
     const updatedProjects = await ProjectsInfoModel.find({
-      $and: [{ $and: query }, { vbProjectStatus: "Done" }],
+      $and: [{ $and: query }, { vbProjectStatus: "Completed" }],
     }).sort(fieldName);
     const data = customPagination({ data: updatedProjects, page, limit });
     const resData = customResponse({ code, message, data });

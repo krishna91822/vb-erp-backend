@@ -17,7 +17,7 @@ const projectsSchema = Joi.object()
     vbProjectStatus: Joi.string().valid(
       "Yet to Begin",
       "On Hold",
-      "Done",
+      "Completed",
       "Active"
     ),
   })
