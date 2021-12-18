@@ -3,7 +3,7 @@ const { cimsSchema, updateSchema } = require("../schema/cimsSchema");
 const { customResponse } = require("../utility/helper");
 
 //Get all records in database
-const cimsGet = async(req, res) => {
+const cimsGet = async (req, res) => {
     const sort = req.query.sort || "createdAt";
     const filter = req.query.filter || 1;
     const sortOrder = req.query.sortOrder || -1;
@@ -20,15 +20,16 @@ const cimsGet = async(req, res) => {
             { "registeredAddress.country": [regex] },
             { "contacts.primaryContact.firstName": [regex] },
             { "contacts.primaryContact.lastName": [regex] },
+            { "contacts.primaryContact.firstName": [new RegExp(searchData.split(" ")[0], "i")] , "contacts.primaryContact.lastName": [new RegExp(searchData.split(" ")[1], "i")]}
         ],
     };
 
-    const findQuery = {...filterQuery, ...searchQuery };
+    const findQuery = { ...filterQuery, ...searchQuery };
     const sortQuery = {
         [sort.replace(/['"]+/g, "")]: sortOrder,
     };
 
-    const fetchData = async(findQuery, sortQuery) => {
+    const fetchData = async (findQuery, sortQuery) => {
         const Comps = await compModal
             .find(findQuery)
             .collation({ locale: "en" })
@@ -69,9 +70,8 @@ const cimsGet = async(req, res) => {
 
             if (count === 0) {
                 code = 404;
-                message = `No "${
-          filterQuery ? "Active Client" : "Inactive Client"
-        }" records exists`;
+                message = `No "${filterQuery ? "Active Client" : "Inactive Client"
+                    }" records exists`;
 
                 const resData = customResponse({
                     code,
@@ -79,7 +79,7 @@ const cimsGet = async(req, res) => {
                     message,
                     err: [{
                         message,
-                    }, ],
+                    },],
                 });
 
                 res.send(resData);
@@ -95,7 +95,7 @@ const cimsGet = async(req, res) => {
                     message,
                     err: [{
                         message,
-                    }, ],
+                    },],
                 });
 
                 res.send(resData);
@@ -125,7 +125,7 @@ const cimsGet = async(req, res) => {
 };
 
 //Post record in database
-const cimsPost = async(req, res) => {
+const cimsPost = async (req, res) => {
     try {
         const { error } = cimsSchema.validate(req.body);
 
@@ -163,7 +163,7 @@ const cimsPost = async(req, res) => {
     }
 };
 
-const setStatus = async(req, res) => {
+const setStatus = async (req, res) => {
     const { id, brandName } = req.query;
     const status = parseInt(req.query.status);
 
@@ -193,7 +193,7 @@ const setStatus = async(req, res) => {
 };
 
 //Update record in database
-const cimsPatch = async(req, res) => {
+const cimsPatch = async (req, res) => {
     const _id = req.body._id;
 
     try {
@@ -237,7 +237,7 @@ const cimsPatch = async(req, res) => {
 /* ****************************************** */
 // PMO integration functionality
 
-const getFilteredClients = async(req, res) => {
+const getFilteredClients = async (req, res) => {
     const query = req.query;
     try {
         if (Object.keys(req.query).length === 0) {
@@ -265,7 +265,7 @@ const getFilteredClients = async(req, res) => {
                         $regex: query.brandName.trim(),
                         $options: "i",
                     },
-                }, ],
+                },],
             }, {
                 _id: 1,
                 brandName: 1,
@@ -289,7 +289,7 @@ const getFilteredClients = async(req, res) => {
     }
 };
 
-const getClientById = async(req, res) => {
+const getClientById = async (req, res) => {
     try {
         const _id = req.params.id;
         const client = await compModal.find({ _id: _id });
