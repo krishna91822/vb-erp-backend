@@ -20,11 +20,21 @@ const cimsGet = async (req, res) => {
       { "registeredAddress.country": [regex] },
       { "contacts.primaryContact.firstName": [regex] },
       { "contacts.primaryContact.lastName": [regex] },
+      {
+        "contacts.primaryContact.firstName": [
+          new RegExp(searchData.split(" ")[0], "i"),
+        ],
+        "contacts.primaryContact.lastName": [
+          new RegExp(searchData.split(" ")[1], "i"),
+        ],
+      },
     ],
   };
 
   const findQuery = { ...filterQuery, ...searchQuery };
-  const sortQuery = { [sort.replace(/['"]+/g, "")]: sortOrder };
+  const sortQuery = {
+    [sort.replace(/['"]+/g, "")]: sortOrder,
+  };
 
   const fetchData = async (findQuery, sortQuery) => {
     const Comps = await compModal
@@ -68,7 +78,7 @@ const cimsGet = async (req, res) => {
       if (count === 0) {
         code = 404;
         message = `No "${
-          filterQuery ? "Active Client" : "Inactive Client"
+          parseInt(filter) ? "Active Client" : "Inactive Client"
         }" records exists`;
 
         const resData = customResponse({
@@ -247,6 +257,7 @@ const getFilteredClients = async (req, res) => {
         {
           _id: 1,
           brandName: 1,
+          domain: 1,
           "contacts.primaryContact.firstName": 1,
           "contacts.primaryContact.lastName": 1,
           "contacts.primaryContact.contactNumber": 1,
@@ -276,6 +287,7 @@ const getFilteredClients = async (req, res) => {
         {
           _id: 1,
           brandName: 1,
+          domain: 1,
           "contacts.primaryContact.firstName": 1,
           "contacts.primaryContact.lastName": 1,
           "contacts.primaryContact.contactNumber": 1,

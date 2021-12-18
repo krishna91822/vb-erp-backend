@@ -3915,21 +3915,6 @@
         }
       }
     },
-    "/employees/filteremp": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
     "/employees/qr": {
       "get": {
         "tags": [
@@ -4891,18 +4876,6 @@
         }
       }
     },
-    "/employees/empanagers": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/employees/reward/employee": {
       "get": {
         "tags": [
@@ -5749,6 +5722,58 @@
         }
       }
     },
+    "/projects/others": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/others/{fieldName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/allocations/": {
       "post": {
         "tags": [],
@@ -5934,6 +5959,42 @@
         "parameters": [
           {
             "name": "empId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/filteremp": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/managers": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "empName",
             "in": "query",
             "type": "string"
           }
