@@ -20,13 +20,13 @@ const createPoSow = async (req, res) => {
             $Project_Name: 'ERP System',
             $Client_Sponser: 'Jai',
             $Client_Finance_Controller: 'Tanmay',
-            $Targetted_Resources: {"ABC":"true","DCH":"false"},
+            $Targetted_Resources: {"Suresh":"true","Akash":"false"},
+            $Targeted_Res_AllocationRate: {"ABC":50,"DCH":60},
             $Status: 'Drafted',
             $Type: 'PO',
             $PO_Amount: 3434,
             $Currency: 'USD',
             $Document_Name: 'VB_ERP',
-            $Document_Type: 'pdf',
             $POSOW_endDate: "2014-01-22T14:56:59.301Z",
             $Remarks: 'Created New PO'
         }
@@ -44,13 +44,13 @@ const createPoSow = async (req, res) => {
             "Client_Sponser": 'Jai',
             "Client_Finance_Controller": 'Tanmay',
             "Targetted_Resources": {"ABC":"true","DCH":"false"},
+            "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
             "Status": 'Drafted',
             "Type": 'PO',
             "PO_Number": 'ERP34',
             "PO_Amount": 3434,
             "Currency": 'USD',
             "Document_Name": 'VB_ERP',
-            "Document_Type": 'pdf',
             "POSOW_endDate": "2014-01-22T14:56:59.301Z",
             "Remarks": 'Created New PO',
             "Created_At": "2021-12-10T06:01:50.178Z",
@@ -93,7 +93,6 @@ const createPoSow = async (req, res) => {
       ...req.body,
       PO_Number: num,
     }).save();
-    console.log(poSow);
     const invoices = new Invoice({
       PO_Id: poSow._id,
       client_sponsor: req.body.Client_Sponser,
@@ -152,13 +151,13 @@ const getSortedPoList = async (req, res) => {
                 "Client_Sponser": 'Jai',
                 "Client_Finance_Controller": 'Tanmay',
                 "Targetted_Resources": {"ABC":"true","DCH":"false"},
+                "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
                 "Status": "Drafted",
                 "Type": "PO",
                 "PO_Number": "ERP34",
                 "PO_Amount": 3434,
                 "Currency": "USD",
                 "Document_Name": "VB_ERP",
-                "Document_Type": "pdf",
                 "POSOW_endDate": "2014-01-22T14:56:59.301Z",
                 "Remarks": "Created New PO",
                 "__v": 0,
@@ -237,13 +236,13 @@ const getPoDeatil = async (req, res) => {
             "Client_Sponser": 'Jai',
             "Client_Finance_Controller": 'Tanmay',
             "Targetted_Resources": {"ABC":"true","DCH":"false"},
+            "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
             "Status": "Drafted",
             "Type": "PO",
             "PO_Number": "ERP34",
             "PO_Amount": 3434,
             "Currency": "USD",
             "Document_Name": "VB_ERP",
-            "Document_Type": "pdf",
             "POSOW_endDate": "2014-01-22T14:56:59.301Z",
             "Remarks": "Created New PO",
             "__v": 0,
@@ -284,13 +283,13 @@ const updatePODetais = async (req, res) => {
               $Client_Sponser: 'Jai',
               $Client_Finance_Controller: 'Tanmay',
               $Targetted_Resources: {"ABC":"true","DCH":"false"},
+              $Targeted_Res_AllocationRate: {"ABC":50,"DCH":60},
               $Status: 'Drafted',
               $Type: 'PO',
               $PO_Number: 'ERP34',
               $PO_Amount: 3434,
               $Currency: 'USD',
               $Document_Name: 'VB_ERP',
-              $Document_Type: 'pdf',
               $POSOW_endDate: "2014-01-22T14:56:59.301Z",
               $Remarks: 'Created New PO'
         }
@@ -308,13 +307,13 @@ const updatePODetais = async (req, res) => {
               "Client_Sponser": 'Jai',
               "Client_Finance_Controller": 'Tanmay',
               "Targetted_Resources": {"ABC":"true","DCH":"false"},
+              "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
               "Status": 'Drafted',
               "Type": 'PO',
               "PO_Number": 'ERP43',
               "PO_Amount": 3434,
               "Currency": 'INR',
               "Document_Name": 'VB_ERP',
-              "Document_Type": 'pdf',
               "POSOW_endDate": "2014-01-22T14:56:59.301Z",
               "Remarks": 'Created New PO'
           },
@@ -377,13 +376,13 @@ const updatePOStatus = async (req, res) => {
               "Client_Sponser": 'Jai',
               "Client_Finance_Controller": 'Tanmay',
               "Targetted_Resources": {"ABC":"true","DCH":"false"},
+              "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
               "Status": 'Pending',
               "Type": 'PO',
               "PO_Number": 'ERP43',
               "PO_Amount": 3434,
               "Currency": 'INR',
               "Document_Name": 'VB_ERP',
-              "Document_Type": 'pdf',
               "POSOW_endDate": "2014-01-22T14:56:59.301Z",
               "Remarks": 'Created New PO'
           },
@@ -396,7 +395,6 @@ const updatePOStatus = async (req, res) => {
     const _id = req.params.id;
     const newStatus = req.query.status.toLowerCase();
     const getDetails = await purchaseOrderModel.findById({ _id });
-    console.log(getDetails);
     const { Status } = getDetails;
     if (StatusLifeCycle[Status.toLowerCase()].indexOf(newStatus) != -1) {
       code = 200;
@@ -479,6 +477,7 @@ const getClients = async (req, res) => {
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
   } catch (error) {
+    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
