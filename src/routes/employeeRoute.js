@@ -2,16 +2,16 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    getEmployee,
-    getAllEmployees,
-    createEmployee,
-    updateEmployee,
-    deleteEmployee,
-    generateQR,
-    getDesignations,
-    getDepartments,
-    getEmployeesRR,
-    searchEmployeesRR,
+  getEmployee,
+  getAllEmployees,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
+  generateQR,
+  getDesignations,
+  getDepartments,
+  getEmployeesRR,
+  searchEmployeesRR,
 } = require("../controllers/employeeController");
 
 router.get("/qr", generateQR);
