@@ -26,12 +26,14 @@ const invoiceSchema = new mongoose.Schema({
   },
   invoice_amount_received: {
     type: Number,
+    default: null,
   },
   vb_bank_account: {
     type: String,
   },
   amount_received_on: {
     type: Date,
+    default: null,
   },
   created_at: {
     type: Date,

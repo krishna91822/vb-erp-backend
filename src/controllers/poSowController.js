@@ -20,8 +20,9 @@ const createPoSow = async (req, res) => {
             $Project_Name: 'ERP System',
             $Client_Sponser: 'Jai',
             $Client_Finance_Controller: 'Tanmay',
-            $Targetted_Resources: {"ABC":"true","DCH":"false"},
-            $Status: 'Drafted',
+            $Targetted_Resources: {"Suresh":"true","Akash":"false"},
+            $Targeted_Res_AllocationRate: {"ABC":50,"DCH":60},
+            $Status: 'Active',
             $Type: 'PO',
             $PO_Amount: 3434,
             $Currency: 'USD',
@@ -43,7 +44,8 @@ const createPoSow = async (req, res) => {
             "Client_Sponser": 'Jai',
             "Client_Finance_Controller": 'Tanmay',
             "Targetted_Resources": {"ABC":"true","DCH":"false"},
-            "Status": 'Drafted',
+            "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
+            "Status": 'Active',
             "Type": 'PO',
             "PO_Number": 'ERP34',
             "PO_Amount": 3434,
@@ -148,7 +150,8 @@ const getSortedPoList = async (req, res) => {
                 "Client_Sponser": 'Jai',
                 "Client_Finance_Controller": 'Tanmay',
                 "Targetted_Resources": {"ABC":"true","DCH":"false"},
-                "Status": "Drafted",
+                "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
+                "Status": "Active",
                 "Type": "PO",
                 "PO_Number": "ERP34",
                 "PO_Amount": 3434,
@@ -232,7 +235,8 @@ const getPoDeatil = async (req, res) => {
             "Client_Sponser": 'Jai',
             "Client_Finance_Controller": 'Tanmay',
             "Targetted_Resources": {"ABC":"true","DCH":"false"},
-            "Status": "Drafted",
+            "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
+            "Status": "Active",
             "Type": "PO",
             "PO_Number": "ERP34",
             "PO_Amount": 3434,
@@ -278,9 +282,9 @@ const updatePODetais = async (req, res) => {
               $Client_Sponser: 'Jai',
               $Client_Finance_Controller: 'Tanmay',
               $Targetted_Resources: {"ABC":"true","DCH":"false"},
-              $Status: 'Drafted',
+              $Targeted_Res_AllocationRate: {"ABC":50,"DCH":60},
+              $Status: 'Active',
               $Type: 'PO',
-              $PO_Number: 'ERP34',
               $PO_Amount: 3434,
               $Currency: 'USD',
               $Document_Name: 'VB_ERP',
@@ -301,7 +305,8 @@ const updatePODetais = async (req, res) => {
               "Client_Sponser": 'Jai',
               "Client_Finance_Controller": 'Tanmay',
               "Targetted_Resources": {"ABC":"true","DCH":"false"},
-              "Status": 'Drafted',
+              "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
+              "Status": 'Active',
               "Type": 'PO',
               "PO_Number": 'ERP43',
               "PO_Amount": 3434,
@@ -353,79 +358,51 @@ const updatePODetais = async (req, res) => {
   }
 };
 
-const updatePOStatus = async (req, res) => {
-  /* 	#swagger.tags = ['PO/SOW'']
-      #swagger.description = 'Update PO/SOW details' 
-      #swagger.responses[200] = {
-        description: 'PO/SOW details updated successfully.',
-        schema: { 
-          "status": "success",
-          "code": 200,
-          "message": "",
-          "data": {
-              "Project_Id": '61bb0622bf6c0b45dff12f77',
-              "Client_Name":'Valuebound Solutions',
-              "Project_Name": 'ERP System Backend',
-              "Client_Sponser": 'Jai',
-              "Client_Finance_Controller": 'Tanmay',
-              "Targetted_Resources": {"ABC":"true","DCH":"false"},
-              "Status": 'Pending',
-              "Type": 'PO',
-              "PO_Number": 'ERP43',
-              "PO_Amount": 3434,
-              "Currency": 'INR',
-              "Document_Name": 'VB_ERP',
-              "POSOW_endDate": "2014-01-22T14:56:59.301Z",
-              "Remarks": 'Created New PO'
-          },
-          "error": {}
-        }
-      }
-  */
-  let code, message;
-  try {
-    const _id = req.params.id;
-    const newStatus = req.query.status.toLowerCase();
-    const getDetails = await purchaseOrderModel.findById({ _id });
-    const { Status } = getDetails;
-    if (StatusLifeCycle[Status.toLowerCase()].indexOf(newStatus) != -1) {
-      code = 200;
-      message = "status updated successfully";
-      const updateStatus = await purchaseOrderModel.updateOne(
-        { _id: req.params.id },
-        {
-          $set: {
-            Status: newStatus,
-            Updated_At: new Date(),
-          },
-        }
-      );
-      const resData = customResponse({
-        code,
-        data: updateStatus,
-        message,
-      });
-      return res.status(code).send(resData);
-    } else {
-      code = 400;
-      message = "status already updated";
-      const resData = customResponse({
-        code,
-        message,
-      });
-      res.status(code).send(resData);
-    }
-  } catch (error) {
-    code = 500;
-    message = "Internal server error";
-    const resData = customResponse({
-      code,
-      message,
-      err: error,
-    });
-    return res.status(code).send(resData);
-  }
-};
+// const updatePOStatus = async (req, res) => {
+//   let code, message;
+//   try {
+//     const _id = req.params.id;
+//     const newStatus = req.query.status.toLowerCase();
+//     const getDetails = await purchaseOrderModel.findById({ _id });
+//     const { Status } = getDetails;
+//     if (StatusLifeCycle[Status.toLowerCase()].indexOf(newStatus) != -1) {
+//       code = 200;
+//       message = "status updated successfully";
+//       const updateStatus = await purchaseOrderModel.updateOne(
+//         { _id: req.params.id },
+//         {
+//           $set: {
+//             Status: newStatus,
+//             Updated_At: new Date(),
+//           },
+//         }
+//       );
+//       const resData = customResponse({
+//         code,
+//         data: updateStatus,
+//         message,
+//       });
+//       return res.status(code).send(resData);
+//     } else {
+//       code = 400;
+//       message = "status already updated";
+//       const resData = customResponse({
+//         code,
+//         message,
+//       });
+//       res.status(code).send(resData);
+//     }
+//   } catch (error) {
+//     code = 500;
+//     message = "Internal server error";
+//     const resData = customResponse({
+//       code,
+//       message,
+//       err: error,
+//     });
+//     return res.status(code).send(resData);
+//   }
+// };
 
 const getClients = async (req, res) => {
   /* 	#swagger.tags = ['PO/SOW']
@@ -468,6 +445,7 @@ const getClients = async (req, res) => {
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
   } catch (error) {
+    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -605,7 +583,6 @@ module.exports = {
   createPoSow,
   getPoDeatil,
   getSortedPoList,
-  updatePOStatus,
   updatePODetais,
   getClients,
   getProjects,

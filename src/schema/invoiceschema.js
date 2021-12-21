@@ -8,9 +8,9 @@ const invoiceSchema = Joi.object()
     client_finance_controller: Joi.string().required(),
     invoice_raised: Joi.string().valid("Yes", "No"),
     invoice_received: Joi.string().valid("Yes", "No"),
-    invoice_amount_received: Joi.number(),
-    vb_bank_account: Joi.string(),
-    amount_received_on: Joi.date().iso(),
+    invoice_amount_received: Joi.number().allow(null),
+    vb_bank_account: Joi.string().allow(null),
+    amount_received_on: Joi.date().iso().allow(null),
   })
   .options({ abortEarly: false });
 

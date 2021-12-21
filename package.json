@@ -1,0 +1,66 @@
+{
+  "name": "vb-erp-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "start:prod": "SET NODE_ENV=production & nodemon app.js",
+    "test:ei": "mocha --reporter spec ",
+    "test": "nyc --reporter html --reporter text mocha --reporter spec",
+    "swagger-autogen": "node swagger.js",
+    "start": "npm run swagger-autogen && nodemon app.js"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "**/*.test.js"
+    ]
+  },
+  "keywords": [
+    "cms",
+    "headless cms"
+  ],
+  "author": "Valuebound LLP",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "joi-objectid": "^4.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.13",
+    "mongoose-sequence": "^5.3.1",
+    "morgan": "^1.10.0",
+    "pug": "2.0.0-beta11",
+    "qrcode": "^1.5.0",
+    "swagger-autogen": "^2.11.2",
+    "swagger-ui-express": "^4.2.0",
+    "uuid": "^8.3.2",
+    "body-parser": "^1.19.0",
+    "country-state-picker": "^1.1.5",
+    "joi": "^17.5.0",
+    "lodash": "^4.17.21",
+    "mustache": "^4.2.0",
+    "nodemailer": "^6.7.2",
+    "supertest": "^6.1.6",
+    "moment": "^2.29.1",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "nodemon": "^2.0.15",
+    "mocha": "^9.1.3",
+    "chai-sorted": "^0.2.0",
+    "mustache": "^4.2.0",
+    "node-cron": "^3.0.0",
+    "nodemailer": "^6.7.2",
+    "nyc": "^15.1.0",
+    "should": "^13.2.3"
+  }
+}

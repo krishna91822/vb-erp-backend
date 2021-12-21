@@ -28,9 +28,13 @@ const purchaseOrderSchema = mongoose.Schema({
     type: Object,
     required: [true, "targetted Resources is required"],
   },
+  Targeted_Res_AllocationRate: {
+    type: Object,
+    required: [true, "targetted Resources is required"],
+  },
   Status: {
     type: String,
-    enum: ["Rejected", "Pending", "Accepted", "Closed", "Drafted"],
+    enum: ["Rejected", "Pending", "Active", "Closed", "Drafted"],
     required: [true, "status is required"],
   },
   Type: {

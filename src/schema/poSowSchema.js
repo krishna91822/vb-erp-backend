@@ -8,8 +8,9 @@ const poSowSchema = Joi.object()
     Client_Sponser: Joi.string().required(),
     Client_Finance_Controller: Joi.string().required(),
     Targetted_Resources: Joi.object().required(),
+    Targeted_Res_AllocationRate: Joi.object().required(),
     Status: Joi.string()
-      .valid("Rejected", "Pending", "Accepted", "Closed", "Drafted")
+      .valid("Rejected", "Pending", "Active", "Closed", "Drafted")
       .required(),
     Type: Joi.string().alphanum().valid("PO", "SOW").required(),
     PO_Amount: Joi.number().required(),

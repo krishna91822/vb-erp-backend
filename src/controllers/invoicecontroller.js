@@ -52,7 +52,7 @@ const newInvoice = async (req, res) => {
     const invoice = await Invoice.create(req.body);
     const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
       "PO_Id",
-      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
+      "Client_Name Project_Name Targetted_Resources Targeted_Res_AllocationRate PO_Number PO_Amount Currency"
     );
     const data = {
       Client_Name: getDetails.PO_Id.Client_Name,
@@ -130,7 +130,7 @@ const getInvoiceDetailsById = async (req, res) => {
     code = 200;
     const getDetails = await Invoice.findById(req.params.id).populate(
       "PO_Id",
-      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
+      "Client_Name Project_Name Targetted_Resources Targeted_Res_AllocationRate PO_Number PO_Amount"
     );
     const resData = customResponse({ code, data: getDetails });
     return res.status(code).send(resData);
@@ -363,7 +363,6 @@ const getInvoiceDetails = async (req, res) => {
       return res.status(code).send(resData);
     }
   } catch (error) {
-    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -435,7 +434,6 @@ const updateInvoice = async (req, res) => {
         "PO_Id",
         "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
       );
-      console.log(getDetails);
       const isoDate = getDetails.amount_received_on;
       const date = new Date(isoDate);
       const year = date.getFullYear();
@@ -467,7 +465,6 @@ const updateInvoice = async (req, res) => {
     });
     return res.status(code).send(resData);
   } catch (error) {
-    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({

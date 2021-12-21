@@ -125,19 +125,44 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
   let details = projectDetails;
   const curr_date = moment().format("YYYY-MM-DD");
 
-  details = details.filter((detail) => {
-    if (
-      moment(curr_date).isSameOrAfter(detail.allocationStartDate) &&
-      moment(curr_date).isSameOrBefore(detail.allocationEndDate)
-    ) {
-      return detail;
-    }
-    return null;
-  });
+  //   details = details.filter((detail) => {
+  // if (
+  //   moment(curr_date).isSameOrAfter(detail.allocationStartDate) &&
+  //   moment(curr_date).isSameOrBefore(detail.allocationEndDate)
+  // ) {
+  //   return detail;
+  // }
+  // return null;
+  if (!findObj.projectId) {
+    details = details.filter((detail) => {
+      if (moment(curr_date).isSameOrBefore(detail.allocationEndDate)) {
+        return detail;
+      }
+      return null;
+    });
+  }
+  //   });
 
   if (findObj.projectId) {
     details = details.filter((detail) =>
-      detail.projectId._id.valueOf().includes(findObj.projectId)
+      detail.projectId._id.valueOf().toString().includes(findObj.projectId)
+    );
+  }
+  if (findObj.empId) {
+    details = details.filter((detail) =>
+      detail.empId.empId.toString().includes(findObj.empId)
+    );
+  }
+
+  if (findObj.empName) {
+    details = details.filter((detail) =>
+      detail.empId.empName.toLowerCase().includes(findObj.empName.toLowerCase())
+    );
+  }
+
+  if (findObj.projectId) {
+    details = details.filter((detail) =>
+      detail.projectId._id.valueOf().toString().includes(findObj.projectId)
     );
   }
   if (findObj.empId) {
@@ -181,7 +206,7 @@ const getAllocationsFilteredData = (findObj, projectDetails) => {
   return details;
 };
 
-const getOnBenchFilteredData = (findObj, projectDetails) => {
+const getOnBenchFilteredData = (findObj, projectDetails, employeesData) => {
   const curr_date = moment().format("YYYY-MM-DD");
 
   const reduceData = reduce(
@@ -221,6 +246,23 @@ const getOnBenchFilteredData = (findObj, projectDetails) => {
   );
 
   let details = values(reduceData);
+  details = employeesData.map((employ) => {
+    const filter = details
+      ? details.filter((detail) => detail.empId === employ.empId)
+      : [];
+
+    if (filter.length) {
+      return filter[0];
+    } else {
+      return {
+        empId: employ.empId,
+        empName: employ.empName,
+        empPrimaryCapability: employ.empPrimaryCapability,
+        remainingAllocation: 100,
+        projects: [],
+      };
+    }
+  });
 
   if (details.length) {
     details = details.filter((obj) => obj.remainingAllocation > 0);
@@ -262,6 +304,15 @@ const getTotalAllocationCalculated = (empId, projectDetails) => {
         )
     );
   }
+
+  //   if (!findObj.projectId) {
+  //     details = details.filter((detail) => {
+  //       if (moment(curr_date).isSameOrBefore(detail.allocationEndDate)) {
+  //         return detail;
+  //       }
+  //       return null;
+  //     });
+  //   }
 
   const totalAllocation = reduce(
     details,
