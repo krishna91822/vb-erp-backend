@@ -117,13 +117,7 @@
           "User"
         ],
         "description": "Get Account",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "201": {
             "description": "User successfully added.",
@@ -1856,18 +1850,7 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [
-          {
-            "name": "pincode",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "country",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -1891,13 +1874,7 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -1909,18 +1886,7 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [
-          {
-            "name": "brandname",
-            "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "header",
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
