@@ -25,18 +25,18 @@ const { Employee } = require("../models/employeeModel");
 const APIFeatures = require("../utility/apiFeatures");
 const { customResponse } = require("../utility/helper");
 const {
-    employeeSchema,
-    employeeUpdateSchema,
+  employeeSchema,
+  employeeUpdateSchema,
 } = require("../schema/employeeSchema");
 const mongoose = require("mongoose");
 const QRCode = require("qrcode");
 const {
-    getDepartmentsData,
-    getDesignationsData,
+  getDepartmentsData,
+  getDesignationsData,
 } = require("../utility/dropdown");
 
-exports.getAllEmployees = async(req, res) => {
-    /* 	#swagger.tags = ['Employee']
+exports.getAllEmployees = async (req, res) => {
+  /* 	#swagger.tags = ['Employee']
         #swagger.description = 'Get All Employees from database' 
         #swagger.parameters['page'] = {
           in: 'query',
@@ -133,48 +133,48 @@ exports.getAllEmployees = async(req, res) => {
           }
         }
     */
-    let code, message;
-    try {
-        //Build the query
-        const features = new APIFeatures(Employee.find(), req.query)
-            .filter()
-            .searchEmp()
-            .sort()
-            .limitFields()
-            .paginate();
+  let code, message;
+  try {
+    //Build the query
+    const features = new APIFeatures(Employee.find(), req.query)
+      .filter()
+      .searchEmp()
+      .sort()
+      .limitFields()
+      .paginate();
 
-        //Execute the query
-        const employees = await features.query;
-        const countDoc = await Employee.count({});
+    //Execute the query
+    const employees = await features.query;
+    const countDoc = await Employee.count({});
 
-        code = 200;
-        message = "success";
-        let data = employees;
-        let totalDocuments = countDoc;
-        let totalResult = employees.length;
-        const resData = customResponse({
-            code,
-            message,
-            data,
-            totalDocuments,
-            totalResult,
-        });
-        return res.status(code).send(resData);
-    } catch (error) {
-        console.log(`error is ${JSON.stringify(error)}`);
-        code = 500;
-        message = "Internal server error";
-        const resData = customResponse({
-            code,
-            message,
-            err: error,
-        });
-        return res.status(code).send(resData);
-    }
+    code = 200;
+    message = "success";
+    let data = employees;
+    let totalDocuments = countDoc;
+    let totalResult = employees.length;
+    const resData = customResponse({
+      code,
+      message,
+      data,
+      totalDocuments,
+      totalResult,
+    });
+    return res.status(code).send(resData);
+  } catch (error) {
+    console.log(`error is ${JSON.stringify(error)}`);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
 
-exports.getEmployee = async(req, res) => {
-    /*#swagger.tags = ['Employee']
+exports.getEmployee = async (req, res) => {
+  /*#swagger.tags = ['Employee']
     #swagger.description = 'Create new Employee'
     #swagger.responses[200] = {
           description: 'Get Employee By id successful.',
@@ -222,48 +222,48 @@ exports.getEmployee = async(req, res) => {
             "error": {}
           }
         }*/
-    let code, message;
-    const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
-    if (!isValid) {
-        code = 422;
-        message = "Invalid objectId id";
-        const resData = customResponse({ code, message });
-        return res.status(code).send(resData);
-    }
-    try {
-        const employee = await Employee.findById(req.params.id);
+  let code, message;
+  const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
+  if (!isValid) {
+    code = 422;
+    message = "Invalid objectId id";
+    const resData = customResponse({ code, message });
+    return res.status(code).send(resData);
+  }
+  try {
+    const employee = await Employee.findById(req.params.id);
 
-        if (!employee) {
-            code = 500;
-            message = "Employee not found by given id";
-            const resData = customResponse({
-                code,
-                message,
-                err: error,
-            });
-            return res.status(code).send(resData);
-        }
-
-        code = 200;
-        message = "success";
-        let data = employee;
-        const resData = customResponse({ code, message, data });
-        return res.status(code).send(resData);
-    } catch (error) {
-        console.log(`error is ${JSON.stringify(error)}`);
-        code = 500;
-        message = "Internal server error";
-        const resData = customResponse({
-            code,
-            message,
-            err: error,
-        });
-        return res.status(code).send(resData);
+    if (!employee) {
+      code = 500;
+      message = "Employee not found by given id";
+      const resData = customResponse({
+        code,
+        message,
+        err: error,
+      });
+      return res.status(code).send(resData);
     }
+
+    code = 200;
+    message = "success";
+    let data = employee;
+    const resData = customResponse({ code, message, data });
+    return res.status(code).send(resData);
+  } catch (error) {
+    console.log(`error is ${JSON.stringify(error)}`);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
 
-exports.createEmployee = async(req, res) => {
-    /*#swagger.tags = ['Employee']
+exports.createEmployee = async (req, res) => {
+  /*#swagger.tags = ['Employee']
     #swagger.description = 'Create new Employee'
         #swagger.parameters['obj'] = {
           in: 'body',
@@ -334,42 +334,42 @@ exports.createEmployee = async(req, res) => {
             "error": {}
           }
         }*/
-    let code, message;
-    try {
-        const { error } = employeeSchema.validate(req.body);
-        if (error) {
-            console.log(`error is ${JSON.stringify(error)}`);
-            code = 422;
-            message = "Invalid request data";
-            const resData = customResponse({
-                code,
-                message,
-                err: error && error.details,
-            });
-            return res.status(code).send(resData);
-        }
-        const newEmployee = await Employee.create(req.body);
+  let code, message;
+  try {
+    // const { error } = employeeSchema.validate(req.body);
+    // if (error) {
+    //     console.log(`error is ${JSON.stringify(error)}`);
+    //     code = 422;
+    //     message = "Invalid request data";
+    //     const resData = customResponse({
+    //         code,
+    //         message,
+    //         err: error && error.details,
+    //     });
+    //     return res.status(code).send(resData);
+    // }
+    const newEmployee = await Employee.create(req.body);
 
-        let code = 201;
-        let message = "success";
-        let data = newEmployee;
-        const resData = customResponse({ code, message, data });
-        return res.status(code).send(resData);
-    } catch (error) {
-        console.log(`error is ${JSON.stringify(error)}`);
-        code = 500;
-        message = "Internal server error";
-        const resData = customResponse({
-            code,
-            message,
-            err: error,
-        });
-        return res.status(code).send(resData);
-    }
+    let code = 201;
+    let message = "success";
+    let data = newEmployee;
+    const resData = customResponse({ code, message, data });
+    return res.status(code).send(resData);
+  } catch (error) {
+    console.log(`error is ${JSON.stringify(error)}`);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
 
-exports.updateEmployee = async(req, res) => {
-    /*#swagger.tags = ['Employee']
+exports.updateEmployee = async (req, res) => {
+  /*#swagger.tags = ['Employee']
     #swagger.description = 'Update Employee'
         #swagger.parameters['obj'] = {
           in: 'body',
@@ -429,61 +429,61 @@ exports.updateEmployee = async(req, res) => {
             "error": {}
           }
         }*/
-    let code, message;
-    const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
-    if (!isValid) {
-        code = 422;
-        message = "Invalid objectId id";
-        const resData = customResponse({ code, message });
-        return res.status(code).send(resData);
+  let code, message;
+  const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
+  if (!isValid) {
+    code = 422;
+    message = "Invalid objectId id";
+    const resData = customResponse({ code, message });
+    return res.status(code).send(resData);
+  }
+  try {
+    const { error } = employeeUpdateSchema.validate(req.body);
+    if (error) {
+      code = 422;
+      message = "Invalid request data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
     }
-    try {
-        const { error } = employeeUpdateSchema.validate(req.body);
-        if (error) {
-            code = 422;
-            message = "Invalid request data";
-            const resData = customResponse({
-                code,
-                message,
-                err: error && error.details,
-            });
-            return res.status(code).send(resData);
-        }
-        const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true,
-        });
+    const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-        if (!employee) {
-            code = 500;
-            message = "Update employee by id failed";
-            const resData = customResponse({
-                code,
-                message,
-                err: error,
-            });
-            return res.status(code).send(resData);
-        }
-
-        code = 200;
-        message = "succcess";
-        let data = employee;
-        const resData = customResponse({ code, message, data });
-        return res.status(code).send(resData);
-    } catch (error) {
-        code = 500;
-        message = "Update employee by id failed";
-        const resData = customResponse({
-            code,
-            message,
-            err: error,
-        });
-        return res.status(code).send(resData);
+    if (!employee) {
+      code = 500;
+      message = "Update employee by id failed";
+      const resData = customResponse({
+        code,
+        message,
+        err: error,
+      });
+      return res.status(code).send(resData);
     }
+
+    code = 200;
+    message = "succcess";
+    let data = employee;
+    const resData = customResponse({ code, message, data });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Update employee by id failed";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
 
-exports.deleteEmployee = async(req, res) => {
-    /*#swagger.tags = ['Employee']
+exports.deleteEmployee = async (req, res) => {
+  /*#swagger.tags = ['Employee']
     #swagger.description = 'Delete Employee'
         #swagger.responses[200] = {
           description: 'Employee deleted successfully.',
@@ -496,100 +496,100 @@ exports.deleteEmployee = async(req, res) => {
             "error": {}
           }
         }*/
-    let code, message;
-    const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
-    console.log(`isValid is ${isValid}`);
-    if (!isValid) {
-        code = 422;
-        message = "Invalid objectId id";
-        const resData = customResponse({ code, message });
-        console.log(`before return`);
-        return res.status(code).send(resData);
+  let code, message;
+  const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
+  console.log(`isValid is ${isValid}`);
+  if (!isValid) {
+    code = 422;
+    message = "Invalid objectId id";
+    const resData = customResponse({ code, message });
+    console.log(`before return`);
+    return res.status(code).send(resData);
+  }
+  try {
+    const employee = await Employee.findByIdAndDelete(req.params.id);
+    if (!employee) {
+      code = 500;
+      message = "Employee delete by id has failed";
+      const resData = customResponse({
+        code,
+        message,
+        err: error,
+      });
+      return res.status(code).send(resData);
     }
-    try {
-        const employee = await Employee.findByIdAndDelete(req.params.id);
-        if (!employee) {
-            code = 500;
-            message = "Employee delete by id has failed";
-            const resData = customResponse({
-                code,
-                message,
-                err: error,
-            });
-            return res.status(code).send(resData);
-        }
 
-        code = 204;
-        message = "Employee successfully deleted";
-        const resData = customResponse({ code, message });
-        return res.status(code).send(resData);
-    } catch (error) {
-        console.log(`error is ${JSON.stringify(error)}`);
-        code = 500;
-        message = "Employee delete by id has failed";
-        const resData = customResponse({
-            code,
-            message,
-            err: error,
-        });
-        return res.status(code).send(resData);
-    }
+    code = 204;
+    message = "Employee successfully deleted";
+    const resData = customResponse({ code, message });
+    return res.status(code).send(resData);
+  } catch (error) {
+    console.log(`error is ${JSON.stringify(error)}`);
+    code = 500;
+    message = "Employee delete by id has failed";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
 
-exports.generateQR = async(req, res) => {
-    // #swagger.tags = ['Generate QR code']
-    try {
-        res.send(await QRCode.toDataURL(`https://www.geeksforgeeks.org/`));
-        //`http://localhost:3000/employees/${req.params.id}`));
-    } catch (err) {
-        console.error(err);
-    }
+exports.generateQR = async (req, res) => {
+  // #swagger.tags = ['Generate QR code']
+  try {
+    res.send(await QRCode.toDataURL(`https://www.geeksforgeeks.org/`));
+    //`http://localhost:3000/employees/${req.params.id}`));
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 exports.getDesignations = (req, res) => {
-    let code, message;
-    try {
-        code = 200;
-        message = "success";
-        const data = getDesignationsData();
-        const resData = customResponse({ code, message, data });
-        return res.status(200).send(resData);
-    } catch (error) {
-        console.log(error);
-        code = 500;
-        message = "Internal server error";
-        const resData = customResponse({
-            code,
-            message,
-            err: error,
-        });
-        return res.status(code).send(resData);
-    }
+  let code, message;
+  try {
+    code = 200;
+    message = "success";
+    const data = getDesignationsData();
+    const resData = customResponse({ code, message, data });
+    return res.status(200).send(resData);
+  } catch (error) {
+    console.log(error);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
 
 exports.getDepartments = (req, res) => {
-    let code, message;
-    try {
-        code = 200;
-        message = "success";
-        const data = getDepartmentsData();
-        const resData = customResponse({ code, message, data });
-        return res.status(200).send(resData);
-    } catch (error) {
-        console.log(error);
-        code = 500;
-        message = "Internal server error";
-        const resData = customResponse({
-            code,
-            message,
-            err: error,
-        });
-        return res.status(code).send(resData);
-    }
+  let code, message;
+  try {
+    code = 200;
+    message = "success";
+    const data = getDepartmentsData();
+    const resData = customResponse({ code, message, data });
+    return res.status(200).send(resData);
+  } catch (error) {
+    console.log(error);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
 };
 
-exports.getEmployeesRR = async(req, res) => {
-    /*
+exports.getEmployeesRR = async (req, res) => {
+  /*
         #swagger.tags = ['Employee']
         #swagger.description = 'Get all employees' 
         #swagger.parameters['search'] = {
@@ -655,118 +655,124 @@ exports.getEmployeesRR = async(req, res) => {
           }
         }
     */
-    let code, message;
-    let query = [{
+  let code, message;
+  let query = [
+    {
+      $match: {
+        empName: { $regex: "" },
+      },
+    },
+  ];
+  if (req.query.dob) {
+    query.push({
+      $match: {
+        $expr: {
+          $and: [
+            { $eq: [{ $dayOfMonth: "$empDob" }, { $dayOfMonth: new Date() }] },
+            { $eq: [{ $month: "$empDob" }, { $month: new Date() }] },
+          ],
+        },
+      },
+    });
+  }
+  if (req.query.workAnniversary) {
+    query.push({
+      $match: {
+        $expr: {
+          $and: [
+            { $eq: [{ $dayOfMonth: "$empDoj" }, { $dayOfMonth: new Date() }] },
+            { $eq: [{ $month: "$empDoj" }, { $month: new Date() }] },
+          ],
+        },
+      },
+    });
+  }
+  if (req.query.getEmpByID) {
+    query.push({
+      $match: {
+        empId: req.query.getEmpByID,
+      },
+    });
+  }
+
+  if (req.query.empUnderManager) {
+    query.push({
+      $match: {
+        empReportingManager: req.query.empUnderManager,
+      },
+    });
+  }
+  if (req.query.managerDetail) {
+    query.push({
+      $match: {
+        empName: req.query.managerDetail,
+      },
+    });
+  }
+
+  const empidSearch = [
+    {
+      $project: {
+        empId: 1,
+        slackMemId: 1,
+        _id: 0,
+        empName: 1,
+      },
+    },
+  ];
+  if (req.query.empId) {
+    empidSearch.push({
+      $match: {
+        empId: req.query.empId,
+      },
+    });
+  }
+  if (req.query.empName) {
+    empidSearch.push({
+      $match: {
+        empName: req.query.empName,
+      },
+    });
+  }
+  const empmanagerSearch = [
+    {
+      $project: {
+        empReportingManager: 1,
+        _id: 0,
+      },
+    },
+  ];
+  if (req.query.empDes) {
+    if (req.query.empDes === "manager") {
+      empmanagerSearch.push({
         $match: {
-            empName: { $regex: "" },
+          empReportingManager: { $regex: "" },
         },
-    }, ];
-    if (req.query.dob) {
-        query.push({
-            $match: {
-                $expr: {
-                    $and: [
-                        { $eq: [{ $dayOfMonth: "$empDob" }, { $dayOfMonth: new Date() }] },
-                        { $eq: [{ $month: "$empDob" }, { $month: new Date() }] },
-                    ],
-                },
-            },
-        });
+      });
     }
-    if (req.query.workAnniversary) {
-        query.push({
-            $match: {
-                $expr: {
-                    $and: [
-                        { $eq: [{ $dayOfMonth: "$empDoj" }, { $dayOfMonth: new Date() }] },
-                        { $eq: [{ $month: "$empDoj" }, { $month: new Date() }] },
-                    ],
-                },
-            },
-        });
-    }
-    if (req.query.getEmpByID) {
-        query.push({
-            $match: {
-                empId: req.query.getEmpByID,
-            },
-        });
-    }
+  }
 
-    if (req.query.empUnderManager) {
-        query.push({
-            $match: {
-                empReportingManager: req.query.empUnderManager,
-            },
-        });
+  try {
+    code = 200;
+    if (req.query.empId || req.query.empName) {
+      employees = await Employee.aggregate(empidSearch);
+    } else if (req.query.empDes === "Manager") {
+      employees = await Employee.aggregate(empmanagerSearch);
+    } else {
+      employees = await Employee.aggregate(query);
     }
-    if (req.query.managerDetail) {
-        query.push({
-            $match: {
-                empName: req.query.managerDetail,
-            },
-        });
-    }
-
-    const empidSearch = [{
-        $project: {
-            empId: 1,
-            slackMemId: 1,
-            _id: 0,
-            empName: 1,
-        },
-    }, ];
-    if (req.query.empId) {
-        empidSearch.push({
-            $match: {
-                empId: req.query.empId,
-            },
-        });
-    }
-    if (req.query.empName) {
-        empidSearch.push({
-            $match: {
-                empName: req.query.empName,
-            },
-        });
-    }
-    const empmanagerSearch = [{
-        $project: {
-            empReportingManager: 1,
-            _id: 0,
-        },
-    }, ];
-    if (req.query.empDes) {
-        if (req.query.empDes === "manager") {
-            empmanagerSearch.push({
-                $match: {
-                    empReportingManager: { $regex: "" },
-                },
-            });
-        }
-    }
-
-    try {
-        code = 200;
-        if (req.query.empId || req.query.empName) {
-            employees = await Employee.aggregate(empidSearch);
-        } else if (req.query.empDes === "Manager") {
-            employees = await Employee.aggregate(empmanagerSearch);
-        } else {
-            employees = await Employee.aggregate(query);
-        }
-        // const data=customPagination({data:employees});
-        const resData = customResponse({ code, data: employees });
-        res.status(code).send(resData);
-    } catch (error) {
-        code = 500;
-        message = "Internal Server error";
-        res.status(code).send(error.message);
-    }
+    // const data=customPagination({data:employees});
+    const resData = customResponse({ code, data: employees });
+    res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal Server error";
+    res.status(code).send(error.message);
+  }
 };
 
-exports.searchEmployeesRR = async(req, res) => {
-    /* 	
+exports.searchEmployeesRR = async (req, res) => {
+  /* 	
     #swagger.tags = ['Employee']
     #swagger.description = 'Search Employees' 
     #swagger.parameters['search'] = {
@@ -807,39 +813,39 @@ exports.searchEmployeesRR = async(req, res) => {
       }
     }
 */
-    let code, message;
-    const searchName = req.query;
-    try {
-        if (Object.keys(req.query).length === 0) {
-            const employees = await Employee.find({});
-            code = 200;
-            //const data=customPagination({data:employees,page:page,limit:limit});
-            const resData = customResponse({ code, data: employees });
-            res.status(code).send(resData);
-        } else {
-            const employees = await Employee.find({
-                $or: [
-                    { empName: { $regex: searchName.search.trim(), $options: "i" } },
-                    { empEmail: { $regex: searchName.search.trim(), $options: "i" } },
-                ],
-            });
-            if (employees.length < 1) {
-                code = 400;
-                message = "Bad Request, No rewards found";
-                const resdata = customResponse({ code, message });
-                return res.status(code).send(resdata);
-            }
-            code = 200;
-            // const data=customPagination({data:employees,page:page,limit:limit});
-            const resData = customResponse({ code, data: employees });
-            return res.status(code).send(resData);
-        }
-    } catch (error) {
-        code = 500;
-        message = "Internal Server Error";
-        const resdata = customResponse({ code, message, err: error });
-        res.status(code).send(resdata);
+  let code, message;
+  const searchName = req.query;
+  try {
+    if (Object.keys(req.query).length === 0) {
+      const employees = await Employee.find({});
+      code = 200;
+      //const data=customPagination({data:employees,page:page,limit:limit});
+      const resData = customResponse({ code, data: employees });
+      res.status(code).send(resData);
+    } else {
+      const employees = await Employee.find({
+        $or: [
+          { empName: { $regex: searchName.search.trim(), $options: "i" } },
+          { empEmail: { $regex: searchName.search.trim(), $options: "i" } },
+        ],
+      });
+      if (employees.length < 1) {
+        code = 400;
+        message = "Bad Request, No rewards found";
+        const resdata = customResponse({ code, message });
+        return res.status(code).send(resdata);
+      }
+      code = 200;
+      // const data=customPagination({data:employees,page:page,limit:limit});
+      const resData = customResponse({ code, data: employees });
+      return res.status(code).send(resData);
     }
+  } catch (error) {
+    code = 500;
+    message = "Internal Server Error";
+    const resdata = customResponse({ code, message, err: error });
+    res.status(code).send(resdata);
+  }
 };
 // module.exports = {
 //   getEmployeesRR,
