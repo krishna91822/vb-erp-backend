@@ -28,9 +28,13 @@ const purchaseOrderSchema = mongoose.Schema({
     type: Object,
     required: [true, "targetted Resources is required"],
   },
+  Targeted_Res_AllocationRate: {
+    type: Object,
+    required: [true, "targetted Resources is required"],
+  },
   Status: {
     type: String,
-    enum: ["Rejected", "Pending", "Accepted", "Closed", "Drafted"],
+    enum: ["Rejected", "Pending", "Active", "Closed", "Drafted"],
     required: [true, "status is required"],
   },
   Type: {
@@ -41,7 +45,6 @@ const purchaseOrderSchema = mongoose.Schema({
   PO_Number: {
     trim: true,
     type: String,
-    required: [true, "po number is required"],
   },
   PO_Amount: {
     trim: true,
@@ -57,10 +60,6 @@ const purchaseOrderSchema = mongoose.Schema({
     type: String,
     required: [true, "document name is required"],
   },
-  Document_Type: {
-    type: String,
-    required: [true, "document type is required"],
-  },
   POSOW_endDate: {
     type: Date,
     required: [true, "enddate is required"],
@@ -68,14 +67,14 @@ const purchaseOrderSchema = mongoose.Schema({
   Remarks: {
     type: String,
   },
-  Created_At: { 
+  Created_At: {
     type: Date,
-     required: true, 
-     default: Date.now
-    },
+    required: true,
+    default: Date.now,
+  },
   Updated_At: {
-    type: Date
-  }
+    type: Date,
+  },
 });
 
 //Creating purchase order collection with purchase order schema

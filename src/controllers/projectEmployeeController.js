@@ -1,5 +1,6 @@
 const { json } = require("body-parser");
 const projectEmployeeModel = require("../models/projectEmployeeModel");
+const { Employee } = require("../models/employeeModel");
 const {
   getAllocationQuery,
   getAllocationsFilteredData,
@@ -76,28 +77,79 @@ const deleteAllocation = async (req, res) => {
 // Get allocations
 const getAllocations = async (req, res) => {
   const query = getAllocationQuery(req.query);
-  console.log(query)
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
   try {
+    code = 200;
+    message = "Displayed Successfully";
     const projectDetails = await projectEmployeeModel
-      .find({ query })
+      .find({})
       .populate("empId", "_id empId empName")
       .populate(
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-      console.log(projectDetails)
     const filteredData = getAllocationsFilteredData(query, projectDetails);
-
-    res.status(200).json(filteredData);
+    const data = customPagination({ data: filteredData, page, limit });
+    const resData = customResponse({ code, message, data });
+    res.status(code).send(resData);
   } catch (error) {
-    res.status(400).send(error);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
   }
 };
 
+// Get Sorted allocations
+const getSortedAllocations = async (req, res) => {
+  const fieldName = req.params.fieldName;
+  const query = getAllocationQuery(req.query);
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
+  try {
+    code = 200;
+    message = "Displayed Successfully";
+    const projectDetails = await projectEmployeeModel
+      .find({})
+      .populate("empId", "_id empId empName")
+      .populate(
+        "projectId",
+        "_id vbProjectId startDate endDate vbProjectStatus projectName"
+      )
+      .sort(fieldName);
+
+    const filteredData = getAllocationsFilteredData(query, projectDetails);
+    const data = customPagination({ data: filteredData, page, limit });
+    const resData = customResponse({ code, message, data });
+    res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
+
+//GET on Bench
 const getAllocationsOnBench = async (req, res) => {
   const query = getAllocationQuery(req.query);
-
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
   try {
+    code = 200;
+    message = "Displayed Successfully";
     const projectDetails = await projectEmployeeModel
       .find({})
       .populate("empId", "_id empId empName empPrimaryCapability")
@@ -105,9 +157,66 @@ const getAllocationsOnBench = async (req, res) => {
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-    const filteredData = getOnBenchFilteredData(query, projectDetails);
+    const employeesData = await Employee.find(
+      {},
+      { empId: 1, empName: 1, empPrimaryCapability: 1 }
+    );
 
-    res.status(200).json(filteredData);
+    const filteredData = getOnBenchFilteredData(
+      query,
+      projectDetails,
+      employeesData
+    );
+    const data = customPagination({ data: filteredData, page, limit });
+    const resData = customResponse({ code, message, data });
+    res.status(code).send(resData);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+//Get sorted On bench
+const getSortedAllocationsOnBench = async (req, res) => {
+  const fieldName = req.params.fieldName;
+  const query = getAllocationQuery(req.query);
+  const page = req.query.page ? req.query.page : 1;
+  const limit = req.query.limit ? req.query.limit : 10;
+  let code, message;
+  try {
+    code = 200;
+    message = "Displayed Successfully";
+    const projectDetails = await projectEmployeeModel
+      .find({})
+      .populate("empId", "_id empId empName empPrimaryCapability")
+      .populate(
+        "projectId",
+        "_id vbProjectId startDate endDate vbProjectStatus projectName"
+      );
+    const employeesData = await Employee.find(
+      {},
+      { empId: 1, empName: 1, empPrimaryCapability: 1 }
+    ).sort(fieldName);
+
+    let filteredData = getOnBenchFilteredData(
+      query,
+      projectDetails,
+      employeesData
+    );
+    const compare = (a, b) => {
+      if (a.remainingAllocation < b.remainingAllocation) {
+        return -1;
+      }
+      if (a.remainingAllocation > b.remainingAllocation) {
+        return 1;
+      }
+      return 0;
+    };
+    if (fieldName === "remainingAllocation") {
+      filteredData = filteredData.sort(compare);
+    }
+    const data = customPagination({ data: filteredData, page, limit });
+    const resData = customResponse({ code, message, data });
+    res.status(code).send(resData);
   } catch (error) {
     res.status(400).send(error);
   }
@@ -133,11 +242,70 @@ const getTotalAllocationByEmpId = async (req, res) => {
   }
 };
 
+//For EI integration
+//For PMO integration with Employee
+const getFilteredEmployee = async (req, res) => {
+  const query = req.query;
+  try {
+    if (Object.keys(req.query).length === 0) {
+      const filterEmployee = await Employee.find(
+        {},
+        { empId: 1, empName: 1, empPrimaryCapability: 1 }
+      );
+      return res.status(200).send(filterEmployee);
+    } else {
+      const filterEmployee = await Employee.find(
+        {
+          $or: [
+            {
+              empName: {
+                $regex: query.empName.trim(),
+                $options: "i",
+              },
+            },
+          ],
+        },
+        { empId: 1, empName: 1, empPrimaryCapability: 1 }
+      );
+      return res.status(200).send(filterEmployee);
+    }
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+//Managers
+const getManagers = async (req, res) => {
+  try {
+    const filterManagers = await Employee.find(
+      {
+        $or: [
+          {
+            empDesignation: "Manager",
+            empName: {
+              $regex: req.query.empName,
+              $options: "i",
+            },
+          },
+        ],
+      },
+      { _id: 0, empId: 1, empName: 1 }
+    );
+    return res.status(200).send(filterManagers);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 module.exports = {
   createAllocations,
   updateAllocation,
   deleteAllocation,
   getAllocations,
+  getSortedAllocations,
   getAllocationsOnBench,
+  getSortedAllocationsOnBench,
   getTotalAllocationByEmpId,
+  getFilteredEmployee,
+  getManagers,
 };

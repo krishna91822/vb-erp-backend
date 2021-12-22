@@ -52,7 +52,7 @@ const newInvoice = async (req, res) => {
     const invoice = await Invoice.create(req.body);
     const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
       "PO_Id",
-      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
+      "Client_Name Project_Name Targetted_Resources Targeted_Res_AllocationRate PO_Number PO_Amount Currency"
     );
     const data = {
       Client_Name: getDetails.PO_Id.Client_Name,
@@ -106,9 +106,7 @@ const getInvoiceDetailsById = async (req, res) => {
           "data":  {
             "_id": "610bc1b31b82a66f6bcd64ea",
             "PO_Id": {
-                "Targetted_Resources": [
-                        "NGB"
-                ],
+                "Targetted_Resources": {"ABC":"true","DCH":"false"},
                 "_id": "61aee1b97af12a205c1a16c5",
                 "Client_Name": "Tanmay kesarwani",
                 "Project_Name": "valuebound",
@@ -132,7 +130,7 @@ const getInvoiceDetailsById = async (req, res) => {
     code = 200;
     const getDetails = await Invoice.findById(req.params.id).populate(
       "PO_Id",
-      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount"
+      "Client_Name Project_Name Targetted_Resources Targeted_Res_AllocationRate PO_Number PO_Amount"
     );
     const resData = customResponse({ code, data: getDetails });
     return res.status(code).send(resData);
@@ -170,9 +168,7 @@ const getInvoiceDetails = async (req, res) => {
               {
             "_id": "610bc1b31b82a66f6bcd64ea",
             "PO_Id": {
-                "Targetted_Resources": [
-                        "NGB"
-                ],
+                "Targetted_Resources": {"ABC":"true","DCH":"false"},
                 "_id": "61aee1b97af12a205c1a16c5",
                 "Client_Name": "Tanmay kesarwani",
                 "Project_Name": "valuebound",
@@ -367,7 +363,108 @@ const getInvoiceDetails = async (req, res) => {
       return res.status(code).send(resData);
     }
   } catch (error) {
-    console.log(error);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
+
+const getRelatedInvoices = async (req, res) => {
+  const data = req.query.id;
+  let code;
+  try {
+    const details = await Invoice.aggregate([
+      {
+        $lookup: {
+          from: "purchase_orders",
+          localField: "PO_Id",
+          foreignField: "_id",
+          as: "purchase_orders",
+        },
+      },
+      { $unwind: "$purchase_orders" },
+      {
+        $match: {
+          "purchase_orders.Project_Id": data,
+        },
+      },
+    ]);
+    code = 200;
+    const resData = customResponse({ code, data: details });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
+const updateInvoice = async (req, res) => {
+  let code, message;
+  try {
+    const { error } = invoiceSchema.validate(req.body);
+    if (error) {
+      code = 422;
+      message = "Invalid update data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
+    }
+    const updateDetails = await Invoice.updateOne(
+      { _id: req.params.id },
+      {
+        $set: { ...req.body, updated_at: new Date() },
+      }
+    );
+
+    if (req.body.amount_received_on) {
+      const getDetails = await Invoice.findOne({ _id: req.params.id }).populate(
+        "PO_Id",
+        "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
+      );
+      const isoDate = getDetails.amount_received_on;
+      const date = new Date(isoDate);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const dt = date.getDate();
+      let curr = getDetails.PO_Id.Currency;
+      curr = curr === "INR" ? "Rs." : "$";
+
+      const newDate = dt + "-" + month + "-" + year;
+      const data2 = {
+        Client_Name: getDetails.PO_Id.Client_Name,
+        Project_Name: getDetails.PO_Id.Project_Name,
+        PO_Number: getDetails.PO_Id.PO_Number,
+        amount_received_on: newDate,
+        invoice_raised: getDetails.invoice_raised,
+        invoice_amount_received: getDetails.invoice_amount_received,
+        Currency: curr,
+      };
+
+      const emailTemplate2 = await emailContent("N003", data2);
+      emailSender(emailTemplate2);
+    }
+    code = 200;
+    message = "data updated successfully";
+    const resData = customResponse({
+      code,
+      data: updateDetails,
+      message,
+    });
+    return res.status(code).send(resData);
+  } catch (error) {
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -383,4 +480,6 @@ module.exports = {
   newInvoice,
   getInvoiceDetailsById,
   getInvoiceDetails,
+  getRelatedInvoices,
+  updateInvoice,
 };

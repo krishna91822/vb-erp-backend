@@ -1,0 +1,6071 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Valuebound Consulting Services LLP",
+    "description": "Valuebound builds digital user experience platforms that bring technology and people together.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Endpoints"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "authorization token"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Add new user",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "example": "Jhon"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "jhon@valuebound.com"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                }
+              },
+              "required": [
+                "first_name",
+                "last_name",
+                "email",
+                "role"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User successfully added.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiSmhvbiBEb2UiLCJpYXQiOjE2Mjg0OTQ5NzksImV4cCI6MTYyODY2Nzc3OSwiaXNzIjoidmItY21zIn0.wdyX_wXWABr1BIw_7FzZKgowhixX8EXVN4ZojvzsaIU"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get Account",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User successfully added.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "first_name": {
+                      "type": "string",
+                      "example": "Jhon"
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jhon@valuebound.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "admin"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiSmhvbiBEb2UiLCJpYXQiOjE2Mjg0OTQ5NzksImV4cCI6MTYyODY2Nzc3OSwiaXNzIjoidmItY21zIn0.wdyX_wXWABr1BIw_7FzZKgowhixX8EXVN4ZojvzsaIU"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get users list",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "description": "Data limit per page"
+          },
+          {
+            "name": "first_name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "pageCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "currentPage": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "610d090636ba149966bd3b55"
+                          },
+                          "first_name": {
+                            "type": "string",
+                            "example": "Jhon"
+                          },
+                          "last_name": {
+                            "type": "string",
+                            "example": "Doe"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "jhon@valuebound.com"
+                          },
+                          "role": {
+                            "type": "string",
+                            "example": "admin"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Add new user",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "example": "Jhon"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "jhon@valuebound.com"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                }
+              },
+              "required": [
+                "first_name",
+                "last_name",
+                "email",
+                "role"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User successfully added.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "first_name": {
+                      "type": "string",
+                      "example": "Jhon"
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jhon@valuebound.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "admin"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get users Detail",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610bc1b31b82a66f6bcd64ea"
+                    },
+                    "first_name": {
+                      "type": "string",
+                      "example": "akash"
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "example": "kumar"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "akash@gmail.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "admin"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "Update user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "example": "Jhon"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "jhon@valuebound.com"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                }
+              },
+              "required": [
+                "first_name",
+                "last_name",
+                "email",
+                "role"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "first_name": {
+                      "type": "string",
+                      "example": "Jhon"
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jhon@valuebound.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "admin"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Delete user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User deleted successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610bc1b31b82a66f6bcd64ea"
+                    },
+                    "first_name": {
+                      "type": "string",
+                      "example": "Jhon"
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jhon@valuebound.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "admin"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/rewards/": {
+      "get": {
+        "tags": [
+          "Rewards"
+        ],
+        "description": "Get all rewards",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "description": "Page number"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "type": "string",
+            "description": "sorting by which property"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "type": "string",
+            "description": "sort order like desc"
+          },
+          {
+            "name": "rewardType",
+            "in": "query",
+            "type": "string",
+            "description": "reward type"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string",
+            "description": "reward status"
+          },
+          {
+            "name": "startdate",
+            "in": "query",
+            "type": "string",
+            "description": "Start date"
+          },
+          {
+            "name": "enddate",
+            "in": "query",
+            "type": "string",
+            "description": "End date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "610d090636ba149966bd3b55"
+                          },
+                          "reward_display_name": {
+                            "type": "string",
+                            "example": "reward def"
+                          },
+                          "reward_type": {
+                            "type": "string",
+                            "example": "reward def"
+                          },
+                          "reward_subType": {
+                            "type": "string",
+                            "example": "reward def"
+                          },
+                          "reward_sender": {
+                            "type": "string",
+                            "example": "Manager"
+                          },
+                          "reward_receiver": {
+                            "type": "string",
+                            "example": "Employees"
+                          },
+                          "receiver_message": {
+                            "type": "string",
+                            "example": "def"
+                          },
+                          "announcement_type": {
+                            "type": "string",
+                            "example": "def"
+                          },
+                          "slack_channel": {
+                            "type": "string",
+                            "example": "#birthday"
+                          },
+                          "channel_message": {
+                            "type": "string",
+                            "example": "def messsage"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "created"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2021-11-26T09:25:14.681Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2021-11-26T09:25:14.681Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Rewards"
+        ],
+        "description": "Create new Reward",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reward_display_name": {
+                  "type": "string",
+                  "example": "reward def"
+                },
+                "reward_type": {
+                  "type": "string",
+                  "example": "reward def"
+                },
+                "reward_subType": {
+                  "type": "string",
+                  "example": "reward def"
+                },
+                "reward_sender": {
+                  "type": "string",
+                  "example": "manager"
+                },
+                "reward_receiver": {
+                  "type": "string",
+                  "example": "employees"
+                },
+                "receiver_message": {
+                  "type": "string",
+                  "example": "def"
+                },
+                "announcement_type": {
+                  "type": "string",
+                  "example": "def"
+                },
+                "slack_channel": {
+                  "type": "string",
+                  "example": "#birthday"
+                },
+                "channel_message": {
+                  "type": "string",
+                  "example": "def messsage"
+                }
+              },
+              "required": [
+                "reward_display_name",
+                "reward_type",
+                "reward_subType",
+                "reward_sender",
+                "reward_receiver",
+                "receiver_message",
+                "announcement_type",
+                "slack_channel",
+                "channel_message"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Reward successfully created.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610d090636ba149966bd3b55"
+                    },
+                    "reward_display_name": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_type": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_subType": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_sender": {
+                      "type": "string",
+                      "example": "manager"
+                    },
+                    "reward_receiver": {
+                      "type": "string",
+                      "example": "employees"
+                    },
+                    "receiver_message": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "announcement_type": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "slack_channel": {
+                      "type": "string",
+                      "example": "#birthday"
+                    },
+                    "channel_message": {
+                      "type": "string",
+                      "example": "def messsage"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "created"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Invalid request data"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rewards/search": {
+      "get": {
+        "tags": [
+          "Rewards"
+        ],
+        "description": "Search Rewards",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "description": "Reward name which you want to search"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string",
+            "description": "page no"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610bc1b31b82a66f6bcd64ea"
+                    },
+                    "reward_display_name": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_type": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_sender": {
+                      "type": "string",
+                      "example": "manager"
+                    },
+                    "reward_receiver": {
+                      "type": "string",
+                      "example": "employee"
+                    },
+                    "receiver_message": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "announcement_type": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "slack_channel": {
+                      "type": "string",
+                      "example": "#birthday"
+                    },
+                    "channel_message": {
+                      "type": "string",
+                      "example": "def messsage"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "created"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rewards/{id}": {
+      "get": {
+        "tags": [
+          "Rewards"
+        ],
+        "description": "Get Rewatd Detail",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Reward id which we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610bc1b31b82a66f6bcd64ea"
+                    },
+                    "reward_name": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_display_name": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_type": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_sender": {
+                      "type": "string",
+                      "example": "manager"
+                    },
+                    "recepients": {
+                      "type": "string",
+                      "example": "employees"
+                    },
+                    "receiver_message": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "announcement_type": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "slack_channel": {
+                      "type": "string",
+                      "example": "#birthday"
+                    },
+                    "channel_message": {
+                      "type": "string",
+                      "example": "def messsage"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "created"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Rewards"
+        ],
+        "description": "Update Reward",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Reward id which we want to update/edit"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reward_display_name": {
+                  "type": "string",
+                  "example": "Best Employee"
+                },
+                "reward_type": {
+                  "type": "string",
+                  "example": "reward def"
+                },
+                "reward_subType": {
+                  "type": "string",
+                  "example": "def"
+                },
+                "reward_sender": {
+                  "type": "string",
+                  "example": "manager"
+                },
+                "reward_receiver": {
+                  "type": "string",
+                  "example": "selected"
+                },
+                "receiver_message": {
+                  "type": "string",
+                  "example": "def"
+                },
+                "announcement_type": {
+                  "type": "string",
+                  "example": "def"
+                },
+                "slack_channel": {
+                  "type": "string",
+                  "example": "#birthday"
+                },
+                "channel_message": {
+                  "type": "string",
+                  "example": "def messsage"
+                }
+              },
+              "required": [
+                "reward_display_name",
+                "reward_type",
+                "reward_subType",
+                "reward_sender",
+                "reward_receiver",
+                "receiver_message",
+                "announcement_type",
+                "slack_channel",
+                "channel_message"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "rewards updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "rewards successfully updated!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610bc1b31b82a66f6bcd64ea"
+                    },
+                    "reward_display_name": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_type": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_subType": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "reward_sender": {
+                      "type": "string",
+                      "example": "manager"
+                    },
+                    "reward_receiver": {
+                      "type": "string",
+                      "example": "employees"
+                    },
+                    "receiver_message": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "announcement_type": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "slack_channel": {
+                      "type": "string",
+                      "example": "#birthday"
+                    },
+                    "channel_message": {
+                      "type": "string",
+                      "example": "def messsage"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "created"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Rewards"
+        ],
+        "description": "Delete reward",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Reward id which we want to find"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Reward deleted successfully"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610bc1b31b82a66f6bcd64ea"
+                    },
+                    "reward_display_name": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_type": {
+                      "type": "string",
+                      "example": "reward def"
+                    },
+                    "reward_sender": {
+                      "type": "string",
+                      "example": "manager"
+                    },
+                    "reward_receiver": {
+                      "type": "string",
+                      "example": "employees"
+                    },
+                    "receiver_message": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "announcement_type": {
+                      "type": "string",
+                      "example": "def"
+                    },
+                    "slack_channel": {
+                      "type": "string",
+                      "example": "#birthday"
+                    },
+                    "channel_message": {
+                      "type": "string",
+                      "example": "def messsage"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "created"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-11-26T09:25:14.681Z"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rewards/launch/{id}": {
+      "put": {
+        "tags": [
+          "Rewards"
+        ],
+        "description": "Launch Rewards",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Reward id which we want to find"
+          },
+          {
+            "name": "recipients_ids",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "recipients_ids": {
+                  "type": "array",
+                  "example": [
+                    "610bc1b31b82a66f6bcd64ea"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "recipients_ids"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Rewards are already in launch state"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "pincode",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/countries": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/getclientinfo": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/duplicates": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "brandname",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/assign/": {
+      "post": {
+        "tags": [
+          "Assign Employee"
+        ],
+        "description": "Assign new Employee to Project",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "PO_Id": {
+                  "type": "string",
+                  "example": "VBERP-34"
+                },
+                "Employee_Id": {
+                  "type": "string",
+                  "example": "VBEMP-45"
+                },
+                "Employee_Name": {
+                  "type": "string",
+                  "example": "Yusuf Shekh"
+                },
+                "Allocation_Rate": {
+                  "type": "number",
+                  "example": 70
+                },
+                "Start_Date": {
+                  "type": "string",
+                  "example": "04/24/2021"
+                },
+                "End_Date": {
+                  "type": "string",
+                  "example": "06/12/2021"
+                }
+              },
+              "required": [
+                "PO_Id",
+                "Employee_Id",
+                "Employee_Name",
+                "Allocation_Rate",
+                "Start_Date",
+                "End_Date"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Employee assigned successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "PO_Id": {
+                      "type": "string",
+                      "example": "VBERP-34"
+                    },
+                    "Employee_Id": {
+                      "type": "string",
+                      "example": "VBEMP-45"
+                    },
+                    "Employee_Name": {
+                      "type": "string",
+                      "example": "Yusuf Shekh"
+                    },
+                    "Status": {
+                      "type": "string",
+                      "example": "assign"
+                    },
+                    "Allocation_Rate": {
+                      "type": "number",
+                      "example": 70
+                    },
+                    "Start_Date": {
+                      "type": "string",
+                      "example": "04/24/2021"
+                    },
+                    "End_Date": {
+                      "type": "string",
+                      "example": "06/12/2021"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/assign/{id}": {
+      "get": {
+        "tags": [
+          "Assign Employee"
+        ],
+        "description": "Get Assigned Employee list",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "description": "Data limit per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "pageCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "currentPage": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61a49363c343b8220cff6c08"
+                          },
+                          "PO_Id": {
+                            "type": "string",
+                            "example": "VBERP-34"
+                          },
+                          "Employee_Id": {
+                            "type": "string",
+                            "example": "VBEMP-45"
+                          },
+                          "Employee_Name": {
+                            "type": "string",
+                            "example": "Yusuf Shekh"
+                          },
+                          "Status": {
+                            "type": "string",
+                            "example": "assign"
+                          },
+                          "Allocation_Rate": {
+                            "type": "number",
+                            "example": 70
+                          },
+                          "Start_Date": {
+                            "type": "string",
+                            "example": "04/24/2021"
+                          },
+                          "End_Date": {
+                            "type": "string",
+                            "example": "06/12/2021"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Assign Employee"
+        ],
+        "description": "Update Employee Details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "PO_Id": {
+                  "type": "string",
+                  "example": "VBERP-34"
+                },
+                "Employee_Id": {
+                  "type": "string",
+                  "example": "VBEMP-45"
+                },
+                "Employee_Name": {
+                  "type": "string",
+                  "example": "Yusuf Shekh"
+                },
+                "Allocation_Rate": {
+                  "type": "number",
+                  "example": 70
+                },
+                "Start_Date": {
+                  "type": "string",
+                  "example": "04/24/2021"
+                },
+                "End_Date": {
+                  "type": "string",
+                  "example": "06/12/2021"
+                }
+              },
+              "required": [
+                "PO_Id",
+                "Employee_Id",
+                "Employee_Name",
+                "Allocation_Rate",
+                "Start_Date",
+                "End_Date"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Details successfully updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "PO_Id": {
+                      "type": "string",
+                      "example": "VBERP-34"
+                    },
+                    "Employee_Id": {
+                      "type": "string",
+                      "example": "VBEMP-45"
+                    },
+                    "Employee_Name": {
+                      "type": "string",
+                      "example": "Yusuf Shekh"
+                    },
+                    "Status": {
+                      "type": "string",
+                      "example": "assign"
+                    },
+                    "Allocation_Rate": {
+                      "type": "number",
+                      "example": 70
+                    },
+                    "Start_Date": {
+                      "type": "string",
+                      "example": "04/24/2021"
+                    },
+                    "End_Date": {
+                      "type": "string",
+                      "example": "06/12/2021"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assign/unassign/{id}": {
+      "patch": {
+        "tags": [
+          "Assign Employee"
+        ],
+        "description": "Unassign Employee from Project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee unassigned successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "PO_Id": {
+                      "type": "string",
+                      "example": "VBERP-34"
+                    },
+                    "Employee_Id": {
+                      "type": "string",
+                      "example": "VBEMP-45"
+                    },
+                    "Employee_Name": {
+                      "type": "string",
+                      "example": "Yusuf Shekh"
+                    },
+                    "Status": {
+                      "type": "string",
+                      "example": "unassign"
+                    },
+                    "Allocation_Rate": {
+                      "type": "number",
+                      "example": 70
+                    },
+                    "Start_Date": {
+                      "type": "string",
+                      "example": "04/24/2021"
+                    },
+                    "End_Date": {
+                      "type": "string",
+                      "example": "06/12/2021"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoice/": {
+      "post": {
+        "tags": [
+          "invoices"
+        ],
+        "description": "Add new invoice",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "PO_Id": {
+                  "type": "string",
+                  "example": "61a8bb6ab7dcd452dc0f5e05"
+                },
+                "client_sponsor": {
+                  "type": "string",
+                  "example": "AB"
+                },
+                "client_finance_controller": {
+                  "type": "string",
+                  "example": "CD"
+                },
+                "invoice_raised": {
+                  "type": "string",
+                  "example": "Yes"
+                },
+                "invoice_received": {
+                  "type": "string",
+                  "example": "Yes"
+                },
+                "invoice_amount_received": {
+                  "type": "number",
+                  "example": 87634788
+                },
+                "vb_bank_account": {
+                  "type": "string",
+                  "example": "SBIN00004567"
+                },
+                "amount_received_on": {
+                  "type": "string",
+                  "example": "2021-12-10T06:01:50.178Z"
+                }
+              },
+              "required": [
+                "PO_Id",
+                "client_sponsor",
+                "client_finance_controller",
+                "invoice_raised",
+                "invoice_received",
+                "invoice_amount_received",
+                "vb_bank_account",
+                "amount_received_on"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User successfully added.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "PO_Id": {
+                      "type": "string",
+                      "example": "61a8bb6ab7dcd452dc0f5e05"
+                    },
+                    "client_sponsor": {
+                      "type": "string",
+                      "example": "AB"
+                    },
+                    "client_finance_controller": {
+                      "type": "string",
+                      "example": "CD"
+                    },
+                    "invoice_raised": {
+                      "type": "string",
+                      "example": "Yes"
+                    },
+                    "invoice_received": {
+                      "type": "string",
+                      "example": "Yes"
+                    },
+                    "invoice_amount_received": {
+                      "type": "number",
+                      "example": 467389738
+                    },
+                    "vb_bank_account": {
+                      "type": "string",
+                      "example": "SBIN00004567"
+                    },
+                    "amount_received_on": {
+                      "type": "string",
+                      "example": "2021-12-10T06:01:50.178Z"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "example": "2021-12-10T06:01:50.178Z"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/invoice/sort/{data}": {
+      "get": {
+        "tags": [
+          "invoices"
+        ],
+        "description": "Get sorted Invoice list",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "description": "Data limit per page"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "610bc1b31b82a66f6bcd64ea"
+                          },
+                          "PO_Id": {
+                            "type": "object",
+                            "properties": {
+                              "Targetted_Resources": {
+                                "type": "object",
+                                "properties": {
+                                  "ABC": {
+                                    "type": "string",
+                                    "example": "true"
+                                  },
+                                  "DCH": {
+                                    "type": "string",
+                                    "example": "false"
+                                  }
+                                }
+                              },
+                              "_id": {
+                                "type": "string",
+                                "example": "61aee1b97af12a205c1a16c5"
+                              },
+                              "Client_Name": {
+                                "type": "string",
+                                "example": "Tanmay kesarwani"
+                              },
+                              "Project_Name": {
+                                "type": "string",
+                                "example": "valuebound"
+                              },
+                              "PO_Number": {
+                                "type": "string",
+                                "example": "GK475f"
+                              },
+                              "PO_Amount": {
+                                "type": "number",
+                                "example": 28274
+                              }
+                            }
+                          },
+                          "client_sponsor": {
+                            "type": "string",
+                            "example": "Tanmay"
+                          },
+                          "client_finance_controller": {
+                            "type": "string",
+                            "example": "xyz"
+                          },
+                          "invoice_raised": {
+                            "type": "number",
+                            "example": 4738687
+                          },
+                          "invoice_amount_received": {
+                            "type": "number",
+                            "example": 5689339
+                          },
+                          "vb_bank_account": {
+                            "type": "string",
+                            "example": "dwrjhgcriwog"
+                          },
+                          "amount_received_on": {
+                            "type": "string",
+                            "example": "2014-01-22T14:56:59.301Z"
+                          },
+                          "__v": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/invoice/{id}": {
+      "get": {
+        "tags": [
+          "invoices"
+        ],
+        "description": "Get invoice Detail by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610bc1b31b82a66f6bcd64ea"
+                    },
+                    "PO_Id": {
+                      "type": "object",
+                      "properties": {
+                        "Targetted_Resources": {
+                          "type": "object",
+                          "properties": {
+                            "ABC": {
+                              "type": "string",
+                              "example": "true"
+                            },
+                            "DCH": {
+                              "type": "string",
+                              "example": "false"
+                            }
+                          }
+                        },
+                        "_id": {
+                          "type": "string",
+                          "example": "61aee1b97af12a205c1a16c5"
+                        },
+                        "Client_Name": {
+                          "type": "string",
+                          "example": "Tanmay kesarwani"
+                        },
+                        "Project_Name": {
+                          "type": "string",
+                          "example": "valuebound"
+                        },
+                        "PO_Number": {
+                          "type": "string",
+                          "example": "GK475f"
+                        },
+                        "PO_Amount": {
+                          "type": "number",
+                          "example": 28274
+                        }
+                      }
+                    },
+                    "client_sponsor": {
+                      "type": "string",
+                      "example": "Tanmay"
+                    },
+                    "client_finance_controller": {
+                      "type": "string",
+                      "example": "xyz"
+                    },
+                    "invoice_raised": {
+                      "type": "number",
+                      "example": 736398
+                    },
+                    "invoice_amount_received": {
+                      "type": "number",
+                      "example": 5689339
+                    },
+                    "vb_bank_account": {
+                      "type": "string",
+                      "example": "dwrjhgcriwog"
+                    },
+                    "amount_received_on": {
+                      "type": "string",
+                      "example": "2014-01-22T14:56:59.301Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount_received_on": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/poSow/": {
+      "post": {
+        "tags": [
+          "PO/SOW"
+        ],
+        "description": "Create new PO/SOW",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Project_Id": {
+                  "type": "string",
+                  "example": "61bb0622bf6c0b45dff12f77"
+                },
+                "Client_Name": {
+                  "type": "string",
+                  "example": "Valuebound Solutions"
+                },
+                "Project_Name": {
+                  "type": "string",
+                  "example": "ERP System"
+                },
+                "Client_Sponser": {
+                  "type": "string",
+                  "example": "Jai"
+                },
+                "Client_Finance_Controller": {
+                  "type": "string",
+                  "example": "Tanmay"
+                },
+                "Targetted_Resources": {
+                  "type": "object",
+                  "properties": {
+                    "Suresh": {
+                      "type": "string",
+                      "example": "true"
+                    },
+                    "Akash": {
+                      "type": "string",
+                      "example": "false"
+                    }
+                  }
+                },
+                "Targeted_Res_AllocationRate": {
+                  "type": "object",
+                  "properties": {
+                    "ABC": {
+                      "type": "number",
+                      "example": 50
+                    },
+                    "DCH": {
+                      "type": "number",
+                      "example": 60
+                    }
+                  }
+                },
+                "Status": {
+                  "type": "string",
+                  "example": "Active"
+                },
+                "Type": {
+                  "type": "string",
+                  "example": "PO"
+                },
+                "PO_Amount": {
+                  "type": "number",
+                  "example": 3434
+                },
+                "Currency": {
+                  "type": "string",
+                  "example": "USD"
+                },
+                "Document_Name": {
+                  "type": "string",
+                  "example": "VB_ERP"
+                },
+                "POSOW_endDate": {
+                  "type": "string",
+                  "example": "2014-01-22T14:56:59.301Z"
+                },
+                "Remarks": {
+                  "type": "string",
+                  "example": "Created New PO"
+                }
+              },
+              "required": [
+                "Project_Id",
+                "Client_Name",
+                "Project_Name",
+                "Client_Sponser",
+                "Client_Finance_Controller",
+                "Targetted_Resources",
+                "Targeted_Res_AllocationRate",
+                "Status",
+                "Type",
+                "PO_Amount",
+                "Currency",
+                "Document_Name",
+                "POSOW_endDate",
+                "Remarks"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "User successfully added.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "Project_Id": {
+                      "type": "string",
+                      "example": "61bb0622bf6c0b45dff12f77"
+                    },
+                    "Client_Name": {
+                      "type": "string",
+                      "example": "Valuebound Solutions"
+                    },
+                    "Project_Name": {
+                      "type": "string",
+                      "example": "ERP System"
+                    },
+                    "Client_Sponser": {
+                      "type": "string",
+                      "example": "Jai"
+                    },
+                    "Client_Finance_Controller": {
+                      "type": "string",
+                      "example": "Tanmay"
+                    },
+                    "Targetted_Resources": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "string",
+                          "example": "true"
+                        },
+                        "DCH": {
+                          "type": "string",
+                          "example": "false"
+                        }
+                      }
+                    },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
+                    "Status": {
+                      "type": "string",
+                      "example": "Active"
+                    },
+                    "Type": {
+                      "type": "string",
+                      "example": "PO"
+                    },
+                    "PO_Number": {
+                      "type": "string",
+                      "example": "ERP34"
+                    },
+                    "PO_Amount": {
+                      "type": "number",
+                      "example": 3434
+                    },
+                    "Currency": {
+                      "type": "string",
+                      "example": "USD"
+                    },
+                    "Document_Name": {
+                      "type": "string",
+                      "example": "VB_ERP"
+                    },
+                    "POSOW_endDate": {
+                      "type": "string",
+                      "example": "2014-01-22T14:56:59.301Z"
+                    },
+                    "Remarks": {
+                      "type": "string",
+                      "example": "Created New PO"
+                    },
+                    "Created_At": {
+                      "type": "string",
+                      "example": "2021-12-10T06:01:50.178Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/poSow/{id}": {
+      "get": {
+        "tags": [
+          "PO/SOW"
+        ],
+        "description": "Get PO/SOW Detail",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "61a49363c343b8220cff6c08"
+                    },
+                    "Project_Id": {
+                      "type": "string",
+                      "example": "61bb0622bf6c0b45dff12f77"
+                    },
+                    "Client_Name": {
+                      "type": "string",
+                      "example": "Valuebound Solutions"
+                    },
+                    "Project_Name": {
+                      "type": "string",
+                      "example": "ERP System"
+                    },
+                    "Client_Sponser": {
+                      "type": "string",
+                      "example": "Jai"
+                    },
+                    "Client_Finance_Controller": {
+                      "type": "string",
+                      "example": "Tanmay"
+                    },
+                    "Targetted_Resources": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "string",
+                          "example": "true"
+                        },
+                        "DCH": {
+                          "type": "string",
+                          "example": "false"
+                        }
+                      }
+                    },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
+                    "Status": {
+                      "type": "string",
+                      "example": "Active"
+                    },
+                    "Type": {
+                      "type": "string",
+                      "example": "PO"
+                    },
+                    "PO_Number": {
+                      "type": "string",
+                      "example": "ERP34"
+                    },
+                    "PO_Amount": {
+                      "type": "number",
+                      "example": 3434
+                    },
+                    "Currency": {
+                      "type": "string",
+                      "example": "USD"
+                    },
+                    "Document_Name": {
+                      "type": "string",
+                      "example": "VB_ERP"
+                    },
+                    "POSOW_endDate": {
+                      "type": "string",
+                      "example": "2014-01-22T14:56:59.301Z"
+                    },
+                    "Remarks": {
+                      "type": "string",
+                      "example": "Created New PO"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "Created_At": {
+                      "type": "string",
+                      "example": "2021-12-10T05:55:17.961Z"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "PO/SOW"
+        ],
+        "description": "Update PO/SOW details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Project_Id": {
+                  "type": "string",
+                  "example": "61bb0622bf6c0b45dff12f77"
+                },
+                "Client_Name": {
+                  "type": "string",
+                  "example": "Valuebound Solutions"
+                },
+                "Project_Name": {
+                  "type": "string",
+                  "example": "ERP System"
+                },
+                "Client_Sponser": {
+                  "type": "string",
+                  "example": "Jai"
+                },
+                "Client_Finance_Controller": {
+                  "type": "string",
+                  "example": "Tanmay"
+                },
+                "Targetted_Resources": {
+                  "type": "object",
+                  "properties": {
+                    "ABC": {
+                      "type": "string",
+                      "example": "true"
+                    },
+                    "DCH": {
+                      "type": "string",
+                      "example": "false"
+                    }
+                  }
+                },
+                "Targeted_Res_AllocationRate": {
+                  "type": "object",
+                  "properties": {
+                    "ABC": {
+                      "type": "number",
+                      "example": 50
+                    },
+                    "DCH": {
+                      "type": "number",
+                      "example": 60
+                    }
+                  }
+                },
+                "Status": {
+                  "type": "string",
+                  "example": "Active"
+                },
+                "Type": {
+                  "type": "string",
+                  "example": "PO"
+                },
+                "PO_Amount": {
+                  "type": "number",
+                  "example": 3434
+                },
+                "Currency": {
+                  "type": "string",
+                  "example": "USD"
+                },
+                "Document_Name": {
+                  "type": "string",
+                  "example": "VB_ERP"
+                },
+                "POSOW_endDate": {
+                  "type": "string",
+                  "example": "2014-01-22T14:56:59.301Z"
+                },
+                "Remarks": {
+                  "type": "string",
+                  "example": "Created New PO"
+                }
+              },
+              "required": [
+                "Project_Id",
+                "Client_Name",
+                "Project_Name",
+                "Client_Sponser",
+                "Client_Finance_Controller",
+                "Targetted_Resources",
+                "Targeted_Res_AllocationRate",
+                "Status",
+                "Type",
+                "PO_Amount",
+                "Currency",
+                "Document_Name",
+                "POSOW_endDate",
+                "Remarks"
+              ]
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "type": "string",
+            "description": "Project ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PO/SOW details updated successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "empPrimaryCapiblities": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "61b8c18ce56e27b307b73168"
+                      },
+                      "projectId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61b8c18ce56e27b307b73166"
+                          },
+                          "vbProjectId": {
+                            "type": "string",
+                            "example": "VB-PROJ-1"
+                          },
+                          "projectName": {
+                            "type": "string",
+                            "example": "Valuebound"
+                          },
+                          "clientProjectSponsor": {
+                            "type": "string",
+                            "example": "Jai K"
+                          },
+                          "clientFinanceController": {
+                            "type": "string",
+                            "example": "Jai K"
+                          }
+                        }
+                      },
+                      "primaryCapiblities": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "allocationStartDate": {
+                        "type": "string",
+                        "example": "2021-12-14"
+                      },
+                      "allocationEndDate": {
+                        "type": "string",
+                        "example": "2021-12-17"
+                      },
+                      "allocationPercentage": {
+                        "type": "number",
+                        "example": 57
+                      },
+                      "rackRate": {
+                        "type": "number",
+                        "example": 45132
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "empId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61b59800430ab0392fd92640"
+                          },
+                          "empId": {
+                            "type": "number",
+                            "example": 15
+                          },
+                          "empName": {
+                            "type": "string",
+                            "example": "sanjay"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/poSow/sort/{fieldName}": {
+      "get": {
+        "tags": [
+          "PO/SOW"
+        ],
+        "description": "Get PO/SOW list",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "description": "Data limit per page"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "pageCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "currentPage": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61a49363c343b8220cff6c08"
+                          },
+                          "Project_Id": {
+                            "type": "string",
+                            "example": "61bb0622bf6c0b45dff12f77"
+                          },
+                          "Client_Name": {
+                            "type": "string",
+                            "example": "Valuebound Solutions"
+                          },
+                          "Project_Name": {
+                            "type": "string",
+                            "example": "ERP System"
+                          },
+                          "Client_Sponser": {
+                            "type": "string",
+                            "example": "Jai"
+                          },
+                          "Client_Finance_Controller": {
+                            "type": "string",
+                            "example": "Tanmay"
+                          },
+                          "Targetted_Resources": {
+                            "type": "object",
+                            "properties": {
+                              "ABC": {
+                                "type": "string",
+                                "example": "true"
+                              },
+                              "DCH": {
+                                "type": "string",
+                                "example": "false"
+                              }
+                            }
+                          },
+                          "Targeted_Res_AllocationRate": {
+                            "type": "object",
+                            "properties": {
+                              "ABC": {
+                                "type": "number",
+                                "example": 50
+                              },
+                              "DCH": {
+                                "type": "number",
+                                "example": 60
+                              }
+                            }
+                          },
+                          "Status": {
+                            "type": "string",
+                            "example": "Active"
+                          },
+                          "Type": {
+                            "type": "string",
+                            "example": "PO"
+                          },
+                          "PO_Number": {
+                            "type": "string",
+                            "example": "ERP34"
+                          },
+                          "PO_Amount": {
+                            "type": "number",
+                            "example": 3434
+                          },
+                          "Currency": {
+                            "type": "string",
+                            "example": "USD"
+                          },
+                          "Document_Name": {
+                            "type": "string",
+                            "example": "VB_ERP"
+                          },
+                          "POSOW_endDate": {
+                            "type": "string",
+                            "example": "2014-01-22T14:56:59.301Z"
+                          },
+                          "Remarks": {
+                            "type": "string",
+                            "example": "Created New PO"
+                          },
+                          "__v": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "Created_At": {
+                            "type": "string",
+                            "example": "2021-12-10T05:55:17.961Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/poSow/capturePO/clients": {
+      "get": {
+        "tags": [
+          "PO/SOW"
+        ],
+        "description": "Get Client list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "clientName": {
+                        "type": "string",
+                        "example": "Nasdaq"
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/poSow/capturePO/clients/{clientName}": {
+      "get": {
+        "tags": [
+          "PO/SOW"
+        ],
+        "description": "Get Project list of a Client",
+        "parameters": [
+          {
+            "name": "clientName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "61b857d0b08340b2ddad1341"
+                      },
+                      "projectName": {
+                        "type": "string",
+                        "example": "Employee Management"
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/poSow/capturePO/details": {
+      "get": {
+        "tags": [
+          "PO/SOW"
+        ],
+        "description": "Get project details of given Id",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "type": "string",
+            "description": "Project ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "empPrimaryCapiblities": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "61b8c18ce56e27b307b73168"
+                      },
+                      "projectId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61b8c18ce56e27b307b73166"
+                          },
+                          "vbProjectId": {
+                            "type": "string",
+                            "example": "VB-PROJ-1"
+                          },
+                          "projectName": {
+                            "type": "string",
+                            "example": "Valuebound"
+                          },
+                          "clientProjectSponsor": {
+                            "type": "string",
+                            "example": "Jai K"
+                          },
+                          "clientFinanceController": {
+                            "type": "string",
+                            "example": "Jai K"
+                          }
+                        }
+                      },
+                      "primaryCapiblities": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "allocationStartDate": {
+                        "type": "string",
+                        "example": "2021-12-14"
+                      },
+                      "allocationEndDate": {
+                        "type": "string",
+                        "example": "2021-12-17"
+                      },
+                      "allocationPercentage": {
+                        "type": "number",
+                        "example": 57
+                      },
+                      "rackRate": {
+                        "type": "number",
+                        "example": 45132
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "empId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61b59800430ab0392fd92640"
+                          },
+                          "empId": {
+                            "type": "number",
+                            "example": 15
+                          },
+                          "empName": {
+                            "type": "string",
+                            "example": "sanjay"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/employees/qr": {
+      "get": {
+        "tags": [
+          "Generate QR code"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/employees/designations": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/employees/departments": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/employees/{id}": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Create new Employee",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Employee By id successful.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "empId": {
+                      "type": "string",
+                      "example": "VB002"
+                    },
+                    "empName": {
+                      "type": "string",
+                      "example": "name2"
+                    },
+                    "empEmail": {
+                      "type": "string",
+                      "example": "name2@email.com"
+                    },
+                    "empPersonalEmail": {
+                      "type": "string",
+                      "example": "name2@email.com"
+                    },
+                    "empPhoneNumber": {
+                      "type": "string",
+                      "example": "898100684645"
+                    },
+                    "empDoj": {
+                      "type": "string",
+                      "example": "1990-11-09T18:30:00.000Z"
+                    },
+                    "empDob": {
+                      "type": "string",
+                      "example": "2019-12-31T18:30:00.000Z"
+                    },
+                    "empDepartment": {
+                      "type": "string",
+                      "example": "Development"
+                    },
+                    "empDesignation": {
+                      "type": "string",
+                      "example": "Developer Relations"
+                    },
+                    "empReportingManager": {
+                      "type": "string",
+                      "example": "Gautam"
+                    },
+                    "empConnections": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "empHobbies": {
+                      "type": "array",
+                      "example": [
+                        "Cricket",
+                        "Movies"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "empAboutMe": {
+                      "type": "string",
+                      "example": "Tech Enthusiast"
+                    },
+                    "empCurrentAddress": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empResidentialAddress": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empBand": {
+                      "type": "string",
+                      "example": "90"
+                    },
+                    "empCtc": {
+                      "type": "number",
+                      "example": 600000
+                    },
+                    "empGraduation": {
+                      "type": "string",
+                      "example": "College_name_goes_here"
+                    },
+                    "empGraduationUniversity": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPostGraduation": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPostGraduationUniversity": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPrimaryCapability": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empSkillSet": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empCertifications": {
+                      "type": "array",
+                      "example": [
+                        "AWS",
+                        "Scrum"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "LEADERSHIP"
+                    },
+                    "slackMemId": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-12-14T10:45:15.026Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-12-14T10:45:15.035Z"
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 2
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Update Employee",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "example": "USER"
+                },
+                "empGraduation": {
+                  "type": "string",
+                  "example": "College Name"
+                },
+                "empEmail": {
+                  "type": "string",
+                  "example": "user2@email.com"
+                },
+                "empPrimaryCapability": {
+                  "type": "array",
+                  "example": [
+                    "Frontend",
+                    "Git"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "role",
+                "empGraduation",
+                "empEmail",
+                "empPrimaryCapability"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "empId": {
+                      "type": "string",
+                      "example": "VB002"
+                    },
+                    "empName": {
+                      "type": "string",
+                      "example": "name2"
+                    },
+                    "empEmail": {
+                      "type": "string",
+                      "example": "user2@email.com"
+                    },
+                    "empPersonalEmail": {
+                      "type": "string",
+                      "example": "name2@email.com"
+                    },
+                    "empPhoneNumber": {
+                      "type": "string",
+                      "example": "898100684645"
+                    },
+                    "empDoj": {
+                      "type": "string",
+                      "example": "1990-11-09T18:30:00.000Z"
+                    },
+                    "empDob": {
+                      "type": "string",
+                      "example": "2019-12-31T18:30:00.000Z"
+                    },
+                    "empDepartment": {
+                      "type": "string",
+                      "example": "Development"
+                    },
+                    "empDesignation": {
+                      "type": "string",
+                      "example": "Developer Relations"
+                    },
+                    "empReportingManager": {
+                      "type": "string",
+                      "example": "Gautam"
+                    },
+                    "empConnections": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "empHobbies": {
+                      "type": "array",
+                      "example": [
+                        "Cricket",
+                        "Movies"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "empAboutMe": {
+                      "type": "string",
+                      "example": "Tech Enthusiast"
+                    },
+                    "empCurrentAddress": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empResidentialAddress": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empBand": {
+                      "type": "string",
+                      "example": "90"
+                    },
+                    "empCtc": {
+                      "type": "number",
+                      "example": 600000
+                    },
+                    "empGraduation": {
+                      "type": "string",
+                      "example": "College Name"
+                    },
+                    "empGraduationUniversity": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPostGraduation": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPostGraduationUniversity": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPrimaryCapability": {
+                      "type": "array",
+                      "example": [
+                        "Frontend",
+                        "Git"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "empSkillSet": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empCertifications": {
+                      "type": "array",
+                      "example": [
+                        "AWS",
+                        "Scrum"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "USER"
+                    },
+                    "slackMemId": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-12-14T10:45:15.026Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-12-16T04:10:14.205Z"
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 2
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Delete Employee",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee deleted successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": ""
+                },
+                "code": {
+                  "type": "number",
+                  "example": 204
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Get All Employees from database",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "description": "Data limit per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "empId": {
+                        "type": "string",
+                        "example": "VB003"
+                      },
+                      "empName": {
+                        "type": "string",
+                        "example": "name3"
+                      },
+                      "empEmail": {
+                        "type": "string",
+                        "example": "name3@email.com"
+                      },
+                      "empPersonalEmail": {
+                        "type": "string",
+                        "example": "name3@email.com"
+                      },
+                      "empPhoneNumber": {
+                        "type": "string",
+                        "example": "8984645"
+                      },
+                      "empDoj": {
+                        "type": "string",
+                        "example": "1990-11-09T18:30:00.000Z"
+                      },
+                      "empDob": {
+                        "type": "string",
+                        "example": "2019-12-31T18:30:00.000Z"
+                      },
+                      "empDepartment": {
+                        "type": "string",
+                        "example": "Development"
+                      },
+                      "empDesignation": {
+                        "type": "string",
+                        "example": "Developer Relations"
+                      },
+                      "empReportingManager": {
+                        "type": "string",
+                        "example": "Gautam"
+                      },
+                      "empConnections": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "empHobbies": {
+                        "type": "array",
+                        "example": [
+                          "Cricket",
+                          "Movies"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "empAboutMe": {
+                        "type": "string",
+                        "example": "Tech Enthusiast"
+                      },
+                      "empCurrentAddress": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "empResidentialAddress": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "empBand": {
+                        "type": "string",
+                        "example": "90"
+                      },
+                      "empCtc": {
+                        "type": "number",
+                        "example": 600000
+                      },
+                      "empGraduation": {
+                        "type": "string",
+                        "example": "College_name_goes_here"
+                      },
+                      "empGraduationUniversity": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "empPostGraduation": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "empPostGraduationUniversity": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "empPrimaryCapability": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "empSkillSet": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "empCertifications": {
+                        "type": "array",
+                        "example": [
+                          "AWS",
+                          "Scrum"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "role": {
+                        "type": "string",
+                        "example": "LEADERSHIP"
+                      },
+                      "slackMemId": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2021-12-14T11:08:22.017Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2021-12-14T11:08:22.046Z"
+                      },
+                      "count": {
+                        "type": "number",
+                        "example": 3
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Create new Employee",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "empName": {
+                  "type": "string",
+                  "example": "name3"
+                },
+                "empEmail": {
+                  "type": "string",
+                  "example": "name3@email.com"
+                },
+                "empDoj": {
+                  "type": "string",
+                  "example": "11/10/90"
+                },
+                "empDepartment": {
+                  "type": "string",
+                  "example": "Development"
+                },
+                "empDesignation": {
+                  "type": "string",
+                  "example": "Developer Relations"
+                },
+                "empBand": {
+                  "type": "string",
+                  "example": "90"
+                },
+                "empCtc": {
+                  "type": "number",
+                  "example": 600000
+                },
+                "empReportingManager": {
+                  "type": "string",
+                  "example": "Gautam"
+                },
+                "empPersonalEmail": {
+                  "type": "string",
+                  "example": "name3@email.com"
+                },
+                "empPhoneNumber": {
+                  "type": "string",
+                  "example": "8984645"
+                },
+                "empDob": {
+                  "type": "string",
+                  "example": "1/1/20"
+                },
+                "empGraduation": {
+                  "type": "string",
+                  "example": "College_name_goes_here"
+                },
+                "empAboutMe": {
+                  "type": "string",
+                  "example": "Tech Enthusiast"
+                },
+                "empHobbies": {
+                  "type": "array",
+                  "example": [
+                    "Cricket",
+                    "Movies"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "empPrimaryCapability": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "empSkillSet": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "empCertifications": {
+                  "type": "array",
+                  "example": [
+                    "AWS",
+                    "Scrum"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "role": {
+                  "type": "string",
+                  "example": "LEADERSHIP"
+                }
+              },
+              "required": [
+                "empName",
+                "empEmail",
+                "empDoj",
+                "empDepartment",
+                "empDesignation",
+                "empBand",
+                "empCtc",
+                "empReportingManager",
+                "empPersonalEmail",
+                "empPhoneNumber",
+                "empDob",
+                "empGraduation",
+                "empAboutMe",
+                "empHobbies",
+                "empPrimaryCapability",
+                "empSkillSet",
+                "empCertifications",
+                "role"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Employee created successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 201
+                },
+                "message": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "empId": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empName": {
+                      "type": "string",
+                      "example": "name3"
+                    },
+                    "empEmail": {
+                      "type": "string",
+                      "example": "name3@email.com"
+                    },
+                    "empPersonalEmail": {
+                      "type": "string",
+                      "example": "name3@email.com"
+                    },
+                    "empPhoneNumber": {
+                      "type": "string",
+                      "example": "8984645"
+                    },
+                    "empDoj": {
+                      "type": "string",
+                      "example": "1990-11-09T18:30:00.000Z"
+                    },
+                    "empDob": {
+                      "type": "string",
+                      "example": "2019-12-31T18:30:00.000Z"
+                    },
+                    "empDepartment": {
+                      "type": "string",
+                      "example": "Development"
+                    },
+                    "empDesignation": {
+                      "type": "string",
+                      "example": "Developer Relations"
+                    },
+                    "empReportingManager": {
+                      "type": "string",
+                      "example": "Gautam"
+                    },
+                    "empConnections": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "empHobbies": {
+                      "type": "array",
+                      "example": [
+                        "Cricket",
+                        "Movies"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "empAboutMe": {
+                      "type": "string",
+                      "example": "Tech Enthusiast"
+                    },
+                    "empCurrentAddress": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empResidentialAddress": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empBand": {
+                      "type": "string",
+                      "example": "90"
+                    },
+                    "empCtc": {
+                      "type": "number",
+                      "example": 600000
+                    },
+                    "empGraduation": {
+                      "type": "string",
+                      "example": "College_name_goes_here"
+                    },
+                    "empGraduationUniversity": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPostGraduation": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPostGraduationUniversity": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "empPrimaryCapability": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empSkillSet": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empCertifications": {
+                      "type": "array",
+                      "example": [
+                        "AWS",
+                        "Scrum"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "LEADERSHIP"
+                    },
+                    "slackMemId": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-12-14T11:08:22.017Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-12-14T11:08:22.017Z"
+                    },
+                    "count": {
+                      "type": "number",
+                      "example": 3
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/reward/employee": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Get all employees",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "dob",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "workAnniversary",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "getEmpByID",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "empUnderManager",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "managerDetail",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "empId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "empName",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "empDes",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "610d090636ba149966bd3b55"
+                          },
+                          "empName": {
+                            "type": "string",
+                            "example": "Hello"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/rewars/employeesearch": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "description": "Search Employees",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "description": "Employee name which you want to search"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "610bc1b31b82a66f6bcd64ea"
+                    },
+                    "empName": {
+                      "type": "string",
+                      "example": "name of employee"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reviews/": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Get reviews list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "610d090636ba149966bd3b55"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2021-11-26T09:25:14.681Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2021-11-26T09:25:14.681Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/reviews/{id}": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Get reviews list",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61af3ce7fd077c922fadd9ba"
+                          },
+                          "reqId": {
+                            "type": "number",
+                            "example": 10
+                          },
+                          "reqName": {
+                            "type": "string",
+                            "example": "admin"
+                          },
+                          "reqType": {
+                            "type": "string",
+                            "example": "profile-creation"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "pending"
+                          },
+                          "employeeDetails": {
+                            "type": "object",
+                            "properties": {
+                              "slackMemId": {
+                                "type": "string",
+                                "example": ""
+                              },
+                              "empName": {
+                                "type": "string",
+                                "example": "alan sajan"
+                              },
+                              "empEmail": {
+                                "type": "string",
+                                "example": "sajan@mail.com"
+                              },
+                              "empDoj": {
+                                "type": "string",
+                                "example": "2021-11-20T00:00:00.000Z"
+                              },
+                              "empDob": {
+                                "type": "string",
+                                "example": "2021-11-20T00:00:00.000Z"
+                              },
+                              "empDepartment": {
+                                "type": "string",
+                                "example": "sales"
+                              },
+                              "empDesignation": {
+                                "type": "string",
+                                "example": "marketing"
+                              },
+                              "empReportingManager": {
+                                "type": "string",
+                                "example": "sunilee"
+                              },
+                              "empConnections": {
+                                "type": "number",
+                                "example": 10
+                              },
+                              "empHobbies": {
+                                "type": "array",
+                                "example": [
+                                  "Music",
+                                  "Dance"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "empAboutMe": {
+                                "type": "string",
+                                "example": "i'm always cool..!"
+                              },
+                              "empCurrentAddress": {
+                                "type": "string",
+                                "example": "gujrat"
+                              },
+                              "empResidentialAddress": {
+                                "type": "string",
+                                "example": "gujrat"
+                              },
+                              "empBand": {
+                                "type": "string",
+                                "example": "12"
+                              },
+                              "empGraduation": {
+                                "type": "string",
+                                "example": "bba"
+                              },
+                              "empGraduationUniversity": {
+                                "type": "string",
+                                "example": "du"
+                              },
+                              "empPostGraduation": {
+                                "type": "string",
+                                "example": "mba"
+                              },
+                              "empPostGraduationUniversity": {
+                                "type": "string",
+                                "example": "iim"
+                              },
+                              "empPrimaryCapability": {
+                                "type": "array",
+                                "example": [
+                                  "Communication"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "empSkillSet": {
+                                "type": "array",
+                                "example": [
+                                  "Communication skill"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "empCertifications": {
+                                "type": "array",
+                                "example": [
+                                  "Power Bi"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "role": {
+                                "type": "string",
+                                "example": "employee"
+                              },
+                              "personalDetails": {
+                                "type": "array",
+                                "example": [],
+                                "items": {}
+                              },
+                              "professionalDetails": {
+                                "type": "array",
+                                "example": [],
+                                "items": {}
+                              },
+                              "skillsDetails": {
+                                "type": "array",
+                                "example": [],
+                                "items": {}
+                              }
+                            }
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2021-12-07T10:52:23.199Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "example": "2021-12-07T10:52:23.199Z"
+                          },
+                          "__v": {
+                            "type": "number",
+                            "example": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Review"
+        ],
+        "description": "Delete review",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reqId",
+            "in": "path",
+            "type": "string",
+            "description": "Review which we want to delete",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Review deleted successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 204
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Deleted"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/projects/active": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/active/{fieldName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/done": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/done/{fieldName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/others": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/others/{fieldName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/allocations/": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "example": "any"
+                },
+                "resources": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "example": "any"
+                },
+                "resources": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/{id}": {
+      "delete": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/allocated": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/allocations/allocated/{fieldName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/allocations/onbench": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/onbench/{fieldName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/totalallocation": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "empId",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/filteremp": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/allocations/managers": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "empName",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/cims/": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "searchData",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "brandName": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "example": "any"
+                },
+                "brandName": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/cims/status": {
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "brandName",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/cims/filterclients": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/cims/filterclients/{id}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {}
+}

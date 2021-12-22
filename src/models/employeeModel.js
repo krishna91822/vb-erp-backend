@@ -3,6 +3,29 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 
+const addressSchema = new mongoose.Schema(
+  {
+    empAddressLineOne: {
+      type: String,
+      trim: true,
+    },
+    empAddressCity: {
+      type: String,
+      trim: true,
+    },
+    empAddressState: {
+      type: String,
+      trim: true,
+    },
+    empAddressPinCode: {
+      type: String,
+      trim: true,
+    },
+  },
+  { _id: false }
+);
+
+
 const otherField = new mongoose.Schema({
   fieldName: {
     type: String,
@@ -20,8 +43,13 @@ const otherField = new mongoose.Schema({
 
 const employeeSchema = new mongoose.Schema(
   {
-    empId: {
+    count: {
       type: Number,
+      unique: true,
+    },
+    empId: {
+      type: String,
+      default: "",
       unique: true,
     },
     empName: {
@@ -35,17 +63,10 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide your email"],
       trim: true,
-      unique: true,
-      validate: [validator.isEmail, "Please provide a valid email address"],
     },
     empPersonalEmail: {
       type: String,
       trim: true,
-      required: true,
-      unique: true,
-    },
-    empPhoneNumber: {
-      type: String,
       required: true,
     },
     empDoj: {
@@ -54,14 +75,10 @@ const employeeSchema = new mongoose.Schema(
     },
     empDob: {
       type: Date,
-      required: [true, "A employee must have a date of birth"],
-    },
-    empPhoto: {
-      type: String,
-      trim: true,
     },
     empDepartment: {
       type: String,
+      lowercase: true,
       trim: true,
       default: "",
       required: true,
@@ -78,6 +95,10 @@ const employeeSchema = new mongoose.Schema(
       required: true,
       default: "",
     },
+    empPhoto: {
+      type: String,
+      trim: true,
+    },
     empConnections: {
       type: Number,
       lowercase: true,
@@ -93,29 +114,14 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       trim: true,
       default: "Something about me.",
-      required: true,
-    },
-    empCurrentAddress: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      default: "",
-    },
-    empResidentialAddress: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      default: "",
     },
     empBand: {
       type: String,
       lowercase: true,
       trim: true,
-      default: "",
     },
     empGraduation: {
       type: String,
-      required: true,
       trim: true,
       default: "",
     },
@@ -151,6 +157,8 @@ const employeeSchema = new mongoose.Schema(
       trim: true,
       default: [],
     },
+    empCurrentAddress: addressSchema,
+    empResidentialAddress: addressSchema,
     role: {
       type: String,
       uppercase: true,
@@ -163,8 +171,10 @@ const employeeSchema = new mongoose.Schema(
           "FINANCE_ADMIN",
           "PMS_ADMIN",
           "SUPER_ADMIN",
+          "ADMIN",
         ],
-        message: "role must be admin, employee and aprover only!",
+        message:
+          "role must be USER, APPROVER,LEADERSHIP,HR_ADMIN,FINANCE_ADMIN,PMS_ADMIN,SUPER_ADMIN, only",
       },
       default: "USER",
     },
@@ -180,13 +190,36 @@ const employeeSchema = new mongoose.Schema(
       type: [otherField],
       default: undefined,
     },
+    slackMemId: {
+      type: String,
+      default: undefined,
+    },
+    empPhoneNumber: {
+      type: String,
+    },
+    empCtc: {
+      type: Number,
+      min: 0,
+    },
   },
   { timestamps: true }
 );
 
-employeeSchema.plugin(AutoIncrement, { inc_field: "empId" });
+employeeSchema.plugin(AutoIncrement, { inc_field: "count" });
 
+employeeSchema.post("save", function () {
+  let temp;
+  const c = this.count;
+  if (c < 10) temp = "00" + c.toString();
+  else if (c < 100) temp = "0" + c.toString();
+  else temp = c.toString();
+  const res = "VB" + temp;
+  Employee.findOneAndUpdate({ count: c }, { empId: res }).then((err, docs) => {
+    if (err) console.log(err);
+    else console.log(`docs are ${JSON.stringify(docs)}`);
+  });
+});
 //Employee model class
 const Employee = mongoose.model("Employee", employeeSchema);
 
-module.exports = Employee;
+module.exports = { Employee };
