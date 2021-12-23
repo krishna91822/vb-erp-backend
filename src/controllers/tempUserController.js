@@ -1,15 +1,22 @@
 const tempUserModal = require("../models/tempUserSchema");
+const rolesModal = require("../models/rolesSchema");
 const { customResponse } = require("../utility/helper");
 
 //Get all records in database
 const getUsers = async (req, res) => {
-  const username = req.query.username || "";
+  const name = req.query.username || "";
   const pass = req.query.pass || "";
 
-  const searchQuery = { name: username };
-
   try {
-    const data = await tempUserModal.find(searchQuery);
+    const userData = await tempUserModal.find({name});
+
+    const role = userData[0].roles[0];
+    const rolesData = await rolesModal.find({ label: role });
+
+    const data = {};
+    data.name = name;
+    data.roles = userData[0].roles;
+    data.permissions = rolesData[0].permissions;
 
     code = 200;
     message = "Data fetched successfully";
