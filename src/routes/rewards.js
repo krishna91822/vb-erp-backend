@@ -9,7 +9,8 @@ const {
   editReward,
   deleteReward,
   launchRewards,
-  searchRewards
+  searchRewards,
+  launchRewardsinstantaly
 } = require("../controllers/rewardController");
 
 router.get("/", getRewards);
@@ -20,6 +21,8 @@ router.get("/:id",getRewardDetail);
 router.put("/:id",editReward);
 router.delete("/:id",deleteReward);
 router.put("/launch/:id",launchRewards);
+router.get("/launchinstantly/:id",launchRewardsinstantaly);
+
 
 //create getrewards logic
 

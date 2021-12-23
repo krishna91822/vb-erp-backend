@@ -5,7 +5,7 @@
     "description": "Valuebound builds digital user experience platforms that bring technology and people together.",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:4000",
   "basePath": "/",
   "tags": [
     {
@@ -1824,6 +1824,149 @@
                 "code": {
                   "type": "number",
                   "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rewards/launchinstantly/{id}": {
+      "get": {
+        "tags": [
+          "Rewards"
+        ],
+        "description": "This API is used to send message on slack instatly it only work when reward are in in progress state",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Reward id which we want to launch instantly"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "message successfully sent on slack done"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad request"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "reward are not in In Progress State",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 422
+                },
+                "message": {
+                  "type": "string",
+                  "example": "reward are not in In Progress State"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "failure"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 500
                 },
                 "message": {
                   "type": "string",

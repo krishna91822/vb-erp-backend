@@ -2,6 +2,7 @@ const { object } = require("joi");
 const rewardsModal = require("../models/reward");
 const { rewardSchema } = require("../schema/rewardSchema");
 const { customResponse, customPagination } = require("../utility/helper");
+const launchReward=require("../slack/LaunchRewardbyid")
 
 const getRewards = async (req, res) => {
   /*
@@ -747,6 +748,85 @@ const searchRewards = async (req, res) => {
     res.status(code).send(resdata);
   }
 };
+
+const launchRewardsinstantaly = async (req, res) => {
+  /* 	
+      #swagger.tags = ['Rewards']
+      #swagger.description = 'This API is used to send message on slack instatly it only work when reward are in in progress state' 
+       #swagger.parameters['id'] = {
+        in: 'path',
+        type: 'string',
+        description: 'Reward id which we want to launch instantly' 
+      }
+      #swagger.responses[200] = {
+        schema:{
+          "status": "success",
+          "code": 200,
+          "message": "message successfully sent on slack done",
+          "data":  {},
+          "error": {}
+        }
+      }
+      #swagger.responses[422] = {
+      description: 'reward are not in In Progress State',
+      schema: { 
+        "status": "failure",
+        "code": 422,
+        "message": "reward are not in In Progress State",
+        "data":{},
+        "error": {}
+        }
+      }
+      #swagger.responses[400] = {
+      description: 'Bad request',
+      schema: { 
+        "status": "failure",
+        "code": 400,
+        "message": "Bad request",
+        "data":{},
+        "error": {}
+        }
+      }
+      #swagger.responses[500] = {
+      description: 'Internal Server Error',
+      schema: { 
+        "status": "failure",
+        "code": 500,
+        "message": "Internal Server Error",
+        "data":{},
+        "error": {}
+        }
+      }
+  */
+
+  let code,message
+  try{
+    _id=req.params.id
+    const reward=await rewardsModal.findById({_id})
+    if (!reward) {
+      code = 400;
+      message = "Bad Request";
+      const resdata = customResponse({ code, message });
+      return res.status(code).send(resdata);
+    }
+    console.log(reward.status)
+    if(reward.status!="In Progress"){
+      code = 422
+      message="reward are not in In Progress State"
+      const resdata=customResponse({code,message})
+      return res.status(code).send(resdata)
+    }
+      const resp=await launchReward(req.params.id);
+      code =200
+      message=`message successfully sent on slack ${resp}`
+      const resdata = customResponse({code,message})
+      res.status(code).send(resdata)
+  }catch(error) {
+    code =500;
+    const resdata=customResponse({code ,message,err:error})
+    res.status(code).send(resdata)
+  }
+}
 module.exports = {
   storeReward,
   getRewards,
@@ -755,4 +835,5 @@ module.exports = {
   deleteReward,
   launchRewards,
   searchRewards,
+  launchRewardsinstantaly
 };
