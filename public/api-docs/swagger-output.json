@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Valuebound Consulting Services LLP",
-    "description": "Valuebound builds digital user experience platforms that bring technology and people together.",
+    "title": "REST API",
+    "description": "",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
@@ -5191,9 +5191,124 @@
         }
       },
       "post": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
+        "tags": [
+          "Review"
+        ],
+        "description": "Create new Review",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reqType": {
+                  "type": "string",
+                  "example": "profile-update"
+                },
+                "reqName": {
+                  "type": "string",
+                  "example": "DIVYANSHU"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "pending"
+                },
+                "employeeDetails": {
+                  "type": "object",
+                  "properties": {
+                    "empName": {
+                      "type": "string",
+                      "example": "name3"
+                    },
+                    "empEmail": {
+                      "type": "string",
+                      "example": "name3@email.com"
+                    },
+                    "empDoj": {
+                      "type": "string",
+                      "example": "11/10/90"
+                    },
+                    "empDepartment": {
+                      "type": "string",
+                      "example": "Development"
+                    },
+                    "empDesignation": {
+                      "type": "string",
+                      "example": "Developer Relations"
+                    },
+                    "empBand": {
+                      "type": "string",
+                      "example": "90"
+                    },
+                    "empCtc": {
+                      "type": "number",
+                      "example": 600000
+                    },
+                    "empReportingManager": {
+                      "type": "string",
+                      "example": "Gautam"
+                    },
+                    "empPersonalEmail": {
+                      "type": "string",
+                      "example": "name3@email.com"
+                    },
+                    "empPhoneNumber": {
+                      "type": "string",
+                      "example": "8984645"
+                    },
+                    "empDob": {
+                      "type": "string",
+                      "example": "1/1/20"
+                    },
+                    "empGraduation": {
+                      "type": "string",
+                      "example": "College_name_goes_here"
+                    },
+                    "empAboutMe": {
+                      "type": "string",
+                      "example": "Tech Enthusiast"
+                    },
+                    "empHobbies": {
+                      "type": "array",
+                      "example": [
+                        "Cricket",
+                        "Movies"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "empPrimaryCapability": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empSkillSet": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empCertifications": {
+                      "type": "array",
+                      "example": [
+                        "AWS",
+                        "Scrum"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "LEADERSHIP"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
