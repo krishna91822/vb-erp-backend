@@ -9,17 +9,17 @@ const {
   editReward,
   deleteReward,
   launchRewards,
-  searchRewards
+  searchRewards,
 } = require("../controllers/rewardController");
 
 router.get("/", getRewards);
 // router.post("/", createRewards);
-router.post("/",storeReward);
-router.get("/search",searchRewards);
-router.get("/:id",getRewardDetail);
-router.put("/:id",editReward);
-router.delete("/:id",deleteReward);
-router.put("/launch/:id",launchRewards);
+router.post("/", storeReward);
+router.get("/search", searchRewards);
+router.get("/:id", getRewardDetail);
+router.put("/:id", editReward);
+router.delete("/:id", deleteReward);
+router.put("/launch/:id", launchRewards);
 
 //create getrewards logic
 

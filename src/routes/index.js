@@ -5,6 +5,8 @@ const userRoutes = require("./users");
 const rewardRoutes = require("./rewards");
 const poSowRoutes = require("./poSow");
 const cimsRoutes = require("./cims");
+const tempUserRoutes = require("./tempUser");
+const rolesRoutes = require("./roles");
 const otherRoutes = require("./others");
 const assigneeRoutes = require("./assign");
 const invoiceRoutes = require("./invoiceroutes");
@@ -28,5 +30,7 @@ router.use("/reviews", reviewRoutes);
 router.use("/projects", ProjectRouter);
 router.use("/allocations", ProjectEmployeeRouter);
 router.use("/cims", cimsRoutes);
+router.use("/tempUsers", tempUserRoutes);
+router.use("/roles", rolesRoutes);
 
 module.exports = router;
