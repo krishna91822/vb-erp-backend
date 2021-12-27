@@ -8,5 +8,5 @@ const universitySchema = new mongoose.Schema({
   },
 });
 
-const universityModel = mongoose.model("colleges", universitySchema);
+const universityModel = mongoose.model("universities", universitySchema);
 module.exports = { universityModel };
