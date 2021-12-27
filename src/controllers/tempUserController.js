@@ -4,30 +4,46 @@ const { customResponse } = require("../utility/helper");
 
 //Get all records in database
 const getUsers = async (req, res) => {
-  const name = req.query.username || "";
-  const pass = req.query.pass || "";
+  const email = req.query.username || "";
+  const password = req.query.pass || "";
 
   try {
-    const userData = await tempUserModal.find({name});
+    const userData = await tempUserModal.find({$and:[{email}, {password}]});
 
-    const role = userData[0].roles[0];
-    const rolesData = await rolesModal.find({ label: role });
+    if (userData.length) { 
+      const role = userData[0].roles[0];
+      const rolesData = await rolesModal.find({ label: role });
 
-    const data = {};
-    data.name = name;
-    data.roles = userData[0].roles;
-    data.permissions = rolesData[0].permissions;
+      const data = {};
+      data.email = email;
+      data.name = userData[0].name;
+      data.roles = userData[0].roles;
+      data.permissions = rolesData[0].permissions;
 
-    code = 200;
-    message = "Data fetched successfully";
+      code = 200;
+      message = "Data fetched successfully";
 
-    const resData = customResponse({
-      data,
-      code,
-      message,
-    });
+      const resData = customResponse({
+        data,
+        code,
+        message,
+      });
 
-    res.send(resData);
+      res.send(resData);
+    } else {
+      code = 404;
+      message = "User with the given credentials doesn't exists!";
+
+      const resData = customResponse({
+        code,
+        message,
+        error: {
+          message,
+        }
+      });
+
+      res.send(resData);
+    }
   } catch (error) {
     code = 422;
 
