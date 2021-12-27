@@ -22,7 +22,6 @@ const createPoSow = async (req, res) => {
             $Client_Finance_Controller: 'Tanmay',
             $Targetted_Resources: {"Suresh":"true","Akash":"false"},
             $Targeted_Res_AllocationRate: {"ABC":50,"DCH":60},
-            $Status: 'Active',
             $Type: 'PO',
             $PO_Amount: 3434,
             $Currency: 'USD',
@@ -45,7 +44,7 @@ const createPoSow = async (req, res) => {
             "Client_Finance_Controller": 'Tanmay',
             "Targetted_Resources": {"ABC":"true","DCH":"false"},
             "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
-            "Status": 'Active',
+            "Status": 'Drafted',
             "Type": 'PO',
             "PO_Number": 'ERP34',
             "PO_Amount": 3434,
@@ -93,25 +92,6 @@ const createPoSow = async (req, res) => {
       ...req.body,
       PO_Number: num,
     }).save();
-    const invoices = new Invoice({
-      PO_Id: poSow._id,
-      client_sponsor: req.body.Client_Sponser,
-      client_finance_controller: req.body.Client_Finance_Controller,
-    });
-
-    const invoice = await invoices.save();
-    const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
-      "PO_Id",
-      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
-    );
-    const data = {
-      Client_Name: getDetails.PO_Id.Client_Name,
-      Project_Name: getDetails.PO_Id.Project_Name,
-      PO_Amount: getDetails.PO_Id.PO_Amount,
-      Received_Amount: getDetails.invoice_amount_received,
-    };
-    const content = await emailContent("N001", data);
-    emailSender(content);
 
     res.status(200).send(poSow);
   } catch (error) {
@@ -151,7 +131,7 @@ const getSortedPoList = async (req, res) => {
                 "Client_Finance_Controller": 'Tanmay',
                 "Targetted_Resources": {"ABC":"true","DCH":"false"},
                 "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
-                "Status": "Active",
+                "Status": "Drafted",
                 "Type": "PO",
                 "PO_Number": "ERP34",
                 "PO_Amount": 3434,
@@ -236,7 +216,7 @@ const getPoDeatil = async (req, res) => {
             "Client_Finance_Controller": 'Tanmay',
             "Targetted_Resources": {"ABC":"true","DCH":"false"},
             "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
-            "Status": "Active",
+            "Status": "Drafted",
             "Type": "PO",
             "PO_Number": "ERP34",
             "PO_Amount": 3434,
@@ -283,7 +263,7 @@ const updatePODetais = async (req, res) => {
               $Client_Finance_Controller: 'Tanmay',
               $Targetted_Resources: {"ABC":"true","DCH":"false"},
               $Targeted_Res_AllocationRate: {"ABC":50,"DCH":60},
-              $Status: 'Active',
+              $Status: 'Drafted',
               $Type: 'PO',
               $PO_Amount: 3434,
               $Currency: 'USD',
@@ -306,7 +286,7 @@ const updatePODetais = async (req, res) => {
               "Client_Finance_Controller": 'Tanmay',
               "Targetted_Resources": {"ABC":"true","DCH":"false"},
               "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
-              "Status": 'Active',
+              "Status": 'Drafted',
               "Type": 'PO',
               "PO_Number": 'ERP43',
               "PO_Amount": 3434,
@@ -358,51 +338,109 @@ const updatePODetais = async (req, res) => {
   }
 };
 
-// const updatePOStatus = async (req, res) => {
-//   let code, message;
-//   try {
-//     const _id = req.params.id;
-//     const newStatus = req.query.status.toLowerCase();
-//     const getDetails = await purchaseOrderModel.findById({ _id });
-//     const { Status } = getDetails;
-//     if (StatusLifeCycle[Status.toLowerCase()].indexOf(newStatus) != -1) {
-//       code = 200;
-//       message = "status updated successfully";
-//       const updateStatus = await purchaseOrderModel.updateOne(
-//         { _id: req.params.id },
-//         {
-//           $set: {
-//             Status: newStatus,
-//             Updated_At: new Date(),
-//           },
-//         }
-//       );
-//       const resData = customResponse({
-//         code,
-//         data: updateStatus,
-//         message,
-//       });
-//       return res.status(code).send(resData);
-//     } else {
-//       code = 400;
-//       message = "status already updated";
-//       const resData = customResponse({
-//         code,
-//         message,
-//       });
-//       res.status(code).send(resData);
-//     }
-//   } catch (error) {
-//     code = 500;
-//     message = "Internal server error";
-//     const resData = customResponse({
-//       code,
-//       message,
-//       err: error,
-//     });
-//     return res.status(code).send(resData);
-//   }
-// };
+const updatePOStatus = async (req, res) => {
+  /* 	#swagger.tags = ['PO/SOW'']
+      #swagger.description = 'Update PO/SOW Status' 
+      #swagger.parameters['status'] = {
+        in: 'query',
+        type: 'String',
+        description: 'Status' 
+      }
+      #swagger.responses[200] = {
+        description: 'PO/SOW details updated successfully.',
+        schema: { 
+          "status": "success",
+          "code": 200,
+          "message": "",
+          "data": {
+              "Project_Id": '61bb0622bf6c0b45dff12f77',
+              "Client_Name":'Valuebound Solutions',
+              "Project_Name": 'ERP System Backend',
+              "Client_Sponser": 'Jai',
+              "Client_Finance_Controller": 'Tanmay',
+              "Targetted_Resources": {"ABC":"true","DCH":"false"},
+              "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
+              "Status": 'Approved',
+              "Type": 'PO',
+              "PO_Number": 'ERP43',
+              "PO_Amount": 3434,
+              "Currency": 'INR',
+              "Document_Name": 'VB_ERP',
+              "POSOW_endDate": "2014-01-22T14:56:59.301Z",
+              "Remarks": 'Created New PO'
+          },
+          "error": {}
+        }
+      }
+  */
+  let code, message, getDetails;
+  try {
+    const _id = req.params.id;
+    const newStatus = req.query.status;
+    getDetails = await purchaseOrderModel.findById({ _id });
+    const { Status } = getDetails;
+    if (StatusLifeCycle[Status.toLowerCase()].indexOf(newStatus) != -1) {
+      code = 200;
+      message = "status updated successfully";
+      const updateStatus = await purchaseOrderModel.updateOne(
+        { _id: req.params.id },
+        {
+          $set: {
+            Status: newStatus,
+            Updated_At: new Date(),
+          },
+        }
+      );
+
+      getDetails = await purchaseOrderModel.findById({ _id });
+      if (getDetails.Status.toLowerCase() === "approved") {
+        const invoices = new Invoice({
+          PO_Id: getDetails._id,
+          client_sponsor: getDetails.Client_Sponser,
+          client_finance_controller: getDetails.Client_Finance_Controller,
+        });
+        const invoice = await invoices.save();
+
+        getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
+          "PO_Id",
+          "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
+        );
+
+        const data = {
+          Client_Name: getDetails.PO_Id.Client_Name,
+          Project_Name: getDetails.PO_Id.Project_Name,
+          PO_Amount: getDetails.PO_Id.PO_Amount,
+          Received_Amount: getDetails.invoice_amount_received,
+        };
+        const content = await emailContent("N001", data);
+        emailSender(content);
+      }
+      const resData = customResponse({
+        code,
+        data: updateStatus,
+        message,
+      });
+      return res.status(code).send(resData);
+    } else {
+      code = 400;
+      message = "status already updated";
+      const resData = customResponse({
+        code,
+        message,
+      });
+      res.status(code).send(resData);
+    }
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
 
 const getClients = async (req, res) => {
   /* 	#swagger.tags = ['PO/SOW']
@@ -584,6 +622,7 @@ module.exports = {
   getPoDeatil,
   getSortedPoList,
   updatePODetais,
+  updatePOStatus,
   getClients,
   getProjects,
   getDetails,

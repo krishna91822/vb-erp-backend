@@ -7,16 +7,6 @@ const sinon = require("sinon");
 chai.use(chaiHttp);
 let poSow = require("../src/models/poSow");
 let project = require("../src/models/projectsModel");
-const {
-  createPoSow,
-  getPoDeatil,
-  getSortedPoList,
-  updatePODetais,
-  updatePOStatus,
-  getClients,
-  getProjects,
-  getDetails,
-} = require("../src/controllers/invoicecontroller");
 
 const stubValue = {
   Project_Id: "444",

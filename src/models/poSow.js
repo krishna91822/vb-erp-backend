@@ -34,8 +34,9 @@ const purchaseOrderSchema = mongoose.Schema({
   },
   Status: {
     type: String,
-    enum: ["Rejected", "Pending", "Active", "Closed", "Drafted"],
+    enum: ["Rejected", "Pending", "Approved", "Closed", "Drafted"],
     required: [true, "status is required"],
+    default: "Drafted",
   },
   Type: {
     type: String,
