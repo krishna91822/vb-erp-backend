@@ -80,7 +80,8 @@ const employeeUpdateSchema = joi
         "HR_ADMIN",
         "FINANCE_ADMIN",
         "PMS_ADMIN",
-        "SUPER_ADMIN"
+        "SUPER_ADMIN",
+        "ADMIN"
       ),
     personalDetails: joi.any(),
     professionalDetails: joi.any(),

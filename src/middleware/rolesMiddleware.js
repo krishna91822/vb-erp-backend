@@ -41,7 +41,6 @@ exports.checkAndAssignRole = async (req, res, next) => {
 exports.restrictTo = (roles) => {
   return (req, res, next) => {
     //roles is an array ex ['user','admin']
-    console.log(`check is ${roles.includes(req.role)}`);
     if (!roles.includes(req.role)) {
       return next(
         new AppError("You do not have permission to perform this action", 403)

@@ -161,7 +161,6 @@ exports.getAllEmployees = async (req, res) => {
     });
     return res.status(code).send(resData);
   } catch (error) {
-    console.log(`error is ${JSON.stringify(error)}`);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -250,7 +249,6 @@ exports.getEmployee = async (req, res) => {
     const resData = customResponse({ code, message, data });
     return res.status(code).send(resData);
   } catch (error) {
-    console.log(`error is ${JSON.stringify(error)}`);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -356,7 +354,6 @@ exports.createEmployee = async (req, res) => {
     const resData = customResponse({ code, message, data });
     return res.status(code).send(resData);
   } catch (error) {
-    console.log(`error is ${JSON.stringify(error)}`);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -498,12 +495,10 @@ exports.deleteEmployee = async (req, res) => {
         }*/
   let code, message;
   const isValid = mongoose.Types.ObjectId.isValid(req.params.id);
-  console.log(`isValid is ${isValid}`);
   if (!isValid) {
     code = 422;
     message = "Invalid objectId id";
     const resData = customResponse({ code, message });
-    console.log(`before return`);
     return res.status(code).send(resData);
   }
   try {
@@ -524,7 +519,6 @@ exports.deleteEmployee = async (req, res) => {
     const resData = customResponse({ code, message });
     return res.status(code).send(resData);
   } catch (error) {
-    console.log(`error is ${JSON.stringify(error)}`);
     code = 500;
     message = "Employee delete by id has failed";
     const resData = customResponse({
@@ -541,9 +535,7 @@ exports.generateQR = async (req, res) => {
   try {
     res.send(await QRCode.toDataURL(`https://www.geeksforgeeks.org/`));
     //`http://localhost:3000/employees/${req.params.id}`));
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) {}
 };
 
 exports.getDesignations = (req, res) => {
@@ -555,7 +547,6 @@ exports.getDesignations = (req, res) => {
     const resData = customResponse({ code, message, data });
     return res.status(200).send(resData);
   } catch (error) {
-    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
@@ -576,7 +567,6 @@ exports.getDepartments = (req, res) => {
     const resData = customResponse({ code, message, data });
     return res.status(200).send(resData);
   } catch (error) {
-    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
