@@ -435,17 +435,17 @@ exports.updateEmployee = async (req, res) => {
     return res.status(code).send(resData);
   }
   try {
-    const { error } = employeeUpdateSchema.validate(req.body);
-    if (error) {
-      code = 422;
-      message = "Invalid request data";
-      const resData = customResponse({
-        code,
-        message,
-        err: error && error.details,
-      });
-      return res.status(code).send(resData);
-    }
+    // const { error } = employeeUpdateSchema.validate(req.body);
+    // if (error) {
+    //   code = 422;
+    //   message = "Invalid request data";
+    //   const resData = customResponse({
+    //     code,
+    //     message,
+    //     err: error && error.details,
+    //   });
+    //   return res.status(code).send(resData);
+    // }
     const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
