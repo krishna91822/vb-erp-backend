@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -78,36 +78,72 @@
 <a name='L13'></a><a href='#L13'>13</a>
 <a name='L14'></a><a href='#L14'>14</a>
 <a name='L15'></a><a href='#L15'>15</a>
-<a name='L16'></a><a href='#L16'>16</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const mongoose = require("mongoose");
-const db = mongoose.connection;
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >require("dotenv").config();</span>
+const DB = <span class="cstat-no" title="statement not covered" >process.env.MONGO_URL;</span>
+// process.env.NODE_ENV === "test"
+//   ? process.env.TEST_DATABASE_URI
+//   : process.env.DATABASE.replace("&lt;PASSWORD&gt;", process.env.DATABASE_PASSWORD);
+// process.env.NODE_ENV === "test";
+// ? process.env.TEST_DATABASE_URI
+// : process.env.DATABASE_URL;
 &nbsp;
-const connectToDb = () =&gt; {
-  mongoose.connect(process.env.MONGO_URL, {
+const mongoose = <span class="cstat-no" title="statement not covered" >require("mongoose");</span>
+const db = <span class="cstat-no" title="statement not covered" >mongoose.connection;</span>
+&nbsp;
+const connectToDb = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  mongoose.connect(DB, {</span>
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
   });
-  db.on("error", console.error.bind(console, "connection error: "));
-  db.on("open", console.error.bind(console, "DB connected: "));
+<span class="cstat-no" title="statement not covered" >  db.on("error", console.error.bind(console, "connection error: "));</span>
+<span class="cstat-no" title="statement not covered" >  db.on("open", console.error.bind(console, "DB connected: "));</span>
+<span class="cstat-no" title="statement not covered" >  db.on("close", console.error.bind(console, "Connection closed"));</span>
 };
 &nbsp;
-module.exports = { connectToDb };
+const closeConnection = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  db.close();</span>
+};
+&nbsp;
+<span class="cstat-no" title="statement not covered" >module.exports = { connectToDb, closeConnection };</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -115,7 +151,7 @@ module.exports = { connectToDb };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Fri Dec 17 2021 11:45:25 GMT+0530 (India Standard Time)
+                at Mon Dec 27 2021 20:01:42 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
