@@ -90,7 +90,6 @@ const getAllocations = async (req, res) => {
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
-
     const filteredData = getAllocationsFilteredData(query, projectDetails);
     const data = customPagination({ data: filteredData, page, limit });
     const resData = customResponse({ code, message, data });
