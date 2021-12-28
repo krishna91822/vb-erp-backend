@@ -117,7 +117,13 @@
           "User"
         ],
         "description": "Get Account",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "201": {
             "description": "User successfully added.",
@@ -1993,7 +1999,18 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "pincode",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2017,7 +2034,13 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2029,7 +2052,18 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "brandname",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2963,10 +2997,6 @@
                     }
                   }
                 },
-                "Status": {
-                  "type": "string",
-                  "example": "Active"
-                },
                 "Type": {
                   "type": "string",
                   "example": "PO"
@@ -3000,7 +3030,6 @@
                 "Client_Finance_Controller",
                 "Targetted_Resources",
                 "Targeted_Res_AllocationRate",
-                "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
@@ -3342,10 +3371,6 @@
                     }
                   }
                 },
-                "Status": {
-                  "type": "string",
-                  "example": "Active"
-                },
                 "Type": {
                   "type": "string",
                   "example": "PO"
@@ -3379,7 +3404,6 @@
                 "Client_Finance_Controller",
                 "Targetted_Resources",
                 "Targeted_Res_AllocationRate",
-                "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
