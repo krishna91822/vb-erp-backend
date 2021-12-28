@@ -25,7 +25,6 @@ const addressSchema = new mongoose.Schema(
   { _id: false }
 );
 
-
 const otherField = new mongoose.Schema({
   fieldName: {
     type: String,
@@ -166,7 +165,7 @@ const employeeSchema = new mongoose.Schema(
         values: [
           "USER",
           "APPROVER",
-          "LEADERSHIP",
+          "LEADER",
           "HR_ADMIN",
           "FINANCE_ADMIN",
           "PMS_ADMIN",
@@ -174,7 +173,7 @@ const employeeSchema = new mongoose.Schema(
           "ADMIN",
         ],
         message:
-          "role must be USER, APPROVER,LEADERSHIP,HR_ADMIN,FINANCE_ADMIN,PMS_ADMIN,SUPER_ADMIN, only",
+          "role must be USER, APPROVER,LEADER,HR_ADMIN,FINANCE_ADMIN,PMS_ADMIN,SUPER_ADMIN, only",
       },
       default: "USER",
     },
