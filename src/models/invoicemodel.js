@@ -30,6 +30,7 @@ const invoiceSchema = new mongoose.Schema({
   },
   vb_bank_account: {
     type: String,
+    default: null,
   },
   amount_received_on: {
     type: Date,
@@ -45,6 +46,7 @@ const invoiceSchema = new mongoose.Schema({
   },
   Remarks: {
     type: String,
+    default: null,
   },
 });
 
