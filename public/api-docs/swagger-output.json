@@ -2997,10 +2997,6 @@
                     }
                   }
                 },
-                "Status": {
-                  "type": "string",
-                  "example": "Active"
-                },
                 "Type": {
                   "type": "string",
                   "example": "PO"
@@ -3034,7 +3030,6 @@
                 "Client_Finance_Controller",
                 "Targetted_Resources",
                 "Targeted_Res_AllocationRate",
-                "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
@@ -3376,10 +3371,6 @@
                     }
                   }
                 },
-                "Status": {
-                  "type": "string",
-                  "example": "Active"
-                },
                 "Type": {
                   "type": "string",
                   "example": "PO"
@@ -3413,7 +3404,6 @@
                 "Client_Finance_Controller",
                 "Targetted_Resources",
                 "Targeted_Res_AllocationRate",
-                "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
@@ -6205,26 +6195,9 @@
             "name": "searchData",
             "in": "query",
             "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "message",
-            "in": "query",
-            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
+        "responses": {}
       },
       "post": {
         "tags": [],

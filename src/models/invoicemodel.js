@@ -45,6 +45,7 @@ const invoiceSchema = new mongoose.Schema({
   },
   Remarks: {
     type: String,
+    default:null
   },
 });
 
