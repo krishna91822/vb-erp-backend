@@ -20,6 +20,7 @@ const getAllUniversities = async (req, res) => {
     return res.status(code).send(resData);
   }
 };
+
 const searchUniversity = async (req, res) => {
   try {
     const query = "^" + req.query.name;
@@ -29,8 +30,17 @@ const searchUniversity = async (req, res) => {
     const data = await universityModel.find({
       university: { $regex: query, $options: "i" },
     });
-    const resData = customPagination({ data, page, limit });
-    res.send(resData);
+    // const resData = customPagination({ data, page, limit });
+    let code = 200;
+    let message = "success";
+    let totalResult = data.length;
+    const resData = customResponse({
+      code,
+      message,
+      data,
+      totalResult,
+    });
+    return res.status(code).send(resData);
   } catch (err) {
     code = 500;
     message = "Internal server error";
