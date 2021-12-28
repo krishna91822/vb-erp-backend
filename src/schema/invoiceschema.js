@@ -11,6 +11,7 @@ const invoiceSchema = Joi.object()
     invoice_amount_received: Joi.number().allow(null),
     vb_bank_account: Joi.string().allow(null),
     amount_received_on: Joi.date().iso().allow(null),
+    Remarks: Joi.string().empty(""),
   })
   .options({ abortEarly: false });
 

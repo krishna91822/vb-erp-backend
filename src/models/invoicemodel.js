@@ -43,6 +43,9 @@ const invoiceSchema = new mongoose.Schema({
   updated_at: {
     type: Date,
   },
+  Remarks: {
+    type: String,
+  },
 });
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);
