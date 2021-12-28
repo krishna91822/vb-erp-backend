@@ -253,7 +253,7 @@ const getFilteredClients = async (req, res) => {
   try {
     if (Object.keys(req.query).length === 0) {
       const client = await compModal.find(
-        {},
+        { status: 1 },
         {
           _id: 1,
           brandName: 1,
@@ -283,6 +283,7 @@ const getFilteredClients = async (req, res) => {
               },
             },
           ],
+          status: 1,
         },
         {
           _id: 1,
