@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "REST API",
-    "description": "",
+    "title": "Valuebound Consulting Services LLP",
+    "description": "Valuebound builds digital user experience platforms that bring technology and people together.",
     "version": "1.0.0"
   },
   "host": "localhost:4000",
