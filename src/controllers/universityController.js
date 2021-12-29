@@ -34,6 +34,13 @@ const searchUniversity = async (req, res) => {
     let code = 200;
     let message = "success";
     let totalResult = data.length;
+    if (totalResult === 0) {
+      return res.status(200).json({
+        status: "success",
+        totalResult,
+        data: [{ university: "others" }],
+      });
+    }
     const resData = customResponse({
       code,
       message,
