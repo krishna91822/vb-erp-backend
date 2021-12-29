@@ -8,7 +8,7 @@ const cimsGet = async (req, res) => {
   const filter = req.query.filter || 1;
   const sortOrder = req.query.sortOrder || -1;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
+  const limit = parseInt(req.query.limit) || 10;
 
   const searchData = req.query.searchData || "";
   const regex = new RegExp(searchData, "i");
