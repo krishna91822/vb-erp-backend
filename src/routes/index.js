@@ -16,7 +16,7 @@ const reviewRoutes = require("./ReviewRoutes");
 const employeeRoutes = require("./employeeRoute");
 const ProjectRouter = require("./projects");
 const ProjectEmployeeRouter = require("./projectAndEmployee");
-
+const universityRoutes = require("./universityRoute");
 router.post("/login", auth);
 router.get("/account", getAccount);
 router.use("/users", userRoutes);
@@ -32,5 +32,5 @@ router.use("/allocations", ProjectEmployeeRouter);
 router.use("/cims", cimsRoutes);
 router.use("/tempUsers", tempUserRoutes);
 router.use("/roles", rolesRoutes);
-
+router.use("/universities", universityRoutes);
 module.exports = router;

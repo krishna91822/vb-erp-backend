@@ -2963,10 +2963,6 @@
                     }
                   }
                 },
-                "Status": {
-                  "type": "string",
-                  "example": "Active"
-                },
                 "Type": {
                   "type": "string",
                   "example": "PO"
@@ -3000,7 +2996,6 @@
                 "Client_Finance_Controller",
                 "Targetted_Resources",
                 "Targeted_Res_AllocationRate",
-                "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
@@ -3342,10 +3337,6 @@
                     }
                   }
                 },
-                "Status": {
-                  "type": "string",
-                  "example": "Active"
-                },
                 "Type": {
                   "type": "string",
                   "example": "PO"
@@ -3379,7 +3370,6 @@
                 "Client_Finance_Controller",
                 "Targetted_Resources",
                 "Targeted_Res_AllocationRate",
-                "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
