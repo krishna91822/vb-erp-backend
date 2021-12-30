@@ -145,6 +145,42 @@ exports.getReview = async (req, res) => {
 };
 
 exports.createReview = async (req, res) => {
+  /*#swagger.tags = ['Review']
+    #swagger.description = 'Create new Review'
+        #swagger.parameters['obj'] = {
+          in: 'body',
+          schema: {
+              "reqType": "profile-update",
+              "reqName": "DIVYANSHU",
+              "status": "pending",
+              "employeeDetails": {
+                "empName": "name3",
+                "empEmail": "name3@email.com",
+                "empDoj": "11/10/90",
+                "empDepartment": "Development",
+                "empDesignation": "Developer Relations",
+                "empBand": "90",
+                "empCtc": 600000,
+                "empReportingManager": "Gautam",
+                "empPersonalEmail": "name3@email.com",
+                "empPhoneNumber": "8984645",
+                "empDob": "1/1/20",
+                "empGraduation": "College_name_goes_here",
+                "empAboutMe": "Tech Enthusiast",
+                "empHobbies": [
+                  "Cricket",
+                  "Movies"
+                ],
+                "empPrimaryCapability": [],
+                "empSkillSet": [],
+                "empCertifications": [
+                  "AWS",
+                  "Scrum"
+                ],
+                "role": "LEADERSHIP"
+              }          
+            }  
+  }*/
   try {
     const { error } = reviewSchema.validate(req.body);
     if (error) {
@@ -202,8 +238,8 @@ exports.updateReview = async (req, res) => {
                   $empPhoneNumber: "52164",
                   $empPersonalEmail: "div@gmail.com",
                   $empAboutMe: "i'm always cool..!",
-                  $empCurrentAddress: "gujrat",
-                  $empResidentialAddress: "gujrat",
+                  $empCurrentAddress: {},
+                  $empResidentialAddress: {},
                   $empBand: "12",
                   $empGraduation: "bba",
                   $empPostGraduation: "mba",
@@ -248,8 +284,8 @@ exports.updateReview = async (req, res) => {
                     "Dance"
                 ],
                 "empAboutMe": "i'm always cool..!",
-                "empCurrentAddress": "gujrat",
-                "empResidentialAddress": "gujrat",
+                "empCurrentAddress": {},
+                "empResidentialAddress": {},
                 "empBand": "12",
                 "empGraduation": "bba",
                 "empGraduationUniversity": "",

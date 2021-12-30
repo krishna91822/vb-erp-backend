@@ -3337,10 +3337,13 @@
                     }
                   }
                 },
+<<<<<<< HEAD
                 "Status": {
                   "type": "string",
                   "example": "Drafted"
                 },
+=======
+>>>>>>> 3619d0c4eb4b84d729fa224a5a8e3fe632149895
                 "Type": {
                   "type": "string",
                   "example": "PO"
@@ -3374,7 +3377,6 @@
                 "Client_Finance_Controller",
                 "Targetted_Resources",
                 "Targeted_Res_AllocationRate",
-                "Status",
                 "Type",
                 "PO_Amount",
                 "Currency",
@@ -5339,9 +5341,124 @@
         }
       },
       "post": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
+        "tags": [
+          "Review"
+        ],
+        "description": "Create new Review",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reqType": {
+                  "type": "string",
+                  "example": "profile-update"
+                },
+                "reqName": {
+                  "type": "string",
+                  "example": "DIVYANSHU"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "pending"
+                },
+                "employeeDetails": {
+                  "type": "object",
+                  "properties": {
+                    "empName": {
+                      "type": "string",
+                      "example": "name3"
+                    },
+                    "empEmail": {
+                      "type": "string",
+                      "example": "name3@email.com"
+                    },
+                    "empDoj": {
+                      "type": "string",
+                      "example": "11/10/90"
+                    },
+                    "empDepartment": {
+                      "type": "string",
+                      "example": "Development"
+                    },
+                    "empDesignation": {
+                      "type": "string",
+                      "example": "Developer Relations"
+                    },
+                    "empBand": {
+                      "type": "string",
+                      "example": "90"
+                    },
+                    "empCtc": {
+                      "type": "number",
+                      "example": 600000
+                    },
+                    "empReportingManager": {
+                      "type": "string",
+                      "example": "Gautam"
+                    },
+                    "empPersonalEmail": {
+                      "type": "string",
+                      "example": "name3@email.com"
+                    },
+                    "empPhoneNumber": {
+                      "type": "string",
+                      "example": "8984645"
+                    },
+                    "empDob": {
+                      "type": "string",
+                      "example": "1/1/20"
+                    },
+                    "empGraduation": {
+                      "type": "string",
+                      "example": "College_name_goes_here"
+                    },
+                    "empAboutMe": {
+                      "type": "string",
+                      "example": "Tech Enthusiast"
+                    },
+                    "empHobbies": {
+                      "type": "array",
+                      "example": [
+                        "Cricket",
+                        "Movies"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "empPrimaryCapability": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empSkillSet": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "empCertifications": {
+                      "type": "array",
+                      "example": [
+                        "AWS",
+                        "Scrum"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "LEADERSHIP"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -6340,6 +6457,57 @@
         "parameters": [
           {
             "name": "role",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/universities/": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/universities/search": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
             "in": "query",
             "type": "string"
           }

@@ -263,7 +263,6 @@ const updatePODetais = async (req, res) => {
               $Client_Finance_Controller: 'Tanmay',
               $Targetted_Resources: {"ABC":"true","DCH":"false"},
               $Targeted_Res_AllocationRate: {"ABC":50,"DCH":60},
-              $Status: 'Drafted',
               $Type: 'PO',
               $PO_Amount: 3434,
               $Currency: 'USD',

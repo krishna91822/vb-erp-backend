@@ -12,7 +12,7 @@ const poSowSchema = Joi.object()
     Status: Joi.string().valid(
       "Rejected",
       "Pending",
-      "Approved",
+      "Active",
       "Closed",
       "Drafted"
     ),
