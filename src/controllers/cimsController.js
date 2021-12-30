@@ -8,7 +8,7 @@ const cimsGet = async (req, res) => {
   const filter = req.query.filter || 1;
   const sortOrder = req.query.sortOrder || -1;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
+  const limit = parseInt(req.query.limit) || 10;
 
   const searchData = req.query.searchData || "";
   const regex = new RegExp(searchData, "i");
@@ -253,7 +253,7 @@ const getFilteredClients = async (req, res) => {
   try {
     if (Object.keys(req.query).length === 0) {
       const client = await compModal.find(
-        {},
+        { status: 1 },
         {
           _id: 1,
           brandName: 1,
@@ -283,6 +283,7 @@ const getFilteredClients = async (req, res) => {
               },
             },
           ],
+          status: 1,
         },
         {
           _id: 1,
