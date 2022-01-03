@@ -117,7 +117,13 @@
           "User"
         ],
         "description": "Get Account",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "201": {
             "description": "User successfully added.",
@@ -1993,7 +1999,18 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "pincode",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2017,7 +2034,13 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2029,7 +2052,18 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "brandname",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -3337,13 +3371,6 @@
                     }
                   }
                 },
-<<<<<<< HEAD
-                "Status": {
-                  "type": "string",
-                  "example": "Drafted"
-                },
-=======
->>>>>>> 3619d0c4eb4b84d729fa224a5a8e3fe632149895
                 "Type": {
                   "type": "string",
                   "example": "PO"
@@ -3462,7 +3489,7 @@
                     },
                     "Status": {
                       "type": "string",
-                      "example": "Drafted"
+                      "example": "Approved"
                     },
                     "Type": {
                       "type": "string",
@@ -6308,9 +6335,26 @@
             "name": "searchData",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "type": "string"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       },
       "post": {
         "tags": [],
