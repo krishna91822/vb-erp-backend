@@ -207,6 +207,7 @@ const getSortedPoList = async (req, res) => {
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
   } catch (error) {
+    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({
