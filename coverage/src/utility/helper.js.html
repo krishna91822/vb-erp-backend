@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -106,7 +106,7 @@
 <a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,8 +114,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">89x</span>
-<span class="cline-any cline-yes">89x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -129,12 +129,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,20 +142,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @ Custom Response Helper
  */
-const customResponse = ({
+const customResponse = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
   code = <span class="branch-0 cbranch-no" title="branch not covered" >200,</span>
-  message = "",
-  data = {},
-  err = {},
+  message = <span class="branch-0 cbranch-no" title="branch not covered" >"",</span>
+  data = <span class="branch-0 cbranch-no" title="branch not covered" >{},</span>
+  err = <span class="branch-0 cbranch-no" title="branch not covered" >{},</span>
   totalDocuments,
   totalResult,
 }) =&gt; {
-  const responseStatus = code &lt; 300 ? "success" : "failure";
-  return {
+  const responseStatus = <span class="cstat-no" title="statement not covered" >code &lt; 300 ? "success" : "failure";</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
     status: responseStatus,
     code,
     totalResult,
@@ -169,12 +169,12 @@ const customResponse = ({
 /**
  * @ Custom Pagination Helper
  */
-const customPagination = ({ data = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span> limit = <span class="branch-0 cbranch-no" title="branch not covered" >15,</span> page = <span class="branch-0 cbranch-no" title="branch not covered" >1 </span>}) =&gt; {
-  const totalCount = data.length;
-  const pageCount = Math.ceil(totalCount / limit);
-  const currentPage = page;
-  const results = data.slice((page - 1) * limit, page * limit);
-  return {
+const customPagination = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> data = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span> limit = <span class="branch-0 cbranch-no" title="branch not covered" >15,</span> page = <span class="branch-0 cbranch-no" title="branch not covered" >1 </span>}) =&gt; {</span>
+  const totalCount = <span class="cstat-no" title="statement not covered" >data.length;</span>
+  const pageCount = <span class="cstat-no" title="statement not covered" >Math.ceil(totalCount / limit);</span>
+  const currentPage = <span class="cstat-no" title="statement not covered" >page;</span>
+  const results = <span class="cstat-no" title="statement not covered" >data.slice((page - 1) * limit, page * limit);</span>
+<span class="cstat-no" title="statement not covered" >  return {</span>
     pageCount,
     totalCount,
     currentPage,
@@ -182,7 +182,7 @@ const customPagination = ({ data = <span class="branch-0 cbranch-no" title="bran
   };
 };
 &nbsp;
-module.exports = { customResponse, customPagination };
+<span class="cstat-no" title="statement not covered" >module.exports = { customResponse, customPagination };</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -190,7 +190,7 @@ module.exports = { customResponse, customPagination };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Mon Jan 03 2022 19:08:56 GMT+0530 (India Standard Time)
+                at Tue Jan 04 2022 16:33:26 GMT+0530 (India Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
