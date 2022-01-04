@@ -19,6 +19,10 @@ const invoiceSchema = new mongoose.Schema({
     enum: ["Yes", "No"],
     default: "No",
   },
+  invoice_raised_on: {
+    type: Date,
+    default: null
+  },
   invoice_received: {
     type: String,
     enum: ["Yes", "No"],
@@ -35,6 +39,11 @@ const invoiceSchema = new mongoose.Schema({
   amount_received_on: {
     type: Date,
     default: null,
+  },
+  status: {
+    type: String,
+    enum: ["Overdue", "Invoice Raised", "Cpmplete", "Drafted"],
+    default: "Drafted",
   },
   created_at: {
     type: Date,

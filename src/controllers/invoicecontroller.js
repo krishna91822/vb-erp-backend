@@ -421,7 +421,46 @@ const getRelatedInvoices = async (req, res) => {
     return res.status(code).send(resData);
   }
 };
+
+
 const updateInvoice = async (req, res) => {
+   /*
+      #swagger.tags = ['invoices']
+      #swagger.description = 'Update invoice details'
+      #swagger.parameters['obj'] = {
+        in: 'body',
+        schema: {
+            $PO_Id: '61d41dcdf2e1e074360371ee',
+            $client_sponsor: 'AB',
+            $client_finance_controller: 'CD',
+            $invoice_raised: "Yes",
+            $invoice_received: "Yes",
+            $invoice_amount_received: 87634788,
+            $vb_bank_account: 'SBIN00004567',
+            $amount_received_on: '2021-12-10T06:01:50.178Z'
+        }
+      }
+      #swagger.responses[200] = {
+        description: 'Invoice Details updated successfully.',
+        schema: {
+          "status": "success",
+          "code": 200,
+          "message": "",
+          "data": {
+            "PO_Id": '61d41dcdf2e1e074360371ee',
+            "client_sponsor": 'AB',
+            "client_finance_controller": 'CD',
+            "invoice_raised": "Yes",
+            "invoice_received": "Yes",
+            "invoice_amount_received": 467389738,
+            "vb_bank_account": 'SBIN00004567',
+            "amount_received_on": '2021-12-10T06:01:50.178Z',
+            "created_at": '2021-12-10T06:01:50.178Z',
+          },
+          "error": {}
+        }
+      }
+  */
   let code, message;
   try {
     const { error } = invoiceSchema.validate(req.body);
@@ -434,6 +473,10 @@ const updateInvoice = async (req, res) => {
         err: error && error.details,
       });
       return res.status(code).send(resData);
+    }
+    if(req.body.invoice_raised.toLowerCase()==="yes" 
+    && req.body.invoice_amount_received===null){
+      Object.assign(req.body,{invoice_raised_on: new Date()})
     }
     const updateDetails = await Invoice.updateOne(
       { _id: req.params.id },
