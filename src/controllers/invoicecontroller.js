@@ -43,12 +43,20 @@ const newInvoice = async (req, res) => {
       }
   */
   try {
+    let code, message;
     const { error } = invoiceSchema.validate(req.body);
 
     if (error) {
-      return res.status(422).send(error);
+      code = 422;
+      message = "Invalid data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
     }
-
+    code = 200
     const invoice = await Invoice.create(req.body);
     const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
       "PO_Id",
@@ -86,12 +94,17 @@ const newInvoice = async (req, res) => {
       const emailTemplate2 = await emailContent("N003", data2);
       emailSender(emailTemplate2);
     }
-    res.status(201).json({
-      status: true,
-      invoice,
-    });
+    const resData = customResponse({ code, data: invoice });
+    return res.status(code).send(resData);
   } catch (error) {
-    res.status(401).send(error);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
   }
 };
 
@@ -428,7 +441,6 @@ const updateInvoice = async (req, res) => {
         $set: { ...req.body, updated_at: new Date() },
       }
     );
-
     if (req.body.amount_received_on) {
       const getDetails = await Invoice.findOne({ _id: req.params.id }).populate(
         "PO_Id",

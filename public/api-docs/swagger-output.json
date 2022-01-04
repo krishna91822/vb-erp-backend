@@ -117,7 +117,13 @@
           "User"
         ],
         "description": "Get Account",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "201": {
             "description": "User successfully added.",
@@ -1993,7 +1999,18 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "pincode",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2017,7 +2034,13 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2029,7 +2052,18 @@
       "get": {
         "tags": [],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "brandname",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -3078,7 +3112,7 @@
                     },
                     "Status": {
                       "type": "string",
-                      "example": "Active"
+                      "example": "Drafted"
                     },
                     "Type": {
                       "type": "string",
@@ -3220,7 +3254,7 @@
                     },
                     "Status": {
                       "type": "string",
-                      "example": "Active"
+                      "example": "Drafted"
                     },
                     "Type": {
                       "type": "string",
@@ -3380,10 +3414,10 @@
             }
           },
           {
-            "name": "projectId",
+            "name": "status",
             "in": "query",
-            "type": "string",
-            "description": "Project ID"
+            "type": "String",
+            "description": "Status"
           }
         ],
         "responses": {
@@ -3405,86 +3439,85 @@
                   "example": ""
                 },
                 "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "empPrimaryCapiblities": {
-                        "type": "array",
-                        "example": [],
-                        "items": {}
-                      },
-                      "_id": {
-                        "type": "string",
-                        "example": "61b8c18ce56e27b307b73168"
-                      },
-                      "projectId": {
-                        "type": "object",
-                        "properties": {
-                          "_id": {
-                            "type": "string",
-                            "example": "61b8c18ce56e27b307b73166"
-                          },
-                          "vbProjectId": {
-                            "type": "string",
-                            "example": "VB-PROJ-1"
-                          },
-                          "projectName": {
-                            "type": "string",
-                            "example": "Valuebound"
-                          },
-                          "clientProjectSponsor": {
-                            "type": "string",
-                            "example": "Jai K"
-                          },
-                          "clientFinanceController": {
-                            "type": "string",
-                            "example": "Jai K"
-                          }
-                        }
-                      },
-                      "primaryCapiblities": {
-                        "type": "array",
-                        "example": [],
-                        "items": {}
-                      },
-                      "allocationStartDate": {
-                        "type": "string",
-                        "example": "2021-12-14"
-                      },
-                      "allocationEndDate": {
-                        "type": "string",
-                        "example": "2021-12-17"
-                      },
-                      "allocationPercentage": {
-                        "type": "number",
-                        "example": 57
-                      },
-                      "rackRate": {
-                        "type": "number",
-                        "example": 45132
-                      },
-                      "__v": {
-                        "type": "number",
-                        "example": 0
-                      },
-                      "empId": {
-                        "type": "object",
-                        "properties": {
-                          "_id": {
-                            "type": "string",
-                            "example": "61b59800430ab0392fd92640"
-                          },
-                          "empId": {
-                            "type": "number",
-                            "example": 15
-                          },
-                          "empName": {
-                            "type": "string",
-                            "example": "sanjay"
-                          }
+                  "type": "object",
+                  "properties": {
+                    "Project_Id": {
+                      "type": "string",
+                      "example": "61bb0622bf6c0b45dff12f77"
+                    },
+                    "Client_Name": {
+                      "type": "string",
+                      "example": "Valuebound Solutions"
+                    },
+                    "Project_Name": {
+                      "type": "string",
+                      "example": "ERP System Backend"
+                    },
+                    "Client_Sponser": {
+                      "type": "string",
+                      "example": "Jai"
+                    },
+                    "Client_Finance_Controller": {
+                      "type": "string",
+                      "example": "Tanmay"
+                    },
+                    "Targetted_Resources": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "string",
+                          "example": "true"
+                        },
+                        "DCH": {
+                          "type": "string",
+                          "example": "false"
                         }
                       }
+                    },
+                    "Targeted_Res_AllocationRate": {
+                      "type": "object",
+                      "properties": {
+                        "ABC": {
+                          "type": "number",
+                          "example": 50
+                        },
+                        "DCH": {
+                          "type": "number",
+                          "example": 60
+                        }
+                      }
+                    },
+                    "Status": {
+                      "type": "string",
+                      "example": "Approved"
+                    },
+                    "Type": {
+                      "type": "string",
+                      "example": "PO"
+                    },
+                    "PO_Number": {
+                      "type": "string",
+                      "example": "ERP43"
+                    },
+                    "PO_Amount": {
+                      "type": "number",
+                      "example": 3434
+                    },
+                    "Currency": {
+                      "type": "string",
+                      "example": "INR"
+                    },
+                    "Document_Name": {
+                      "type": "string",
+                      "example": "VB_ERP"
+                    },
+                    "POSOW_endDate": {
+                      "type": "string",
+                      "example": "2014-01-22T14:56:59.301Z"
+                    },
+                    "Remarks": {
+                      "type": "string",
+                      "example": "Created New PO"
                     }
                   }
                 },
@@ -3621,7 +3654,7 @@
                           },
                           "Status": {
                             "type": "string",
-                            "example": "Active"
+                            "example": "Drafted"
                           },
                           "Type": {
                             "type": "string",
@@ -3914,6 +3947,147 @@
               }
             },
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/poSow/status/{id}": {
+      "patch": {
+        "tags": [
+          "PO/SOW"
+        ],
+        "description": "Update PO/SOW Status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "type": "String",
+            "description": "Status"
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "type": "string",
+            "description": "Project ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PO/SOW details updated successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "empPrimaryCapiblities": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "61b8c18ce56e27b307b73168"
+                      },
+                      "projectId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61b8c18ce56e27b307b73166"
+                          },
+                          "vbProjectId": {
+                            "type": "string",
+                            "example": "VB-PROJ-1"
+                          },
+                          "projectName": {
+                            "type": "string",
+                            "example": "Valuebound"
+                          },
+                          "clientProjectSponsor": {
+                            "type": "string",
+                            "example": "Jai K"
+                          },
+                          "clientFinanceController": {
+                            "type": "string",
+                            "example": "Jai K"
+                          }
+                        }
+                      },
+                      "primaryCapiblities": {
+                        "type": "array",
+                        "example": [],
+                        "items": {}
+                      },
+                      "allocationStartDate": {
+                        "type": "string",
+                        "example": "2021-12-14"
+                      },
+                      "allocationEndDate": {
+                        "type": "string",
+                        "example": "2021-12-17"
+                      },
+                      "allocationPercentage": {
+                        "type": "number",
+                        "example": 57
+                      },
+                      "rackRate": {
+                        "type": "number",
+                        "example": 45132
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "empId": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "61b59800430ab0392fd92640"
+                          },
+                          "empId": {
+                            "type": "number",
+                            "example": 15
+                          },
+                          "empName": {
+                            "type": "string",
+                            "example": "sanjay"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
@@ -6161,9 +6335,26 @@
             "name": "searchData",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "message",
+            "in": "query",
+            "type": "string"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
       },
       "post": {
         "tags": [],

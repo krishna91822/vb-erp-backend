@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">14.73% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/95</span>
+                <span class='fraction'>14/95</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">14.89% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/94</span>
+                <span class='fraction'>14/94</span>
             </div>
         
             
@@ -283,18 +283,18 @@
 <a name='L218'></a><a href='#L218'>218</a>
 <a name='L219'></a><a href='#L219'>219</a>
 <a name='L220'></a><a href='#L220'>220</a>
-<a name='L221'></a><a href='#L221'>221</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L221'></a><a href='#L221'>221</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -306,7 +306,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -369,7 +369,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -385,7 +385,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -418,7 +418,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -503,18 +503,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const countries = <span class="cstat-no" title="statement not covered" >require('country-state-picker');</span>
-const fetch = <span class="cstat-no" title="statement not covered" >require('node-fetch')</span>
-const { locationSchema } = <span class="cstat-no" title="statement not covered" >require('../schema/cimsSchema')</span>
-const { customResponse } = <span class="cstat-no" title="statement not covered" >require("../utility/helper");</span>
-const jwt = <span class="cstat-no" title="statement not covered" >require('jsonwebtoken');</span>
-const { custom } = <span class="cstat-no" title="statement not covered" >require('joi');</span>
-const compModal = <span class="cstat-no" title="statement not covered" >require("../models/compSchema");</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const countries = require('country-state-picker');
+const fetch = require('node-fetch')
+const { locationSchema } = require('../schema/cimsSchema')
+const { customResponse } = require("../utility/helper");
+const jwt = require('jsonwebtoken');
+const { custom } = require('joi');
+const compModal = require("../models/compSchema");
 &nbsp;
-const TOKEN_SECRET = <span class="cstat-no" title="statement not covered" >'6850cc6ab29180f03f647c9b7ff331298038b2cd9bf71980f87bfd547e0da37ac60c4c5d7f7136f81b81496a741f496ea3e528b70755bcf020874e0ef01446db'</span>
+const TOKEN_SECRET = '6850cc6ab29180f03f647c9b7ff331298038b2cd9bf71980f87bfd547e0da37ac60c4c5d7f7136f81b81496a741f496ea3e528b70755bcf020874e0ef01446db'
 &nbsp;
 //Token creation
-const postLogin = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {</span>
+const postLogin = <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
 &nbsp;
     const username = <span class="cstat-no" title="statement not covered" >req.body.username</span>
     var user = <span class="cstat-no" title="statement not covered" >{ name: username }</span>
@@ -526,7 +526,7 @@ const postLogin = <span class="cstat-no" title="statement not covered" ><span cl
 }
 &nbsp;
 //Get location from pincode and country
-const getLocation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {</span>
+const getLocation = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
 &nbsp;
     const pincode = <span class="cstat-no" title="statement not covered" >req.headers.pincode</span>
     const country = <span class="cstat-no" title="statement not covered" >req.headers.country</span>
@@ -589,7 +589,7 @@ const getLocation = <span class="cstat-no" title="statement not covered" ><span 
 }
 &nbsp;
 //Get all countries for dropdown
-const getCountriesList = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {</span>
+const getCountriesList = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
 &nbsp;
     const countriesList = <span class="cstat-no" title="statement not covered" >countries.getCountries()</span>
 &nbsp;
@@ -605,7 +605,7 @@ const getCountriesList = <span class="cstat-no" title="statement not covered" ><
 }
 &nbsp;
 //Get client info with some id
-const getclientinfo = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {</span>
+const getclientinfo = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
         const clientId = <span class="cstat-no" title="statement not covered" >req.headers['id']</span>
@@ -638,7 +638,7 @@ const getclientinfo = <span class="cstat-no" title="statement not covered" ><spa
 }
 &nbsp;
 //Check if record with same brandname already exists
-const duplicates = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {</span>
+const duplicates = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
     var brandname = <span class="cstat-no" title="statement not covered" >req.headers.brandname.replace(/\s+/g, ' ').trim()</span>
     var id = <span class="cstat-no" title="statement not covered" >req.headers.id</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -723,14 +723,14 @@ const duplicates = <span class="cstat-no" title="statement not covered" ><span c
 &nbsp;
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >module.exports = { duplicates, postLogin, getLocation, getCountriesList, getclientinfo }</span></pre></td></tr></table></pre>
+module.exports = { duplicates, postLogin, getLocation, getCountriesList, getclientinfo }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Mon Jan 03 2022 18:20:22 GMT+0530 (India Standard Time)
+                at Tue Jan 04 2022 11:45:54 GMT+0530 (India Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>

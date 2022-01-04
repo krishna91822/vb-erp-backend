@@ -36,8 +36,39 @@ const stubValue = {
   Remarks: "sdfhskjhdjv",
 };
 
+const newData = {
+  Project_Id: "34cb1103244bd0700aa5fb7b",
+  Client_Name: "Yusuf Shekh",
+  Project_Name: "SSW Solution",
+  Client_Sponser: "VDT",
+  Client_Finance_Controller: "QSE",
+  Targetted_Resources: { Suresh: "true", Akash: "false" },
+  Targeted_Res_AllocationRate: { ABC: 50, DCH: 60 },
+  Type: "PO",
+  PO_Amount: 1224,
+  Currency: "INR",
+  Document_Name: "SSWdoc",
+  POSOW_endDate: "2021-12-17T09:20:58.793+00:00",
+  Remarks: "sdfhskjhdjv",
+};
+
+const errorData = {
+  Client_Name: "Yusuf Shekh",
+  Project_Name: "SSW Solution",
+  Client_Sponser: "VDT",
+  Client_Finance_Controller: "QSE",
+  Targetted_Resources: { Suresh: "true", Akash: "false" },
+  Targeted_Res_AllocationRate: { ABC: 50, DCH: 60 },
+  Type: "PO",
+  PO_Number: "PO0001",
+  PO_Amount: 1224,
+  Currency: "INR",
+  Document_Name: "SSWdoc",
+  Remarks: "sdfhskjhdjv",
+};
+
 describe("PO/SOW Unit Testing with Mocha..!!", () => {
-  beforeEach(function () {
+  this.beforeEach(function () {
     const stub = sinon.stub();
     stub.resetHistory();
   });
@@ -65,6 +96,8 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
       body.should.have.property("code").eql(200);
       stub.restore();
     });
+
+    after(() => {});
   });
 
   describe("/GET/sort by other field PO/SOW", () => {
@@ -90,6 +123,8 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
       body.should.have.property("code").eql(200);
       stub.restore();
     });
+
+    after(() => {});
   });
 
   describe("/GET/:id PO/SOW", () => {
@@ -114,36 +149,74 @@ describe("PO/SOW Unit Testing with Mocha..!!", () => {
       body.should.be.a("object");
       body.should.have.status("success");
       body.should.have.property("code").eql(200);
-      // body.data.should.have.property("Project_Id").eql(stubValue.Project_Id);
-      // body.data.should.have.property("Client_Name").eql(stubValue.Client_Name);
-      // body.data.should.have
-      //   .property("Project_Name")
-      //   .eql(stubValue.Project_Name);
-      // body.data.should.have
-      //   .property("Client_Sponser")
-      //   .eql(stubValue.Client_Sponser);
-      // body.data.should.have
-      //   .property("Client_Finance_Controller")
-      //   .eql(stubValue.Client_Finance_Controller);
-      // body.data.should.have
-      //   .property("Targetted_Resources")
-      //   .eql(stubValue.Targetted_Resources);
-      // body.data.should.have
-      //   .property("Targeted_Res_AllocationRate")
-      //   .eql(stubValue.Targeted_Res_AllocationRate);
-      // body.data.should.have.property("Status").eql(stubValue.Status);
-      // body.data.should.have.property("Type").eql(stubValue.Type);
-      // body.data.should.have.property("PO_Number").eql(stubValue.PO_Number);
-      // body.data.should.have.property("PO_Amount").eql(stubValue.PO_Amount);
-      // body.data.should.have.property("Currency").eql(stubValue.Currency);
-      // body.data.should.have
-      //   .property("Document_Name")
-      //   .eql(stubValue.Document_Name);
-      // body.data.should.have
-      //   .property("POSOW_endDate")
-      //   .eql(stubValue.POSOW_endDate);
-      // body.data.should.have.property("Remarks").eql(stubValue.Remarks);
       body.data.should.have.property("_id").eql(stubValue._id);
+      stub.restore();
+    });
+    after(() => {});
+  });
+
+  describe("Create new po/sow", function () {
+    let stub;
+    let req;
+    let res;
+    beforeEach(() => {
+      req = mocks.createRequest({
+        body: errorData,
+      });
+      res = mocks.createResponse();
+    });
+    before(() => {});
+    it("It should throw Validation Error", async function () {
+      stub = sinon.stub(purchaseOrderModel, "create").returns(stubValue);
+      const result = await createPoSow(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(422);
+      body.should.have.property("message").eql("Invalid request data");
+      stub.restore();
+    });
+    after(() => {});
+    before(() => {});
+    it("It should create a new posow", async function () {
+      req = mocks.createRequest({
+        body: newData,
+      });
+      stub = sinon.stub(purchaseOrderModel, "create").returns(stubValue);
+      const result = await createPoSow(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      body.data.should.have.property("Project_Id").eql(stubValue.Project_Id);
+      body.data.should.have.property("Client_Name").eql(stubValue.Client_Name);
+      body.data.should.have
+        .property("Project_Name")
+        .eql(stubValue.Project_Name);
+      body.data.should.have
+        .property("Client_Sponser")
+        .eql(stubValue.Client_Sponser);
+      body.data.should.have
+        .property("Client_Finance_Controller")
+        .eql(stubValue.Client_Finance_Controller);
+      body.data.should.have
+        .property("Targetted_Resources")
+        .eql(stubValue.Targetted_Resources);
+      body.data.should.have
+        .property("Targeted_Res_AllocationRate")
+        .eql(stubValue.Targeted_Res_AllocationRate);
+      body.data.should.have.property("Status").eql(stubValue.Status);
+      body.data.should.have.property("Type").eql(stubValue.Type);
+      body.data.should.have.property("PO_Number").eql(stubValue.PO_Number);
+      body.data.should.have.property("PO_Amount").eql(stubValue.PO_Amount);
+      body.data.should.have.property("Currency").eql(stubValue.Currency);
+      body.data.should.have
+        .property("Document_Name")
+        .eql(stubValue.Document_Name);
+      body.data.should.have
+        .property("POSOW_endDate")
+        .eql(stubValue.POSOW_endDate);
+      body.data.should.have.property("Remarks").eql(stubValue.Remarks);
       stub.restore();
     });
     after(() => {});

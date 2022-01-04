@@ -10,11 +10,10 @@ const poSowSchema = Joi.object()
     Targetted_Resources: Joi.object().required(),
     Targeted_Res_AllocationRate: Joi.object().required(),
     Status: Joi.string().valid(
-      "Rejected",
-      "Pending",
-      "Active",
-      "Closed",
-      "Drafted"
+      "Overdue",
+      "Invoice raised",
+      "Complete",
+      "Draft"
     ),
     Type: Joi.string().alphanum().valid("PO", "SOW").required(),
     PO_Amount: Joi.number().required(),
