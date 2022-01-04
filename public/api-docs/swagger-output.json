@@ -3216,7 +3216,7 @@
                     },
                     "Status": {
                       "type": "string",
-                      "example": "Drafted"
+                      "example": "Draft"
                     },
                     "Type": {
                       "type": "string",
@@ -3358,7 +3358,7 @@
                     },
                     "Status": {
                       "type": "string",
-                      "example": "Drafted"
+                      "example": "Draft"
                     },
                     "Type": {
                       "type": "string",
@@ -3593,7 +3593,7 @@
                     },
                     "Status": {
                       "type": "string",
-                      "example": "Approved"
+                      "example": "Complete"
                     },
                     "Type": {
                       "type": "string",
@@ -3758,7 +3758,7 @@
                           },
                           "Status": {
                             "type": "string",
-                            "example": "Drafted"
+                            "example": "Draft"
                           },
                           "Type": {
                             "type": "string",

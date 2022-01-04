@@ -1,5 +1,6 @@
 const { invoiceSchema, querySchema } = require("../schema/invoiceschema");
 const Invoice = require("../models/invoicemodel");
+const posow = require("../models/poSow");
 const { emailContent } = require("../controllers/poEmailController");
 const { emailSender } = require("../middleware/POMailNotification");
 const { customResponse, customPagination } = require("../utility/helper");
@@ -56,7 +57,7 @@ const newInvoice = async (req, res) => {
       });
       return res.status(code).send(resData);
     }
-    code = 200
+    code = 200;
     const invoice = await Invoice.create(req.body);
     const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
       "PO_Id",
@@ -422,9 +423,8 @@ const getRelatedInvoices = async (req, res) => {
   }
 };
 
-
 const updateInvoice = async (req, res) => {
-   /*
+  /*
       #swagger.tags = ['invoices']
       #swagger.description = 'Update invoice details'
       #swagger.parameters['obj'] = {
@@ -474,9 +474,11 @@ const updateInvoice = async (req, res) => {
       });
       return res.status(code).send(resData);
     }
-    if(req.body.invoice_raised.toLowerCase()==="yes" 
-    && req.body.invoice_amount_received===null){
-      Object.assign(req.body,{invoice_raised_on: new Date()})
+    if (
+      req.body.invoice_raised.toLowerCase() === "yes" &&
+      req.body.invoice_amount_received === null
+    ) {
+      Object.assign(req.body, { invoice_raised_on: new Date() });
     }
     const updateDetails = await Invoice.updateOne(
       { _id: req.params.id },
@@ -484,11 +486,33 @@ const updateInvoice = async (req, res) => {
         $set: { ...req.body, updated_at: new Date() },
       }
     );
-    if (req.body.amount_received_on) {
-      const getDetails = await Invoice.findOne({ _id: req.params.id }).populate(
-        "PO_Id",
-        "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
+
+    const currDate = new Date();
+    const getDetails = await Invoice.findOne({ _id: req.params.id }).populate(
+      "PO_Id",
+      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency POSOW_endDate"
+    );
+
+    if (
+      getDetails.PO_Id.POSOW_endDate > currDate &&
+      getDetails.invoice_raised === "Yes" &&
+      getDetails.invoice_received === "Yes"
+    ) {
+      await posow.updateOne(
+        { _id: req.body.PO_Id },
+        { $set: { Status: "Complete" } }
       );
+    } else if (
+      getDetails.PO_Id.POSOW_endDate > currDate &&
+      getDetails.invoice_raised === "Yes"
+    ) {
+      await posow.updateOne(
+        { _id: req.body.PO_Id },
+        { $set: { Status: "Invoice raised" } }
+      );
+    }
+
+    if (req.body.amount_received_on) {
       const isoDate = getDetails.amount_received_on;
       const date = new Date(isoDate);
       const year = date.getFullYear();
