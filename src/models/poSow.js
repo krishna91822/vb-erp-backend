@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 //Creating PO/SOW Schema
 const purchaseOrderSchema = mongoose.Schema({
+  Project_Id: {
+    type: String,
+    required: [true, "Project Id is required"],
+  },
   Client_Name: {
     trim: true,
     type: String,
@@ -13,21 +17,26 @@ const purchaseOrderSchema = mongoose.Schema({
     required: [true, "project name is required"],
   },
   Client_Sponser: {
-    type: [{ type: String }],
+    type: String,
     required: [true, "client sponser is required"],
   },
   Client_Finance_Controller: {
-    type: [{ type: String }],
+    type: String,
     required: [true, "client finance controller is required"],
   },
   Targetted_Resources: {
-    type: [{ type: String }],
+    type: Object,
+    required: [true, "targetted Resources is required"],
+  },
+  Targeted_Res_AllocationRate: {
+    type: Object,
     required: [true, "targetted Resources is required"],
   },
   Status: {
     type: String,
-    enum: ["Rejected", "Pending", "Accepted", "Closed", "Drafted"],
+    enum: ["Rejected", "Pending", "Active", "Closed", "Drafted"],
     required: [true, "status is required"],
+    default: "Active",
   },
   Type: {
     type: String,
@@ -37,7 +46,6 @@ const purchaseOrderSchema = mongoose.Schema({
   PO_Number: {
     trim: true,
     type: String,
-    required: [true, "po number is required"],
   },
   PO_Amount: {
     trim: true,
@@ -53,12 +61,20 @@ const purchaseOrderSchema = mongoose.Schema({
     type: String,
     required: [true, "document name is required"],
   },
-  Document_Type: {
-    type: String,
-    required: [true, "document type is required"],
+  POSOW_endDate: {
+    type: Date,
+    required: [true, "enddate is required"],
   },
   Remarks: {
     type: String,
+  },
+  Created_At: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+  Updated_At: {
+    type: Date,
   },
 });
 
