@@ -3214,10 +3214,6 @@
                         }
                       }
                     },
-                    "Status": {
-                      "type": "string",
-                      "example": "Draft"
-                    },
                     "Type": {
                       "type": "string",
                       "example": "PO"
@@ -3355,10 +3351,6 @@
                           "example": 60
                         }
                       }
-                    },
-                    "Status": {
-                      "type": "string",
-                      "example": "Draft"
                     },
                     "Type": {
                       "type": "string",
@@ -3516,12 +3508,6 @@
                 "Remarks"
               ]
             }
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "type": "String",
-            "description": "Status"
           },
           {
             "name": "projectId",
@@ -3762,10 +3748,6 @@
                                 "example": 60
                               }
                             }
-                          },
-                          "Status": {
-                            "type": "string",
-                            "example": "Draft"
                           },
                           "Type": {
                             "type": "string",

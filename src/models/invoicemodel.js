@@ -19,6 +19,12 @@ const invoiceSchema = new mongoose.Schema({
     enum: ["Yes", "No"],
     default: "No",
   },
+  Status: {
+    type: String,
+    enum: ["Overdue", "Invoice raised", "Complete", "Draft"],
+    required: [true, "status is required"],
+    default: "Draft",
+  },
   invoice_raised_on: {
     type: Date,
     default: null,

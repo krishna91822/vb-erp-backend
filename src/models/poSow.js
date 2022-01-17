@@ -32,12 +32,6 @@ const purchaseOrderSchema = mongoose.Schema({
     type: Object,
     required: [true, "targetted Resources is required"],
   },
-  Status: {
-    type: String,
-    enum: ["Overdue", "Invoice raised", "Complete", "Draft"],
-    required: [true, "status is required"],
-    default: "Draft",
-  },
   Type: {
     type: String,
     enum: ["PO", "SOW"],

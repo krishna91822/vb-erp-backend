@@ -461,7 +461,10 @@ const updateInvoice = async (req, res) => {
         }
       }
   */
-  let code, message;
+  let code,
+    message,
+    updateStatus = "Draft";
+  const currDate = new Date();
   try {
     const { error } = invoiceSchema.validate(req.body);
     if (error) {
@@ -474,43 +477,38 @@ const updateInvoice = async (req, res) => {
       });
       return res.status(code).send(resData);
     }
-    if (
-      req.body.invoice_raised.toLowerCase() === "yes" &&
-      req.body.invoice_amount_received === null
-    ) {
-      Object.assign(req.body, { invoice_raised_on: new Date() });
-    }
-    const updateDetails = await Invoice.updateOne(
-      { _id: req.params.id },
-      {
-        $set: { ...req.body, updated_at: new Date() },
-      }
-    );
 
-    const currDate = new Date();
     const getDetails = await Invoice.findOne({ _id: req.params.id }).populate(
       "PO_Id",
       "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency POSOW_endDate"
     );
 
     if (
-      getDetails.PO_Id.POSOW_endDate > currDate &&
-      getDetails.invoice_raised === "Yes" &&
-      getDetails.invoice_received === "Yes"
+      req.body.invoice_raised.toLowerCase() === "yes" &&
+      req.body.invoice_amount_received === null
     ) {
-      await posow.updateOne(
-        { _id: req.body.PO_Id },
-        { $set: { Status: "Complete" } }
-      );
+      Object.assign(req.body, { invoice_raised_on: new Date() });
+    }
+
+    if (
+      getDetails.PO_Id.POSOW_endDate > currDate &&
+      req.body.invoice_raised === "Yes" &&
+      req.body.invoice_received === "Yes"
+    ) {
+      updateStatus = "Complete";
     } else if (
       getDetails.PO_Id.POSOW_endDate > currDate &&
-      getDetails.invoice_raised === "Yes"
+      req.body.invoice_raised === "Yes"
     ) {
-      await posow.updateOne(
-        { _id: req.body.PO_Id },
-        { $set: { Status: "Invoice raised" } }
-      );
+      updateStatus = "Invoice raised";
     }
+
+    const updateDetails = await Invoice.updateOne(
+      { _id: req.params.id },
+      {
+        $set: { ...req.body, Status: updateStatus, updated_at: new Date() },
+      }
+    );
 
     if (req.body.amount_received_on) {
       const isoDate = getDetails.amount_received_on;

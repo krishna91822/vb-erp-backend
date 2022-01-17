@@ -9,12 +9,6 @@ const poSowSchema = Joi.object()
     Client_Finance_Controller: Joi.string().required(),
     Targetted_Resources: Joi.object().required(),
     Targeted_Res_AllocationRate: Joi.object().required(),
-    Status: Joi.string().valid(
-      "Overdue",
-      "Invoice raised",
-      "Complete",
-      "Draft"
-    ),
     Type: Joi.string().alphanum().valid("PO", "SOW").required(),
     PO_Amount: Joi.number().required(),
     Currency: Joi.string().alphanum().required(),
