@@ -152,14 +152,23 @@ const getAllocationsOnBench = async (req, res) => {
     message = "Displayed Successfully";
     const projectDetails = await projectEmployeeModel
       .find({})
-      .populate("empId", "_id empId empName empPrimaryCapability")
+      .populate(
+        "empId",
+        "_id empId empName empPrimaryCapability empDesignation empSkillSet"
+      )
       .populate(
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
     const employeesData = await Employee.find(
       {},
-      { empId: 1, empName: 1, empPrimaryCapability: 1 }
+      {
+        empId: 1,
+        empName: 1,
+        empPrimaryCapability: 1,
+        empDesignation: 1,
+        empSkillSet: 1,
+      }
     );
 
     const filteredData = getOnBenchFilteredData(
@@ -187,14 +196,23 @@ const getSortedAllocationsOnBench = async (req, res) => {
     message = "Displayed Successfully";
     const projectDetails = await projectEmployeeModel
       .find({})
-      .populate("empId", "_id empId empName empPrimaryCapability")
+      .populate(
+        "empId",
+        "_id empId empName empPrimaryCapability empDesignation empSkillSet"
+      )
       .populate(
         "projectId",
         "_id vbProjectId startDate endDate vbProjectStatus projectName"
       );
     const employeesData = await Employee.find(
       {},
-      { empId: 1, empName: 1, empPrimaryCapability: 1 }
+      {
+        empId: 1,
+        empName: 1,
+        empPrimaryCapability: 1,
+        empDesignation: 1,
+        empSkillSet: 1,
+      }
     ).sort(fieldName);
 
     let filteredData = getOnBenchFilteredData(
