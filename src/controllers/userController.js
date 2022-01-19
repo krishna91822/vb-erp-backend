@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { addUserSchema, loginSchema } = require("../schema/userSchema");
 const { customResponse, customPagination } = require("../utility/helper");
-
+const rolesModal = require("../models/rolesSchema");
 const userModel = require("../models/user");
 
 const getUserList = async (req, res) => {
@@ -325,16 +325,36 @@ const auth = async (req, res) => {
 
   try {
     code = 200;
-    const payload = { ...req.body };
+    let payload = { ...req.body };
     const options = {
       expiresIn: process.env.EXPIRESIN,
       issuer: process.env.ISSUER,
     };
     const secret = process.env.JWT_SECRET;
-    const token = jwt.sign(payload, secret, options);
-    const reqBody = { token, ...req.body };
     const user = await userModel.findOne({ email: req.body.email }).exec();
     const encryptedPw = await bcrypt.hash(req.body.password, 10);
+    const userRole = user.role;
+    let rolesData;
+    let permissions = [];
+    let userPermission;
+    const userDetail = {};
+    await Promise.all(
+      user.role.map(async (role) => {
+        rolesData = await rolesModal
+          .find({ label: role })
+          .then(function (rolesData) {
+            userPermission = rolesData[0].permissions;
+            permissions.push(...userPermission);
+          });
+      })
+    );
+    payload = {
+      ...payload,
+      permissions: [...new Set(permissions)],
+      roles: userRole,
+    };
+    const token = jwt.sign(payload, secret, options);
+    const reqBody = { token, ...req.body };
     if (!user) {
       code = 404;
       message = "Invalid request data";
@@ -353,10 +373,15 @@ const auth = async (req, res) => {
         code = 200;
         data = await userModel.findOneAndUpdate(
           { email: req.body.email },
-          { ...reqBody, password: encryptedPw },
+          { ...reqBody },
           { new: true }
         );
         await data.save();
+        userDetail.name = data.first_name;
+        userDetail.email = data.email;
+        userDetail.roles = data.role;
+        userDetail.permissions = [...new Set(permissions)];
+        userDetail.token = "Bearer " + data.token;
       } else {
         code = 422;
         message = "Invalid request data";
@@ -364,9 +389,10 @@ const auth = async (req, res) => {
           code,
           message,
         });
+        return res.status(code).send(data);
       }
     }
-    const resData = customResponse({ code, data });
+    const resData = customResponse({ code, data: userDetail });
     return res.status(code).send(resData);
   } catch (error) {
     code = 500;
@@ -419,6 +445,88 @@ const getAccount = async (req, res) => {
     return res.status(code).send(resData);
   }
 };
+const validateToken = async (req, res) => {
+  let code,
+    message,
+    data = {};
+  const authorizationHeaader = req.headers.authorization;
+  let result;
+  if (authorizationHeaader) {
+    const secret = process.env.JWT_SECRET;
+    const token = req.headers.authorization.split(" ")[1]; // Bearer <token>
+    const options = {
+      expiresIn: process.env.EXPIRESIN,
+      issuer: process.env.ISSUER,
+    };
+    try {
+      jwt.verify(token, secret, function (err, decoded) {
+        if (err) {
+          code = 401;
+          message = err.message;
+          const resData = customResponse({
+            code,
+            message,
+            err,
+          });
+          return res.status(code).send(resData);
+        }
+        result = jwt.verify(token, process.env.JWT_SECRET, options);
+        const user = userModel
+          .findOne({ email: result.email })
+          .exec()
+          .then((user) => {
+            data.name = user.first_name;
+            data.email = user.email;
+            data.roles = user.role;
+            data.permissions = result.permissions;
+            data.token = user.token;
+            code = 200;
+            message = "Valid Token";
+            const resData = customResponse({ code, message, data });
+            return res.status(code).send(resData);
+          });
+      });
+    } catch (error) {
+      code = 401;
+      message = "Invalid Token";
+      const resData = customResponse({
+        code,
+        message,
+        err: error,
+      });
+      return res.status(code).send(resData);
+    }
+  } else {
+    code = 401;
+    message = "Authentication error. Token required.";
+    const resData = customResponse({ code, message });
+    return res.status(code).send(resData);
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    let code, message;
+
+    const token = "tokenDeleted";
+    const password = req.decoded.password;
+    const user = await userModel.findOneAndUpdate(
+      { email: req.decoded.email },
+      { token: " ", password: req.decoded.password },
+      { new: true }
+    );
+    await user.save();
+    code = 200;
+    message = "User successfully Logout";
+    const resData = customResponse({ code, message });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal Server Error";
+    const resData = customResponse({ code, message, error });
+    res.status(code).send(resData);
+  }
+};
 module.exports = {
   getUserList,
   getUserDeatil,
@@ -427,4 +535,6 @@ module.exports = {
   deleteUser,
   auth,
   getAccount,
+  validateToken,
+  logout,
 };

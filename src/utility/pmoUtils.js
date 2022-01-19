@@ -217,6 +217,8 @@ const getOnBenchFilteredData = (findObj, projectDetails, employeesData) => {
           empId: value.empId.empId,
           empName: value.empId.empName,
           empPrimaryCapability: value.empId.empPrimaryCapability,
+          empDesignation: value.empId.empDesignation,
+          empSkillSet: value.empId.empSkillSet,
           remainingAllocation: 100,
           projects: [],
         };
