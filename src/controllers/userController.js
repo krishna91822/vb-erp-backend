@@ -446,6 +446,25 @@ const getAccount = async (req, res) => {
   }
 };
 const validateToken = async (req, res) => {
+  /* 	#swagger.tags = ['User']
+      #swagger.description = 'Get Account'
+      #swagger.responses[201] = {
+        description: 'User successfully added.',
+        schema: { 
+          "status": "success",
+          "code": 200,
+          "message": "",
+          "data": { 
+            "first_name": 'Jhon',
+            "last_name": 'Doe',
+            "email": 'jhon@valuebound.com',
+            "role": 'admin', 
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiSmhvbiBEb2UiLCJpYXQiOjE2Mjg0OTQ5NzksImV4cCI6MTYyODY2Nzc3OSwiaXNzIjoidmItY21zIn0.wdyX_wXWABr1BIw_7FzZKgowhixX8EXVN4ZojvzsaIU",
+          },
+          "error": {}
+        }
+      }
+  */
   let code,
     message,
     data = {};
@@ -505,6 +524,27 @@ const validateToken = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+  /* 	#swagger.tags = ['User']
+      #swagger.description = 'Get Account'
+      #swagger.responses[200] = {
+        description: 'User successfully added.',
+        schema: {
+            "status": "success",
+            "code": 200,
+            "data": {
+              "name": "Rahul",
+              "email": "rahul@valuebound.com",
+              "roles": [],
+              "permissions": [],
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhaHVsQHZhbHVlYm91bmQuY29tIiwicGFzc3dvcmQiOiJxd2VydHkxMjMiLCJwZXJtaXNzaW9ucyI6WyJ2aWV3X2VtcGxveWVlX2Rhc2hib2FyZCIsImVkaXRfZW1wbG95ZWVfZGFzaGJvYXJkIiwiY3JlYXRlX2VtcGxveWVlX2Rhc2hib2FyZCIsImRvd25sb2FkX2VtcGxveWVlX3Byb2ZpbGUiLCJzZWFyY2hfZW1wbG95ZWUiLCJhcHByb3ZlX2VtcGxveWVlX2VkaXRfcmVxdWVzdCIsInZpZXdfQ0lNU19tb2R1bGUiLCJ1cGRhdGVfb25fQ0lNU19tb2R1bGUiLCJjcmVhdGVfQ0lNU19tb2R1bGUiLCJ2aWV3X1BNT19tb2R1bGUiLCJjcmVhdGVfcHJvamVjdF9pbl9QTU8iLCJ1cGRhdGVfcHJvamVjdF9pbl9QTU8iLCJ2aWV3X2JlbmNoX3N0cmVuZ3RoIiwicHJvamVjdF9pbmZvcm1hdGlvbl90YWJsZSIsInZpZXdfQ01TIiwidXBsb2FkX1BPL1NPVy9jb250cmFjdCIsInZpZXdfaW52b2ljZSIsInVwbG9hZF9pbnZvaWNlIiwicmVjaWV2ZV9zbGFja19ub3RpZmljYXRpb24iLCJhd2FyZF9ub21pbmF0aW9uIiwibXlfcmV3YXJkcyIsInJld2FyZHNfaGlzdG9yeSJdLCJyb2xlcyI6WyJzdXBlcl9hZG1pbiJdLCJpYXQiOjE2NDI0NDI3MTYsImV4cCI6MTY0MjYxNTUxNiwiaXNzIjoidmItZXJwIn0.TYQ9FqruI4YviiUtI6ZjowUmh9ZGxsq8TTk1bnQtD5w"
+            },
+            "message": "Valid Token",
+            "error": {}
+          },
+          "error": {}
+        }
+      }
+  */
   try {
     let code, message;
 
