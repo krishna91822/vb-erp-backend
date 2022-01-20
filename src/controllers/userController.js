@@ -567,6 +567,42 @@ const logout = async (req, res) => {
     res.status(code).send(resData);
   }
 };
+const setPassword = async (req, res) => {
+  let code, message;
+  const _id = req.params.id;
+  const password = req.body.password;
+  try {
+    code = 200;
+    message = "user successfully updated!";
+    const user = await userModel.findOneAndUpdate(
+      { _id },
+      { password: password },
+      { new: true }
+    );
+    if (!user) {
+      code = 400;
+      message = "Bad Request";
+      const resdata = customResponse({ code, message });
+      return res.status(code).send(resdata);
+    }
+    await user.save();
+    const resData = customResponse({
+      code,
+      data: user,
+      message,
+    });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
 module.exports = {
   getUserList,
   getUserDeatil,
@@ -577,4 +613,5 @@ module.exports = {
   getAccount,
   validateToken,
   logout,
+  setPassword,
 };

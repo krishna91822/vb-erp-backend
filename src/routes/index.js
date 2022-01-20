@@ -15,6 +15,7 @@ const {
   getAccount,
   validateToken,
   logout,
+  setPassword,
 } = require("../controllers/userController");
 const { isAuthorized } = require("../middleware/auth");
 const reviewRoutes = require("./ReviewRoutes");
@@ -40,4 +41,5 @@ router.use("/roles", isAuthorized, rolesRoutes);
 router.use("/universities", isAuthorized, universityRoutes);
 router.get("/validateToken", isAuthorized, validateToken);
 router.get("/logout", isAuthorized, logout);
+router.put("/:id/setPassword", setPassword);
 module.exports = router;
