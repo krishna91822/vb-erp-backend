@@ -24,8 +24,8 @@ module.exports = Object.freeze({
 });
 
 module.exports = Status = {
-  drafted: ["pending"],
-  pending: ["approved","rejected"],
+  drafted: ["Pending"],
+  pending: ["Approved", "Rejected"],
   approved: [],
-  rejected:[]
-}
+  rejected: [],
+};
