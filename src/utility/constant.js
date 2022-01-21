@@ -16,11 +16,11 @@ module.exports = Object.freeze({
         }
       `,
   },
-  // CORS_OPTIONS: {
-  //   origin: process.env.ORIGIN.split(" "),
-  //   credentials: true,
-  //   optionSuccessStatus: 200,
-  // },
+  CORS_OPTIONS: {
+    origin: process.env.ORIGIN.split(" "),
+    credentials: true,
+    optionSuccessStatus: 200,
+  },
 });
 
 module.exports = Status = {
