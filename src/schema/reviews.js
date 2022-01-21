@@ -5,6 +5,7 @@ const reviewSchema = Joi.object({
   reqName: Joi.string().required(),
   reqType: Joi.string().valid("profile-creation", "profile-update").required(),
   status: Joi.string().valid("accepted", "rejected", "pending"),
+  message: Joi.string(),
   employeeDetails: Joi.object({
     _id: Joi.any(),
     empId: Joi.string().allow(null, "").allow(null, ""),
@@ -46,6 +47,7 @@ const reviewSchema = Joi.object({
     personalDetails: Joi.any(),
     professionalDetails: Joi.any(),
     skillsDetails: Joi.any(),
+    project: Joi.any(),
     slackMemId: Joi.string().allow(null, ""),
     empPhoneNumber: Joi.string().allow(null, ""),
     empCtc: Joi.number().min(0).allow(null, ""),
@@ -54,6 +56,7 @@ const reviewSchema = Joi.object({
 
 const reviewupdatedSchema = Joi.object({
   status: Joi.string().valid("accepted", "rejected", "pending"),
+  message: Joi.string().allow(null, ""),
 }).options({ abortEarly: false });
 
 module.exports = { reviewSchema, reviewupdatedSchema };
