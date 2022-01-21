@@ -154,7 +154,7 @@ const getAllocationsOnBench = async (req, res) => {
       .find({})
       .populate(
         "empId",
-        "_id empId empName empPrimaryCapability empDesignation empSkillSet"
+        "_id empId empName empPrimaryCapability empDesignation empSkillSet yearsOfExperience"
       )
       .populate(
         "projectId",
@@ -168,6 +168,7 @@ const getAllocationsOnBench = async (req, res) => {
         empPrimaryCapability: 1,
         empDesignation: 1,
         empSkillSet: 1,
+        yearsOfExperience: 1,
       }
     );
 
@@ -191,6 +192,10 @@ const getSortedAllocationsOnBench = async (req, res) => {
   const page = req.query.page ? req.query.page : 1;
   const limit = req.query.limit ? req.query.limit : 10;
   let code, message;
+  let sortByAscending = 1;
+  if (fieldName === "yearsOfExperience") {
+    sortByAscending = -1;
+  }
   try {
     code = 200;
     message = "Displayed Successfully";
@@ -198,7 +203,7 @@ const getSortedAllocationsOnBench = async (req, res) => {
       .find({})
       .populate(
         "empId",
-        "_id empId empName empPrimaryCapability empDesignation empSkillSet"
+        "_id empId empName empPrimaryCapability empDesignation empSkillSet yearsOfExperience"
       )
       .populate(
         "projectId",
@@ -212,8 +217,9 @@ const getSortedAllocationsOnBench = async (req, res) => {
         empPrimaryCapability: 1,
         empDesignation: 1,
         empSkillSet: 1,
+        yearsOfExperience: 1,
       }
-    ).sort(fieldName);
+    ).sort([[fieldName, sortByAscending]]);
 
     let filteredData = getOnBenchFilteredData(
       query,
