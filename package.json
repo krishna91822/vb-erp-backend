@@ -2,6 +2,9 @@
   "name": "vb-erp-backend",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "16.x"
+  },
   "main": "src/app.js",
   "scripts": {
     "start:prod": "SET NODE_ENV=production & nodemon app.js",
