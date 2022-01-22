@@ -6,7 +6,7 @@ const { addUserSchema, loginSchema } = require("../schema/userSchema");
 const { customResponse, customPagination } = require("../utility/helper");
 const rolesModal = require("../models/rolesSchema");
 const userModel = require("../models/user");
-
+const { sendEmail, generateMessage } = require("../utility/AutogenerateEmail");
 const getUserList = async (req, res) => {
   /* 	#swagger.tags = ['User']
       #swagger.description = 'Get users list' 
@@ -160,6 +160,9 @@ const addUser = async (req, res) => {
     code = 201;
     const data = new userModel(req.body);
     await data.save();
+    const emailMessage = generateMessage(data._id, data.first_name);
+    sendEmail(data.email, `Vb ERP Account Created`, emailMessage);
+    // console.log(emailMessage);
     const resData = customResponse({
       code,
       data,
@@ -322,7 +325,6 @@ const auth = async (req, res) => {
     });
     return res.status(code).send(resData);
   }
-
   try {
     code = 200;
     let payload = { ...req.body };
