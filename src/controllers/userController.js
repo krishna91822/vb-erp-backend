@@ -7,6 +7,7 @@ const { customResponse, customPagination } = require("../utility/helper");
 const rolesModal = require("../models/rolesSchema");
 const userModel = require("../models/user");
 const { sendEmail, generateMessage } = require("../utility/AutogenerateEmail");
+const { ObjectID } = require("mongodb");
 const getUserList = async (req, res) => {
   /* 	#swagger.tags = ['User']
       #swagger.description = 'Get users list' 
@@ -384,6 +385,7 @@ const auth = async (req, res) => {
         userDetail.roles = data.role;
         userDetail.permissions = [...new Set(permissions)];
         userDetail.token = "Bearer " + data.token;
+        userDetail.id = data._id.toString();
       } else {
         code = 422;
         message = "Invalid request data";
@@ -496,11 +498,13 @@ const validateToken = async (req, res) => {
           .findOne({ email: result.email })
           .exec()
           .then((user) => {
+            id = user._id;
             data.name = user.first_name;
             data.email = user.email;
             data.roles = user.role;
             data.permissions = result.permissions;
             data.token = user.token;
+            data.id = id.toString();
             code = 200;
             message = "Valid Token";
             const resData = customResponse({ code, message, data });
@@ -549,19 +553,18 @@ const logout = async (req, res) => {
   */
   try {
     let code, message;
-
-    const token = "tokenDeleted";
-    const password = req.decoded.password;
-    const user = await userModel.findOneAndUpdate(
-      { email: req.decoded.email },
-      { token: " ", password: req.decoded.password },
-      { new: true }
-    );
-    await user.save();
-    code = 200;
-    message = "User successfully Logout";
-    const resData = customResponse({ code, message });
-    return res.status(code).send(resData);
+    await userModel
+      .findOneAndUpdate(
+        { email: req.decoded.email },
+        { token: " " },
+        { new: true }
+      )
+      .then(() => {
+        code = 200;
+        message = "User successfully Logout";
+        const resData = customResponse({ code, message });
+        return res.status(code).send(resData);
+      });
   } catch (error) {
     code = 500;
     message = "Internal Server Error";
@@ -569,6 +572,7 @@ const logout = async (req, res) => {
     res.status(code).send(resData);
   }
 };
+
 const setPassword = async (req, res) => {
   let code, message;
   const _id = req.params.id;
