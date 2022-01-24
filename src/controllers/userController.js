@@ -166,7 +166,6 @@ const addUser = async (req, res) => {
     await data.save();
     const emailMessage = generateMessage(data._id, data.first_name);
     sendEmail(data.email, `Vb ERP Account Created`, emailMessage);
-    // console.log(emailMessage);
     const resData = customResponse({
       code,
       data,
