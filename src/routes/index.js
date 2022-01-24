@@ -25,7 +25,7 @@ const ProjectEmployeeRouter = require("./projectAndEmployee");
 const universityRoutes = require("./universityRoute");
 router.post("/login", auth);
 router.get("/account", isAuthorized, getAccount);
-router.use("/users", isAuthorized, userRoutes);
+router.use("/users", userRoutes);
 router.use("/rewards", isAuthorized, rewardRoutes);
 router.use("/", otherRoutes);
 router.use("/assign", isAuthorized, assigneeRoutes);

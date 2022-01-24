@@ -10,11 +10,11 @@ const {
   deleteUser,
 } = require("../controllers/userController");
 
-router.get("/", getUserList);
+router.get("/", isAuthorized, getUserList);
 router.get("/:id", getUserDeatil);
-router.post("/", addUser);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
+router.post("/", isAuthorized, addUser);
+router.put("/:id", isAuthorized, updateUser);
+router.delete("/:id", isAuthorized, deleteUser);
 //create getrewards logic
 
 module.exports = router;
