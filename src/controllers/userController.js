@@ -7,7 +7,6 @@ const { customResponse, customPagination } = require("../utility/helper");
 const rolesModal = require("../models/rolesSchema");
 const userModel = require("../models/user");
 const { sendEmail, generateMessage } = require("../utility/AutogenerateEmail");
-const { ObjectID } = require("mongodb");
 const getUserList = async (req, res) => {
   /* 	#swagger.tags = ['User']
       #swagger.description = 'Get users list' 
@@ -159,6 +158,10 @@ const addUser = async (req, res) => {
   }
   try {
     code = 201;
+    const firstname = req.body.first_name.split(" ")[0];
+    const lastname = req.body.first_name.split(" ")[1];
+    req.body.first_name = firstname;
+    req.body.last_name = lastname;
     const data = new userModel(req.body);
     await data.save();
     const emailMessage = generateMessage(data._id, data.first_name);
@@ -335,7 +338,6 @@ const auth = async (req, res) => {
     };
     const secret = process.env.JWT_SECRET;
     const user = await userModel.findOne({ email: req.body.email }).exec();
-    const encryptedPw = await bcrypt.hash(req.body.password, 10);
     const userRole = user.role;
     let rolesData;
     let permissions = [];
