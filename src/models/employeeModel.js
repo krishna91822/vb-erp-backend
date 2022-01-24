@@ -219,6 +219,11 @@ const employeeSchema = new mongoose.Schema(
       type: Number,
       min: 0,
     },
+    yearsOfExperience: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

@@ -51,6 +51,7 @@ const reviewSchema = Joi.object({
     slackMemId: Joi.string().allow(null, ""),
     empPhoneNumber: Joi.string().allow(null, ""),
     empCtc: Joi.number().min(0).allow(null, ""),
+    yearsOfExperience: Joi.number().allow(null),
   }),
 }).options({ abortEarly: false });
 
