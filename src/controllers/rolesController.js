@@ -28,6 +28,25 @@ const getRoles = async (req, res) => {
   }
 };
 
+const getAllRoles = async (req, res) => {
+  try {
+    let code, message;
+    code = 200;
+    const data = await rolesModal.find({}, { label: 1, _id: 0 });
+    let roles = [];
+    data.map((data) => {
+      roles.push(data.label);
+    });
+    const resdata = customResponse({ code, data: roles });
+    res.status(code).send(resdata);
+  } catch (error) {
+    code = 500;
+    message = "Internal Server error";
+    const resData = customResponse({ code, message, err: error });
+    res.status(code).send(resData);
+  }
+};
 module.exports = {
   getRoles,
+  getAllRoles,
 };
