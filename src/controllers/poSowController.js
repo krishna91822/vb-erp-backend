@@ -44,7 +44,6 @@ const createPoSow = async (req, res) => {
             "Client_Finance_Controller": 'Tanmay',
             "Targetted_Resources": {"ABC":"true","DCH":"false"},
             "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
-            "Status": 'Active',
             "Type": 'PO',
             "PO_Number": 'ERP34',
             "PO_Amount": 3434,
@@ -92,17 +91,19 @@ const createPoSow = async (req, res) => {
       ...req.body,
       PO_Number: num,
     }).save();
+
     const invoices = new Invoice({
       PO_Id: poSow._id,
-      client_sponsor: req.body.Client_Sponser,
-      client_finance_controller: req.body.Client_Finance_Controller,
+      client_sponsor: poSow.Client_Sponser,
+      client_finance_controller: poSow.Client_Finance_Controller,
     });
-
     const invoice = await invoices.save();
+
     const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
       "PO_Id",
       "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
     );
+
     const data = {
       Client_Name: getDetails.PO_Id.Client_Name,
       Project_Name: getDetails.PO_Id.Project_Name,
@@ -150,7 +151,6 @@ const getSortedPoList = async (req, res) => {
                 "Client_Finance_Controller": 'Tanmay',
                 "Targetted_Resources": {"ABC":"true","DCH":"false"},
                 "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
-                "Status": "Active",
                 "Type": "PO",
                 "PO_Number": "ERP34",
                 "PO_Amount": 3434,
@@ -173,7 +173,6 @@ const getSortedPoList = async (req, res) => {
   try {
     const { error } = querySchema.validate(req.query);
     if (error) {
-      console.log(error);
       code = 422;
       message = "Invalid request Query";
       const resData = customResponse({
@@ -235,7 +234,6 @@ const getPoDeatil = async (req, res) => {
             "Client_Finance_Controller": 'Tanmay',
             "Targetted_Resources": {"ABC":"true","DCH":"false"},
             "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
-            "Status": "Active",
             "Type": "PO",
             "PO_Number": "ERP34",
             "PO_Amount": 3434,
@@ -304,7 +302,6 @@ const updatePODetais = async (req, res) => {
               "Client_Finance_Controller": 'Tanmay',
               "Targetted_Resources": {"ABC":"true","DCH":"false"},
               "Targeted_Res_AllocationRate": {"ABC":50,"DCH":60},
-              "Status": 'Active',
               "Type": 'PO',
               "PO_Number": 'ERP43',
               "PO_Amount": 3434,
@@ -356,52 +353,6 @@ const updatePODetais = async (req, res) => {
   }
 };
 
-// const updatePOStatus = async (req, res) => {
-//   let code, message;
-//   try {
-//     const _id = req.params.id;
-//     const newStatus = req.query.status.toLowerCase();
-//     const getDetails = await purchaseOrderModel.findById({ _id });
-//     const { Status } = getDetails;
-//     if (StatusLifeCycle[Status.toLowerCase()].indexOf(newStatus) != -1) {
-//       code = 200;
-//       message = "status updated successfully";
-//       const updateStatus = await purchaseOrderModel.updateOne(
-//         { _id: req.params.id },
-//         {
-//           $set: {
-//             Status: newStatus,
-//             Updated_At: new Date(),
-//           },
-//         }
-//       );
-//       const resData = customResponse({
-//         code,
-//         data: updateStatus,
-//         message,
-//       });
-//       return res.status(code).send(resData);
-//     } else {
-//       code = 400;
-//       message = "status already updated";
-//       const resData = customResponse({
-//         code,
-//         message,
-//       });
-//       res.status(code).send(resData);
-//     }
-//   } catch (error) {
-//     code = 500;
-//     message = "Internal server error";
-//     const resData = customResponse({
-//       code,
-//       message,
-//       err: error,
-//     });
-//     return res.status(code).send(resData);
-//   }
-// };
-
 const getClients = async (req, res) => {
   /* 	#swagger.tags = ['PO/SOW']
       #swagger.description = 'Get Client list' 
@@ -443,7 +394,6 @@ const getClients = async (req, res) => {
     const resData = customResponse({ code, data });
     return res.status(code).send(resData);
   } catch (error) {
-    console.log(error);
     code = 500;
     message = "Internal server error";
     const resData = customResponse({

@@ -1,5 +1,6 @@
 const { invoiceSchema, querySchema } = require("../schema/invoiceschema");
 const Invoice = require("../models/invoicemodel");
+const posow = require("../models/poSow");
 const { emailContent } = require("../controllers/poEmailController");
 const { emailSender } = require("../middleware/POMailNotification");
 const { customResponse, customPagination } = require("../utility/helper");
@@ -43,12 +44,20 @@ const newInvoice = async (req, res) => {
       }
   */
   try {
+    let code, message;
     const { error } = invoiceSchema.validate(req.body);
 
     if (error) {
-      return res.status(422).send(error);
+      code = 422;
+      message = "Invalid data";
+      const resData = customResponse({
+        code,
+        message,
+        err: error && error.details,
+      });
+      return res.status(code).send(resData);
     }
-
+    code = 200;
     const invoice = await Invoice.create(req.body);
     const getDetails = await Invoice.findOne({ _id: invoice._id }).populate(
       "PO_Id",
@@ -86,12 +95,17 @@ const newInvoice = async (req, res) => {
       const emailTemplate2 = await emailContent("N003", data2);
       emailSender(emailTemplate2);
     }
-    res.status(201).json({
-      status: true,
-      invoice,
-    });
+    const resData = customResponse({ code, data: invoice });
+    return res.status(code).send(resData);
   } catch (error) {
-    res.status(401).send(error);
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
   }
 };
 
@@ -408,8 +422,49 @@ const getRelatedInvoices = async (req, res) => {
     return res.status(code).send(resData);
   }
 };
+
 const updateInvoice = async (req, res) => {
-  let code, message;
+  /*
+      #swagger.tags = ['invoices']
+      #swagger.description = 'Update invoice details'
+      #swagger.parameters['obj'] = {
+        in: 'body',
+        schema: {
+            $PO_Id: '61d41dcdf2e1e074360371ee',
+            $client_sponsor: 'AB',
+            $client_finance_controller: 'CD',
+            $invoice_raised: "Yes",
+            $invoice_received: "Yes",
+            $invoice_amount_received: 87634788,
+            $vb_bank_account: 'SBIN00004567',
+            $amount_received_on: '2021-12-10T06:01:50.178Z'
+        }
+      }
+      #swagger.responses[200] = {
+        description: 'Invoice Details updated successfully.',
+        schema: {
+          "status": "success",
+          "code": 200,
+          "message": "",
+          "data": {
+            "PO_Id": '61d41dcdf2e1e074360371ee',
+            "client_sponsor": 'AB',
+            "client_finance_controller": 'CD',
+            "invoice_raised": "Yes",
+            "invoice_received": "Yes",
+            "invoice_amount_received": 467389738,
+            "vb_bank_account": 'SBIN00004567',
+            "amount_received_on": '2021-12-10T06:01:50.178Z',
+            "created_at": '2021-12-10T06:01:50.178Z',
+          },
+          "error": {}
+        }
+      }
+  */
+  let code,
+    message,
+    updateStatus = "Draft";
+  const currDate = new Date();
   try {
     const { error } = invoiceSchema.validate(req.body);
     if (error) {
@@ -422,18 +477,40 @@ const updateInvoice = async (req, res) => {
       });
       return res.status(code).send(resData);
     }
+
+    const getDetails = await Invoice.findOne({ _id: req.params.id }).populate(
+      "PO_Id",
+      "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency POSOW_endDate"
+    );
+
+    if (
+      req.body.invoice_raised.toLowerCase() === "yes" &&
+      req.body.invoice_amount_received === null
+    ) {
+      Object.assign(req.body, { invoice_raised_on: new Date() });
+    }
+
+    if (
+      getDetails.PO_Id.POSOW_endDate > currDate &&
+      req.body.invoice_raised === "Yes" &&
+      req.body.invoice_received === "Yes"
+    ) {
+      updateStatus = "Complete";
+    } else if (
+      getDetails.PO_Id.POSOW_endDate > currDate &&
+      req.body.invoice_raised === "Yes"
+    ) {
+      updateStatus = "Invoice raised";
+    }
+
     const updateDetails = await Invoice.updateOne(
       { _id: req.params.id },
       {
-        $set: { ...req.body, updated_at: new Date() },
+        $set: { ...req.body, Status: updateStatus, updated_at: new Date() },
       }
     );
 
     if (req.body.amount_received_on) {
-      const getDetails = await Invoice.findOne({ _id: req.params.id }).populate(
-        "PO_Id",
-        "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount Currency"
-      );
       const isoDate = getDetails.amount_received_on;
       const date = new Date(isoDate);
       const year = date.getFullYear();

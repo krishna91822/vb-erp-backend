@@ -1,192 +1,558 @@
 process.env.NODE_ENV = "test";
 
-let chai = require("chai");
-const chaiSorted = require("chai-sorted");
-let chaiHttp = require("chai-http");
-let server = require("../src/app");
-let should = chai.should;
-chai.use(chaiHttp);
-chai.use(chaiSorted);
-let invoice = require("../src/models/invoicemodel");
+const chai = require("chai");
+const expect = chai.expect;
+const purchaseOrderModel = require("../src/models/poSow");
+const Invoice = require("../src/models/invoicemodel");
+const sinon = require("sinon");
+var mocks = require("node-mocks-http");
 
-describe("Invoice Unit Testing with Mocha..!!", () => {
-  describe("get invoice by id", () => {
-    it("it should GET a Invoice by given id", (done) => {
-      let details = {
-        PO_Id: "61b32db0df53c0173c3e1925",
-        client_sponsor: "shivam",
-        client_finance_controller: "xyz",
-        invoice_raised: 1234,
-        invoice_amount_received: 5689339,
-        vb_bank_account: "dwrjhgcriwog",
-        amount_received_on: "2014-01-22T14:56:59.301Z",
-      };
-      const invoiveDetails = new invoice(details);
-      invoiveDetails.save((err, data) => {
-        chai
-          .request(server)
-          .get("/invoice/" + invoiveDetails.id)
-          .send(invoiveDetails)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a("object");
-            res.body.data.should.have.property("PO_Id");
-            res.body.data.should.have.property("client_sponsor");
-            res.body.data.should.have.property("client_finance_controller");
-            res.body.data.should.have.property("invoice_raised");
-            res.body.data.should.have.property("invoice_amount_received");
-            res.body.data.should.have.property("vb_bank_account");
-            res.body.data.should.have.property("amount_received_on");
-            res.body.data.should.have.property("_id").eql(invoiveDetails.id);
-            done();
-          });
-      });
-    });
+const {
+  newInvoice,
+  getInvoiceDetails,
+  getInvoiceDetailsById,
+  getRelatedInvoices,
+  updateInvoice,
+} = require("../src/controllers/invoicecontroller");
+const { locale } = require("moment");
+const templateModel = require("../src/models/emailtemplate");
 
-    it("it should throw an exception", (done) => {
-      let details = {
-        PO_Id: "61aee1b97af12a205c1a16c5",
-        client_sponsor: "shivam",
-        client_finance_controller: "xyz",
-        invoice_raised: "huirvkhio",
-        invoice_amount_received: 5689339,
-        vb_bank_account: "dwrjhgcriwog",
-        amount_received_on: "2014-01-22T14:56:59.301Z",
-      };
-      const invoiveDetails = new invoice(details);
-      const id = "61aee1b97af12a205c1a16z5";
-      invoiveDetails.save((err, data) => {
-        chai
-          .request(server)
-          .get("/invoice/" + id)
-          .end((err, res) => {
-            res.should.have.status(500);
-            res.body.should.have
-              .property("message")
-              .eql("Internal server error");
-            res.body.should.have.property("error");
-            done();
-          });
+const stubValue = {
+  _id: "61cb1104744bd07a0aa5fb7b",
+  PO_Id: "61cb1103744bd07a0aa5fb79",
+  client_sponsor: "Satya Nadella",
+  client_finance_controller: "Gopal Krishna",
+  invoice_raised: "Yes",
+  invoice_received: "Yes",
+  invoice_amount_received: 1234,
+  amount_received_on: "2021-04-09",
+  Remarks: null,
+  vb_bank_account: "40141411111222",
+};
+const emailValue = {
+  subject: "Testing Invoice",
+  body: "Email value for testing invoice",
+  to: "abc@xyz.com",
+};
+const newData = {
+  PO_Id: "61cb1103744bd07a0aa5fb79",
+  client_sponsor: "Satya Nadella",
+  client_finance_controller: "Gopal Krishna",
+  invoice_raised: "Yes",
+  invoice_received: "Yes",
+  invoice_amount_received: 1234,
+  amount_received_on: "2021-04-09",
+  Remarks: null,
+  vb_bank_account: "40141411111222",
+};
+const errorValue = {
+  client_finance_controller: "Gopal Krishna",
+  invoice_raised: "Yes",
+  invoice_received: "Yes",
+  invoice_amount_received: 1234,
+  amount_received_on: "2021-04-09",
+  Remarks: null,
+  vb_bank_account: "40141411111222",
+};
+
+describe("Invoice Unit Testing...!", function () {
+  this.beforeEach(function () {
+    const stub = sinon.stub();
+    stub.resetHistory();
+  });
+  describe("Get Invoices details", function () {
+    let stub;
+    let req;
+    let res;
+    beforeEach(() => {
+      req = mocks.createRequest({
+        params: {
+          id: stubValue._id,
+        },
       });
+      res = mocks.createResponse();
     });
+    before(() => {});
+    it("It should throw Internal Server Error", async function () {
+      req = mocks.createRequest({
+        params: {
+          id: null,
+        },
+      });
+      stub = sinon.stub(Invoice, "findById").returns(stubValue);
+      const result = await getInvoiceDetailsById(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(500);
+      body.should.have.property("message").eql("Internal server error");
+      stub.restore();
+    });
+    it("It should return invoice details of a given ID", async function () {
+      stub = sinon.stub(Invoice, "findById").returns({
+        populate: sinon.stub().resolves(stubValue),
+      });
+      const result = await getInvoiceDetailsById(req, res);
+      var body = result._getData();
+
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      body.data.should.have.property("PO_Id").eql(stubValue.PO_Id);
+      body.data.should.have
+        .property("client_sponsor")
+        .eql(stubValue.client_sponsor);
+      body.data.should.have
+        .property("client_finance_controller")
+        .eql(stubValue.client_finance_controller);
+      body.data.should.have
+        .property("invoice_raised")
+        .eql(stubValue.invoice_raised);
+      body.data.should.have
+        .property("invoice_amount_received")
+        .eql(stubValue.invoice_amount_received);
+      body.data.should.have
+        .property("vb_bank_account")
+        .eql(stubValue.vb_bank_account);
+      body.data.should.have
+        .property("amount_received_on")
+        .eql(stubValue.amount_received_on);
+      body.data.should.have.property("_id").eql(stubValue._id);
+
+      stub.restore();
+    });
+    after(() => {});
   });
 
-  describe("get Invoice", () => {
-    it("it should throw Query validation error", (done) => {
-      chai
-        .request(server)
-        .get("/invoice/sort/Id")
-        .query({
+  describe("Get Invoices", function () {
+    let stub;
+    let req;
+    let res;
+    beforeEach(() => {
+      req = mocks.createRequest({
+        params: {
+          data: "Id",
+        },
+      });
+      res = mocks.createResponse();
+    });
+    before(() => {});
+
+    it("It should throw query validation Error", async function () {
+      req = mocks.createRequest({
+        params: {
+          data: "Id",
+        },
+        query: {
           page: -1,
-          limit: 0,
-        })
-        .end((err, res) => {
-          res.should.have.status(422);
-          res.body.should.be.a("object");
-          res.body.should.have.property("error");
-          done();
-        });
+        },
+      });
+      stub = sinon.stub(Invoice, "aggregate").returns(stubValue);
+      const result = await getInvoiceDetails(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(422);
+      body.should.have.property("message").eql("Invalid request Query");
+      stub.restore();
     });
-    it("it should sort the Invoice by id", (done) => {
-      chai
-        .request(server)
-        .get("/invoice/sort/Id")
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a("object");
-          done();
-        });
+    it("It should throw Internal Server Error", async function () {
+      stub = sinon.stub(Invoice, "aggregate").returns(stubValue);
+      const result = await getInvoiceDetails(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(500);
+      body.should.have.property("message").eql("Internal server error");
+      stub.restore();
     });
-    it("it should sort the Invoice by Client name", (done) => {
-      chai
-        .request(server)
-        .get("/invoice/sort/Client_Name")
-        .end((err, res) => {
-          res.should.have.status(200);
-          console.log(res.body.data.results);
-          // res.body.data.results.should.be.sortedBy(
-          //   "purchase_orders.Client_Name"
-          // );
-          res.body.should.be.a("object");
-          done();
-        });
+    it("It should get all the invoices bassed on ID", async function () {
+      stub = sinon.stub(Invoice, "aggregate").returns({
+        slice: sinon.stub().resolves(stubValue),
+      });
+      const result = await getInvoiceDetails(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      stub.restore();
     });
-    it("it should sort the Invoice by project name", (done) => {
-      chai
-        .request(server)
-        .get("/invoice/sort/Project_Name")
-        .end((err, res) => {
-          res.should.have.status(200);
-          // res.body.data.results.should.be.sortedBy(
-          //   "purchase_orders.Project_Name"
-          // );
-          res.body.should.be.a("object");
-          done();
-        });
+    after(() => {});
+    it("It should get all the invoices bassed on Client_Name", async function () {
+      req = mocks.createRequest({
+        params: {
+          data: "Client_Name",
+        },
+      });
+      stub = sinon.stub(Invoice, "aggregate").returns({
+        $lookup: sinon.stub().returnsThis(),
+        $unwind: sinon.stub().returnsThis(),
+        collation: sinon.stub().returnsThis(),
+        slice: sinon.stub().returns(stubValue),
+      });
+      const result = await getInvoiceDetails(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      body.data.results.should.have.property("PO_Id").eql(stubValue.PO_Id);
+      body.data.results.should.have
+        .property("client_sponsor")
+        .eql(stubValue.client_sponsor);
+      body.data.results.should.have
+        .property("client_finance_controller")
+        .eql(stubValue.client_finance_controller);
+      body.data.results.should.have
+        .property("invoice_raised")
+        .eql(stubValue.invoice_raised);
+      body.data.results.should.have
+        .property("invoice_amount_received")
+        .eql(stubValue.invoice_amount_received);
+      body.data.results.should.have
+        .property("vb_bank_account")
+        .eql(stubValue.vb_bank_account);
+      body.data.results.should.have
+        .property("amount_received_on")
+        .eql(stubValue.amount_received_on);
+      body.data.results.should.have.property("_id").eql(stubValue._id);
+      stub.restore();
     });
-    it("it should sort the Invoice by amount", (done) => {
-      chai
-        .request(server)
-        .get("/invoice/sort/invoice_amount_received")
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.data.results.should.be.sortedBy("invoice_amount_received");
-          res.body.should.be.a("object");
-          done();
-        });
+    after(() => {});
+
+    it("It should get all the invoices bassed on Project_Name", async function () {
+      req = mocks.createRequest({
+        params: {
+          data: "Project_Name",
+        },
+      });
+      stub = sinon.stub(Invoice, "aggregate").returns({
+        $lookup: sinon.stub().returnsThis(),
+        $unwind: sinon.stub().returnsThis(),
+        collation: sinon.stub().returnsThis(),
+        slice: sinon.stub().returns(stubValue),
+      });
+      const result = await getInvoiceDetails(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      body.data.results.should.have.property("PO_Id").eql(stubValue.PO_Id);
+      body.data.results.should.have
+        .property("client_sponsor")
+        .eql(stubValue.client_sponsor);
+      body.data.results.should.have
+        .property("client_finance_controller")
+        .eql(stubValue.client_finance_controller);
+      body.data.results.should.have
+        .property("invoice_raised")
+        .eql(stubValue.invoice_raised);
+      body.data.results.should.have
+        .property("invoice_amount_received")
+        .eql(stubValue.invoice_amount_received);
+      body.data.results.should.have
+        .property("vb_bank_account")
+        .eql(stubValue.vb_bank_account);
+      body.data.results.should.have
+        .property("amount_received_on")
+        .eql(stubValue.amount_received_on);
+      body.data.results.should.have.property("_id").eql(stubValue._id);
+      stub.restore();
     });
-    it("it should not sort the Invoice based on given field", (done) => {
-      chai
-        .request(server)
-        .get("/invoice/sort/rjfhjvhk")
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.have
-            .property("message")
-            .eql("something went wrong!!");
-          res.body.should.have.property("error");
-          done();
-        });
+    after(() => {});
+
+    it("It should get all the invoices bassed on invoice_amount_received", async function () {
+      req = mocks.createRequest({
+        params: {
+          data: "invoice_amount_received",
+        },
+      });
+      stub = sinon.stub(Invoice, "aggregate").returns({
+        $lookup: sinon.stub().returnsThis(),
+        $unwind: sinon.stub().returnsThis(),
+        sort: sinon.stub().returnsThis(),
+        slice: sinon.stub().returns(stubValue),
+      });
+      const result = await getInvoiceDetails(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      body.data.results.should.have.property("PO_Id").eql(stubValue.PO_Id);
+      body.data.results.should.have
+        .property("client_sponsor")
+        .eql(stubValue.client_sponsor);
+      body.data.results.should.have
+        .property("client_finance_controller")
+        .eql(stubValue.client_finance_controller);
+      body.data.results.should.have
+        .property("invoice_raised")
+        .eql(stubValue.invoice_raised);
+      body.data.results.should.have
+        .property("invoice_amount_received")
+        .eql(stubValue.invoice_amount_received);
+      body.data.results.should.have
+        .property("vb_bank_account")
+        .eql(stubValue.vb_bank_account);
+      body.data.results.should.have
+        .property("amount_received_on")
+        .eql(stubValue.amount_received_on);
+      body.data.results.should.have.property("_id").eql(stubValue._id);
+      stub.restore();
     });
+    after(() => {});
+
+    it("It should execute else part", async function () {
+      req = mocks.createRequest({
+        params: {
+          data: "Po_Id",
+        },
+      });
+      stub = sinon.stub(Invoice, "aggregate").returns({
+        $lookup: sinon.stub().returnsThis(),
+        $unwind: sinon.stub().returnsThis(),
+        sort: sinon.stub().returnsThis(),
+        slice: sinon.stub().returns(stubValue),
+      });
+      const result = await getInvoiceDetails(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(400);
+      body.should.have.property("message").eql("something went wrong!!");
+      stub.restore();
+    });
+    after(() => {});
   });
 
-  describe("/POST Invoice", () => {
-    it("it should throw validation error", (done) => {
-      let invoice = {
-        client_sponsor: "qqqqqqqqqqq",
-        client_finance_controller: "qq",
-        invoice_raised: "qq",
-        invoice_amount_received: "343434343",
-      };
-      chai
-        .request(server)
-        .post("/invoice")
-        .send(invoice)
-        .end((err, res) => {
-          res.should.have.status(422);
-          res.body.should.be.a("object");
-          done();
-        });
+  describe("Get Related Invoices", function () {
+    let stub;
+    let req;
+    let res;
+    beforeEach(() => {
+      req = mocks.createRequest({
+        query: {
+          id: stubValue._id,
+        },
+      });
+      res = mocks.createResponse();
     });
-    it("it should POST a Invoice", (done) => {
-      let invoice = {
-        PO_Id: "61b32db0df53c0173c3e1925",
-        client_sponsor: "qqqqqqqqqqq",
-        client_finance_controller: "qq",
-        invoice_raised: 1234,
-        invoice_amount_received: 837867,
-        vb_bank_account: "SBIN00004567",
-        amount_received_on: "2014-08-01T15:41:54.000Z",
-      };
-      chai
-        .request(server)
-        .post("/invoice")
-        .send(invoice)
-        .end((err, res) => {
-          res.should.have.status(201);
-          res.body.should.be.a("object");
-          done();
-        });
+    before(() => {});
+    // it("It should throw Internal Server Error", async function () {
+    //   req = null;
+    //   stub = sinon.stub(Invoice, "aggregate").returns(stubValue);
+    //   const result = await getRelatedInvoices(req, res);
+    //   var body = result._getData();
+    //   console.log(body)
+    //   body.should.be.a("object");
+    //   body.should.have.status("failure");
+    //   body.should.have.property("code").eql(500);
+    //   body.should.have.property("message").eql("Internal server error");
+    //   stub.restore();
+    // });
+    it("It should return all the invoices related to given ID", async function () {
+      stub = sinon.stub(Invoice, "aggregate").returns(stubValue);
+      const result = await getRelatedInvoices(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      body.data.should.have.property("PO_Id").eql(stubValue.PO_Id);
+      body.data.should.have
+        .property("client_sponsor")
+        .eql(stubValue.client_sponsor);
+      body.data.should.have
+        .property("client_finance_controller")
+        .eql(stubValue.client_finance_controller);
+      body.data.should.have
+        .property("invoice_raised")
+        .eql(stubValue.invoice_raised);
+      body.data.should.have
+        .property("invoice_amount_received")
+        .eql(stubValue.invoice_amount_received);
+      body.data.should.have
+        .property("vb_bank_account")
+        .eql(stubValue.vb_bank_account);
+      body.data.should.have
+        .property("amount_received_on")
+        .eql(stubValue.amount_received_on);
+      body.data.should.have.property("_id").eql(stubValue._id);
+
+      stub.restore();
     });
+    after(() => {});
+  });
+
+  describe("Update Invoices details", function () {
+    let stub;
+    let req;
+    let res;
+    beforeEach(() => {
+      req = mocks.createRequest({
+        params: {
+          id: stubValue._id,
+        },
+        body: errorValue,
+      });
+      res = mocks.createResponse();
+    });
+    before(() => {});
+    it("It should throw Validation Error", async function () {
+      stub = sinon.stub(Invoice, "updateOne").returns(stubValue);
+      const result = await updateInvoice(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(422);
+      body.should.have.property("message").eql("Invalid update data");
+      stub.restore();
+    });
+    it("It should should throw Internal server Error", async function () {
+      req = mocks.createRequest({
+        params: {
+          id: stubValue._id,
+        },
+        body: newData,
+      });
+      stub = sinon.stub(Invoice, "updateOne").returns(stubValue);
+      const result = await updateInvoice(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(500);
+      body.should.have.property("message").eql("Internal server error");
+      stub.restore();
+    });
+    it("It should update the invoice details of a given ID", async function () {
+      req = mocks.createRequest({
+        params: {
+          id: stubValue._id,
+        },
+        body: newData,
+      });
+      stub = sinon.stub(Invoice, "updateOne").returns(stubValue);
+      const stub2 = sinon.stub(Invoice, "findOne").returns({
+        populate: sinon.stub().returns(stubValue),
+      });
+      const emailStub = sinon
+        .stub(templateModel, "findOne")
+        .returns(emailValue);
+      const result = await updateInvoice(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      body.data.should.have.property("PO_Id").eql(stubValue.PO_Id);
+      body.data.should.have
+        .property("client_sponsor")
+        .eql(stubValue.client_sponsor);
+      body.data.should.have
+        .property("client_finance_controller")
+        .eql(stubValue.client_finance_controller);
+      body.data.should.have
+        .property("invoice_raised")
+        .eql(stubValue.invoice_raised);
+      body.data.should.have
+        .property("invoice_amount_received")
+        .eql(stubValue.invoice_amount_received);
+      body.data.should.have
+        .property("vb_bank_account")
+        .eql(stubValue.vb_bank_account);
+      body.data.should.have
+        .property("amount_received_on")
+        .eql(stubValue.amount_received_on);
+      body.data.should.have.property("_id").eql(stubValue._id);
+
+      stub.restore();
+      stub2.restore();
+      emailStub.restore();
+    });
+    after(() => {});
+  });
+
+  describe("Create new Invoice", function () {
+    let stub;
+    let req;
+    let res;
+    beforeEach(() => {
+      req = mocks.createRequest({
+        params: {
+          id: stubValue._id,
+        },
+        body: errorValue,
+      });
+      res = mocks.createResponse();
+    });
+    before(() => {});
+    it("It should throw Validation Error", async function () {
+      stub = sinon.stub(Invoice, "create").returns(stubValue);
+      const result = await newInvoice(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(422);
+      body.should.have.property("message").eql("Invalid data");
+      stub.restore();
+    });
+    it("It should should throw Internal server Error", async function () {
+      req = mocks.createRequest({
+        params: {
+          id: stubValue._id,
+        },
+        body: newData,
+      });
+      stub = sinon.stub(Invoice, "create").returns(stubValue);
+      const result = await newInvoice(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("failure");
+      body.should.have.property("code").eql(500);
+      body.should.have.property("message").eql("Internal server error");
+      stub.restore();
+    });
+    it("It should create New Invoice", async function () {
+      req = mocks.createRequest({
+        params: {
+          id: stubValue._id,
+        },
+        body: newData,
+      });
+      stub = sinon.stub(Invoice, "create").returns(stubValue);
+      const stub2 = sinon.stub(Invoice, "findOne").returns({
+        populate: sinon.stub().returns(stubValue),
+      });
+      const emailStub = sinon
+        .stub(templateModel, "findOne")
+        .returns(emailValue);
+      const result = await newInvoice(req, res);
+      var body = result._getData();
+      body.should.be.a("object");
+      body.should.have.status("success");
+      body.should.have.property("code").eql(200);
+      body.data.should.have.property("PO_Id").eql(stubValue.PO_Id);
+      body.data.should.have
+        .property("client_sponsor")
+        .eql(stubValue.client_sponsor);
+      body.data.should.have
+        .property("client_finance_controller")
+        .eql(stubValue.client_finance_controller);
+      body.data.should.have
+        .property("invoice_raised")
+        .eql(stubValue.invoice_raised);
+      body.data.should.have
+        .property("invoice_amount_received")
+        .eql(stubValue.invoice_amount_received);
+      body.data.should.have
+        .property("vb_bank_account")
+        .eql(stubValue.vb_bank_account);
+      body.data.should.have
+        .property("amount_received_on")
+        .eql(stubValue.amount_received_on);
+      body.data.should.have.property("_id").eql(stubValue._id);
+
+      stub.restore();
+      stub2.restore();
+      emailStub.restore();
+    });
+    after(() => {});
   });
 });

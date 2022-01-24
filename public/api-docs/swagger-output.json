@@ -2905,12 +2905,6 @@
                 "name": "main"
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "422": {
-            "description": "Unprocessable Entity"
           }
         }
       },
@@ -3207,8 +3201,10 @@
         }
       },
       "patch": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "invoices"
+        ],
+        "description": "Update invoice details",
         "parameters": [
           {
             "name": "id",
@@ -3227,14 +3223,122 @@
             "schema": {
               "type": "object",
               "properties": {
+                "PO_Id": {
+                  "type": "string",
+                  "example": "61d41dcdf2e1e074360371ee"
+                },
+                "client_sponsor": {
+                  "type": "string",
+                  "example": "AB"
+                },
+                "client_finance_controller": {
+                  "type": "string",
+                  "example": "CD"
+                },
+                "invoice_raised": {
+                  "type": "string",
+                  "example": "Yes"
+                },
+                "invoice_received": {
+                  "type": "string",
+                  "example": "Yes"
+                },
+                "invoice_amount_received": {
+                  "type": "number",
+                  "example": 87634788
+                },
+                "vb_bank_account": {
+                  "type": "string",
+                  "example": "SBIN00004567"
+                },
                 "amount_received_on": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "2021-12-10T06:01:50.178Z"
                 }
-              }
+              },
+              "required": [
+                "PO_Id",
+                "client_sponsor",
+                "client_finance_controller",
+                "invoice_raised",
+                "invoice_received",
+                "invoice_amount_received",
+                "vb_bank_account",
+                "amount_received_on"
+              ]
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Invoice Details updated successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "PO_Id": {
+                      "type": "string",
+                      "example": "61d41dcdf2e1e074360371ee"
+                    },
+                    "client_sponsor": {
+                      "type": "string",
+                      "example": "AB"
+                    },
+                    "client_finance_controller": {
+                      "type": "string",
+                      "example": "CD"
+                    },
+                    "invoice_raised": {
+                      "type": "string",
+                      "example": "Yes"
+                    },
+                    "invoice_received": {
+                      "type": "string",
+                      "example": "Yes"
+                    },
+                    "invoice_amount_received": {
+                      "type": "number",
+                      "example": 467389738
+                    },
+                    "vb_bank_account": {
+                      "type": "string",
+                      "example": "SBIN00004567"
+                    },
+                    "amount_received_on": {
+                      "type": "string",
+                      "example": "2021-12-10T06:01:50.178Z"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "example": "2021-12-10T06:01:50.178Z"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/poSow/": {
@@ -3414,10 +3518,6 @@
                         }
                       }
                     },
-                    "Status": {
-                      "type": "string",
-                      "example": "Active"
-                    },
                     "Type": {
                       "type": "string",
                       "example": "PO"
@@ -3560,10 +3660,6 @@
                           "example": 60
                         }
                       }
-                    },
-                    "Status": {
-                      "type": "string",
-                      "example": "Active"
                     },
                     "Type": {
                       "type": "string",
@@ -3971,10 +4067,6 @@
                                 "example": 60
                               }
                             }
-                          },
-                          "Status": {
-                            "type": "string",
-                            "example": "Active"
                           },
                           "Type": {
                             "type": "string",
