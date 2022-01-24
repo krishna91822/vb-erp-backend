@@ -7016,6 +7016,20 @@
         }
       }
     },
+    "/roles/getallroles": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/universities/": {
       "get": {
         "tags": [],
