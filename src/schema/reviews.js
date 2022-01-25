@@ -3,6 +3,7 @@ const Joi = require("joi");
 
 const reviewSchema = Joi.object({
   reqName: Joi.string().required(),
+  reqEmail: Joi.string().email(),
   reqType: Joi.string().valid("profile-creation", "profile-update").required(),
   status: Joi.string().valid("accepted", "rejected", "pending"),
   message: Joi.string(),
