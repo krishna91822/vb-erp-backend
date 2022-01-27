@@ -19,9 +19,11 @@ const {
 const { isAuthorized } = require("../middleware/auth");
 const reviewRoutes = require("./ReviewRoutes");
 const employeeRoutes = require("./employeeRoute");
+const dropdownRoutes = require("./dropdownRoute");
 const ProjectRouter = require("./projects");
 const ProjectEmployeeRouter = require("./projectAndEmployee");
 const universityRoutes = require("./universityRoute");
+router.use("/dropdowns", isAuthorized, dropdownRoutes);
 router.post("/login", auth);
 router.get("/account", isAuthorized, getAccount);
 router.use("/users", isAuthorized, userRoutes);

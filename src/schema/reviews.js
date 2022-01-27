@@ -53,6 +53,7 @@ const reviewSchema = Joi.object({
     empPhoneNumber: Joi.string().allow(null, ""),
     empCtc: Joi.number().min(0).allow(null, ""),
     yearsOfExperience: Joi.number().allow(null),
+    status: Joi.string().valid("active", "inactive", "deleted"),
   }),
 }).options({ abortEarly: false });
 
