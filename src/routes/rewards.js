@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const { isAuthorized } = require("../middleware/auth");
+const { isAuthorized, hasPermission } = require("../middleware/auth");
+
 const {
   getRewards,
   storeReward,
@@ -10,18 +11,106 @@ const {
   deleteReward,
   launchRewards,
   searchRewards,
-  launchRewardsinstantaly
+  launchRewardsinstantaly,
 } = require("../controllers/rewardController");
 
-router.get("/", getRewards);
+router.get(
+  "/",
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
+  getRewards
+);
 // router.post("/", createRewards);
-router.post("/",storeReward);
-router.get("/search",searchRewards);
-router.get("/:id",getRewardDetail);
-router.put("/:id",editReward);
-router.delete("/:id",deleteReward);
-router.put("/launch/:id",launchRewards);
-router.get("/launchinstantly/:id",launchRewardsinstantaly);
+router.post(
+  "/",
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
+  storeReward
+);
+router.get(
+  "/search",
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
+  searchRewards
+);
+router.get(
+  "/:id",
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
+  getRewardDetail
+);
+router.put(
+  "/:id",
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
+  editReward
+);
+router.delete(
+  "/:id",
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
+  deleteReward
+);
+router.put(
+  "/launch/:id",
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
+  launchRewards
+);
+router.get(
+  "/launchinstantly/:id",
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
+  launchRewardsinstantaly
+);
 
 //create getrewards logic
 

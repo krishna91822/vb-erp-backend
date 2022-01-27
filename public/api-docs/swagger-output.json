@@ -40,11 +40,6 @@
         "description": "Add new user",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "obj",
             "in": "body",
             "schema": {
@@ -187,8 +182,10 @@
     },
     "/validateToken": {
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "Get Account",
         "parameters": [
           {
             "name": "authorization",
@@ -196,18 +193,156 @@
             "type": "string"
           }
         ],
-        "responses": {}
+        "responses": {
+          "201": {
+            "description": "User successfully added.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "first_name": {
+                      "type": "string",
+                      "example": "Jhon"
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jhon@valuebound.com"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "admin"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiSmhvbiBEb2UiLCJpYXQiOjE2Mjg0OTQ5NzksImV4cCI6MTYyODY2Nzc3OSwiaXNzIjoidmItY21zIn0.wdyX_wXWABr1BIw_7FzZKgowhixX8EXVN4ZojvzsaIU"
+                    }
+                  }
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
       }
     },
     "/logout": {
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "description": "Get Account",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully added.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Rahul"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "rahul@valuebound.com"
+                    },
+                    "roles": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "permissions": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhaHVsQHZhbHVlYm91bmQuY29tIiwicGFzc3dvcmQiOiJxd2VydHkxMjMiLCJwZXJtaXNzaW9ucyI6WyJ2aWV3X2VtcGxveWVlX2Rhc2hib2FyZCIsImVkaXRfZW1wbG95ZWVfZGFzaGJvYXJkIiwiY3JlYXRlX2VtcGxveWVlX2Rhc2hib2FyZCIsImRvd25sb2FkX2VtcGxveWVlX3Byb2ZpbGUiLCJzZWFyY2hfZW1wbG95ZWUiLCJhcHByb3ZlX2VtcGxveWVlX2VkaXRfcmVxdWVzdCIsInZpZXdfQ0lNU19tb2R1bGUiLCJ1cGRhdGVfb25fQ0lNU19tb2R1bGUiLCJjcmVhdGVfQ0lNU19tb2R1bGUiLCJ2aWV3X1BNT19tb2R1bGUiLCJjcmVhdGVfcHJvamVjdF9pbl9QTU8iLCJ1cGRhdGVfcHJvamVjdF9pbl9QTU8iLCJ2aWV3X2JlbmNoX3N0cmVuZ3RoIiwicHJvamVjdF9pbmZvcm1hdGlvbl90YWJsZSIsInZpZXdfQ01TIiwidXBsb2FkX1BPL1NPVy9jb250cmFjdCIsInZpZXdfaW52b2ljZSIsInVwbG9hZF9pbnZvaWNlIiwicmVjaWV2ZV9zbGFja19ub3RpZmljYXRpb24iLCJhd2FyZF9ub21pbmF0aW9uIiwibXlfcmV3YXJkcyIsInJld2FyZHNfaGlzdG9yeSJdLCJyb2xlcyI6WyJzdXBlcl9hZG1pbiJdLCJpYXQiOjE2NDI0NDI3MTYsImV4cCI6MTY0MjYxNTUxNiwiaXNzIjoidmItZXJwIn0.TYQ9FqruI4YviiUtI6ZjowUmh9ZGxsq8TTk1bnQtD5w"
+                    }
+                  }
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Valid Token"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "error": {}
+          }
+        }
+      }
+    },
+    "/{id}/setPassword": {
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {}
@@ -516,11 +651,6 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
             "type": "string"
           }
         ],
@@ -6961,6 +7091,20 @@
             "description": "OK"
           }
         }
+      }
+    },
+    "/roles/getallroles": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {}
       }
     },
     "/universities/": {
