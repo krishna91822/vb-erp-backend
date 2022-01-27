@@ -69,7 +69,14 @@ router.get(
 );
 router.patch(
   "/:id",
-  hasPermission(["user", "approver", "leader", "super_admin", "hr_admin"]),
+  hasPermission([
+    "approver",
+    "leader",
+    "super_admin",
+    "hr_admin",
+    "finance_admin",
+    "pms_admin",
+  ]),
   updateEmployee
 );
 router.delete(
