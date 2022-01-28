@@ -5,11 +5,13 @@ const {
   newInvoice,
   getRelatedInvoices,
   updateInvoice,
+  getBankAccount,
 } = require("../controllers/invoicecontroller");
 
 const router = express.Router();
 
 router.post("/", newInvoice);
+router.get("/bankAccount", getBankAccount);
 router.get("/sort/:data", getInvoiceDetails);
 router.get("/:id", getInvoiceDetailsById);
 router.get("/", getRelatedInvoices);
