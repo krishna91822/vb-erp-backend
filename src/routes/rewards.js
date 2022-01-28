@@ -14,101 +14,17 @@ const {
   launchRewardsinstantaly,
 } = require("../controllers/rewardController");
 
-router.get(
-  "/",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getRewards
-);
+router.get("/", hasPermission("view_reward"), getRewards);
 // router.post("/", createRewards);
-router.post(
-  "/",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  storeReward
-);
-router.get(
-  "/search",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  searchRewards
-);
-router.get(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getRewardDetail
-);
-router.put(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  editReward
-);
-router.delete(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  deleteReward
-);
-router.put(
-  "/launch/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  launchRewards
-);
+router.post("/", hasPermission("create_reward"), storeReward);
+router.get("/search", hasPermission("view_reward"), searchRewards);
+router.get("/:id", hasPermission("view_reward"), getRewardDetail);
+router.put("/:id", hasPermission("update_reward"), editReward);
+router.delete("/:id", hasPermission("create_reward"), deleteReward);
+router.put("/launch/:id", hasPermission("update_reward"), launchRewards);
 router.get(
   "/launchinstantly/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_reward"),
   launchRewardsinstantaly
 );
 

@@ -19,16 +19,12 @@ const {
 } = require("../controllers/projectsController");
 
 // POST request
-ProjectRouter.post(
-  "/",
-  hasPermission(["approver", "leader", "super_admin", , "pms_admin"]),
-  createProjects
-);
+ProjectRouter.post("/", hasPermission("create_project_in_PMO"), createProjects);
 
 //PUT method for update
 ProjectRouter.put(
   "/:id",
-  hasPermission(["approver", "leader", "super_admin", "pms_admin"]),
+  hasPermission("update_project_in_PMO"),
   updateProject
 );
 
@@ -39,93 +35,36 @@ ProjectRouter.put(
 // GET Method for Active Projects
 ProjectRouter.get(
   "/active",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getActiveProjects
 );
 ProjectRouter.get(
   "/active/:fieldName",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getSortedActiveProjects
 );
 
 // GET Method for Active Projects
-ProjectRouter.get(
-  "/done",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getDoneProjects
-);
+ProjectRouter.get("/done", hasPermission("view_PMO_module"), getDoneProjects);
 ProjectRouter.get(
   "/done/:fieldName",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getSortedDoneProjects
 );
 
 //GET method for Other projects
 ProjectRouter.get(
   "/others",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getOtherProjects
 );
 ProjectRouter.get(
   "/others/:fieldName",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getSortedOtherProjects
 );
 
 //GET Method by id
-ProjectRouter.get(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getProjectById
-);
+ProjectRouter.get("/:id", hasPermission("view_PMO_module"), getProjectById);
 
 module.exports = ProjectRouter;

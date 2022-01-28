@@ -10,68 +10,14 @@ const {
 } = require("../controllers/ReviewController");
 const router = express.Router();
 
-router.get(
-  "/",
-  hasPermission([
-    "user",
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getAllReviews
-);
-router.post(
-  "/",
-  hasPermission([
-    "user",
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  createReview
-);
-router.get(
-  "/:id",
-  hasPermission([
-    "user",
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getReview
-);
+router.get("/", hasPermission("view_employee_dashboard"), getAllReviews);
+router.post("/", createReview);
+router.get("/:id", hasPermission("view_employee_dashboard"), getReview);
 router.patch(
   "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("approve_employee_edit_request"),
   updateReviewStatus
 );
-router.delete(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  deleteReview
-);
+router.delete("/:id", hasPermission("create_employee_dashboard"), deleteReview);
 
 module.exports = router;
