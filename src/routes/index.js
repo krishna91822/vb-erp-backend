@@ -26,16 +26,16 @@ const universityRoutes = require("./universityRoute");
 router.post("/login", auth);
 router.get("/account", isAuthorized, getAccount);
 router.use("/users", userRoutes);
-router.use("/rewards", isAuthorized, rewardRoutes);
+router.use("/rewards", isAuthorized, rewardRoutes); //
 router.use("/", otherRoutes);
-router.use("/assign", isAuthorized, assigneeRoutes);
-router.use("/invoice", isAuthorized, invoiceRoutes);
-router.use("/poSow", isAuthorized, poSowRoutes);
-router.use("/employees", isAuthorized, employeeRoutes);
+router.use("/assign", isAuthorized, assigneeRoutes); //
+router.use("/invoice", isAuthorized, invoiceRoutes); //
+router.use("/poSow", isAuthorized, poSowRoutes); //
+router.use("/employees", isAuthorized, employeeRoutes); //
 router.use("/reviews", isAuthorized, reviewRoutes);
-router.use("/projects", isAuthorized, ProjectRouter);
-router.use("/allocations", isAuthorized, ProjectEmployeeRouter);
-router.use("/cims", isAuthorized, cimsRoutes);
+router.use("/projects", isAuthorized, ProjectRouter); //
+router.use("/allocations", isAuthorized, ProjectEmployeeRouter); //
+router.use("/cims", isAuthorized, cimsRoutes); //
 router.use("/tempUsers", isAuthorized, tempUserRoutes);
 router.use("/roles", isAuthorized, rolesRoutes);
 router.use("/universities", isAuthorized, universityRoutes);

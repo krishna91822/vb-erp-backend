@@ -10,63 +10,10 @@ const { hasPermission } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.post(
-  "/",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  newInvoice
-);
-router.get(
-  "/sort/:data",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getInvoiceDetails
-);
-router.get(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getInvoiceDetailsById
-);
-router.get(
-  "/",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getRelatedInvoices
-);
-router.patch(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  updateInvoice
-);
+router.post("/", hasPermission("upload_invoice"), newInvoice);
+router.get("/sort/:data", hasPermission("view_invoice"), getInvoiceDetails);
+router.get("/:id", hasPermission("view_invoice"), getInvoiceDetailsById);
+router.get("/", hasPermission("view_invoice"), getRelatedInvoices);
+router.patch("/:id", hasPermission("upload_invoice"), updateInvoice);
 
 module.exports = router;

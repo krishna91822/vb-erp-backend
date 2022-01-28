@@ -55,11 +55,9 @@ const hasPermission = (permission) => {
   return async (req, res, next) => {
     try {
       let code, message;
-      let hasRole = false;
-      req.decoded.roles.map((role) => {
-        permission.includes(role) && (hasRole = true);
-      });
-      if (hasRole) {
+      let hasAccess = false;
+      req.decoded.permissions.includes(permission) && (hasAccess = true);
+      if (hasAccess) {
         next();
       } else {
         code = 401;
@@ -69,6 +67,7 @@ const hasPermission = (permission) => {
       }
     } catch (error) {
       code = 500;
+      console.log(error);
       message = "Internal Server Error";
       const resData = customResponse({ code, message, error });
       return res.status(code).send(resData);
