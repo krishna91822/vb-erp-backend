@@ -37,20 +37,24 @@ exports.getAllReviews = async (req, res) => {
 
     //Execute the query
     const reviews = await features.query;
-    const countDoc = await Review.count({});
+    const searchQuery = new APIFeatures(Review.find(), req.query)
+      .filter()
+      .searchReview()
+      .sort()
+      .limitFields();
+    const totalCount = await searchQuery.query.count();
 
     //Send response
     let code = 200;
     let message = "success";
     let data = { reviews };
-    let totalDocuments = countDoc;
     let totalResult = reviews.length;
     const resData = customResponse({
       code,
       message,
       data,
-      totalDocuments,
       totalResult,
+      totalCount,
     });
     return res.status(code).json(resData);
   } catch (err) {
