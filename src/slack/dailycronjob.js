@@ -1,16 +1,19 @@
 const { birthdayjob } = require("./operations");
 const { workanniversary } = require("./operations");
-var cron = require('node-cron');
 
-// const crons=cron.schedule('* * * * *', () => {
-//   console.log('running a  daily task every minute');
-//   dailycronjob()
-// });
-
-const dailycronjob=async()=>{
-  await birthdayjob("Daily")
-  await workanniversary("Daily")
+async function dailycronjob() {
+  try {
+    console.log("Hi======================");
+    await birthdayjob("Daily");
+    await workanniversary("Daily");
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
-// dailycronjob()
-module.exports=dailycronjob
+const run = async () => {
+  await dailycronjob();
+};
+run();
+
+module.exports = dailycronjob;

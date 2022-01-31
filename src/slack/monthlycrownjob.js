@@ -1,17 +1,13 @@
 const { starOfTheMonth } = require("./operations");
-var cron = require('node-cron');
 
-// const crons=cron.schedule('* * * * *', () => {
-//   console.log('running a task every minute');
-//   monthlyjob()
-// });
+const monthlyjob = async () => {
+  try {
+    await starOfTheMonth("Monthly");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
-// const starOfTheMonthImage = process.env.STAR_OF_THE_MONTH_IMAGE;
-
-const monthlyjob=async()=>{
-  await starOfTheMonth("Monthly")
-}
-
-// monthlyReward();
+monthlyjob();
 
 module.exports = monthlyjob;
