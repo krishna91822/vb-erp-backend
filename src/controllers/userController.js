@@ -6,7 +6,7 @@ const { addUserSchema, loginSchema } = require("../schema/userSchema");
 const { customResponse, customPagination } = require("../utility/helper");
 const rolesModal = require("../models/rolesSchema");
 const userModel = require("../models/user");
-
+const { sendEmail, generateMessage } = require("../utility/AutogenerateEmail");
 const getUserList = async (req, res) => {
   /* 	#swagger.tags = ['User']
       #swagger.description = 'Get users list' 
@@ -158,8 +158,14 @@ const addUser = async (req, res) => {
   }
   try {
     code = 201;
+    const firstname = req.body.first_name.split(" ")[0];
+    const lastname = req.body.first_name.split(" ")[1];
+    req.body.first_name = firstname;
+    req.body.last_name = lastname;
     const data = new userModel(req.body);
     await data.save();
+    const emailMessage = generateMessage(data._id, data.first_name);
+    sendEmail(data.email, `Vb ERP Account Created`, emailMessage);
     const resData = customResponse({
       code,
       data,
@@ -210,18 +216,16 @@ const updateUser = async (req, res) => {
   try {
     code = 200;
     message = "user successfully updated!";
-    const user = await userModel.findOneAndUpdate(
-      { _id },
-      { ...req.body },
-      { new: true }
-    );
-    await user.save();
-    const resData = customResponse({
-      code,
-      data: user,
-      message,
-    });
-    return res.status(code).send(resData);
+    await userModel
+      .findOneAndUpdate({ _id }, { ...req.body }, { new: true })
+      .then((user) => {
+        const resData = customResponse({
+          code,
+          data: user,
+          message,
+        });
+        return res.status(code).send(resData);
+      });
   } catch (error) {
     code = 500;
     message = "Internal server error";
@@ -322,7 +326,6 @@ const auth = async (req, res) => {
     });
     return res.status(code).send(resData);
   }
-
   try {
     code = 200;
     let payload = { ...req.body };
@@ -332,7 +335,6 @@ const auth = async (req, res) => {
     };
     const secret = process.env.JWT_SECRET;
     const user = await userModel.findOne({ email: req.body.email }).exec();
-    const encryptedPw = await bcrypt.hash(req.body.password, 10);
     const userRole = user.role;
     let rolesData;
     let permissions = [];
@@ -382,6 +384,7 @@ const auth = async (req, res) => {
         userDetail.roles = data.role;
         userDetail.permissions = [...new Set(permissions)];
         userDetail.token = "Bearer " + data.token;
+        userDetail.id = data._id.toString();
       } else {
         code = 422;
         message = "Invalid request data";
@@ -446,6 +449,25 @@ const getAccount = async (req, res) => {
   }
 };
 const validateToken = async (req, res) => {
+  /* 	#swagger.tags = ['User']
+      #swagger.description = 'Get Account'
+      #swagger.responses[201] = {
+        description: 'User successfully added.',
+        schema: { 
+          "status": "success",
+          "code": 200,
+          "message": "",
+          "data": { 
+            "first_name": 'Jhon',
+            "last_name": 'Doe',
+            "email": 'jhon@valuebound.com',
+            "role": 'admin', 
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiSmhvbiBEb2UiLCJpYXQiOjE2Mjg0OTQ5NzksImV4cCI6MTYyODY2Nzc3OSwiaXNzIjoidmItY21zIn0.wdyX_wXWABr1BIw_7FzZKgowhixX8EXVN4ZojvzsaIU",
+          },
+          "error": {}
+        }
+      }
+  */
   let code,
     message,
     data = {};
@@ -475,11 +497,13 @@ const validateToken = async (req, res) => {
           .findOne({ email: result.email })
           .exec()
           .then((user) => {
+            id = user._id;
             data.name = user.first_name;
             data.email = user.email;
             data.roles = user.role;
             data.permissions = result.permissions;
             data.token = user.token;
+            data.id = id.toString();
             code = 200;
             message = "Valid Token";
             const resData = customResponse({ code, message, data });
@@ -505,26 +529,83 @@ const validateToken = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+  /* 	#swagger.tags = ['User']
+      #swagger.description = 'Get Account'
+      #swagger.responses[200] = {
+        description: 'User successfully added.',
+        schema: {
+            "status": "success",
+            "code": 200,
+            "data": {
+              "name": "Rahul",
+              "email": "rahul@valuebound.com",
+              "roles": [],
+              "permissions": [],
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhaHVsQHZhbHVlYm91bmQuY29tIiwicGFzc3dvcmQiOiJxd2VydHkxMjMiLCJwZXJtaXNzaW9ucyI6WyJ2aWV3X2VtcGxveWVlX2Rhc2hib2FyZCIsImVkaXRfZW1wbG95ZWVfZGFzaGJvYXJkIiwiY3JlYXRlX2VtcGxveWVlX2Rhc2hib2FyZCIsImRvd25sb2FkX2VtcGxveWVlX3Byb2ZpbGUiLCJzZWFyY2hfZW1wbG95ZWUiLCJhcHByb3ZlX2VtcGxveWVlX2VkaXRfcmVxdWVzdCIsInZpZXdfQ0lNU19tb2R1bGUiLCJ1cGRhdGVfb25fQ0lNU19tb2R1bGUiLCJjcmVhdGVfQ0lNU19tb2R1bGUiLCJ2aWV3X1BNT19tb2R1bGUiLCJjcmVhdGVfcHJvamVjdF9pbl9QTU8iLCJ1cGRhdGVfcHJvamVjdF9pbl9QTU8iLCJ2aWV3X2JlbmNoX3N0cmVuZ3RoIiwicHJvamVjdF9pbmZvcm1hdGlvbl90YWJsZSIsInZpZXdfQ01TIiwidXBsb2FkX1BPL1NPVy9jb250cmFjdCIsInZpZXdfaW52b2ljZSIsInVwbG9hZF9pbnZvaWNlIiwicmVjaWV2ZV9zbGFja19ub3RpZmljYXRpb24iLCJhd2FyZF9ub21pbmF0aW9uIiwibXlfcmV3YXJkcyIsInJld2FyZHNfaGlzdG9yeSJdLCJyb2xlcyI6WyJzdXBlcl9hZG1pbiJdLCJpYXQiOjE2NDI0NDI3MTYsImV4cCI6MTY0MjYxNTUxNiwiaXNzIjoidmItZXJwIn0.TYQ9FqruI4YviiUtI6ZjowUmh9ZGxsq8TTk1bnQtD5w"
+            },
+            "message": "Valid Token",
+            "error": {}
+          },
+          "error": {}
+        }
+      }
+  */
   try {
     let code, message;
-
-    const token = "tokenDeleted";
-    const password = req.decoded.password;
-    const user = await userModel.findOneAndUpdate(
-      { email: req.decoded.email },
-      { token: " ", password: req.decoded.password },
-      { new: true }
-    );
-    await user.save();
-    code = 200;
-    message = "User successfully Logout";
-    const resData = customResponse({ code, message });
-    return res.status(code).send(resData);
+    await userModel
+      .findOneAndUpdate(
+        { email: req.decoded.email },
+        { token: " " },
+        { new: true }
+      )
+      .then(() => {
+        code = 200;
+        message = "User successfully Logout";
+        const resData = customResponse({ code, message });
+        return res.status(code).send(resData);
+      });
   } catch (error) {
     code = 500;
     message = "Internal Server Error";
     const resData = customResponse({ code, message, error });
     res.status(code).send(resData);
+  }
+};
+
+const setPassword = async (req, res) => {
+  let code, message;
+  const _id = req.params.id;
+  const password = req.body.password;
+  try {
+    code = 200;
+    message = "user successfully updated!";
+    const user = await userModel.findOneAndUpdate(
+      { _id },
+      { password: password },
+      { new: true }
+    );
+    if (!user) {
+      code = 400;
+      message = "Bad Request";
+      const resdata = customResponse({ code, message });
+      return res.status(code).send(resdata);
+    }
+    await user.save();
+    const resData = customResponse({
+      code,
+      data: user,
+      message,
+    });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
   }
 };
 module.exports = {
@@ -537,4 +618,5 @@ module.exports = {
   getAccount,
   validateToken,
   logout,
+  setPassword,
 };

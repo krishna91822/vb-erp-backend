@@ -1,4 +1,5 @@
 const express = require("express");
+const { hasPermission } = require("../middleware/auth");
 
 const {
   getAllReviews,
@@ -9,10 +10,14 @@ const {
 } = require("../controllers/ReviewController");
 const router = express.Router();
 
-router.get("/", getAllReviews);
+router.get("/", hasPermission("view_employee_dashboard"), getAllReviews);
 router.post("/", createReview);
-router.get("/:id", getReview);
-router.patch("/:id", updateReviewStatus);
-router.delete("/:id", deleteReview);
+router.get("/:id", hasPermission("view_employee_dashboard"), getReview);
+router.patch(
+  "/:id",
+  hasPermission("approve_employee_edit_request"),
+  updateReviewStatus
+);
+router.delete("/:id", hasPermission("create_employee_dashboard"), deleteReview);
 
 module.exports = router;

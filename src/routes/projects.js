@@ -1,6 +1,7 @@
 //importing packages
 const express = require("express");
 const ProjectRouter = express.Router();
+const { hasPermission } = require("../middleware/auth");
 
 //importing from controller
 const {
@@ -18,28 +19,52 @@ const {
 } = require("../controllers/projectsController");
 
 // POST request
-ProjectRouter.post("/", createProjects);
+ProjectRouter.post("/", hasPermission("create_project_in_PMO"), createProjects);
 
 //PUT method for update
-ProjectRouter.put("/:id", updateProject);
+ProjectRouter.put(
+  "/:id",
+  hasPermission("update_project_in_PMO"),
+  updateProject
+);
 
 // //GET Method
 // ProjectRouter.get("/", getProjects);
 // ProjectRouter.get("/:fieldName", getSortedProjects);
 
 // GET Method for Active Projects
-ProjectRouter.get("/active", getActiveProjects);
-ProjectRouter.get("/active/:fieldName", getSortedActiveProjects);
+ProjectRouter.get(
+  "/active",
+  hasPermission("view_PMO_module"),
+  getActiveProjects
+);
+ProjectRouter.get(
+  "/active/:fieldName",
+  hasPermission("view_PMO_module"),
+  getSortedActiveProjects
+);
 
 // GET Method for Active Projects
-ProjectRouter.get("/done", getDoneProjects);
-ProjectRouter.get("/done/:fieldName", getSortedDoneProjects);
+ProjectRouter.get("/done", hasPermission("view_PMO_module"), getDoneProjects);
+ProjectRouter.get(
+  "/done/:fieldName",
+  hasPermission("view_PMO_module"),
+  getSortedDoneProjects
+);
 
 //GET method for Other projects
-ProjectRouter.get("/others", getOtherProjects);
-ProjectRouter.get("/others/:fieldName", getSortedOtherProjects);
+ProjectRouter.get(
+  "/others",
+  hasPermission("view_PMO_module"),
+  getOtherProjects
+);
+ProjectRouter.get(
+  "/others/:fieldName",
+  hasPermission("view_PMO_module"),
+  getSortedOtherProjects
+);
 
 //GET Method by id
-ProjectRouter.get("/:id", getProjectById);
+ProjectRouter.get("/:id", hasPermission("view_PMO_module"), getProjectById);
 
 module.exports = ProjectRouter;

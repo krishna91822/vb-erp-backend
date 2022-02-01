@@ -6,13 +6,14 @@ const {
   getRelatedInvoices,
   updateInvoice,
 } = require("../controllers/invoicecontroller");
+const { hasPermission } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.post("/", newInvoice);
-router.get("/sort/:data", getInvoiceDetails);
-router.get("/:id", getInvoiceDetailsById);
-router.get("/", getRelatedInvoices);
-router.patch("/:id", updateInvoice);
+router.post("/", hasPermission("upload_invoice"), newInvoice);
+router.get("/sort/:data", hasPermission("view_invoice"), getInvoiceDetails);
+router.get("/:id", hasPermission("view_invoice"), getInvoiceDetailsById);
+router.get("/", hasPermission("view_invoice"), getRelatedInvoices);
+router.patch("/:id", hasPermission("upload_invoice"), updateInvoice);
 
 module.exports = router;
