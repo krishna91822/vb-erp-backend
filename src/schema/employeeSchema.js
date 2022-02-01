@@ -45,6 +45,7 @@ const employeeSchema = joi
     empPhoneNumber: joi.string(),
     empCtc: joi.number().min(0),
     yearsOfExperience: joi.number().allow(null),
+    status: joi.string().valid("active", "inactive", "deleted"),
   })
   .options({ abortEarly: false });
 
@@ -93,6 +94,7 @@ const employeeUpdateSchema = joi
     empPhoneNumber: joi.string(),
     empCtc: joi.number().min(0),
     yearsOfExperience: joi.number().allow(null),
+    status: joi.string().valid("active", "inactive", "deleted"),
   })
   .options({ abortEarly: false });
 
