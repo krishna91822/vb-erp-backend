@@ -9,52 +9,12 @@ const {
   unassignEmployee,
 } = require("../controllers/assigneeController");
 
-router.post(
-  "/",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  createAssignee
-);
-router.get(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getAssigneeList
-);
-router.patch(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  updateDetails
-);
+router.post("/", hasPermission("upload_PO/SOW/contract"), createAssignee);
+router.get("/:id", hasPermission("view_CMS"), getAssigneeList);
+router.patch("/:id", hasPermission("upload_PO/SOW/contract"), updateDetails);
 router.patch(
   "/unassign/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("upload_PO/SOW/contract"),
   unassignEmployee
 );
 

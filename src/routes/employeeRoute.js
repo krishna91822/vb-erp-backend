@@ -15,118 +15,34 @@ const {
   searchEmployeesRR,
 } = require("../controllers/employeeController");
 
-router.get(
-  "/qr",
-  hasPermission([
-    "user",
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  generateQR
-);
+router.get("/qr", hasPermission("view_employee_dashboard"), generateQR);
 router.get(
   "/designations",
-  hasPermission([
-    "user",
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_employee_dashboard"),
   getDesignations
 );
 router.get(
   "/departments",
-  hasPermission([
-    "user",
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_employee_dashboard"),
   getDepartments
 );
-router.get(
-  "/:id",
-  hasPermission([
-    "user",
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getEmployee
-);
-router.patch(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  updateEmployee
-);
+router.get("/:id", hasPermission("view_employee_dashboard"), getEmployee);
+router.patch("/:id", hasPermission("edit_employee_dashboard"), updateEmployee);
 router.delete(
   "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("create_employee_dashboard"),
   deleteEmployee
 );
-router.get(
-  "/",
-  hasPermission([
-    "user",
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getAllEmployees
-);
-router.post("/", hasPermission(["super_admin", "hr_admin"]), createEmployee);
+router.get("/", hasPermission("view_employee_dashboard"), getAllEmployees);
+router.post("/", hasPermission("create_employee_dashboard"), createEmployee);
 router.get(
   "/reward/employee",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_employee_dashboard"),
   getEmployeesRR
 );
 router.get(
   "/rewars/employeesearch",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_employee_dashboard"),
   searchEmployeesRR
 );
 

@@ -12,88 +12,17 @@ const {
   getDetails,
 } = require("../controllers/poSowController");
 
-router.post(
-  "/",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  createPoSow
-);
-router.get(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getPoDeatil
-);
-router.get(
-  "/sort/:fieldName",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getSortedPoList
-);
-router.get(
-  "/capturePO/clients",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getClients
-);
+router.post("/", hasPermission("upload_PO/SOW/contract"), createPoSow);
+router.get("/:id", hasPermission("view_CMS"), getPoDeatil);
+router.get("/sort/:fieldName", hasPermission("view_CMS"), getSortedPoList);
+router.get("/capturePO/clients", hasPermission("view_CMS"), getClients);
 router.get(
   "/capturePO/clients/:clientName",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_CMS"),
   getProjects
 );
-router.get(
-  "/capturePO/details",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  getDetails
-);
-router.patch(
-  "/:id",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
-  updatePODetais
-);
+router.get("/capturePO/details", hasPermission("view_CMS"), getDetails);
+router.patch("/:id", hasPermission("upload_PO/SOW/contract"), updatePODetais);
 // router.patch("/status/:id", updatePOStatus);
 
 module.exports = router;

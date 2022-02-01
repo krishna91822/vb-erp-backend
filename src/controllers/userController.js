@@ -216,18 +216,16 @@ const updateUser = async (req, res) => {
   try {
     code = 200;
     message = "user successfully updated!";
-    const user = await userModel.findOneAndUpdate(
-      { _id },
-      { ...req.body },
-      { new: true }
-    );
-    await user.save();
-    const resData = customResponse({
-      code,
-      data: user,
-      message,
-    });
-    return res.status(code).send(resData);
+    await userModel
+      .findOneAndUpdate({ _id }, { ...req.body }, { new: true })
+      .then((user) => {
+        const resData = customResponse({
+          code,
+          data: user,
+          message,
+        });
+        return res.status(code).send(resData);
+      });
   } catch (error) {
     code = 500;
     message = "Internal server error";

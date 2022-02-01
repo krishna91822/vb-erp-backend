@@ -20,87 +20,52 @@ const {
 // POST request
 ProjectEmployeeRouter.post(
   "/",
-  hasPermission(["approver", "leader", "super_admin", "pms_admin"]),
+  hasPermission("create_project_in_PMO"),
   createAllocations
 );
 
 // PUT request
 ProjectEmployeeRouter.put(
   "/",
-  hasPermission(["approver", "leader", "super_admin", "pms_admin"]),
+  hasPermission("update_project_in_PMO"),
   updateAllocation
 );
 
 // DELETE request
 ProjectEmployeeRouter.delete(
   "/:id",
-  hasPermission(["approver", "leader", "super_admin", "pms_admin"]),
+  hasPermission("create_project_in_PMO"),
   deleteAllocation
 );
 
 // GET request
 ProjectEmployeeRouter.get(
   "/allocated",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getAllocations
 );
 ProjectEmployeeRouter.get(
   "/allocated/:fieldName",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getSortedAllocations
 );
 
 // GET request
 ProjectEmployeeRouter.get(
   "/onbench",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getAllocationsOnBench
 );
 ProjectEmployeeRouter.get(
   "/onbench/:fieldName",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getSortedAllocationsOnBench
 );
 
 // GET request
 ProjectEmployeeRouter.get(
   "/totalallocation",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getTotalAllocationByEmpId
 );
 
@@ -108,26 +73,12 @@ ProjectEmployeeRouter.get(
 // Getting employee module's integrated data
 ProjectEmployeeRouter.get(
   "/filteremp",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getFilteredEmployee
 );
 ProjectEmployeeRouter.get(
   "/managers",
-  hasPermission([
-    "approver",
-    "leader",
-    "super_admin",
-    "hr_admin",
-    "finance_admin",
-    "pms_admin",
-  ]),
+  hasPermission("view_PMO_module"),
   getManagers
 );
 
