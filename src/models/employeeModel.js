@@ -40,6 +40,21 @@ const otherField = new mongoose.Schema({
   },
 });
 
+const projectDetails = new mongoose.Schema({
+  projectName: {
+    type: String,
+    trim: true,
+  },
+  projectSkill: {
+    type: Array,
+    default: [],
+  },
+  projectDescription: {
+    type: String,
+    trim: true,
+  },
+});
+
 const employeeSchema = new mongoose.Schema(
   {
     count: {
@@ -189,6 +204,10 @@ const employeeSchema = new mongoose.Schema(
       type: [otherField],
       default: undefined,
     },
+    project: {
+      type: [projectDetails],
+      default: undefined,
+    },
     slackMemId: {
       type: String,
       default: undefined,
@@ -199,6 +218,11 @@ const employeeSchema = new mongoose.Schema(
     empCtc: {
       type: Number,
       min: 0,
+    },
+    yearsOfExperience: {
+      type: Number,
+      min: 0,
+      default: 0,
     },
   },
   { timestamps: true }

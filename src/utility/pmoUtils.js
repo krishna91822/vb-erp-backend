@@ -219,6 +219,7 @@ const getOnBenchFilteredData = (findObj, projectDetails, employeesData) => {
           empPrimaryCapability: value.empId.empPrimaryCapability,
           empDesignation: value.empId.empDesignation,
           empSkillSet: value.empId.empSkillSet,
+          yearsOfExperience: value.empId.yearsOfExperience,
           remainingAllocation: 100,
           projects: [],
         };
@@ -260,6 +261,9 @@ const getOnBenchFilteredData = (findObj, projectDetails, employeesData) => {
         empId: employ.empId,
         empName: employ.empName,
         empPrimaryCapability: employ.empPrimaryCapability,
+        empDesignation: employ.empDesignation,
+        empSkillSet: employ.empSkillSet,
+        yearsOfExperience: employ.yearsOfExperience,
         remainingAllocation: 100,
         projects: [],
       };

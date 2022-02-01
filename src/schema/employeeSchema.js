@@ -40,9 +40,11 @@ const employeeSchema = joi
     personalDetails: joi.any(),
     professionalDetails: joi.any(),
     skillsDetails: joi.any(),
+    project: joi.any(),
     slackMemId: joi.string(),
     empPhoneNumber: joi.string(),
     empCtc: joi.number().min(0),
+    yearsOfExperience: joi.number().allow(null),
   })
   .options({ abortEarly: false });
 
@@ -86,9 +88,11 @@ const employeeUpdateSchema = joi
     personalDetails: joi.any(),
     professionalDetails: joi.any(),
     skillsDetails: joi.any(),
+    project: joi.any(),
     slackMemId: joi.string(),
     empPhoneNumber: joi.string(),
     empCtc: joi.number().min(0),
+    yearsOfExperience: joi.number().allow(null),
   })
   .options({ abortEarly: false });
 

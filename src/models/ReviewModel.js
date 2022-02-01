@@ -39,6 +39,21 @@ const otherField = new mongoose.Schema({
   },
 });
 
+const projectDetails = new mongoose.Schema({
+  projectName: {
+    type: String,
+    trim: true,
+  },
+  projectSkill: {
+    type: Array,
+    default: [],
+  },
+  projectDescription: {
+    type: String,
+    trim: true,
+  },
+});
+
 const employeeSchemaForReview = new mongoose.Schema(
   {
     empName: {
@@ -182,6 +197,10 @@ const employeeSchemaForReview = new mongoose.Schema(
       type: [otherField],
       default: undefined,
     },
+    project: {
+      type: [projectDetails],
+      default: undefined,
+    },
     slackMemId: {
       type: String,
       default: undefined,
@@ -192,6 +211,11 @@ const employeeSchemaForReview = new mongoose.Schema(
     empCtc: {
       type: Number,
       min: 0,
+    },
+    yearsOfExperience: {
+      type: Number,
+      min: 0,
+      default: 0,
     },
   },
   { _id: false }
@@ -205,6 +229,9 @@ const ReviewSchema = mongoose.Schema(
     },
     reqName: {
       required: true,
+      type: String,
+    },
+    message: {
       type: String,
     },
     reqType: {
