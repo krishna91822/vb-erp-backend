@@ -5,7 +5,7 @@ const { emailSender } = require("../middleware/POMailNotification");
 
 const scheduler = () => {
   cron.schedule("0 0 13 * * *", async () => {
-    const getDetails = await Invoice.find({ amount_received_on: "" }).populate(
+    const getDetails = await Invoice.find({}).populate(
       "PO_Id",
       "Client_Name Project_Name Targetted_Resources PO_Number PO_Amount POSOW_endDate"
     );
@@ -18,6 +18,7 @@ const scheduler = () => {
             $set: { Status: "Overdue", updated_at: new Date() },
           }
         );
+
         const payload = {
           Client_Name: data.PO_Id.Client_Name,
           Project_Name: data.PO_Id.Project_Name,
