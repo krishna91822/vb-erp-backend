@@ -3,10 +3,9 @@ const jwt = require("jsonwebtoken");
 const { customResponse } = require("../utility/helper");
 
 const isAuthorized = async (req, res, next) => {
-  if (process.env.NODE_ENV == 'test') {
-
+  if (process.env.NODE_ENV == "test") {
     next();
-    return ;
+    return;
   }
   let code, message;
   const authorizationHeaader = req.headers.authorization;
@@ -51,4 +50,28 @@ const isAuthorized = async (req, res, next) => {
     return res.status(code).send(resData);
   }
 };
-module.exports = { isAuthorized };
+
+const hasPermission = (permission) => {
+  return async (req, res, next) => {
+    try {
+      let code, message;
+      let hasAccess = false;
+      req.decoded.permissions.includes(permission) && (hasAccess = true);
+      if (hasAccess) {
+        next();
+      } else {
+        code = 401;
+        message = "Not Authorized for this route";
+        const resData = customResponse({ code, message });
+        return res.status(code).send(resData);
+      }
+    } catch (error) {
+      code = 500;
+      console.log(error);
+      message = "Internal Server Error";
+      const resData = customResponse({ code, message, error });
+      return res.status(code).send(resData);
+    }
+  };
+};
+module.exports = { isAuthorized, hasPermission };

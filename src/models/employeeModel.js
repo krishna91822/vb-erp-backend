@@ -224,6 +224,11 @@ const employeeSchema = new mongoose.Schema(
       min: 0,
       default: 0,
     },
+    status: {
+      type: String,
+      enum: ["active", "inactive", "deleted"],
+      default: "active",
+    },
   },
   { timestamps: true }
 );

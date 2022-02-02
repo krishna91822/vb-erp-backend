@@ -231,6 +231,9 @@ const ReviewSchema = mongoose.Schema(
       required: true,
       type: String,
     },
+    reqEmail: {
+      type: String,
+    },
     message: {
       type: String,
     },
