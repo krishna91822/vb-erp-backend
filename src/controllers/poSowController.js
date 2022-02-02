@@ -314,7 +314,10 @@ const updatePODetais = async (req, res) => {
         }
       }
   */
-  let code, message;
+  let code,
+    message,
+    updateStatus = "Draft";
+  const currDate = new Date();
   try {
     const { error } = poSowSchema.validate(req.body);
     if (error) {
@@ -327,12 +330,39 @@ const updatePODetais = async (req, res) => {
       });
       return res.status(code).send(resData);
     }
-    const updateDetails = await purchaseOrderModel.updateOne(
+    const updateDetails = await purchaseOrderModel.findOneAndUpdate(
       { _id: req.params.id },
+      { ...req.body, Updated_At: new Date() },
+      { new: true }
+    );
+    await updateDetails.save();
+
+    const getDetails = await Invoice.findOne({
+      PO_Id: req.params.id,
+    });
+
+    if (updateDetails.POSOW_endDate < currDate) {
+      updateStatus = "Overdue";
+    } else if (
+      updateDetails.POSOW_endDate >= currDate &&
+      getDetails.invoice_raised === "Yes" &&
+      getDetails.invoice_received === "Yes"
+    ) {
+      updateStatus = "Complete";
+    } else if (
+      updateDetails.POSOW_endDate >= currDate &&
+      getDetails.invoice_raised === "Yes"
+    ) {
+      updateStatus = "Invoice raised";
+    }
+
+    await Invoice.updateOne(
+      { _id: getDetails._id },
       {
-        $set: { ...req.body, Updated_At: new Date() },
+        $set: { Status: updateStatus, updated_at: new Date() },
       }
     );
+
     code = 200;
     message = "data updated successfully";
     const resData = customResponse({
@@ -343,6 +373,7 @@ const updatePODetais = async (req, res) => {
     return res.status(code).send(resData);
   } catch (error) {
     code = 500;
+    console.log(error);
     message = "Internal server error";
     const resData = customResponse({
       code,
