@@ -6,15 +6,15 @@ const customResponse = ({
   message = "",
   data = {},
   err = {},
-  totalDocuments,
   totalResult,
+  totalCount,
 }) => {
   const responseStatus = code < 300 ? "success" : "failure";
   return {
     status: responseStatus,
     code,
     totalResult,
-    totalDocuments,
+    totalCount,
     data,
     message,
     error: err,
