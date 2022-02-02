@@ -492,13 +492,13 @@ const updateInvoice = async (req, res) => {
     }
 
     if (
-      getDetails.PO_Id.POSOW_endDate > currDate &&
+      getDetails.PO_Id.POSOW_endDate >= currDate &&
       req.body.invoice_raised === "Yes" &&
       req.body.invoice_received === "Yes"
     ) {
       updateStatus = "Complete";
     } else if (
-      getDetails.PO_Id.POSOW_endDate > currDate &&
+      getDetails.PO_Id.POSOW_endDate >= currDate &&
       req.body.invoice_raised === "Yes"
     ) {
       updateStatus = "Invoice raised";
