@@ -1,5 +1,6 @@
 const { invoiceSchema, querySchema } = require("../schema/invoiceschema");
 const Invoice = require("../models/invoicemodel");
+const bankAccounts = require("../models/bankAccount");
 const posow = require("../models/poSow");
 const { emailContent } = require("../controllers/poEmailController");
 const { emailSender } = require("../middleware/POMailNotification");
@@ -491,13 +492,13 @@ const updateInvoice = async (req, res) => {
     }
 
     if (
-      getDetails.PO_Id.POSOW_endDate > currDate &&
+      getDetails.PO_Id.POSOW_endDate >= currDate &&
       req.body.invoice_raised === "Yes" &&
       req.body.invoice_received === "Yes"
     ) {
       updateStatus = "Complete";
     } else if (
-      getDetails.PO_Id.POSOW_endDate > currDate &&
+      getDetails.PO_Id.POSOW_endDate >= currDate &&
       req.body.invoice_raised === "Yes"
     ) {
       updateStatus = "Invoice raised";
@@ -553,8 +554,28 @@ const updateInvoice = async (req, res) => {
   }
 };
 
+const getBankAccount = async (req, res) => {
+  let code, message;
+  try {
+    const data = await bankAccounts.find({});
+    code = 200;
+    const resData = customResponse({ code, data });
+    return res.status(code).send(resData);
+  } catch (error) {
+    code = 500;
+    message = "Internal server error";
+    const resData = customResponse({
+      code,
+      message,
+      err: error,
+    });
+    return res.status(code).send(resData);
+  }
+};
+
 module.exports = {
   newInvoice,
+  getBankAccount,
   getInvoiceDetailsById,
   getInvoiceDetails,
   getRelatedInvoices,

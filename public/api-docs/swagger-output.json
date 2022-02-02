@@ -3003,6 +3003,20 @@
         "responses": {}
       }
     },
+    "/invoice/bankAccount": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/invoice/sort/{data}": {
       "get": {
         "tags": [
