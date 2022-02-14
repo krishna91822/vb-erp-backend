@@ -373,7 +373,6 @@ const updatePODetais = async (req, res) => {
     return res.status(code).send(resData);
   } catch (error) {
     code = 500;
-    console.log(error);
     message = "Internal server error";
     const resData = customResponse({
       code,
