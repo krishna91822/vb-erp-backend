@@ -5,9 +5,6 @@ const { selectedMessages } = require("./operations");
 
 require("dotenv").config();
 
-const ceoslackid = "U02Q226E1PY";
-// const ceoslackid = process.env.CEO_SLACK_ID;
-
 const onDemandRewards = async () => {
   const rewards = await getRewards("On-Demand");
   if (rewards != null) {
