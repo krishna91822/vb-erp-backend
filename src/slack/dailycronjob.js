@@ -1,16 +1,34 @@
+require("dotenv").config();
 const { birthdayjob } = require("./operations");
 const { workanniversary } = require("./operations");
-var cron = require('node-cron');
+const axios = require("axios");
 
-// const crons=cron.schedule('* * * * *', () => {
-//   console.log('running a  daily task every minute');
-//   dailycronjob()
-// });
-
-const dailycronjob=async()=>{
-  await birthdayjob("Daily")
-  await workanniversary("Daily")
+async function dailycronjob() {
+  try {
+    await birthdayjob("Daily");
+    await workanniversary("Daily");
+  } catch (error) {
+    console.log(process.env.NODE_ENV, "here2");
+    console.log(error.message);
+  }
 }
 
-// dailycronjob()
-module.exports=dailycronjob
+const runDailyScript = async () => {
+  const user = {
+    email: process.env.slackemail,
+    password: process.env.slackpassword,
+  };
+  try {
+    await axios.post(`${process.env.URL}/login`, user).then(async (res) => {
+      axios.defaults.headers.common["Authorization"] = res.data.data.token;
+      await dailycronjob();
+    });
+  } catch (error) {
+    console.log(error.message);
+  } finally {
+    await axios.get(`${process.env.URL}/logout`);
+  }
+};
+runDailyScript();
+
+module.exports = dailycronjob;

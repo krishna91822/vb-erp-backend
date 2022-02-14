@@ -2,24 +2,31 @@ const { getRewardById } = require("./operations");
 const { ceoMessages } = require("./operations");
 const { managerMessage } = require("./operations");
 const { selectedMessages } = require("./operations");
-const {workanniversary}  = require("./operations");
-const {birthdayjob } = require("./operations");
+const { workanniversary } = require("./operations");
+const { birthdayjob } = require("./operations");
 const { starOfTheMonth } = require("./operations");
 
-
-const checkrewardsubtype=async(reward,rewardId)=>{
-  if(reward.reward_type==="Daily" && reward.reward_subType==="birthday-celebration"){
-    await birthdayjob(rewardId)
+const checkrewardsubtype = async (reward, rewardId) => {
+  if (
+    reward.reward_type === "Daily" &&
+    reward.reward_subType === "birthday-celebration"
+  ) {
+    await birthdayjob(rewardId);
+  } else if (
+    reward.reward_type === "Daily" &&
+    reward.reward_subType === "work-anniversary"
+  ) {
+    await workanniversary(rewardId);
+  } else if (
+    reward.reward_type === "Monthly" &&
+    reward.reward_subType === "starOfTheMonth"
+  ) {
+    await starOfTheMonth(rewardId);
   }
-  else if(reward.reward_type==="Daily" && reward.reward_subType==="work-anniversary"){
-    await workanniversary(rewardId)
-  }
-  else if(reward.reward_type==="Monthly" && reward.reward_subType==="starOfTheMonth"){
-    await starOfTheMonth(rewardId)
-  }
-}
+};
 
 const launchReward = async (rewardId) => {
+  process.env.NODE_ENV = "test";
   try {
     const rewardsbyid = await getRewardById(rewardId);
     const rewards = [rewardsbyid];
@@ -30,39 +37,41 @@ const launchReward = async (rewardId) => {
           console.log(
             `${reward.reward_display_name} are not in In Progress state`
           );
-          return null
+          return null;
         }
         if (reward.status === "In Progress") {
           if (reward.reward_sender === "CEO") {
-            if(reward.reward_type==="On-Demand"){
+            if (reward.reward_type === "On-Demand") {
               await ceoMessages(reward);
-            }
-            else{
-              await checkrewardsubtype(reward,rewardId)
+            } else {
+              await checkrewardsubtype(reward, rewardId);
             }
           }
           if (reward.reward_sender === "Manager") {
-            if(reward.reward_type==="On-Demand"){
+            if (reward.reward_type === "On-Demand") {
               await managerMessage(reward);
-            }
-            else{
-              await checkrewardsubtype(reward,rewardId)
+            } else {
+              await checkrewardsubtype(reward, rewardId);
             }
           }
           if (reward.reward_sender === "selected") {
-            if(reward.reward_type==="On-Demand"){
+            if (reward.reward_type === "On-Demand") {
               await selectedMessages(reward);
-            }
-            else{
-              await checkrewardsubtype(reward,rewardId)
+            } else {
+              await checkrewardsubtype(reward, rewardId);
             }
           }
         }
       });
     }
-    return "done"
+
+    return "done";
   } catch (error) {
     console.log(error.message);
+  } finally {
+    setTimeout(() => {
+      process.env.NODE_ENV = "development";
+    }, 2000);
   }
 };
 

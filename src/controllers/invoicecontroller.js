@@ -491,7 +491,9 @@ const updateInvoice = async (req, res) => {
       Object.assign(req.body, { invoice_raised_on: new Date() });
     }
 
-    if (
+    if (getDetails.PO_Id.POSOW_endDate < currDate) {
+      updateStatus = "Overdue";
+    } else if (
       getDetails.PO_Id.POSOW_endDate >= currDate &&
       req.body.invoice_raised === "Yes" &&
       req.body.invoice_received === "Yes"

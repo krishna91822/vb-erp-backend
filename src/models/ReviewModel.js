@@ -73,7 +73,6 @@ const employeeSchemaForReview = new mongoose.Schema(
     empPersonalEmail: {
       type: String,
       trim: true,
-      required: true,
     },
     empDoj: {
       type: Date,

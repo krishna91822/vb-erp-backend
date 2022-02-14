@@ -5,9 +5,9 @@ const employeeSchema = joi
   .keys({
     empName: joi.string().max(30).required(),
     empEmail: joi.string().email().required(),
-    empPersonalEmail: joi.string().email().required(),
+    empPersonalEmail: joi.string().email(),
     empDoj: joi.string().allow(null, "").required(),
-    empDob: joi.string().allow(null, ""),
+    empDob: joi.string().allow(null, "").required(),
     empDesignation: joi.string().required(),
     empDepartment: joi.string().required(),
     empReportingManager: joi.string().required(),
@@ -54,7 +54,7 @@ const employeeUpdateSchema = joi
   .keys({
     empName: joi.string().max(30).required(),
     empEmail: joi.string().email().required(),
-    empPersonalEmail: joi.string().email().required(),
+    empPersonalEmail: joi.string().email(),
     empDoj: joi.date().required(),
     empDob: joi.date().required(),
     empDesignation: joi.string().required(),

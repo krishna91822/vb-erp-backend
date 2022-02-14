@@ -92,10 +92,14 @@ const sendMessage = async (channel, message, image) => {
 const findSlackId = async (empId = 0, empName = "dummy") => {
   let slackId;
   if (empId === 0 && empName != "dummy") {
-    slackId = await axios.get(`${baseUrl}employees/reward/employee?empName=${empName}`);
+    slackId = await axios.get(
+      `${baseUrl}/employees/reward/employee?empName=${empName}`
+    );
   }
   if (empId != 0 && empName === "dummy") {
-    slackId = await axios.get(`${baseUrl}employees/reward/employee?empId=${empId}`);
+    slackId = await axios.get(
+      `${baseUrl}/employees/reward/employee?empId=${empId}`
+    );
   }
   if (empId === 0 && empName === "dummy") {
     console.log("please pass employeeid or name");
@@ -113,7 +117,9 @@ const findSlackId = async (empId = 0, empName = "dummy") => {
 };
 
 const findemployeeById = async (id) => {
-  const som = await axios.get(`${baseUrl}employees/reward/employee?getEmpByID=${id}`);
+  const som = await axios.get(
+    `${baseUrl}/employees/reward/employee?getEmpByID=${id}`
+  );
   if (som.data.status === "failure") {
     console.log("something went wrong on serverside");
     return null;
@@ -127,7 +133,7 @@ const findemployeeById = async (id) => {
 
 const todayWorkAnniversary = async () => {
   const emprec = await axios.get(
-    `${baseUrl}employees/reward/employee?workAnniversary=${new Date()}`
+    `${baseUrl}/employees/reward/employee?workAnniversary=${new Date()}`
   );
   if (emprec.data.status === "failure") {
     console.log("something went wrong on serverside");
@@ -141,7 +147,9 @@ const todayWorkAnniversary = async () => {
 };
 
 const todayEmpBirthday = async () => {
-  const emprec = await axios.get(`${baseUrl}employees/reward/employee?dob=${new Date()}`);
+  const emprec = await axios.get(
+    `${baseUrl}/employees/reward/employee?dob=${new Date()}`
+  );
   if (emprec.data.status === "failure") {
     console.log("something went wrong on serverside");
     return null;
@@ -156,7 +164,7 @@ const todayEmpBirthday = async () => {
 
 const getRewards = async (reward_type) => {
   const Rewards = await axios.get(
-    `${baseUrl}rewards?rewardType=${reward_type}`
+    `${baseUrl}/rewards?rewardType=${reward_type}`
   );
   if (Rewards.data.status === "failure") {
     console.log("something went wrong on serverside");
@@ -170,7 +178,7 @@ const getRewards = async (reward_type) => {
 };
 
 const getRewardById = async (rewardId) => {
-  const Rewards = await axios.get(`${baseUrl}rewards/${rewardId}`);
+  const Rewards = await axios.get(`${baseUrl}/rewards/${rewardId}`);
   if (Rewards.data.status === "failure") {
     console.log("something went wrong on serverside");
     return null;
@@ -185,7 +193,7 @@ const getRewardById = async (rewardId) => {
 const getAllEmployee = async () => {
   let salckids = [];
   let ids;
-  const emprec = await axios.get(`${baseUrl}employees/reward/employee`);
+  const emprec = await axios.get(`${baseUrl}/employees/reward/employee`);
   if (emprec.data.status === "failure") {
     console.log("some server side error");
     return null;
@@ -199,7 +207,7 @@ const getAllEmployee = async () => {
 
 const getManagerDetail = async (ManagerName) => {
   const allManagersDetails = await axios.get(
-    `${baseUrl}employees/reward/employee?managerDetail=${ManagerName}`
+    `${baseUrl}/employees/reward/employee?managerDetail=${ManagerName}`
   );
   if (allManagersDetails.data.status === "failure") {
     console.log("something went wrong on server side");
@@ -213,7 +221,9 @@ const getManagerDetail = async (ManagerName) => {
 };
 
 const getllManagersName = async () => {
-  const allManagersName = await axios.get(`${baseUrl}employees/reward/employee?empDes=Manager`);
+  const allManagersName = await axios.get(
+    `${baseUrl}/employees/reward/employee?empDes=Manager`
+  );
   if (allManagersName.data.status === "failure") {
     console.log("something went wrong on server side");
     return null;
@@ -232,7 +242,7 @@ const getllManagersName = async () => {
 
 const getAllEmpUnderManager = async (managerName) => {
   const allEmpUnderManagersDetails = await axios.get(
-    `${baseUrl}employees/reward/employee?empUnderManager=${managerName}`
+    `${baseUrl}/employees/reward/employee?empUnderManager=${managerName}`
   );
   if (allEmpUnderManagersDetails.data.status === "failure") {
     console.log("something went wrong on server side");
@@ -305,8 +315,8 @@ const ceoMessages = async (reward) => {
       empslackid = await findSlackId(id.empId);
       // console.log(empslackid[0].slackMemId);
       if (empslackid != null) {
-        if(!reward.channel_message){
-          reward.channel_message=" "
+        if (!reward.channel_message) {
+          reward.channel_message = " ";
         }
         let msg = await replaceSenderAndReceiver(
           reward.channel_message,
@@ -340,8 +350,8 @@ const ceoMessages = async (reward) => {
           );
           empslackid = await findSlackId(mandetails[0].empId);
           if (empslackid != null) {
-            if(!reward.channel_message){
-              reward.channel_message=" "
+            if (!reward.channel_message) {
+              reward.channel_message = " ";
             }
             let msg = await replaceSenderAndReceiver(
               reward.channel_message,
@@ -371,8 +381,8 @@ const ceoMessages = async (reward) => {
     if (reward != null) {
       reward.recipients_ids.map(async (recepients) => {
         console.log(`CEO SEND SELECTED MESSAGE TO ${recepients.empName}`);
-        if(!reward.channel_message){
-          reward.channel_message=" "
+        if (!reward.channel_message) {
+          reward.channel_message = " ";
         }
         let msg = await replaceSenderAndReceiver(
           reward.channel_message,
@@ -406,8 +416,8 @@ const managerMessage = async (reward) => {
         empslackid = await findSlackId(emp.empId);
         empmanslackid = await findSlackId(0, emp.empReportingManager);
         if (empslackid != null && empmanslackid != null) {
-          if(!reward.channel_message){
-            reward.channel_message=" "
+          if (!reward.channel_message) {
+            reward.channel_message = " ";
           }
           let msg = await replaceSenderAndReceiver(
             reward.channel_message,
@@ -449,8 +459,8 @@ const managerMessage = async (reward) => {
               managerDetails.empReportingManager
             );
             if (empslackid != null && empmanslackid != null) {
-              if(!reward.channel_message){
-                reward.channel_message=" "
+              if (!reward.channel_message) {
+                reward.channel_message = " ";
               }
               let msg = await replaceSenderAndReceiver(
                 reward.channel_message,
@@ -487,8 +497,8 @@ const managerMessage = async (reward) => {
           console.log(
             `SELECTED MESAGE TO ${recepients.empName} from ${empmanslackid[0].empName}`
           );
-          if(!reward.channel_message){
-            reward.channel_message=" "
+          if (!reward.channel_message) {
+            reward.channel_message = " ";
           }
           let msg = await replaceSenderAndReceiver(
             reward.channel_message,
@@ -528,8 +538,8 @@ const selectedMessages = async (reward) => {
         console.log(
           `selected manager ${reward.sender_id[0].empName} message to their manager ${empmanslackid[0].empName}`
         );
-        if(!reward.channel_message){
-          reward.channel_message=" "
+        if (!reward.channel_message) {
+          reward.channel_message = " ";
         }
         let msg = await replaceSenderAndReceiver(
           reward.channel_message,
@@ -559,8 +569,8 @@ const selectedMessages = async (reward) => {
         console.log(
           `Manager ${reward.sender_id[0].empName} with slack id ${empmanslackid} send message to employee ${emp.empName} with slackid ${empslackid}`
         );
-        if(!reward.channel_message){
-          reward.channel_message=" "
+        if (!reward.channel_message) {
+          reward.channel_message = " ";
         }
         let msg = await replaceSenderAndReceiver(
           reward.channel_message,
@@ -592,8 +602,8 @@ const selectedMessages = async (reward) => {
         console.log(
           `selectd sender ${reward.sender_id[0].empName} send message to selected recepient ${recepients.empName}`
         );
-        if(!reward.channel_message){
-          reward.channel_message=" "
+        if (!reward.channel_message) {
+          reward.channel_message = " ";
         }
         let msg = await replaceSenderAndReceiver(
           reward.channel_message,
@@ -615,91 +625,94 @@ const selectedMessages = async (reward) => {
   }
 };
 
-const birthdayjob=async(rewards)=>{
-  let dailyreward
-  if(rewards==="Daily"){
-    dailyreward=await getRewards("Daily")
+const birthdayjob = async (rewards) => {
+  let dailyreward;
+  if (rewards === "Daily") {
+    dailyreward = await getRewards("Daily");
+  } else {
+    const rewardbyid = await getRewardById(rewards);
+    dailyreward = [rewardbyid];
+    dailyreward[0].sender_id = [rewardbyid.sender_id];
   }
-  else{
-    const rewardbyid=await getRewardById(rewards)
-    dailyreward=[rewardbyid]
-    dailyreward[0].sender_id=[rewardbyid.sender_id]
-  }
-  if(dailyreward!=null){
-    dailyreward.map(async(reward)=>{
-      if(reward.status==="In Progress"){
-      if(reward.reward_subType=="birthday-celebration"){
-        if(reward.reward_receiver==="Employees"){
-          let birthday = await todayEmpBirthday();
-          if (birthday != null) {
-            birthday.map(async (birthday) => {
-              let empsalckid, empManslackid;
-              let managerid,empid
-              // empsalckid = await findSlackId(birthday.empId);
-              if(reward.reward_sender==="CEO"){
-                empManslackid=ceoslackid
-                empid=await findSlackId(birthday.empId)
-                empsalckid=empid[0].slackMemId
-              }
-              else if(reward.reward_sender==="Manager"){
-                managerid = await findSlackId(0,birthday.empReportingManager);
-                empManslackid=managerid[0].slackMemId
-                empid=await findSlackId(birthday.empId)
-                empsalckid=empid[0].slackMemId
-              }
-              else if(reward.reward_sender==="selected"){
-                empManslackid=await reward.sender_id[0].slackMemId
-                if(birthday.empReportingManager===reward.sender_id[0].empName){
-                  empid=await findSlackId(birthday.empId)
-                  empsalckid=empid[0].slackMemId
+  if (dailyreward != null) {
+    dailyreward.map(async (reward) => {
+      if (reward.status === "In Progress") {
+        if (reward.reward_subType == "birthday-celebration") {
+          if (reward.reward_receiver === "Employees") {
+            let birthday = await todayEmpBirthday();
+            if (birthday != null) {
+              birthday.map(async (birthday) => {
+                let empsalckid, empManslackid;
+                let managerid, empid;
+                // empsalckid = await findSlackId(birthday.empId);
+                if (reward.reward_sender === "CEO") {
+                  empManslackid = ceoslackid;
+                  empid = await findSlackId(birthday.empId);
+                  empsalckid = empid[0].slackMemId;
+                } else if (reward.reward_sender === "Manager") {
+                  managerid = await findSlackId(
+                    0,
+                    birthday.empReportingManager
+                  );
+                  empManslackid = managerid[0].slackMemId;
+                  empid = await findSlackId(birthday.empId);
+                  empsalckid = empid[0].slackMemId;
+                } else if (reward.reward_sender === "selected") {
+                  empManslackid = await reward.sender_id[0].slackMemId;
+                  if (
+                    birthday.empReportingManager === reward.sender_id[0].empName
+                  ) {
+                    empid = await findSlackId(birthday.empId);
+                    empsalckid = empid[0].slackMemId;
+                  }
                 }
-              }
-              console.log(`birthday ${birthday.empName} from ${reward.reward_sender}`)
-              if (empsalckid != null && empManslackid != null) {
-                if(!reward.channel_message){
-                  reward.channel_message=" "
+                console.log(
+                  `birthday ${birthday.empName} from ${reward.reward_sender}`
+                );
+                if (empsalckid != null && empManslackid != null) {
+                  if (!reward.channel_message) {
+                    reward.channel_message = " ";
+                  }
+                  let msg = await replaceSenderAndReceiver(
+                    reward.channel_message,
+                    reward.receiver_message,
+                    empsalckid,
+                    empManslackid
+                  );
+                  let publicmsg = msg[0];
+                  let privatemsg = msg[1];
+                  await sendspecicalmsg(
+                    reward.announcement_type,
+                    publicmsg,
+                    empsalckid,
+                    birthdayImage,
+                    reward.slack_channel,
+                    privatemsg
+                  );
                 }
-                let msg = await replaceSenderAndReceiver(
-                  reward.channel_message,
-                  reward.receiver_message,
-                  empsalckid,
-                  empManslackid
-                );
-                let publicmsg = msg[0];
-                let privatemsg = msg[1];
-                await sendspecicalmsg(
-                  reward.announcement_type,
-                  publicmsg,
-                  empsalckid,
-                  birthdayImage,
-                  reward.slack_channel,
-                  privatemsg
-                );
-              }
-            });
+              });
+            }
           }
         }
       }
-    }
-    })
+    });
   }
-}
+};
 
-const workanniversary=async(rewards)=>{
-  let dailyreward
-  if(rewards==="Daily"){
-    dailyreward=await getRewards("Daily")
+const workanniversary = async (rewards) => {
+  let dailyreward;
+  if (rewards === "Daily") {
+    dailyreward = await getRewards("Daily");
+  } else {
+    const rewardbyid = await getRewardById(rewards);
+    dailyreward = [rewardbyid];
+    dailyreward[0].sender_id = [rewardbyid.sender_id];
   }
-  else{
-    const rewardbyid=await getRewardById(rewards)
-    dailyreward=[rewardbyid]
-    dailyreward[0].sender_id=[rewardbyid.sender_id]
-  }
-  if(dailyreward!=null){
-    dailyreward.map(async(reward)=>{
-      if(reward.status==="In Progress"){
-        if(reward.reward_subType=="work-anniversary"){
-          if(reward.reward_receiver==="Employees"){
+  if (dailyreward != null) {
+    dailyreward.map(async (reward) => {
+      if (reward.status === "In Progress") {
+        if (reward.reward_subType == "work-anniversary") {
+          if (reward.reward_receiver === "Employees") {
             anniversary = await todayWorkAnniversary();
             if (anniversary != null) {
               anniversary.map(async (anniversary) => {
@@ -714,29 +727,35 @@ const workanniversary=async(rewards)=>{
                 //   anniversary.empReportingManager
                 // );
                 // empsalckid = await findSlackId(anniversary.empId);
-                let managerid,empid
-                if(reward.reward_sender==="CEO"){
-                  empmanslackid=ceoslackid
-                  empid=await findSlackId(anniversary.empId)
-                  empsalckid=empid[0].slackMemId
-                }
-                else if(reward.reward_sender==="Manager"){
-                  managerid = await findSlackId(0,anniversary.empReportingManager);
-                  empmanslackid=managerid[0].slackMemId
-                  empid=await findSlackId(anniversary.empId)
-                  empsalckid=empid[0].slackMemId
-                }
-                else if(reward.reward_sender==="selected"){
-                  empmanslackid=await reward.sender_id[0].slackMemId
-                  if(anniversary.empReportingManager===reward.sender_id[0].empName){
-                    empid=await findSlackId(anniversary.empId)
-                    empsalckid=empid[0].slackMemId
+                let managerid, empid;
+                if (reward.reward_sender === "CEO") {
+                  empmanslackid = ceoslackid;
+                  empid = await findSlackId(anniversary.empId);
+                  empsalckid = empid[0].slackMemId;
+                } else if (reward.reward_sender === "Manager") {
+                  managerid = await findSlackId(
+                    0,
+                    anniversary.empReportingManager
+                  );
+                  empmanslackid = managerid[0].slackMemId;
+                  empid = await findSlackId(anniversary.empId);
+                  empsalckid = empid[0].slackMemId;
+                } else if (reward.reward_sender === "selected") {
+                  empmanslackid = await reward.sender_id[0].slackMemId;
+                  if (
+                    anniversary.empReportingManager ===
+                    reward.sender_id[0].empName
+                  ) {
+                    empid = await findSlackId(anniversary.empId);
+                    empsalckid = empid[0].slackMemId;
                   }
                 }
-                console.log(`anniversary ${anniversary.empName} from ${reward.reward_sender}`)
+                console.log(
+                  `anniversary ${anniversary.empName} from ${reward.reward_sender}`
+                );
                 if (empsalckid != null && empmanslackid != null) {
-                  if(!reward.channel_message){
-                    reward.channel_message=" "
+                  if (!reward.channel_message) {
+                    reward.channel_message = " ";
                   }
                   let msg = await replaceSenderAndReceiver(
                     reward.channel_message,
@@ -757,23 +776,21 @@ const workanniversary=async(rewards)=>{
                 }
               });
             }
-
-          }        }
+          }
+        }
       }
-    })
-
+    });
   }
-}
+};
 
 const starOfTheMonth = async (rewards) => {
-  let monthlyReward
-  if(rewards==="Monthly"){
-    monthlyReward=await getRewards("Monthly")
-  }
-  else{
-    const rewardbyid=await getRewardById(rewards)
-    monthlyReward=[rewardbyid]
-    monthlyReward[0].sender_id=[rewardbyid.sender_id]
+  let monthlyReward;
+  if (rewards === "Monthly") {
+    monthlyReward = await getRewards("Monthly");
+  } else {
+    const rewardbyid = await getRewardById(rewards);
+    monthlyReward = [rewardbyid];
+    monthlyReward[0].sender_id = [rewardbyid.sender_id];
   }
   // const monthlyReward = await getRewards("Monthly");
   if (monthlyReward != null) {
@@ -783,33 +800,34 @@ const starOfTheMonth = async (rewards) => {
       }
       if (reward.status === "In Progress") {
         if (reward.reward_subType === "starOfTheMonth") {
-          if (
-            reward.reward_receiver === "selected"
-          ) {
+          if (reward.reward_receiver === "selected") {
             reward.recipients_ids.map(async (recepients) => {
               let empslackid, empmanslackid;
-              let managerid
-                if(reward.reward_sender==="CEO"){
-                  empmanslackid=ceoslackid
+              let managerid;
+              if (reward.reward_sender === "CEO") {
+                empmanslackid = ceoslackid;
+                empslackid = recepients.slackMemId;
+              } else if (reward.reward_sender === "Manager") {
+                managerid = await findSlackId(
+                  0,
+                  recepients.empReportingManager
+                );
+                empmanslackid = managerid[0].slackMemId;
+                empslackid = recepients.slackMemId;
+              } else if (reward.reward_sender === "selected") {
+                empmanslackid = await reward.sender_id[0].slackMemId;
+                if (
+                  recepients.empReportingManager === reward.sender_id[0].empName
+                ) {
                   empslackid = recepients.slackMemId;
                 }
-                else if(reward.reward_sender==="Manager"){
-                  managerid = await findSlackId(0,recepients.empReportingManager);
-                  empmanslackid=managerid[0].slackMemId
-                  empslackid = recepients.slackMemId;
-                }
-                else if(reward.reward_sender==="selected"){
-                  empmanslackid=await reward.sender_id[0].slackMemId
-                  if(recepients.empReportingManager===reward.sender_id[0].empName){
-                    empslackid = recepients.slackMemId;
-                  }
-                }
+              }
               // empmanslackid = await findSlackId(0,recepients.empReportingManager);
               console.log(
                 `congratulation ${recepients.empName} you are star of month from ${empmanslackid}`
               );
-              if(!reward.channel_message){
-                reward.channel_message=" "
+              if (!reward.channel_message) {
+                reward.channel_message = " ";
               }
               let msg = await replaceSenderAndReceiver(
                 reward.channel_message,
@@ -858,5 +876,5 @@ module.exports = {
   replaceSenderAndReceiver,
   birthdayjob,
   workanniversary,
-  starOfTheMonth
+  starOfTheMonth,
 };
