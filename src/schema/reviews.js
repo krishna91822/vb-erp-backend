@@ -15,7 +15,7 @@ const reviewSchema = Joi.object({
     count: Joi.number().allow(null, ""),
     empName: Joi.string().max(30).required(),
     empEmail: Joi.string().email().required(),
-    empPersonalEmail: Joi.string().email().required(),
+    empPersonalEmail: Joi.string().email(),
     empDoj: Joi.string().allow(null, "").required(),
     empDob: Joi.string().allow(null, ""),
     empDepartment: Joi.string().required(),
