@@ -77,6 +77,7 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide your email"],
       trim: true,
+      unique: true,
     },
     empPersonalEmail: {
       type: String,
@@ -126,7 +127,6 @@ const employeeSchema = new mongoose.Schema(
     empAboutMe: {
       type: String,
       trim: true,
-      default: "Something about me.",
     },
     empBand: {
       type: String,
@@ -193,15 +193,15 @@ const employeeSchema = new mongoose.Schema(
     },
     personalDetails: {
       type: [otherField],
-      default: undefined,
+      default: [],
     },
     professionalDetails: {
       type: [otherField],
-      default: undefined,
+      default: [],
     },
     skillsDetails: {
       type: [otherField],
-      default: undefined,
+      default: [],
     },
     project: {
       type: [projectDetails],

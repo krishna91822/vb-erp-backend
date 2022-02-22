@@ -5745,6 +5745,20 @@
         }
       }
     },
+    "/employees/import": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/reviews/": {
       "get": {
         "tags": [
