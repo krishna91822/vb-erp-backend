@@ -859,12 +859,17 @@ exports.importEmployees = async (req, res) => {
     });
 
     if (arrayOfJoiError.length) {
-      let code = 400;
-      let message = "joi validation error";
+      let code = 206;
+      let errorName = "joi-error";
+      let message = "Inadequate Data (Check error list)";
       const resData = {
         code,
+        status: "error",
         message,
-        joiErrorMessage: arrayOfJoiError,
+        error: {
+          errorName,
+          importError: arrayOfJoiError,
+        },
       };
       return res.status(code).send(resData);
     }
@@ -875,22 +880,35 @@ exports.importEmployees = async (req, res) => {
     for (let i = 0; i < req.body.length; i++) {
       try {
         const result = await Employee.create(req.body[i]);
-        employeesRes.push(result);
+        employeesRes.push({ index: i, message: result });
       } catch (err) {
-        const errayString = err.key;
         importError.push({
           index: i,
           message: `Email already exist, ${err.keyValue.empEmail}`,
         });
       }
     }
-    return res
-      .status(200)
-      .send({ code: 200, data: employeesRes, error: importError });
+    return res.status(200).send({
+      code: 200,
+      status: importError.length
+        ? employeesRes.length
+          ? "warning"
+          : "error"
+        : "success",
+      message: importError.length
+        ? employeesRes.length
+          ? "success with Error (Check error list)"
+          : "Failed to import (Check error list)"
+        : "Imported Data successfully",
+      data: employeesRes,
+      error: importError.length
+        ? { errorName: "mongo-error", importError }
+        : { errorName: null, importError: [] },
+    });
   } catch (error) {
     let code = 500;
     let message = "internal server error";
-    return res.status(code).send({ code, message, error });
+    return res.status(code).send({ code, status: "error", message, error });
   }
 };
 
