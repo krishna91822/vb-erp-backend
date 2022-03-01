@@ -46,6 +46,9 @@ const employeeSchema = joi
     empCtc: joi.number().min(0),
     yearsOfExperience: joi.number().allow(null),
     status: joi.string().valid("active", "inactive", "deleted"),
+    band: joi
+      .string()
+      .valid("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"),
   })
   .options({ abortEarly: false });
 
@@ -95,6 +98,9 @@ const employeeUpdateSchema = joi
     empCtc: joi.number().min(0),
     yearsOfExperience: joi.number().allow(null),
     status: joi.string().valid("active", "inactive", "deleted"),
+    band: joi
+      .string()
+      .valid("B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"),
   })
   .options({ abortEarly: false });
 
