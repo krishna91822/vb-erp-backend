@@ -13,6 +13,7 @@ const {
   getDepartments,
   getEmployeesRR,
   searchEmployeesRR,
+  importEmployees,
 } = require("../controllers/employeeController");
 
 router.get("/qr", hasPermission("view_employee_dashboard"), generateQR);
@@ -44,6 +45,11 @@ router.get(
   "/rewars/employeesearch",
   hasPermission("view_employee_dashboard"),
   searchEmployeesRR
+);
+router.post(
+  "/import",
+  hasPermission("create_employee_dashboard"),
+  importEmployees
 );
 
 module.exports = router;

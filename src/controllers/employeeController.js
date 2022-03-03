@@ -841,6 +841,77 @@ exports.searchEmployeesRR = async (req, res) => {
     res.status(code).send(resdata);
   }
 };
+
+exports.importEmployees = async (req, res) => {
+  try {
+    if (!Boolean(req.body instanceof Array))
+      return res.status(400).send({ code: 400, message: "Invalid Data" });
+
+    let arrayOfJoiError = [];
+    req.body.forEach((employee, index) => {
+      if (employeeSchema.validate(employee).error)
+        arrayOfJoiError.push({
+          index,
+          validationError: employeeSchema
+            .validate(employee)
+            .error?.details.map((el) => el.message),
+        });
+    });
+
+    if (arrayOfJoiError.length) {
+      let code = 206;
+      let errorName = "joi-error";
+      let message = "Inadequate Data (Check error list)";
+      const resData = {
+        code,
+        status: "error",
+        message,
+        error: {
+          errorName,
+          importError: arrayOfJoiError,
+        },
+      };
+      return res.status(code).send(resData);
+    }
+
+    let employeesRes = [];
+    let importError = [];
+
+    for (let i = 0; i < req.body.length; i++) {
+      try {
+        const result = await Employee.create(req.body[i]);
+        employeesRes.push({ index: i, message: result });
+      } catch (err) {
+        importError.push({
+          index: i,
+          message: `Email already exist, ${err.keyValue.empEmail}`,
+        });
+      }
+    }
+    return res.status(200).send({
+      code: 200,
+      status: importError.length
+        ? employeesRes.length
+          ? "warning"
+          : "error"
+        : "success",
+      message: importError.length
+        ? employeesRes.length
+          ? "success with Error (Check error list)"
+          : "Failed to import (Check error list)"
+        : "Imported Data successfully",
+      data: employeesRes,
+      error: importError.length
+        ? { errorName: "mongo-error", importError }
+        : { errorName: null, importError: [] },
+    });
+  } catch (error) {
+    let code = 500;
+    let message = "internal server error";
+    return res.status(code).send({ code, status: "error", message, error });
+  }
+};
+
 // module.exports = {
 //   getEmployeesRR,
 //   searchEmployeesRR,
