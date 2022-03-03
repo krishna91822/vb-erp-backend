@@ -228,6 +228,10 @@ const employeeSchema = new mongoose.Schema(
       enum: ["active", "inactive", "deleted"],
       default: "active",
     },
+    band: {
+      type: String,
+      enum: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
+    },
   },
   { timestamps: true }
 );
